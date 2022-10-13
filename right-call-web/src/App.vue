@@ -1,15 +1,19 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <VideoEditor msg="RefReps Video Editor"/>
+  <!---<img alt="Vue logo" src="./assets/logo.png"/>
+  <HelloWorld msg="Welcome to Your Vue.js App"/>-->
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import VideoEditor from './components/VideoEditor.vue'
+/*import HelloWorld from './components/HelloWorld.vue'*/
+
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    VideoEditor
+    /*HelloWorld*/
   }
 }
 </script>
