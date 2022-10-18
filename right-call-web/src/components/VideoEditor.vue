@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="video-player">
       <h1>{{msg}}</h1>
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -40,8 +40,15 @@ function stopVideoAtTimestamp(video, timestamps) {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 video {
-  width: 45%;
+  width: 100%;
+  display: block;
+  margin: 0 auto;
 }
+
+/*.video-player {
+  margin: 0 auto;
+  text-align: center;
+}*/
 </style>
 
 
