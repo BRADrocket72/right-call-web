@@ -1,18 +1,27 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div class="content-container">
+    <NavBar />
+    <div class="container">
+      <div class="video-container">
+        <VideoEditor msg="RefReps Video Editor" />
+      </div>
+    </div>
+  </div>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import HelloWorld from './components/HelloWorld.vue';
+<script>
 
-@Options({
+/*import HelloWorld from './components/HelloWorld.vue'*/
+import NavBar from "./components/Navbar.vue";
+import VideoEditor from './components/VideoEditor.vue'
+
+export default {
+  name: 'App',
   components: {
-    HelloWorld,
-  },
-})
-export default class App extends Vue {}
+    NavBar,
+    VideoEditor
+  }
+}
 </script>
 
 <style>
@@ -22,6 +31,5 @@ export default class App extends Vue {}
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
