@@ -1,19 +1,25 @@
 <template>
-  <VideoEditor msg="RefReps Video Editor"/>
-  <!---<img alt="Vue logo" src="./assets/logo.png"/>
-  <HelloWorld msg="Welcome to Your Vue.js App"/>-->
+<div class="content-container">
+    <NavBar />
+    <div class="container">
+        <div class="video-container">
+            <VideoEditor msg="RefReps Video Editor"/>
+        </div>
+    </div>
+</div>
 </template>
 
 <script>
-import VideoEditor from './components/VideoEditor.vue'
-/*import HelloWorld from './components/HelloWorld.vue'*/
 
+/*import HelloWorld from './components/HelloWorld.vue'*/
+import NavBar from "./components/Navbar.vue";
+import VideoEditor from './components/VideoEditor.vue'
 
 export default {
   name: 'App',
   components: {
+    NavBar,
     VideoEditor
-    /*HelloWorld*/
   }
 }
 </script>
@@ -25,6 +31,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
