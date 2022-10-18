@@ -1,5 +1,4 @@
 <template>
-<div class="content-container">
     <header>
         <nav class="navbar navbar-expand-sm navbar-light">
             <a href="#" class="navbar-brand"><img src="../../images/refreps_logo_web.webp"></a>
@@ -22,23 +21,16 @@
         </nav>
     </header>
 
-    <div class="container">
-        <div class="video-container">
-            <VideoEditor msg="RefReps Video Editor"/>
-        </div>
-    </div>
-</div>
 </template>
 
 <script>
-import VideoEditor from './VideoEditor.vue'
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 
 export default {
   name: 'NavBar',
   components: {
-    VideoEditor
+    
   }
 }
 </script>
