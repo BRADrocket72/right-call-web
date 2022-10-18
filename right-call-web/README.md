@@ -5,6 +5,11 @@
 npm install
 ```
 
+### Installs Bootstrap
+```
+npm install bootstrap
+```
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve
