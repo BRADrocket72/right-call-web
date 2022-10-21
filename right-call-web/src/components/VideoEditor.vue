@@ -1,37 +1,38 @@
 <template>
   <div class="video-player">
-      <h1>{{msg}}</h1>
+      <h1>{{title}}</h1>
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-      <video id="myVideoPlayer" src="../assets/prototype_withAudio.webm" controls />
+      <video :id="video.id" :src="video.videoUrl" controls />
   </div>
 </template>
 
 <script>
+import "../assets/prototype_withAudio.webm"
+// import VideoClip from "@/models/VideoClip.js"
+
 export default {
   name: 'VideoEditor',
   props: {
-    msg: String
+    title: String,
+    video: Object
   },
   mounted() {
-    const video = document.getElementById('myVideoPlayer');
-    let timestamps = [3.7, 14.2, 30.3]   //make an array out of provided sample timestamps
-
-    
-    video.addEventListener('timeupdate', () => {    //listen for when the video's time changes
-      stopVideoAtTimestamp(video, timestamps)
+    const video2 = document.getElementById(this.video.id);
+    video2.addEventListener('timeupdate', () => {    //listen for when the video's time changes
+      this.stopVideoAtTimestamp(video2, this.video.timestamps)
     })
     
     
-  }
-}
-
-function stopVideoAtTimestamp(video, timestamps) {
-
-  var currentTime = video.currentTime;
-  if (currentTime >= timestamps[0]) {
-    timestamps.shift()   // remove first timestamp
-    video.pause();
+  },
+  methods: {
+    stopVideoAtTimestamp(video, timestamps) {
+      var currentTime = video.currentTime;
+      if (currentTime >= timestamps[0]) {
+        timestamps.shift()   // remove first timestamp
+        video.pause();
+      }
+    }
   }
 }
 
