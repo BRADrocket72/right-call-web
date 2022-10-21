@@ -29,10 +29,11 @@ export default {
     stopVideoAtTimestamp(video, timestamps) {
       var currentTime = video.currentTime;
       if (currentTime >= timestamps[0]) {
-        timestamps.shift()   // remove first timestamp
+        timestamps.shift()  // remove first timestamp
         video.pause();
       }
-    }
+    },
+    
   }
 }
 
