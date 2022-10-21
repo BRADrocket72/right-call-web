@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "start": "vue-cli-service run serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
@@ -15,9 +16,7 @@
     "core-js": "^3.8.3",
     "popper": "^1.0.1",
     "vue": "^3.2.13",
-    "vue-class-component": "^8.0.0-0"
-  },
-  "devDependencies": {
+    "vue-class-component": "^8.0.0-0",
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
     "@types/jest": "^27.0.1",
@@ -38,6 +37,7 @@
     "ts-jest": "^27.0.4",
     "typescript": "~4.5.5"
   },
+  "devDependencies": {},
   "eslintConfig": {
     "root": true,
     "env": {

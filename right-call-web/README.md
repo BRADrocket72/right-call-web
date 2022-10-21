@@ -5,6 +5,13 @@
 npm install
 ```
 
+#Run Docker Image
+'''
+cd .\right-call-web\
+docker build .\right-call-web\
+docker run -it -p 8080:8080 --rm --name rightcallweb-1 rightcallweb 
+'''
+
 ### Installs Bootstrap
 ```
 npm install bootstrap
