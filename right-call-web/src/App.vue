@@ -3,7 +3,7 @@
     <NavBar />
     <div class="container">
       <div class="video-container">
-        <!-- LessonSelection goes here -->
+        <LessonSelection title="Lesson Selection Page"/>
         <!-- This VideoEditor line below will need to be moved to the LessonSelection page, because that's where the video will be slected and VideoClop object created -->
         <VideoEditor v-if="ready" :video="sampleVideo" title="RefReps Video Editor" />
       </div>
@@ -15,13 +15,15 @@
 import NavBar from "./components/Navbar.vue";
 import VideoEditor from './components/VideoEditor.vue'
 import VideoClip from "@/models/VideoClip.js"
+import LessonSelection from "./components/LessonSelection.vue";
 
 export default {
   name: 'App',
   components: {
     NavBar,
-    VideoEditor
-  },
+    VideoEditor,
+    LessonSelection
+},
   // With the lesson selection page, when the user clicks on a lesson, create a videoClip object and pass that as a prop to the videoEditor component.
   // It currently works right now, but this data() and mounted() should be deleted from this file when lessonSelection file is created,
   // because I created a sample VideoClip object in this file, but it will be created in the LessonSelection page
