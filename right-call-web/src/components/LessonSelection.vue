@@ -1,6 +1,8 @@
 <template>
-    <div>
-        <h1>{{title}}</h1>
+    <div v-if="ready"> 
+        <h1>Lesson Selection Page</h1>
+        <br>
+        <a class="nav-link" v-for="video in VideoClips" :key="video.id" > {{video.id}} </a>
     </div>
 </template>
 
@@ -12,6 +14,7 @@ export default {
   name: 'LessonSelection',
   data() {
     return{
+      ready :false,
       VideoClips :[] //declare VideoClips as an array
     }
   },
@@ -26,6 +29,7 @@ export default {
   },
   mounted() {
     this.VideoClips = this.retrieveVideos()
+    this.ready = true
   }
 }
 </script>
