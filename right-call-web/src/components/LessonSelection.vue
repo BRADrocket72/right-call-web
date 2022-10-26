@@ -4,8 +4,10 @@
     <div v-if="selectedVideo == null" class="lesson-container">
       <br>
       <div class="lesson-div" v-for="video in VideoClips" :key="video.id">
-        <img class="lesson-img" :alt="video.id" src="../../images/richard-bagan-SmQ2Cku3alc-unsplash.jpg">
-        <a class="nav-link" @click="openVideo(video)"> {{video.id}} </a>
+        <a class="nav-link" @click="openVideo(video)">
+          <img class="lesson-img" :alt="video.id" src="../../images/richard-bagan-SmQ2Cku3alc-unsplash.jpg">
+          <p>{{video.id}}</p> 
+        </a>
       </div>
     </div>
     <div v-else>
@@ -72,6 +74,10 @@ export default {
   }
 
   .lesson-div a {
-    padding: 20px 0 0 20px;
+    cursor: pointer;
+  }
+
+  .lesson-div p {
+    padding: 15px 0 0 20px;
   }
 </style>
