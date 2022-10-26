@@ -18,10 +18,11 @@ export default {
   },
   mounted() {
     const video2 = document.getElementById(this.video.id);
-    video2.addEventListener('timeupdate', () => {    //listen for when the video's time changes
-      this.stopVideoAtTimestamp(video2, this.video.timestamps)
-    })
-    
+    window.onload = function() {
+      video2.addEventListener('timeupdate', () => {    //listen for when the video's time changes
+        this.stopVideoAtTimestamp(video2, this.video.timestamps)
+      })
+    }
     
   },
   methods: {
