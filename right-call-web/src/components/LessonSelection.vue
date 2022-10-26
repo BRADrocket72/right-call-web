@@ -1,7 +1,7 @@
 <template>
   <div v-if="ready">
-    <h1>Lesson Selection Page</h1>
     <div v-if="selectedVideo == null" class="lesson-container">
+      <h1>Lesson Selection Page</h1>
       <br>
       <div class="lesson-div" v-for="video in VideoClips" :key="video.id">
         <a class="nav-link" @click="openVideo(video)">
