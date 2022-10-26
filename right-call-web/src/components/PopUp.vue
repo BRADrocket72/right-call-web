@@ -1,69 +1,138 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Modal Component</title>
-    <script src="https://unpkg.com/vue@2"></script>
-    <link rel="stylesheet" type="text/css" href="/style.css" />
-    <!-- template for the modal component -->
-    <script type="text/x-template" id="modal-template">
-      <transition name="modal">
-        <div class="modal-mask">
-          <div class="modal-wrapper">
-            <div class="modal-container">
+<script>
+  export default {
+    // eslint-disable-next-line vue/multi-word-component-names
+    name: 'Modal' ,
+    methods: {
+      close() {
+        this.$emit('close');
+      },
+    },
+  };
+</script>
 
-              <div class="modal-header">
-                <slot name="header">
-                  default header
-                </slot>
-              </div>
+<template>
+  <transition name="modal-fade">
+    <div class="modal-backdrop">
+      <div class="modal"
+        role="dialog"
+        aria-labelledby="modalTitle"
+        aria-describedby="modalDescription"
+      >
+        <header
+          class="modal-header"
+          id="modalTitle"
+        >
+          <slot name="header">
+            This is the default tile!
+          </slot>
+          <button
+            type="button"
+            class="btn-close"
+            @click="close"
+            aria-label="Close modal"
+          >
+            x
+          </button>
+        </header>
 
-              <div class="modal-body">
-                <slot name="body">
-                  default body
-                </slot>
-              </div>
+        <section
+          class="modal-body"
+          id="modalDescription"
+        >
+          <slot name="body">
+            This is the default body!
+          </slot>
+        </section>
 
-              <div class="modal-footer">
-                <slot name="footer">
-                  default footer
-                  <button class="modal-default-button" @click="$emit('close')">
-                    OK
-                  </button>
-                </slot>
-              </div>
-            </div>
-          </div>
-        </div>
-      </transition>
-    </script>
-  </head>
-  <body>
-    <!-- app -->
-    <div id="app">
-      <button id="show-modal" @click="showModal = true">Show Modal</button>
-      <!-- use the modal component, pass in the prop -->
-      <modal v-if="showModal" @close="showModal = false">
-        <!--
-      you can use custom content here to overwrite
-      default content
-    -->
-        <h3 slot="header">custom header</h3>
-      </modal>
+        <footer class="modal-footer">
+          <slot name="footer">
+            This is the default footer!
+          </slot>
+          <button
+            type="button"
+            class="btn-green"
+            @click="close"
+            aria-label="Close modal"
+          >
+            Close me!
+          </button>
+        </footer>
+      </div>
     </div>
+  </transition>
+</template>
 
-    <script>
-      // register modal component
-      Vue.component("modal", {
-        template: "#modal-template"
-      });
+<style>
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-      // start app
-      new Vue({
-        el: "#app",
-        data: {
-          showModal: false
-        }
-      });
-    </script>
-  </body>
-</html>
+  .modal {
+    background: #FFFFFF;
+    box-shadow: 2px 2px 20px 1px;
+    overflow-x: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal-header,
+  .modal-footer {
+    padding: 15px;
+    display: flex;
+  }
+
+  .modal-header {
+    position: relative;
+    border-bottom: 1px solid #eeeeee;
+    color: #4AAE9B;
+    justify-content: space-between;
+  }
+
+  .modal-footer {
+    border-top: 1px solid #eeeeee;
+    flex-direction: column;
+  }
+
+  .modal-body {
+    position: relative;
+    padding: 20px 10px;
+  }
+
+  .btn-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
+    font-size: 20px;
+    padding: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #4AAE9B;
+    background: transparent;
+  }
+
+  .btn-green {
+    color: white;
+    background: #4AAE9B;
+    border: 1px solid #4AAE9B;
+    border-radius: 2px;
+  }
+
+  .modal-fade-enter,
+  .modal-fade-leave-to {
+    opacity: 0;
+  }
+
+  .modal-fade-enter-active,
+  .modal-fade-leave-active {
+    transition: opacity .5s ease;
+  }
+</style>
