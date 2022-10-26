@@ -1,13 +1,16 @@
 <template>
   <div v-if="ready">
     <div v-if="selectedVideo == null" class="lesson-container">
-      <h1>Lesson Selection Page</h1>
-      <br>
-      <div class="lesson-div" v-for="video in VideoClips" :key="video.id">
-        <a class="nav-link" @click="openVideo(video)">
-          <img class="lesson-img" :alt="video.id" src="../../images/richard-bagan-SmQ2Cku3alc-unsplash.jpg">
-          <p>{{video.id}}</p> 
-        </a>
+      <div class="div-header">
+        <h1>Lesson Selection Page</h1>
+      </div>
+      <div class="lesson-div">
+        <div class="lesson" v-for="video in VideoClips" :key="video.id">
+          <a class="nav-link" @click="openVideo(video)">
+            <img class="lesson-img" :alt="video.id" src="../../images/richard-bagan-SmQ2Cku3alc-unsplash.jpg">
+            <p>{{video.id}}</p> 
+          </a>
+        </div>
       </div>
     </div>
     <div v-else>
@@ -52,14 +55,29 @@ export default {
 
 <style scoped>
   .lesson-container {
-    display: flex;
-    flex-direction: row;
+    
     justify-content: center;
     width: 100%;
     margin: auto;
   }
 
+  .div-header {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    margin: 0 auto 20px auto;
+  }
+
   .lesson-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .lesson {
     margin: 0 2% 0 2%;
     text-align: left;
     height: 480px;
