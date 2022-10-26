@@ -1,14 +1,17 @@
 <template>
-    <div v-if="ready"> 
-      <div v-if="selectedVideo == null">
-        <h1>Lesson Selection Page</h1>
-        <br>
-        <a class="nav-link" v-for="video in VideoClips" :key="video.id" @click="openVideo(video)"> {{video.id}} </a>
-      </div>
-      <div v-else>
-        <VideoEditor :video="selectedVideo"/>
+  <div v-if="ready">
+    <h1>Lesson Selection Page</h1>
+    <div v-if="selectedVideo == null" class="lesson-container">
+      <br>
+      <div class="lesson-div" v-for="video in VideoClips" :key="video.id">
+        <img class="lesson-img" :alt="video.id" src="../../images/richard-bagan-SmQ2Cku3alc-unsplash.jpg">
+        <a class="nav-link" @click="openVideo(video)"> {{video.id}} </a>
       </div>
     </div>
+    <div v-else>
+      <VideoEditor :video="selectedVideo"/>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -44,3 +47,31 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .lesson-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    margin: auto;
+  }
+
+  .lesson-div {
+    margin: 0 2% 0 2%;
+    text-align: left;
+    height: 480px;
+    width: 285px;
+    box-shadow:0 10px 10px #d1d1d1;
+  }
+
+  .lesson-img {
+    margin: none;
+    width: 285px;
+    height: 170px;
+  }
+
+  .lesson-div a {
+    padding: 20px 0 0 20px;
+  }
+</style>
