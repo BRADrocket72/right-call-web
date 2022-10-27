@@ -23,16 +23,8 @@
           id="modalTitle"
         >
           <slot name="header">
-            This is the default tile!
+            Question #1
           </slot>
-          <button
-            type="button"
-            class="btn-close"
-            @click="close"
-            aria-label="Close modal"
-          >
-            x
-          </button>
         </header>
 
         <section
@@ -75,7 +67,12 @@
     align-items: center;
   }
   .modal {
-    background: #FFFFFF;
+    background: darkgray;
+    width: 600px;
+    height: 300px;
+    position: fixed;
+    left: auto;
+    top: auto;
     box-shadow: 2px 2px 20px 1px;
     overflow-x: auto;
     display: flex;
@@ -89,7 +86,7 @@
   .modal-header {
     position: relative;
     border-bottom: 1px solid #eeeeee;
-    color: #4AAE9B;
+    color: #FFFFFF;
     justify-content: space-between;
   }
   .modal-footer {
