@@ -68,6 +68,11 @@
   }
   .modal {
     background: darkgray;
+    width: 600px;
+    height: 300px;
+    position: fixed;
+    left: auto;
+    top: auto;
     box-shadow: 2px 2px 20px 1px;
     overflow-x: auto;
     display: flex;
