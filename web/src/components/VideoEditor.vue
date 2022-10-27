@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import Modal from './components/PopUp.vue';
+import Modal from '@/components/PopUp.vue';
 // import VideoClip from "@/models/VideoClip.js"
 
 export default {
