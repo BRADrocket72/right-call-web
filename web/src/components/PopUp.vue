@@ -1,4 +1,5 @@
 <script>
+import Activity from "@/models/Activity.js"
   export default {
     // eslint-disable-next-line vue/multi-word-component-names
     name: 'Modal' ,
@@ -6,6 +7,11 @@
       close() {
         this.$emit('close');
       },
+      retrieveQuestions(){
+        var firstQustion = new Activity("question_one", "What was the call ?")
+        var secondQustion = new Activity("question_two", "What was the call ?")
+        return [firstQustion, secondQustion]
+      }
     },
   };
 </script>
@@ -32,8 +38,10 @@
           id="modalDescription"
         >
           <slot name="body">
-            This is the default body!
+            what is the call ?
           </slot>
+            <button type = "button" class="btn-green" > Traveling </button>
+            <button type = "button" class="btn-green" > Double Dribble </button>
         </section>
 
         <footer class="modal-footer">
