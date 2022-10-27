@@ -4,17 +4,27 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       <video :id="video.id" :src="video.videoUrl" controls />
-      <PopUp :id="PopUp1.id" v-if="showModal">
-      </PopUp>
+      <Modal
+      v-show="isModalVisible"
+      @close="closeModal"
+    />
   </div>
 </template>
 
 <script>
-import "../assets/prototype_withAudio.webm"
+import Modal from './components/PopUp.vue';
 // import VideoClip from "@/models/VideoClip.js"
 
 export default {
   name: 'VideoEditor',
+  components: {
+    Modal
+  },
+  data() {
+      return {
+        isModalVisible: false,
+      };
+    },
   props: {
     video: Object
   },
@@ -30,10 +40,17 @@ export default {
       if (currentTime >= timestamps[0]) {
         timestamps.shift()   // remove first timestamp
         video.pause();
+        this.showModal();
+      }
+    },
+    showModal() {
+        this.isModalVisible = true;
+      },
+      closeModal() {
+        this.isModalVisible = false;
       }
     }
   }
-}
 
 </script>
 
