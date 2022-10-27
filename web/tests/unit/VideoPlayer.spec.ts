@@ -9,6 +9,12 @@ describe('VideoEditor.vue', () => {
         wrapper = mount(VideoEditor, {
           props: {
             video: new VideoClip("Basketball Lesson", 125, "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4", [3.7, 14.2, 30.3])
+          },
+          mounted() {
+            const video2 = document.getElementById(this.video.id);
+              video2?.addEventListener('timeupdate', () => {    //listen for when the video's time changes
+                this.stopVideoAtTimestamp(video2, this.video.timestamps)
+              })
           }
         })
     });  
