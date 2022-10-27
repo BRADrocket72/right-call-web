@@ -4,6 +4,8 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       <video :id="video.id" :src="video.videoUrl" controls />
+      <PopUp :id="PopUp1.id" v-if="showModal">
+      </PopUp>
   </div>
 </template>
 
