@@ -4,25 +4,28 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       <video :id="video.id" :src="video.videoUrl" controls />
-      <Modal
-      v-show="isModalVisible"
-      @close="closeModal"
-    />
+      <PopUp v-if="questionsLoaded && isModalVisible"  :question="currentVideoQuestions[questionIndex]" :questionNumber="questionIndex + 1" @close="closeModal" />
   </div>
 </template>
 
 <script>
-import Modal from '@/components/PopUp.vue';
-// import VideoClip from "@/models/VideoClip.js"
+import PopUp from '@/components/PopUp.vue';
+import {createQuestions} from "@/models/RetrieveAndCreate.js"
+import {retrieveVideosQuestions} from "@/models/RetrieveAndCreate.js"
+
 
 export default {
   name: 'VideoEditor',
   components: {
-    Modal
+    PopUp
   },
   data() {
       return {
         isModalVisible: false,
+        currentVideoQuestions: [],
+        questionsArray: [],
+        questionIndex: 0,
+        questionsLoaded: false,
       };
     },
   props: {
@@ -30,9 +33,12 @@ export default {
   },
   mounted() {
     const video2 = document.getElementById(this.video.id);
-      video2.addEventListener('timeupdate', () => {    //listen for when the video's time changes
-        this.stopVideoAtTimestamp(video2, this.video.timestamps)
-      })
+    video2.addEventListener('timeupdate', () => {    //listen for when the video's time changes
+      this.stopVideoAtTimestamp(video2, this.video.timestamps)
+    })
+    this.questionsArray = createQuestions()  //Retrieve all of the questions
+    this.currentVideoQuestions = retrieveVideosQuestions(this.video.id, this.questionsArray)  //set currentVideoQuestions to an array of this specific video's questions
+    this.questionsLoaded = true;
   },
   methods: {
     stopVideoAtTimestamp(video, timestamps) {
@@ -44,13 +50,14 @@ export default {
       }
     },
     showModal() {
-        this.isModalVisible = true;
-      },
-      closeModal() {
-        this.isModalVisible = false;
-      }
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
+      this.questionIndex++;
     }
   }
+}
 
 </script>
 
@@ -62,9 +69,4 @@ video {
   display: block;
   margin: 0 auto;
 }
-
-/*.video-player {
-  margin: 0 auto;
-  text-align: center;
-}*/
 </style>

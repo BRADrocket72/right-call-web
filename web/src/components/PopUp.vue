@@ -1,18 +1,15 @@
 <script>
-import Activity from "@/models/Activity.js"
   export default {
-    // eslint-disable-next-line vue/multi-word-component-names
-    name: 'Modal' ,
+    name: 'PopUp',
+    props:{
+      question: Object,
+      questionNumber: Number
+    },
     methods: {
       close() {
         this.$emit('close');
-      },
-      retrieveQuestions(){
-        var firstQustion = new Activity("question_one", "What was the call ?")
-        var secondQustion = new Activity("question_two", "What was the call ?")
-        return [firstQustion, secondQustion]
       }
-    },
+    }
   };
 </script>
 
@@ -29,7 +26,7 @@ import Activity from "@/models/Activity.js"
           id="modalTitle"
         >
           <slot name="header">
-            Question #1
+            Question {{questionNumber}}
           </slot>
         </header>
 
@@ -38,25 +35,14 @@ import Activity from "@/models/Activity.js"
           id="modalDescription"
         >
           <slot name="body">
-            what is the call ?
+            {{question.questionText}}
+            <br>
+            <br>
           </slot>
-            <button type = "button" class="btn-green" > Traveling </button>
-            <button type = "button" class="btn-green" > Double Dribble </button>
+            <button type = "button" class="btn-green" @click="close()"> {{question.answerOptions[0]}} </button>
+            
+            <button type = "button" class="btn-green" @click="close()">  {{question.answerOptions[1]}}</button>
         </section>
-
-        <footer class="modal-footer">
-          <slot name="footer">
-            This is the default footer!
-          </slot>
-          <button
-            type="button"
-            class="btn-green"
-            @click="close"
-            aria-label="Close modal"
-          >
-            Close me!
-          </button>
-        </footer>
       </div>
     </div>
   </transition>
@@ -86,11 +72,6 @@ import Activity from "@/models/Activity.js"
     display: flex;
     flex-direction: column;
   }
-  .modal-header,
-  .modal-footer {
-    padding: 15px;
-    display: flex;
-  }
   .modal-header {
     position: relative;
     border-bottom: 1px solid #eeeeee;
@@ -119,9 +100,11 @@ import Activity from "@/models/Activity.js"
   }
   .btn-green {
     color: white;
-    background: #4AAE9B;
-    border: 1px solid #4AAE9B;
+    background:#4AAE9B;
+    border: 1px solid #eeeeee;
     border-radius: 2px;
+    padding: 15px;
+    margin: 10px;
   }
   .modal-fade-enter,
   .modal-fade-leave-to {

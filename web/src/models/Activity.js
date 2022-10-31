@@ -1,7 +1,14 @@
 export default class Activity {
-    constructor(id, questionText, attribute) {
+    id = "";
+    questionText = "";
+    videoId = "";
+    answerOptions = []
+
+    constructor(id, questionText, videoId, answerOptions) {
         this.id = id;
         this.questionText = questionText;
-        this.attribute = attribute;
+        this.videoId = videoId
+        this.answerOptions = answerOptions
+   //     this.attribute = attribute;
     }
 }
