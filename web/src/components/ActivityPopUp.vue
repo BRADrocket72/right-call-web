@@ -3,7 +3,7 @@ import {checkIfAnswerIsCorrect} from "@/models/RetrieveAndCreate.js"
 import Activity from '@/models/Activity';
 
   export default {
-    name: 'PopUp',
+    name: 'ActivityPopUp',
     data() {
       return {
         updatedAnswers: []
