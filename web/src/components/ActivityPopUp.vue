@@ -1,5 +1,5 @@
 <script>
-import {checkIfAnswerIsCorrect} from "@/models/RetrieveAndCreate.js"
+import {checkAnswer} from "@/models/RetrieveAndCreate.js"
 import Activity from '@/models/Activity';
 
   export default {
@@ -18,8 +18,8 @@ import Activity from '@/models/Activity';
       close() {
         this.$emit('close', this.updatedAnswers);
       },
-      callAnswerCheckFunction(question, answersArray, answerChoice) {
-        this.updatedAnswers = checkIfAnswerIsCorrect(question, answersArray, answerChoice)
+      handleAnswerSelected(question, answersArray, answerChoice) {
+        this.updatedAnswers = checkAnswer(question, answersArray, answerChoice)
         for (const answer of this.updatedAnswers) {
               console.log(answer.isCorrect)
         }
@@ -54,9 +54,9 @@ import Activity from '@/models/Activity';
             <br>
             <br>
           </slot>
-            <button type = "button" class="btn-green" @click="callAnswerCheckFunction(question, allPossibleAnswers, question.answerOptions[0]); close()"> {{question.answerOptions[0]}} </button>
+            <button type = "button" class="btn-green" @click="handleAnswerSelected(question, allPossibleAnswers, question.answerOptions[0]); close()"> {{question.answerOptions[0]}} </button>
             
-            <button type = "button" class="btn-green" @click="callAnswerCheckFunction(question, allPossibleAnswers, question.answerOptions[1]); close()">  {{question.answerOptions[1]}}</button>
+            <button type = "button" class="btn-green" @click="handleAnswerSelected(question, allPossibleAnswers, question.answerOptions[1]); close()">  {{question.answerOptions[1]}}</button>
         </section>
       </div>
     </div>
