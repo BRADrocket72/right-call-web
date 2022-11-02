@@ -35,4 +35,19 @@ export function createQuestions() {
     return newArray
   }
 
+  // takes in the question to get the correct answer of that question from the answersArray by id
+  // then check if user's selected answer (answerChoice) equals the correct answer for that question
+  export function checkIfAnswerIsCorrect(question, answersArray, answerChoice) {
+    for (const answer of answersArray) {
+      if (question.id == answer.activityId) {
+        if (answerChoice == answer.answerText) {
+          answer.isCorrect = true;
+        }
+        else {
+          answer.isCorrect = false;
+        }
+      }
+    }
+    return answersArray
+  }
 

@@ -4,14 +4,16 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       <video :id="video.id" :src="video.videoUrl" controls />
-      <PopUp v-if="questionsLoaded && isModalVisible"  :question="currentVideoQuestions[questionIndex]" :questionNumber="questionIndex + 1" @close="closeModal" />
-  </div>
+      <!-- put the results page tag here with the updatedAnswers in it to send to it -->
+      <PopUp v-if="questionsLoaded && isModalVisible" :allPossibleAnswers="answers" :question="currentVideoQuestions[questionIndex]" :questionNumber="questionIndex + 1" @close="closeModal" />  </div>
 </template>
 
 <script>
 import PopUp from '@/components/PopUp.vue';
 import {createQuestions} from "@/models/RetrieveAndCreate.js"
+import {retrieveAnswers} from "@/models/RetrieveAndCreate.js"
 import {retrieveVideosQuestions} from "@/models/RetrieveAndCreate.js"
+import VideoClip from '@/models/VideoClip';
 
 
 export default {
@@ -26,10 +28,11 @@ export default {
         questionsArray: [],
         questionIndex: 0,
         questionsLoaded: false,
+        answers: []
       };
     },
   props: {
-    video: Object
+    video: VideoClip
   },
   mounted() {
     const video2 = document.getElementById(this.video.id);
@@ -39,6 +42,7 @@ export default {
     this.questionsArray = createQuestions()  //Retrieve all of the questions
     this.currentVideoQuestions = retrieveVideosQuestions(this.video.id, this.questionsArray)  //set currentVideoQuestions to an array of this specific video's questions
     this.questionsLoaded = true;
+    this.answers = retrieveAnswers()
   },
   methods: {
     stopVideoAtTimestamp(video, timestamps) {
@@ -52,8 +56,9 @@ export default {
     showModal() {
       this.isModalVisible = true;
     },
-    closeModal() {
+    closeModal(updatedAnswers) {
       this.isModalVisible = false;
+      this.answers = updatedAnswers
       this.questionIndex++;
     }
   }
