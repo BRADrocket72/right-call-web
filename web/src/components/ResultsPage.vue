@@ -1,25 +1,32 @@
 <script>
-import {checkIfAnswerIsCorrect} from "@/models/RetrieveAndCreate.js"
-// import Activity from '@/models/Activity';
+import {getResults} from "@/models/GetResults.js"
 
   export default {
     name: 'ResultsPage',
     data() {
       return {
-        updatedAnswers: []
+        numberOfQuestions: 0,
+        usersAnswers: [],
+        percentageResults: []
       }
     },
     props:{
       answersArray: [Object]
     },
+    mounted(){
+      this.findNumberOfQuestionsAnswered()
+      this.percentageResults = getResults(this.numberOfQuestions, this.usersAnswers)
+    },
     methods: {
       close() {
-        this.$emit('close', this.updatedAnswers);
+        this.$emit('close');
       },
-      callAnswerCheckFunction(question, answersArray, answerChoice) {
-        this.updatedAnswers = checkIfAnswerIsCorrect(question, answersArray, answerChoice)
-        for (const answer of this.updatedAnswers) {
-              console.log(answer.isCorrect)
+      findNumberOfQuestionsAnswered() {
+        for (const answer of this.answersArray) {
+            if (answer.isCorrect != null) {
+              this.usersAnswers.push(answer)
+              this.numberOfQuestions +=1
+            }
         }
       }
     }
@@ -39,7 +46,7 @@ import {checkIfAnswerIsCorrect} from "@/models/RetrieveAndCreate.js"
           id="modalTitle"
         >
           <slot name="header">
-            Question {{questionNumber}}
+            Lesson Results
           </slot>
         </header>
 
@@ -48,13 +55,11 @@ import {checkIfAnswerIsCorrect} from "@/models/RetrieveAndCreate.js"
           id="modalDescription"
         >
           <slot name="body">
-            <p>{{question.questionText}}</p>
+            <p>Number of Questions: {{this.numberOfQuestions}}</p>
             <br>
             <br>
+            <p>Results: {{this.percentageResults}}</p>
           </slot>
-            <button type = "button" class="btn-green" @click="callAnswerCheckFunction(question, allPossibleAnswers, question.answerOptions[0]); close()"> {{question.answerOptions[0]}} </button>
-            
-            <button type = "button" class="btn-green" @click="callAnswerCheckFunction(question, allPossibleAnswers, question.answerOptions[1]); close()">  {{question.answerOptions[1]}}</button>
         </section>
       </div>
     </div>

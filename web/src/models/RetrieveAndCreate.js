@@ -1,5 +1,13 @@
 import Activity from "@/models/Activity.js"
 import Answer from "@/models/Answer.js"
+import VideoClip from "@/models/VideoClip.js"
+
+export function retrieveVideos() {
+  var videoOne = new VideoClip("Basketball Lesson One", 60, "https://d2vue776t14pjd.cloudfront.net/basketball/REG-SE-BSK-PCK-4-DLC/gameplay/P15_Shooting_Foul.m4v", [2.8, 7.9])
+  var videoTwo = new VideoClip("Basketball Lesson Two", 60, "https://d2vue776t14pjd.cloudfront.net/basketball/REG-SE-BSK-PCK-4-DLC/gameplay/P15_Shooting_Foul_2.m4v", [3.2, 6.8])
+  var videoThree = new VideoClip("Basketball Lesson Three", 60, "https://d2vue776t14pjd.cloudfront.net/basketball/REG-SE-BSK-PCK-4-DLC/gameplay/P3_Traveling.m4v", [4.2, 6.8])
+  return[videoOne , videoTwo , videoThree]
+}
 
 export function createQuestions() {
   var firstQuestion = new Activity("question_one", "What was the call ?", "Basketball Lesson One", ["Shooting Foul", "Traveling"])

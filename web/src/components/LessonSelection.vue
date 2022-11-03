@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import VideoClip from "@/models/VideoClip.js"
 import VideoEditor from "@/components/VideoEditor.vue"
+import {retrieveVideos} from "@/models/RetrieveAndCreate.js"
 
 export default {
   name: 'LessonSelection',
@@ -36,18 +36,12 @@ export default {
     }
   },
   methods: {
-    retrieveVideos() {
-      var videoOne = new VideoClip("Basketball Lesson One", 60, "https://d2vue776t14pjd.cloudfront.net/basketball/REG-SE-BSK-PCK-4-DLC/gameplay/P15_Shooting_Foul.m4v", [2.8, 7.9])
-      var videoTwo = new VideoClip("Basketball Lesson Two", 60, "https://d2vue776t14pjd.cloudfront.net/basketball/REG-SE-BSK-PCK-4-DLC/gameplay/P15_Shooting_Foul_2.m4v", [3.2, 6.8])
-      var videoThree = new VideoClip("Basketball Lesson Three", 60, "https://d2vue776t14pjd.cloudfront.net/basketball/REG-SE-BSK-PCK-4-DLC/gameplay/P3_Traveling.m4v", [4.2, 6.8])
-      return[videoOne , videoTwo , videoThree]
-    },
     openVideo(video) {
       this.selectedVideo = video
     }
   },
   mounted() {
-    this.VideoClips = this.retrieveVideos()
+    this.VideoClips = retrieveVideos()
     this.ready = true
   }
 }
