@@ -5,11 +5,11 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       <video :id="video.id" :src="video.videoUrl" controls />
       <!-- put the results page tag here with the updatedAnswers in it to send to it -->
-      <PopUp v-if="questionsLoaded && isModalVisible" :allPossibleAnswers="answers" :question="currentVideoQuestions[questionIndex]" :questionNumber="questionIndex + 1" @close="closeModal" />  </div>
+      <activity-pop-up v-if="questionsLoaded && isModalVisible" :allPossibleAnswers="answers" :question="currentVideoQuestions[questionIndex]" :questionNumber="questionIndex + 1" @close="closeModal" />  </div>
 </template>
 
 <script>
-import PopUp from '@/components/PopUp.vue';
+import ActivityPopUp from '@/components/ActivityPopUp.vue';
 import {createQuestions} from "@/models/RetrieveAndCreate.js"
 import {retrieveAnswers} from "@/models/RetrieveAndCreate.js"
 import {retrieveVideosQuestions} from "@/models/RetrieveAndCreate.js"
@@ -19,7 +19,7 @@ import VideoClip from '@/models/VideoClip';
 export default {
   name: 'VideoEditor',
   components: {
-    PopUp
+    ActivityPopUp: ActivityPopUp
   },
   data() {
       return {
