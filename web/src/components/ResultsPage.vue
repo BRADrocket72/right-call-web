@@ -1,18 +1,16 @@
 <script>
 import {checkIfAnswerIsCorrect} from "@/models/RetrieveAndCreate.js"
-import Activity from '@/models/Activity';
+// import Activity from '@/models/Activity';
 
   export default {
-    name: 'PopUp',
+    name: 'ResultsPage',
     data() {
       return {
         updatedAnswers: []
       }
     },
     props:{
-      question: Activity,
-      questionNumber: Number,
-      allPossibleAnswers: [Object]
+      answersArray: [Object]
     },
     methods: {
       close() {
