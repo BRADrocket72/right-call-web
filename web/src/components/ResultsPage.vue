@@ -1,5 +1,6 @@
 <script>
-import {getResults} from "@/models/GetResults.js"
+import {getEachQuestionResults} from "@/models/GetResults.js"
+import {getPercentageResults} from "@/models/GetResults.js"
 
   export default {
     name: 'ResultsPage',
@@ -7,7 +8,8 @@ import {getResults} from "@/models/GetResults.js"
       return {
         numberOfQuestions: 0,
         usersAnswers: [],
-        percentageResults: []
+        eachQuestionResults: [],
+        percentageCorrect: ""
       }
     },
     props:{
@@ -15,7 +17,8 @@ import {getResults} from "@/models/GetResults.js"
     },
     mounted(){
       this.findNumberOfQuestionsAnswered()
-      this.percentageResults = getResults(this.numberOfQuestions, this.usersAnswers)
+      this.eachQuestionResults = getEachQuestionResults(this.numberOfQuestions, this.usersAnswers)
+      this.percentageCorrect = getPercentageResults(this.eachQuestionResults, this.numberOfQuestions)
     },
     methods: {
       close() {
@@ -55,10 +58,11 @@ import {getResults} from "@/models/GetResults.js"
           id="modalDescription"
         >
           <slot name="body">
-            <p>Number of Questions: {{this.numberOfQuestions}}</p>
+            <p>{{this.percentageCorrect}} Correct</p>
             <br>
-            <br>
-            <p>Results: {{this.percentageResults}}</p>
+            <p v-for="n in this.eachQuestionResults.length" :key="n">Question {{n}}: {{this.eachQuestionResults[n-1]}}</p>
+
+            <button type = "button" class="btn-green" @click="close()"> Back to Lesson Selection Page </button>
           </slot>
         </section>
       </div>
