@@ -31,7 +31,8 @@ export default {
         questionsArray: [],
         questionIndex: 0,
         questionsLoaded: false,
-        answers: []
+        answers: [],
+        questionCounter: 0
       };
     },
   props: {
@@ -53,9 +54,9 @@ export default {
   methods: {
     stopVideoAtTimestamp(video, timestamps) {
       var currentTime = video.currentTime;
-      if (currentTime >= timestamps[0]) {
-        timestamps.shift()   // remove first timestamp
+      if (currentTime >= timestamps[this.questionCounter]) {
         video.pause();
+        this.questionCounter++
         this.showModal();
       }
     },
@@ -69,6 +70,10 @@ export default {
     },
     closeResultsPageModal() {
       this.isResultsPageModalVisible = false;
+      this.close()
+    },
+    close() {
+      this.$emit('close');
     }
   }
 }

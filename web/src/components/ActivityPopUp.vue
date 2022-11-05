@@ -20,9 +20,6 @@ import Activity from '@/models/Activity';
       },
       handleAnswerSelected(question, answersArray, answerChoice) {
         this.updatedAnswers = checkAnswer(question, answersArray, answerChoice)
-        for (const answer of this.updatedAnswers) {
-              console.log(answer.isCorrect)
-        }
       }
     }
   };

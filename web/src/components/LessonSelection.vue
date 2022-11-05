@@ -14,7 +14,7 @@
       </div>
     </div>
     <div v-else>
-      <VideoEditor :video="selectedVideo"/>
+      <VideoEditor :video="selectedVideo" @close="closeVideo"/>
     </div>
   </div>
 </template>
@@ -37,7 +37,10 @@ export default {
   },
   methods: {
     openVideo(video) {
-      this.selectedVideo = video
+      this.selectedVideo = video;
+    },
+    closeVideo(){
+      this.selectedVideo = null
     }
   },
   mounted() {
