@@ -1,9 +1,6 @@
 import { mount, shallowMount } from '@vue/test-utils'
 import VideoEditor from '@/components/VideoEditor.vue'
 import VideoClip from '@/models/VideoClip.js'
-import {createQuestions} from "@/models/RetrieveAndCreate.js"
-import {retrieveAnswers} from "@/models/RetrieveAndCreate.js"
-import {retrieveVideosQuestions} from "@/models/RetrieveAndCreate.js"
 import 'jest'
 
 describe('VideoEditor.vue', () => {
@@ -13,32 +10,13 @@ describe('VideoEditor.vue', () => {
           props: {
             video: new VideoClip("BasketballLessonOne", 60, "https://d2vue776t14pjd.cloudfront.net/basketball/REG-SE-BSK-PCK-4-DLC/gameplay/P15_Shooting_Foul.m4v", [2, 7.9])
           },
-          data() {
-            return {
-              isModalVisible: false,
-              isResultsPageModalVisible: false,
-              currentVideoQuestions: [],
-              questionsArray: [],
-              questionIndex: 0,
-              questionsLoaded: false,
-              answers: []
-            };
-          },
-
-        mounted() {
-          const video2 = document.getElementById(this.video.id);
-          video2?.addEventListener('timeupdate', () => {   
-            this.stopVideoAtTimestamp(video2, this.video.timestamps)
-          })
-          video2?.addEventListener('ended', () => { 
-              this.isResultsPageModalVisible = true;
-          });
-          this.questionsArray = createQuestions()  //Retrieve all of the questions
-          this.currentVideoQuestions = retrieveVideosQuestions(this.video.id, this.questionsArray)  //set currentVideoQuestions to an array of this specific video's questions
-          this.questionsLoaded = true;
-          this.answers = retrieveAnswers()
-        }
-        })
+          mounted() {
+            const video2 = document.getElementById(this.video.id);
+            video2?.addEventListener('timeupdate', () => {   
+              this.stopVideoAtTimestamp(video2, this.video.timestamps)
+            })
+          }
+        } as any)
     })
       
   it('renders VideoEditor', () => {
