@@ -94,5 +94,6 @@ export default {
 
   .lesson-div p {
     padding: 15px 0 0 20px;
+    font-weight: bold;
   }
 </style>

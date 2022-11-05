@@ -28,7 +28,6 @@
 export default {
   name: 'NavBar',
   components: {
-    
   }
 }
 </script>
@@ -38,7 +37,7 @@ export default {
   margin: 0 auto;
 }
 
-.navbar {
+nav.navbar {
     width: 100%;
     height: 96px;
     border-bottom: 1px solid #d3d3d3;
@@ -46,7 +45,7 @@ export default {
     padding-left: 20%;
 }
 
-.nav-link {
+a.nav-link {
     font-weight: bold;
     color: #0e333c;
 }
