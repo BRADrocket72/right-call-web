@@ -47,7 +47,7 @@ import Activity from '@/models/Activity';
           id="modalDescription"
         >
           <slot name="body">
-            {{question.questionText}}
+            <p>{{question.questionText}}</p>
             <br>
             <br>
           </slot>
