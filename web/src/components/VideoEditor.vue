@@ -56,6 +56,9 @@ export default {
       var currentTime = video.currentTime;
       if (currentTime >= timestamps[this.questionCounter]) {
         video.pause();
+        if (document.fullscreenElement != null) {
+          document.exitFullscreen();
+        }
         this.questionCounter++
         this.showModal();
       }
