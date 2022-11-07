@@ -34,13 +34,4 @@ describe('Retrieve and Create functions', () => {
         expect(videosQuestionsList.length).toBe(2)
         expect(videosQuestionsList[0]).toMatchObject(questionObject)
     })
-
-    // test('checkAnswer returns a list of Answers with the correct .isCorrect value', () => {
-    //     const rightAnswer = retrieveAndCreateAllAnswers()
-    //     const wrongAnswer = retrieveAndCreateAllAnswers()
-    //     const rightResultsList = checkAnswer(questionObject,rightAnswer,questionObject.answerOptions[1])
-    //     const wrongResultsList = checkAnswer(questionObject,wrongAnswer,questionObject.answerOptions[0])
-    //     expect(rightResultsList[0].isCorrect).toBe(true)
-    //     expect(wrongResultsList[0].isCorrect).toBe(false)
-    // })
 })
