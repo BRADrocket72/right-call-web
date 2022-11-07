@@ -24,7 +24,7 @@ describe('LessonSelection.vue', () => {
         expect(firstLesson.find('img.lesson-img').exists()).toEqual(true)
     })
 
-    it('opens the proper video lesson when clicked', async () => {
+    it('opens a video lesson when clicked', async () => {
         const lesson = wrapper.find('a.nav-link')
         await lesson.trigger('click')
         expect(wrapper.findComponent(VideoEditor).exists()).toBe(true)
