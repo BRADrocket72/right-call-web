@@ -1,5 +1,5 @@
 <script>
-import {checkAnswer} from "@/models/RetrieveAndCreate.js"
+import {checkAnswer} from "@/models/GetResults.js"
 import Activity from '@/models/Activity';
 
   export default {
