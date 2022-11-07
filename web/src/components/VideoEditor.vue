@@ -11,9 +11,9 @@
 <script>
 import ActivityPopUp from '@/components/ActivityPopUp.vue';
 import ResultsPage from "@/components/ResultsPage.vue"
-import {createQuestions} from "@/models/RetrieveAndCreate.js"
-import {retrieveAnswers} from "@/models/RetrieveAndCreate.js"
-import {retrieveVideosQuestions} from "@/models/RetrieveAndCreate.js"
+import {retrieveAndCreateAllQuestions} from "@/models/RetrieveAndCreate.js"
+import {retrieveAndCreateAllAnswers} from "@/models/RetrieveAndCreate.js"
+import {retrieveVideosQuestionsById} from "@/models/RetrieveAndCreate.js"
 import VideoClip from '@/models/VideoClip';
 
 
@@ -46,10 +46,10 @@ export default {
     video2.addEventListener('ended', () => { 
         this.isResultsPageModalVisible = true;
     });
-    this.questionsArray = createQuestions()  //Retrieve all of the questions
-    this.currentVideoQuestions = retrieveVideosQuestions(this.video.id, this.questionsArray)  //set currentVideoQuestions to an array of this specific video's questions
+    this.questionsArray = retrieveAndCreateAllQuestions()  
+    this.currentVideoQuestions = retrieveVideosQuestionsById(this.video.id, this.questionsArray)  
     this.questionsLoaded = true;
-    this.answers = retrieveAnswers()
+    this.answers = retrieveAndCreateAllAnswers()
   },
   methods: {
     stopVideoAtTimestamp(video, timestamps) {
@@ -83,7 +83,6 @@ export default {
 
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 video {
   width: 75%;

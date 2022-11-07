@@ -5,7 +5,7 @@
         <h1>Lesson Selection Page</h1>
       </div>
       <div class="lesson-div">
-        <div class="lesson" v-for="video in VideoClips" :key="video.id">
+        <div class="lesson" v-for="video in videoClips" :key="video.id">
           <a class="nav-link" @click="openVideo(video)">
             <img class="lesson-img" :alt="video.id" src="../../images/richard-bagan-SmQ2Cku3alc-unsplash.jpg">
             <p>{{video.id}}</p>
@@ -21,7 +21,7 @@
 
 <script>
 import VideoEditor from "@/components/VideoEditor.vue"
-import { retrieveVideos } from "@/models/RetrieveAndCreate.js"
+import { retrieveAndCreateAllVideos } from "@/models/RetrieveAndCreate.js"
 
 export default {
   name: 'LessonSelection',
@@ -31,7 +31,7 @@ export default {
   data() {
     return {
       ready: false,
-      VideoClips: [], //declare VideoClips as an array
+      videoClips: [], 
       selectedVideo: null
     }
   },
@@ -44,7 +44,7 @@ export default {
     }
   },
   mounted() {
-    this.VideoClips = retrieveVideos()
+    this.videoClips = retrieveAndCreateAllVideos()
     this.ready = true
   }
 }

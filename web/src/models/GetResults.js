@@ -22,3 +22,13 @@ for (const result of resultsArray) {
 let percentage = ((correctCounter/numberOfQuestions)*100).toFixed(2) + "%"
 return percentage
 }
+
+
+export function checkAnswer(question, answersArray, answerChoice) {
+  for (const answer of answersArray) {
+    if (question.id == answer.activityId) {
+      answer.isCorrect = (answerChoice === answer.answerText);
+    }
+  }
+  return answersArray
+}

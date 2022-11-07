@@ -15,7 +15,7 @@ describe('LessonSelection.vue', () => {
     it('renders child divs equal to amount of lesson videos', () => {
         const parentDiv = wrapper.find('div.lesson-div')
         const childDivs = parentDiv.findAll('div.lesson')
-        expect(childDivs.length).toEqual(wrapper.vm.VideoClips.length)
+        expect(childDivs.length).toEqual(wrapper.vm.videoClips.length)
     })
 
     it('renders the image for the first lesson', () => {
