@@ -1,6 +1,9 @@
 import Answer from '@/models/Answer'
 import {getEachQuestionResults} from '@/models/GetResults.js'
 import {getPercentageResults} from '@/models/GetResults.js'
+import {retrieveAndCreateAllAnswers} from "@/models/RetrieveAndCreate.js"
+import {checkAnswer} from "@/models/GetResults"
+import Activity from '@/models/Activity'
 import 'jest'
 
 describe('Get Results functions', () => {
@@ -17,5 +20,15 @@ describe('Get Results functions', () => {
     test('getPercentageResults returns proper % of questions answered correct', () => {
         const results = ["Correct","Incorrect"]
         expect(getPercentageResults(results,2)).toEqual("50.00%")
+    })
+
+    test('checkAnswer returns a list of Answers with the correct .isCorrect value', () => {
+        const questionObject = new Activity("question_one", "What was the call ?", "Basketball Lesson One", ["Shooting Foul", "Traveling"])
+        const rightAnswer = retrieveAndCreateAllAnswers()
+        const wrongAnswer = retrieveAndCreateAllAnswers()
+        const rightResultsList = checkAnswer(questionObject,rightAnswer,questionObject.answerOptions[1])
+        const wrongResultsList = checkAnswer(questionObject,wrongAnswer,questionObject.answerOptions[0])
+        expect(rightResultsList[0].isCorrect).toBe(true)
+        expect(wrongResultsList[0].isCorrect).toBe(false)
     })
 })

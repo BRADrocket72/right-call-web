@@ -40,12 +40,14 @@ export default {
   },
   mounted() {
     const video2 = document.getElementById(this.video.id);
-    video2.addEventListener('timeupdate', () => {   
-      this.stopVideoAtTimestamp(video2, this.video.timestamps)
-    })
-    video2.addEventListener('ended', () => { 
-        this.isResultsPageModalVisible = true;
-    });
+    if(video2){
+      video2.addEventListener('timeupdate', () => {   
+        this.stopVideoAtTimestamp(video2, this.video.timestamps)
+      })
+      video2.addEventListener('ended', () => { 
+          this.isResultsPageModalVisible = true;
+      })
+    }
     this.questionsArray = retrieveAndCreateAllQuestions()  
     this.currentVideoQuestions = retrieveVideosQuestionsById(this.video.id, this.questionsArray)  
     this.questionsLoaded = true;
