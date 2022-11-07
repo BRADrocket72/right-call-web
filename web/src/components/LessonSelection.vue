@@ -8,20 +8,20 @@
         <div class="lesson" v-for="video in VideoClips" :key="video.id">
           <a class="nav-link" @click="openVideo(video)">
             <img class="lesson-img" :alt="video.id" src="../../images/richard-bagan-SmQ2Cku3alc-unsplash.jpg">
-            <p>{{video.id}}</p> 
+            <p>{{video.id}}</p>
           </a>
         </div>
       </div>
     </div>
     <div v-else>
-      <VideoEditor :video="selectedVideo" @close="closeVideo"/>
+      <VideoEditor :video="selectedVideo" @close="closeVideo" />
     </div>
   </div>
 </template>
 
 <script>
 import VideoEditor from "@/components/VideoEditor.vue"
-import {retrieveVideos} from "@/models/RetrieveAndCreate.js"
+import { retrieveVideos } from "@/models/RetrieveAndCreate.js"
 
 export default {
   name: 'LessonSelection',
@@ -29,7 +29,7 @@ export default {
     VideoEditor
   },
   data() {
-    return{
+    return {
       ready: false,
       VideoClips: [], //declare VideoClips as an array
       selectedVideo: null
@@ -39,7 +39,7 @@ export default {
     openVideo(video) {
       this.selectedVideo = video;
     },
-    closeVideo(){
+    closeVideo() {
       this.selectedVideo = null
     }
   },
@@ -51,49 +51,49 @@ export default {
 </script>
 
 <style scoped>
-  .lesson-container {
-    
-    justify-content: center;
-    width: 100%;
-    margin: auto;
-  }
+.lesson-container {
 
-  .div-header {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    text-align: center;
-    margin: 0 auto 20px auto;
-  }
+  justify-content: center;
+  width: 100%;
+  margin: auto;
+}
 
-  .lesson-div {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 100%;
-    margin: 0 auto;
-  }
+.div-header {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-align: center;
+  margin: 0 auto 20px auto;
+}
 
-  .lesson {
-    margin: 0 2% 0 2%;
-    text-align: left;
-    height: 480px;
-    width: 285px;
-    box-shadow:0 10px 10px #d1d1d1;
-  }
+.lesson-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto;
+}
 
-  .lesson-img {
-    margin: none;
-    width: 285px;
-    height: 170px;
-  }
+.lesson {
+  margin: 0 2% 0 2%;
+  text-align: left;
+  height: 300px;
+  width: 285px;
+  box-shadow: 0 10px 10px #d1d1d1;
+}
 
-  .lesson-div a {
-    cursor: pointer;
-  }
+.lesson-img {
+  margin: none;
+  width: 285px;
+  height: 170px;
+}
 
-  .lesson-div p {
-    padding: 15px 0 0 20px;
-    font-weight: bold;
-  }
+.lesson-div a {
+  cursor: pointer;
+}
+
+.lesson-div p {
+  padding: 15px 0 0 20px;
+  font-weight: bold;
+}
 </style>
