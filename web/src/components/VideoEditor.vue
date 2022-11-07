@@ -11,9 +11,9 @@
 <script>
 import ActivityPopUp from '@/components/ActivityPopUp.vue';
 import ResultsPage from "@/components/ResultsPage.vue"
-import {createQuestions} from "@/models/RetrieveAndCreate.js"
-import {retrieveAnswers} from "@/models/RetrieveAndCreate.js"
-import {retrieveVideosQuestions} from "@/models/RetrieveAndCreate.js"
+import {retrieveAndCreateAllQuestions} from "@/models/RetrieveAndCreate.js"
+import {retrieveAndCreateAllAnswers} from "@/models/RetrieveAndCreate.js"
+import {retrieveVideosQuestionsById} from "@/models/RetrieveAndCreate.js"
 import VideoClip from '@/models/VideoClip';
 
 
@@ -40,24 +40,25 @@ export default {
   },
   mounted() {
     const video2 = document.getElementById(this.video.id);
-    if(video2) {
-      video2.addEventListener('timeupdate', () => {   
-        this.stopVideoAtTimestamp(video2, this.video.timestamps)
-      })
-      video2.addEventListener('ended', () => { 
-          this.isResultsPageModalVisible = true;
-      })
-    }
-    this.questionsArray = createQuestions()  //Retrieve all of the questions
-    this.currentVideoQuestions = retrieveVideosQuestions(this.video.id, this.questionsArray)  //set currentVideoQuestions to an array of this specific video's questions
+    video2.addEventListener('timeupdate', () => {   
+      this.stopVideoAtTimestamp(video2, this.video.timestamps)
+    })
+    video2.addEventListener('ended', () => { 
+        this.isResultsPageModalVisible = true;
+    });
+    this.questionsArray = retrieveAndCreateAllQuestions()  
+    this.currentVideoQuestions = retrieveVideosQuestionsById(this.video.id, this.questionsArray)  
     this.questionsLoaded = true;
-    this.answers = retrieveAnswers()
+    this.answers = retrieveAndCreateAllAnswers()
   },
   methods: {
     stopVideoAtTimestamp(video, timestamps) {
       var currentTime = video.currentTime;
       if (currentTime >= timestamps[this.questionCounter]) {
         video.pause();
+        if (document.fullscreenElement != null) {
+          document.exitFullscreen();
+        }
         this.questionCounter++
         this.showModal();
       }
@@ -82,7 +83,6 @@ export default {
 
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 video {
   width: 75%;

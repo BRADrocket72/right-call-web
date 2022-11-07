@@ -9,6 +9,5 @@ export default class Activity {
         this.questionText = questionText;
         this.videoId = videoId
         this.answerOptions = answerOptions
-   //     this.attribute = attribute;
     }
 }
