@@ -29,7 +29,6 @@ describe('Retrieve and Create functions', () => {
     })
 
     test('retrieveVideosQuestions returns a list of Activity object for the proper video id', () => {
-        const vid = 'Basketball Lesson One'
         expect(videosQuestionsList.length).toBe(2)
         expect(videosQuestionsList[0]).toMatchObject(questionObject)
     })

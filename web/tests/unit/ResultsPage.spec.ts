@@ -1,13 +1,14 @@
 import { mount } from '@vue/test-utils'
 import 'jest'
 import ResultsPage from '@/components/ResultsPage.vue';
+import Answer from "@/models/Answer.js";
 
 describe('ResultsPage.vue', () => {
     let wrapper: any;
     beforeEach(() => {
         wrapper = mount(ResultsPage, {
             props: {
-                answersArray: [Object]
+                answersArray: [new Answer("question_one", true, "No Foul Call"), new Answer("question_two", false, "Shooting Foul")]
               }
         })
     })
@@ -22,6 +23,12 @@ describe('ResultsPage.vue', () => {
 
     it('displays the close button', () => {
         expect(wrapper.findAll('.btn-green').length).toBe(1)
+    })
+
+    it('variables are set on time', () => {
+        expect(wrapper.vm.usersAnswers.length).toBe(2)
+        expect(wrapper.vm.eachQuestionResults).toEqual(["Correct", "Incorrect"])
+        expect(wrapper.vm.percentageCorrect).toEqual("50.00%")
     })
 
     it('calls the close modal function on button click', async () => {

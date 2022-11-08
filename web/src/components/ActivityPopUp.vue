@@ -1,30 +1,3 @@
-<script>
-import {checkAnswer} from "@/models/GetResults.js"
-import Activity from '@/models/Activity';
-
-  export default {
-    name: 'ActivityPopUp',
-    data() {
-      return {
-        updatedAnswers: []
-      }
-    },
-    props:{
-      question: Activity,
-      questionNumber: Number,
-      allPossibleAnswers: [Object]
-    },
-    methods: {
-      close() {
-        this.$emit('close', this.updatedAnswers);
-      },
-      handleAnswerSelected(question, answersArray, answerChoice) {
-        this.updatedAnswers = checkAnswer(question, answersArray, answerChoice)
-      }
-    }
-  };
-</script>
-
 <template>
   <transition name="modal-fade">
     <div class="modal-backdrop">
@@ -59,6 +32,33 @@ import Activity from '@/models/Activity';
     </div>
   </transition>
 </template>
+
+<script>
+import {checkAnswer} from "@/models/GetResults.js"
+import Activity from '@/models/Activity';
+
+  export default {
+    name: 'ActivityPopUp',
+    data() {
+      return {
+        updatedAnswers: []
+      }
+    },
+    props:{
+      question: Activity,
+      questionNumber: Number,
+      allPossibleAnswers: [Object]
+    },
+    methods: {
+      close() {
+        this.$emit('close', this.updatedAnswers);
+      },
+      handleAnswerSelected(question, answersArray, answerChoice) {
+        this.updatedAnswers = checkAnswer(question, answersArray, answerChoice)
+      }
+    }
+  };
+</script>
 
 <style>
   .modal-backdrop {

@@ -20,6 +20,10 @@ describe('Get Results functions', () => {
     test('getPercentageResults returns proper % of questions answered correct', () => {
         const results = ["Correct","Incorrect"]
         expect(getPercentageResults(results,2)).toEqual("50.00%")
+        const results2 = ["Incorrect", "Incorrect"]
+        expect(getPercentageResults(results2,2)).toEqual("0.00%")
+        const results3 = ["Correct", "Correct"]
+        expect(getPercentageResults(results3,2)).toEqual("100.00%")
     })
 
     test('checkAnswer returns a list of Answers with the correct .isCorrect value', () => {

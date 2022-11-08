@@ -13,14 +13,14 @@ export function getEachQuestionResults(numberOfQuestions, usersAnswers) {
 
 
 export function getPercentageResults(resultsArray, numberOfQuestions) {
-let correctCounter = 0;
-for (const result of resultsArray) {
-  if (result == "Correct") {
-    correctCounter++
+  let correctCounter = 0;
+  for (const result of resultsArray) {
+    if (result == "Correct") {
+      correctCounter++
+    }
   }
-}
-let percentage = ((correctCounter/numberOfQuestions)*100).toFixed(2) + "%"
-return percentage
+  let percentage = ((correctCounter/numberOfQuestions)*100).toFixed(2) + "%"
+  return percentage
 }
 
 
