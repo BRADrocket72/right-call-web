@@ -18,7 +18,7 @@ import ResultsPage from "@/components/ResultsPage.vue"
 import {retrieveAndCreateAllQuestions} from "@/models/RetrieveAndCreate.js"
 import {retrieveAndCreateAllAnswers} from "@/models/RetrieveAndCreate.js"
 import {retrieveVideosQuestionsById} from "@/models/RetrieveAndCreate.js"
-import {correctlyFormatTime} from "@/models/FormatVideosTime.js"
+import {formatTimeForVideo} from "@/models/FormatVideosTime.js"
 
 import VideoClip from '@/models/VideoClip';
 
@@ -50,8 +50,8 @@ export default {
       video2.addEventListener('timeupdate', () => {   
       const videoCurrentTime = document.getElementById("videoCurrentTime")
       const videoDuration = document.getElementById("videoDuration")
-      videoCurrentTime.innerHTML = correctlyFormatTime(video2.currentTime);
-      videoDuration.innerHTML = correctlyFormatTime(video2.duration)
+      videoCurrentTime.innerHTML = formatTimeForVideo(video2.currentTime);
+      videoDuration.innerHTML = formatTimeForVideo(video2.duration)
       this.stopVideoAtTimestamp(video2, this.video.timestamps)
       })
       video2.addEventListener('ended', () => { 
