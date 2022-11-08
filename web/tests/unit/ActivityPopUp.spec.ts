@@ -1,4 +1,4 @@
-import { mount, shallowMount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import Activity from '@/models/Activity'
 import 'jest'
 import ActivityPopUp from '@/components/ActivityPopUp.vue';

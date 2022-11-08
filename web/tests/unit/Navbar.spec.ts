@@ -1,4 +1,4 @@
-import { mount, shallowMount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import NavBar from '@/components/Navbar.vue'
 import 'jest'
 

@@ -4,8 +4,10 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       <video :id="video.id" :src="video.videoUrl"/>
-      <button id="playOrPause" @click="playOrPauseVideo">Play</button> <br>
-      <span id="videoCurrentTime">00:00</span> / <span id="videoDuration">00:00</span> 
+      <div id="videoControls">
+        <button id="playOrPause" @click="playOrPauseVideo">Play</button> 
+        <span id="videoCurrentTime">00:00</span> / <span id="videoDuration">00:00</span> 
+      </div>
       <results-page v-if="isResultsPageModalVisible" :answersArray="answers" @close="closeResultsPageModal"></results-page>
       <activity-pop-up v-if="questionsLoaded && isModalVisible" :allPossibleAnswers="answers" :question="currentVideoQuestions[questionIndex]" :questionNumber="questionIndex + 1" @close="closeModal" />  </div>
 </template>
@@ -16,7 +18,7 @@ import ResultsPage from "@/components/ResultsPage.vue"
 import {retrieveAndCreateAllQuestions} from "@/models/RetrieveAndCreate.js"
 import {retrieveAndCreateAllAnswers} from "@/models/RetrieveAndCreate.js"
 import {retrieveVideosQuestionsById} from "@/models/RetrieveAndCreate.js"
-import {formatTime} from "@/models/FormatVideosTime.js"
+import {formatTimeForVideo} from "@/models/FormatVideosTime.js"
 
 import VideoClip from '@/models/VideoClip';
 
@@ -48,8 +50,8 @@ export default {
       video2.addEventListener('timeupdate', () => {   
       const videoCurrentTime = document.getElementById("videoCurrentTime")
       const videoDuration = document.getElementById("videoDuration")
-      videoCurrentTime.innerHTML = formatTime(video2.currentTime);
-      videoDuration.innerHTML = formatTime(video2.duration)
+      videoCurrentTime.innerHTML = formatTimeForVideo(video2.currentTime);
+      videoDuration.innerHTML = formatTimeForVideo(video2.duration)
       this.stopVideoAtTimestamp(video2, this.video.timestamps)
       })
       video2.addEventListener('ended', () => { 
@@ -120,5 +122,10 @@ video {
   height: 75%;
   display: block;
   margin: 0 auto;
+}
+#videoControls {
+  width: 75%;
+  margin: 0 auto;
+  background-color: #4AAE9B;
 }
 </style>
