@@ -43,18 +43,20 @@ export default {
     video: VideoClip
   },
   mounted() {
-    const video2 = document.getElementById(this.video.id);
-    video2.addEventListener('timeupdate', () => {   
+    const video2 = document.getElementById(this.video.id)
+    if(video2) {
+      video2.addEventListener('timeupdate', () => {   
       const videoCurrentTime = document.getElementById("videoCurrentTime")
       const videoDuration = document.getElementById("videoDuration")
       videoCurrentTime.innerHTML = formatTime(video2.currentTime);
       videoDuration.innerHTML = formatTime(video2.duration)
       this.stopVideoAtTimestamp(video2, this.video.timestamps)
-    })
-    video2.addEventListener('ended', () => { 
-      this.showModal();
-      this.questionCounter++
-    });
+      })
+      video2.addEventListener('ended', () => { 
+        this.showModal();
+        this.questionCounter++
+      })
+    }
     this.questionsArray = retrieveAndCreateAllQuestions()  
     this.currentVideoQuestions = retrieveVideosQuestionsById(this.video.id, this.questionsArray)  
     this.questionsLoaded = true;

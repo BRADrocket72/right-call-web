@@ -23,7 +23,7 @@ describe('Get Results functions', () => {
     })
 
     test('checkAnswer returns a list of Answers with the correct .isCorrect value', () => {
-        const questionObject = new Activity("question_one", "What was the call ?", "Basketball Lesson One", ["Shooting Foul", "Traveling"])
+        const questionObject = new Activity("question_one", "What was the call ?", "Basketball Lesson One", ["Shooting Foul", "No Foul Call"])
         const rightAnswer = retrieveAndCreateAllAnswers()
         const wrongAnswer = retrieveAndCreateAllAnswers()
         const rightResultsList = checkAnswer(questionObject,rightAnswer,questionObject.answerOptions[1])
