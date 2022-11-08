@@ -1,4 +1,4 @@
-import { mount, shallowMount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import 'jest'
 import ResultsPage from '@/components/ResultsPage.vue';
 

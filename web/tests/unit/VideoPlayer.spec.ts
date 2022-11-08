@@ -1,4 +1,4 @@
-import { mount, shallowMount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import VideoEditor from '@/components/VideoEditor.vue'
 import VideoClip from '@/models/VideoClip.js'
 import 'jest'
@@ -8,7 +8,7 @@ describe('VideoEditor.vue', () => {
     beforeEach(() => {
         wrapper = mount(VideoEditor, {
           props: {
-            video: new VideoClip("BasketballLessonOne", 60, "https://d2vue776t14pjd.cloudfront.net/basketball/REG-SE-BSK-PCK-4-DLC/gameplay/P15_Shooting_Foul.m4v", [2, 7.9])
+            video: new VideoClip("BasketballLessonOne", "https://d2vue776t14pjd.cloudfront.net/basketball/REG-SE-BSK-PCK-4-DLC/gameplay/P15_Shooting_Foul.m4v", [2, 7.9])
           },
           mounted() {
             const video2 = document.getElementById(this.video.id);
@@ -28,7 +28,7 @@ describe('VideoEditor.vue', () => {
   })
 
   it('renders the test video object', () => {
-    expect(wrapper.vm.video).toMatchObject({id: "BasketballLessonOne", videoLength: 60, videoUrl: "https://d2vue776t14pjd.cloudfront.net/basketball/REG-SE-BSK-PCK-4-DLC/gameplay/P15_Shooting_Foul.m4v", timestamps: [2, 7.9]})
+    expect(wrapper.vm.video).toMatchObject({id: "BasketballLessonOne", videoUrl: "https://d2vue776t14pjd.cloudfront.net/basketball/REG-SE-BSK-PCK-4-DLC/gameplay/P15_Shooting_Foul.m4v", timestamps: [2, 7.9]})
   })
 
   it('renders the test video', () => {

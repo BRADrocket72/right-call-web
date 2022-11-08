@@ -1,4 +1,4 @@
-export function formatTime(seconds) {
+export function correctlyFormatTime(seconds) {
     var minutes = Math.floor(seconds / 60);
     seconds = Math.floor(seconds % 60);
     if (minutes < 10) {
