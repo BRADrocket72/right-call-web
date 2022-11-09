@@ -1,3 +1,28 @@
+<template>
+  <transition name="modal-fade">
+    <div class="modal-backdrop">
+      <div class="modal" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription">
+        <header class="modal-header" id="modalTitle">
+          <slot name="header">
+            Lesson Results
+          </slot>
+        </header>
+
+        <section class="modal-body" id="modalDescription">
+          <slot name="body">
+            <p>{{this.percentageCorrect}} Correct</p>
+            <br>
+            <p v-for="n in this.eachQuestionResults.length" :key="n">Question {{n}}: {{this.eachQuestionResults[n-1]}}
+            </p>
+
+            <button type="button" class="btn-green" @click="close()"> Back to Lesson Selection Page </button>
+          </slot>
+        </section>
+      </div>
+    </div>
+  </transition>
+</template>
+
 <script>
 import { getEachQuestionResults } from "@/models/GetResults.js"
 import { getPercentageResults } from "@/models/GetResults.js"
@@ -35,31 +60,6 @@ export default {
   }
 };
 </script>
-
-<template>
-  <transition name="modal-fade">
-    <div class="modal-backdrop">
-      <div class="modal" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription">
-        <header class="modal-header" id="modalTitle">
-          <slot name="header">
-            Lesson Results
-          </slot>
-        </header>
-
-        <section class="modal-body" id="modalDescription">
-          <slot name="body">
-            <p>{{this.percentageCorrect}} Correct</p>
-            <br>
-            <p v-for="n in this.eachQuestionResults.length" :key="n">Question {{n}}: {{this.eachQuestionResults[n-1]}}
-            </p>
-
-            <button type="button" class="btn-green" @click="close()"> Back to Lesson Selection Page </button>
-          </slot>
-        </section>
-      </div>
-    </div>
-  </transition>
-</template>
 
 <style>
 .modal-backdrop {

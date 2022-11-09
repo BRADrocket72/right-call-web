@@ -9,14 +9,8 @@ describe('VideoEditor.vue', () => {
         wrapper = mount(VideoEditor, {
           props: {
             video: new VideoClip("BasketballLessonOne", "https://d2vue776t14pjd.cloudfront.net/basketball/REG-SE-BSK-PCK-4-DLC/gameplay/P15_Shooting_Foul.m4v", [2, 7.9])
-          },
-          mounted() {
-            const video2 = document.getElementById(this.video.id);
-            video2?.addEventListener('timeupdate', () => {   
-              this.stopVideoAtTimestamp(video2, this.video.timestamps)
-            })
           }
-        } as any)
+        })
     })
       
   it('renders VideoEditor', () => {
@@ -36,10 +30,10 @@ describe('VideoEditor.vue', () => {
     expect(displayedVideo.exists()).toBe(true);
   })
 
-  /*it('stops video at timestamp', async () => {
-    const video = <HTMLMediaElement>wrapper.find('#BasketballLessonOne')
-    video.autoplay = true
-    await new Promise((r) => setTimeout(r, 2500));
-    expect(wrapper.vm.stopVideoAtTimestamp).toHaveBeenCalled()
-  })*/
+  it('variables are set on time', () => {
+    expect(wrapper.vm.questionsArray.length).toBe(8)
+    expect(wrapper.vm.answers.length).toBe(8)
+    expect(wrapper.vm.questionsLoaded).toEqual(true)
+  })
+  
 })
