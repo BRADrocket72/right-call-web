@@ -16,7 +16,7 @@
                 </ul>
             </div>
             <div class="d-inline">
-                <button class="button" type="submit">Log In</button>
+                <router-link class="button" type="submit" to="/LoginPage">Login</router-link>
             </div>
         </nav>
     </header>
