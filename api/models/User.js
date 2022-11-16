@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         type: String,
     },
-    // a user is either an trainee or instructor
+    // a user is either an trainee, instructor, or admin
     userType: {
         required: true,
         type: String
