@@ -3,19 +3,14 @@
     <div class="modal-backdrop">
       <div class="modal" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription">
         <header class="modal-header" id="modalTitle">
-          <slot name="header">
-            Lesson Results
-          </slot>
+          <slot name="header">Assign New Timestamp</slot>
         </header>
-
         <section class="modal-body" id="modalDescription">
           <slot name="body">
-            <p>{{this.percentageCorrect}} Correct</p>
-            <br>
-            <p v-for="n in this.eachQuestionResults.length" :key="n">Question {{n}}: {{this.eachQuestionResults[n-1]}}
-            </p>
-
-            <button type="button" class="btn-green" @click="close()"> Back to Lesson Selection Page </button>
+            <p>Current timestamp: {{formattedTimestamp}}</p>
+            <p v-if="timestampSaved">Timestamp saved successfully.</p>
+            <button type="button" class="btn-green" @click="save()">Save</button>
+            <button type="button" class="btn-green" @click="close()">Close</button>
           </slot>
         </section>
       </div>
@@ -24,14 +19,33 @@
 </template>
 
 <script>
-
+import {formatTimeForVideo} from '@/models/FormatVideosTime.js'
 export default {
-  name: 'ResultsPage',
-  data() {
-    return {
-      
+    name: 'AssignTimestampsModal',
+    data() {
+        return {
+            timestampSaved: false,
+            formattedTimestamp: Number
+        }
+    },
+    props: {
+        currentTimestamp: Number
+    },
+    methods: {
+        close() {
+            this.$emit('close', this.timestampSaved)
+        },
+        save() {
+            this.timestampSaved = true
+        },
+        convertToReadableTime() {
+            this.formattedTimestamp = formatTimeForVideo(this.currentTimestamp)
+        }
+    },
+    mounted() {
+        this.convertToReadableTime()
     }
-  },
+    
 }
 </script>
 
