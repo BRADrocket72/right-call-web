@@ -4,10 +4,10 @@ const VideoClip = require('../models/VideoClip');
 const router = express.Router()
 
 //Post Method
-router.post('/post', async (req, res) => {
+router.post('/videoClip/post', async (req, res) => {
     const data = new VideoClip({
         videoURL: req.body.videoURL,
-        timeStamps: [1, 2, 3]
+        timeStamps: req.body.timeStamps
     })
     console.log(req.body)
 
@@ -23,7 +23,7 @@ router.post('/post', async (req, res) => {
 })
 
 //Get all Method
-router.get('/getAll', async (req, res) => {
+router.get('/videoClip/getAll', async (req, res) => {
     try {
         const data = await VideoClip.find();
         res.json(data)
@@ -34,7 +34,7 @@ router.get('/getAll', async (req, res) => {
 })
 
 //Get by ID Method
-router.get('/getOne/:id', async (req, res) => {
+router.get('/videoClip/getOne/:id', async (req, res) => {
     try {
         const data = await VideoClip.findById(req.params.id);
         res.json(data)
@@ -45,7 +45,7 @@ router.get('/getOne/:id', async (req, res) => {
 })
 
 //Update by ID Method
-router.patch('/update/:id', async (req, res) => {
+router.patch('/videoClip/update/:id', async (req, res) => {
     try {
         const id = req.params.id;
         const updatedData = req.body;
@@ -63,7 +63,7 @@ router.patch('/update/:id', async (req, res) => {
 })
 
 //Delete by ID Method
-router.delete('/delete/:id', async (req, res) => {
+router.delete('/videoClip/delete/:id', async (req, res) => {
     try {
         const id = req.params.id;
         const data = await VideoClip.findByIdAndDelete(id)
