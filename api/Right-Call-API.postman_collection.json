@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e6029ec1-393d-49ce-bdc7-12bd56b73a65",
+		"_postman_id": "4fc09d40-03cd-4a8e-8e6d-f0a9832b0ad6",
 		"name": "Right-Call-API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -23,13 +23,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/api/videoClip/post",
+							"raw": "localhost:3000/api/videoclip/post",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"api",
+								"videoclip",
 								"post"
 							]
 						}
@@ -42,13 +43,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/videoClip/getAll",
+							"raw": "localhost:3000/api/videoclip/getAll",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"api",
+								"videoclip",
 								"getAll"
 							]
 						}
@@ -61,13 +63,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/videoClip/getOne/6372b3cc4d8dfa7ff6590623",
+							"raw": "localhost:3000/api/videoclip/getOne/6372b3cc4d8dfa7ff6590623",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"api",
+								"videoclip",
 								"getOne",
 								"6372b3cc4d8dfa7ff6590623"
 							]
@@ -90,13 +93,15 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/api/videoClip/update/6372b3cc4d8dfa7ff6590623",
+							"raw": "localhost:3000/api//videoclip/update/6372b3cc4d8dfa7ff6590623",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"api",
+								"",
+								"videoclip",
 								"update",
 								"6372b3cc4d8dfa7ff6590623"
 							]
@@ -110,14 +115,15 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/videoClip/delete/6372b3cc4d8dfa7ff6590623",
+							"raw": "localhost:3000/api//videoclipdelete/6372b3cc4d8dfa7ff6590623",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"api",
-								"delete",
+								"",
+								"videoclipdelete",
 								"6372b3cc4d8dfa7ff6590623"
 							]
 						}
@@ -151,6 +157,7 @@
 							"port": "3000",
 							"path": [
 								"api",
+								"users",
 								"post"
 							]
 						}
@@ -163,13 +170,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/users/getAll",
+							"raw": "localhost:3000/api/Users/getAll",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"api",
+								"Users",
 								"getAll"
 							]
 						}

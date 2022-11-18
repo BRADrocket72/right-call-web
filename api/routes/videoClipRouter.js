@@ -9,9 +9,6 @@ router.post('/videoClip/post', async (req, res) => {
         videoURL: req.body.videoURL,
         timeStamps: req.body.timeStamps
     })
-    console.log(req.body)
-
-    console.log(data);
 
     try {
         const dataToSave = await data.save();

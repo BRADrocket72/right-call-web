@@ -4,7 +4,7 @@ import AdminPage from "@/components/AdminPage.vue"
 import AddQuestions from "@/components/AddQuestions.vue"
 import VideoUpload from "@/components/VideoUpload.vue"
 import AssignTimestamps from "@/components/AssignTimestamps.vue"
-import {createRouter, createWebHistory} from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
 
 const routesArray = [

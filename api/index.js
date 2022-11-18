@@ -24,6 +24,11 @@ app.use(express.json());
 app.use('/api', videoClipRoutes)
 app.use('/api', userRoutes)
 
+const cors = require('cors');
+app.use(cors({
+    origin: ['*']
+}));
+
 app.listen(3000, () => {
     console.log(`Server Started at ${3000}`)
 })

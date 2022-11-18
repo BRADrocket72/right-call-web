@@ -4,11 +4,11 @@
       <div class="div-header">
         <h1>Lesson Selection Page</h1>
       </div>
-      <div class="lesson-div">
-        <div class="lesson" v-for="video in videoClips" :key="video.id">
+      <div class="lesson-div" v-if="this.videoClips.length > 0">
+        <div class="lesson" v-for="video in this.videoClips" :key="video._id">
           <a class="nav-link" @click="openVideo(video)">
-            <img class="lesson-img" :alt="video.id" src="../../images/richard-bagan-SmQ2Cku3alc-unsplash.jpg">
-            <p>{{video.id}}</p>
+            <img class="lesson-img" :alt="video._id" src="../../images/richard-bagan-SmQ2Cku3alc-unsplash.jpg" /> -->
+            <p>{{ video._id }}</p>
           </a>
         </div>
       </div>
@@ -20,39 +20,43 @@
 </template>
 
 <script>
-import VideoEditor from "@/components/VideoEditor.vue"
-import { retrieveAndCreateAllVideos } from "@/models/RetrieveAndCreate.js"
+import VideoEditor from "@/components/VideoEditor.vue";
+import { useVideoClipStore } from "@/stores/VideoClipStore";
 
 export default {
-  name: 'LessonSelection',
+  name: "LessonSelection",
   components: {
-    VideoEditor
+    VideoEditor,
   },
   data() {
     return {
       ready: false,
-      videoClips: [], 
-      selectedVideo: null
-    }
+      videoClips: [],
+      selectedVideo: null,
+    };
   },
   methods: {
     openVideo(video) {
       this.selectedVideo = video;
     },
     closeVideo() {
-      this.selectedVideo = null
-    }
+      this.selectedVideo = null;
+    },
   },
-  mounted() {
-    this.videoClips = retrieveAndCreateAllVideos()
-    this.ready = true
-  }
-}
+  setup() {
+    var VideoClip = useVideoClipStore();
+    return VideoClip;
+  },
+  async mounted() {
+    await this.fetchVideoClips();
+    this.VideoClips = this.clips;
+    this.ready = true;
+  },
+};
 </script>
 
 <style scoped>
 .lesson-container {
-
   justify-content: center;
   width: 100%;
   margin: auto;
