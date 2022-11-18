@@ -23,7 +23,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/api/post",
+							"raw": "localhost:3000/api/videoClip/post",
 							"host": [
 								"localhost"
 							],
@@ -42,7 +42,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/getAll",
+							"raw": "localhost:3000/api/videoClip/getAll",
 							"host": [
 								"localhost"
 							],
@@ -61,7 +61,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/getOne/6372b3cc4d8dfa7ff6590623",
+							"raw": "localhost:3000/api/videoClip/getOne/6372b3cc4d8dfa7ff6590623",
 							"host": [
 								"localhost"
 							],
@@ -90,7 +90,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/api/update/6372b3cc4d8dfa7ff6590623",
+							"raw": "localhost:3000/api/videoClip/update/6372b3cc4d8dfa7ff6590623",
 							"host": [
 								"localhost"
 							],
@@ -110,7 +110,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/delete/6372b3cc4d8dfa7ff6590623",
+							"raw": "localhost:3000/api/videoClip/delete/6372b3cc4d8dfa7ff6590623",
 							"host": [
 								"localhost"
 							],
@@ -119,6 +119,58 @@
 								"api",
 								"delete",
 								"6372b3cc4d8dfa7ff6590623"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\":\"JohnDoe123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/users/post",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/users/getAll",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"getAll"
 							]
 						}
 					},
