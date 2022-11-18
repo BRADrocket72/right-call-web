@@ -13,7 +13,7 @@ export const useVideoClipStore = defineStore("VideoClip", {
     actions: {
         async fetchVideoClips() {
             try {
-                const data = await axios.get('http://localhost:3000/api/getall')
+                const data = await axios.get('http://localhost:3000/api/videoclip/getall')
                 this.videoClips = data.data
                 return data.data
             } catch (error) {
