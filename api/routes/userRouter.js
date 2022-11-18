@@ -10,9 +10,6 @@ router.post('/users/post', async (req, res) => {
         password: req.body.password,
         userType: req.body.userType
     })
-    console.log(req.body)
-
-    console.log(data);
 
     try {
         const dataToSave = await data.save();
