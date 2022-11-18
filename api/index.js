@@ -3,7 +3,8 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const mongoString = process.env.DATABASE_URL;
-const routes = require('./routes/routes');
+const videoClipRoutes = require('./routes/videoClipRouter');
+const userRoutes = require('./routes/userRouter')
 
 mongoose.connect(mongoString);
 const database = mongoose.connection;
@@ -20,7 +21,8 @@ const app = express();
 app.use(express.json());
 
 
-app.use('/api', routes)
+app.use('/api', videoClipRoutes)
+app.use('/api', userRoutes)
 
 const cors = require('cors');
 app.use(cors({
