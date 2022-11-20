@@ -7,7 +7,11 @@ const videoSchema = new mongoose.Schema({
     },
     timeStamps: {
         required: true,
-        type: Array,
+        type: Array
+    },
+    lessonName: {
+        required: true,
+        type: String
     }
 })
 

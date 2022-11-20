@@ -8,7 +8,7 @@ import Answer from '@/models/Answer.js'
 
 describe('Retrieve and Create functions', () => {
     const activityArr = retrieveAndCreateAllQuestions()
-    const questionObject = new Activity("question_one", "What was the call ?", "Basketball Lesson One", ["Personal Foul", "No Foul Call"])
+    const questionObject = new Activity("question_one", "What was the call ?", "637a61d49db11c5b4dd1b3b8", ["Personal Foul", "No Foul Call"])
     const videosQuestionsList = retrieveVideosQuestionsById(questionObject.videoId,activityArr)
     const answersList = retrieveAndCreateAllAnswers()
 

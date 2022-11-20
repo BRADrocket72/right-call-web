@@ -7,7 +7,8 @@ const router = express.Router()
 router.post('/videoClip/post', async (req, res) => {
     const data = new VideoClip({
         videoURL: req.body.videoURL,
-        timeStamps: req.body.timeStamps
+        timeStamps: req.body.timeStamps,
+        lessonName: req.body.lessonName
     })
 
     try {
