@@ -7,12 +7,14 @@ const router = express.Router()
 router.post('/videoClip/post', async (req, res) => {
     const data = new VideoClip({
         videoURL: req.body.videoURL,
-        timeStamps: req.body.timeStamps,
-        lessonName: req.body.lessonName
+        timeStamps: req.body.timeStamps
     })
 
     try {
         const dataToSave = await data.save();
+        res.header('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
+        res.header('Access-Control-Allow-Headers', 'Accept, Content-type');
+        res.header('Access-Control-Allow-Origin', '*');
         res.status(200).json(dataToSave)
     }
     catch (error) {
@@ -24,6 +26,9 @@ router.post('/videoClip/post', async (req, res) => {
 router.get('/videoClip/getAll', async (req, res) => {
     try {
         const data = await VideoClip.find();
+        res.header('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
+        res.header('Access-Control-Allow-Headers', 'Accept, Content-type');
+        res.header('Access-Control-Allow-Origin', '*');
         res.json(data)
     }
     catch (error) {
