@@ -1,6 +1,6 @@
 <template>
   <div class="video-player">
-    <h1>{{video.lessonName}}</h1>
+    <h1>{{video._id}}</h1>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <video :id="video._id" :src="video.videoURL"></video>

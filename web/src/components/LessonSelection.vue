@@ -8,7 +8,7 @@
         <div class="lesson" v-for="video in this.videoClips" :key="video._id">
           <a class="nav-link" @click="openVideo(video)">
             <img class="lesson-img" :alt="video._id" src="../../images/richard-bagan-SmQ2Cku3alc-unsplash.jpg" /> -->
-            <p>{{ video.lessonName }}</p>
+            <p>{{ video._id }}</p>
           </a>
         </div>
       </div>
