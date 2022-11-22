@@ -9,7 +9,7 @@ router.post('/videoClip/post', async (req, res) => {
         videoURL: req.body.videoURL,
         timeStamps: req.body.timeStamps
     })
-
+    res.header('Access-Control-Allow-Origin', '*')
     try {
         const dataToSave = await data.save();
         res.status(200).json(dataToSave)
@@ -21,6 +21,7 @@ router.post('/videoClip/post', async (req, res) => {
 
 //Get all Method
 router.get('/videoClip/getAll', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*')
     try {
         const data = await VideoClip.find();
         res.json(data)
@@ -32,6 +33,7 @@ router.get('/videoClip/getAll', async (req, res) => {
 
 //Get by ID Method
 router.get('/videoClip/getOne/:id', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*')
     try {
         const data = await VideoClip.findById(req.params.id);
         res.json(data)
@@ -43,6 +45,7 @@ router.get('/videoClip/getOne/:id', async (req, res) => {
 
 //Update by ID Method
 router.patch('/videoClip/update/:id', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*')
     try {
         const id = req.params.id;
         const updatedData = req.body;
@@ -61,6 +64,7 @@ router.patch('/videoClip/update/:id', async (req, res) => {
 
 //Delete by ID Method
 router.delete('/videoClip/delete/:id', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*')
     try {
         const id = req.params.id;
         const data = await VideoClip.findByIdAndDelete(id)
