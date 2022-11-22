@@ -24,7 +24,6 @@ export default {
     methods: {
         async uploadVideo() {
             const videoURL = document.getElementById("videoUrlUpload").value
-            console.log(videoURL)
             await this.postVideo(videoURL)
         }
     }
