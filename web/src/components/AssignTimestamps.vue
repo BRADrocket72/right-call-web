@@ -1,25 +1,25 @@
 <template>
-    <div class="assign-timestamps">
+    <div v-if="ready" class="assign-timestamps">
         <div class="video-list-div" v-if="isVideoSelected == false">
-            <div class="lesson" v-for="video in testVideoList" :key="video.id">
+            <div class="lesson" v-for="video in this.videoClips" :key="video.id">
                 <a class="nav-link" @click="videoSelection(video)">
-                    <h1>{{video.id}}</h1>
+                    <h1>{{video._id}}</h1>
                 </a>    
-                <p><a :href="video.videoUrl" target="_blank">{{video.videoUrl}}</a></p>
+                <p><a :href="video.videoURL" target="_blank">{{video.videoURL}}</a></p>
             </div>
         </div>
         <div v-else>
             <div class="video-div">
-                <video :id="selectedVideo.id" :src="selectedVideo.videoUrl" controls/>
+                <video :id="selectedVideo._id" :src="selectedVideo.videoURL" controls/>
             </div>
             <div class="actions-div">
                 <div class="button-div">
                     <button id="add-timestamp-button" @click="toggleTimestampsModal()">Add Timestamp Here</button>
                 </div>
-                <div v-if="createdTimestamps.length >= 1" class="timestamps-div">
+                <div v-if="timestamps.length >= 1" class="timestamps-div">
                     <ul class="timestamp-ul">
                         <li v-for="timestamp in formattedTimestamps" :key="timestamp">
-                            {{timestamp.time}}
+                            {{timestamp}}
                             <button id="delete-timestamp-button" @click="deleteTimestamp(timestamp)">Delete</button>
                         </li>
                     </ul>
@@ -33,9 +33,8 @@
 <script>
 import VideoClip from '@/models/VideoClip.js'
 import AssignTimestampsModal from '@/components/AssignTimestampsModal.vue'
-import {retrieveAndCreateAllVideos} from '@/models/RetrieveAndCreate.js'
+import { useVideoClipStore } from "@/stores/VideoClipStore";
 import {formatTimeForVideo} from '@/models/FormatVideosTime.js'
-import Timestamp from '@/models/Timestamp.js'
 
 export default {
     name: 'AssignTimestamps',
@@ -44,21 +43,25 @@ export default {
     },
     data() {
         return {
-            // after API is implemented here, this needs to be modified to take the timestamps
-            // already availabe and put them in the Timestamps lists
             isVideoSelected: false,
             selectedVideo: VideoClip,
-            testVideoList: [],
+            videoClips: [],
             isTimestampModalVisible: false,
             currentTimestamp: Number,
-            createdTimestamps: [],
+            timestamps: [],
             formattedTimestamps: [],
-            count: 0
+            ready: false
         }
     },
     methods: {
         videoSelection(video) {
             this.selectedVideo = video
+            if(this.selectedVideo.timeStamps) {
+                this.timestamps = this.selectedVideo.timeStamps
+                for(var timestamp of this.timestamps) {
+                    this.formattedTimestamps.push(formatTimeForVideo(timestamp))
+                }
+            }
             this.isVideoSelected = !this.isVideoSelected
         },
         closeVideo() {
@@ -75,26 +78,39 @@ export default {
             }
         },
         modalData() {
-            const video = document.getElementById(this.selectedVideo.id)
+            const video = document.getElementById(this.selectedVideo._id)
             this.currentTimestamp = video.currentTime
         },
         updateTimestampsList(timestampSaved) {
-            if(timestampSaved == true) {
-                this.createdTimestamps.push(new Timestamp(this.count,this.currentTimestamp))
-                this.formattedTimestamps.push(new Timestamp(this.count,formatTimeForVideo(this.currentTimestamp)))  
-                this.count++
-            } 
+            if(timestampSaved) {
+                let count = 0
+                for(const timestamp of this.timestamps) {
+                    if(timestamp > this.currentTimestamp) {
+                        this.timestamps.splice(count,0,this.currentTimestamp)
+                        this.formattedTimestamps.splice(count,0,formatTimeForVideo(this.currentTimestamp)) 
+                        break
+                    } else {
+                        count++
+                        console.log(count)
+                    }
+                }
+                console.log(this.timestamps)
+            }
         },
-        deleteTimestamp(timestamp) {
-            let deletedTimestamp = this.formattedTimestamps.findIndex(timestampList => {
-                return timestampList.id === timestamp.id
-            })
-            this.createdTimestamps.splice(deletedTimestamp,1)
-            this.formattedTimestamps.splice(deletedTimestamp,1)
+        deleteTimestamp(deletedTimestamp) {
+            let deleted = this.formattedTimestamps.indexOf(deletedTimestamp)
+            this.timestamps.splice(deleted,1)
+            this.formattedTimestamps.splice(deleted,1)
         }
     },
-    mounted() {
-        this.testVideoList = retrieveAndCreateAllVideos()
+    setup() {
+        var VideoClip = useVideoClipStore();
+        return VideoClip;
+    },
+    async mounted() {
+        await this.fetchVideoClips();
+        this.VideoClips = this.clips;
+        this.ready = true;
     }
 }
 </script>
