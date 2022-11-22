@@ -7,7 +7,7 @@ const videoSchema = new mongoose.Schema({
     },
     timeStamps: {
         required: true,
-        type: Array,
+        type: Array
     }
 })
 

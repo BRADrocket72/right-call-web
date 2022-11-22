@@ -12,6 +12,9 @@ router.post('/videoClip/post', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
         const dataToSave = await data.save();
+        res.header('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
+        res.header('Access-Control-Allow-Headers', 'Accept, Content-type');
+        res.header('Access-Control-Allow-Origin', '*');
         res.status(200).json(dataToSave)
     }
     catch (error) {
@@ -24,6 +27,9 @@ router.get('/videoClip/getAll', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
         const data = await VideoClip.find();
+        res.header('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
+        res.header('Access-Control-Allow-Headers', 'Accept, Content-type');
+        res.header('Access-Control-Allow-Origin', '*');
         res.json(data)
     }
     catch (error) {

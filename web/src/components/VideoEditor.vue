@@ -48,14 +48,14 @@ export default {
     video: VideoClip
   },
   mounted() {
-    const video2 = document.getElementById(this.video.id)
+    const video2 = document.getElementById(this.video._id)
     if (video2) {
       video2.addEventListener('timeupdate', () => {
         const videoCurrentTime = document.getElementById("videoCurrentTime")
         const videoDuration = document.getElementById("videoDuration")
         videoCurrentTime.innerHTML = formatTimeForVideo(video2.currentTime);
         videoDuration.innerHTML = formatTimeForVideo(video2.duration)
-        this.stopVideoAtTimestamp(video2, this.video.timestamps)
+        this.stopVideoAtTimestamp(video2, this.video.timeStamps)
       })
       video2.addEventListener('ended', () => {
         this.showModal();
@@ -63,7 +63,7 @@ export default {
       })
     }
     this.questionsArray = retrieveAndCreateAllQuestions()
-    this.currentVideoQuestions = retrieveVideosQuestionsById(this.video.id, this.questionsArray)
+    this.currentVideoQuestions = retrieveVideosQuestionsById(this.video._id, this.questionsArray)
     this.questionsLoaded = true;
     this.answers = retrieveAndCreateAllAnswers()
   },
@@ -103,7 +103,7 @@ export default {
       this.answers = updatedAnswers
       this.questionIndex++;
 
-      if (this.questionCounter == this.video.timestamps.length) {
+      if (this.questionCounter == this.video.timeStamps.length) {
         this.isResultsPageModalVisible = true;
       }
     },
