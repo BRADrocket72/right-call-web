@@ -3,7 +3,7 @@
         <div class="video-list-div" v-if="isVideoSelected == false">
             <div class="lesson" v-for="video in this.videoClips" :key="video.id">
                 <a class="nav-link" @click="videoSelection(video)">
-                    <h1>{{video._id}}</h1>
+                    <h1>{{video.lessonName}}</h1>
                 </a>    
                 <p><a :href="video.videoURL" target="_blank">{{video.videoURL}}</a></p>
             </div>
@@ -22,6 +22,7 @@
                             {{timestamp}}
                             <button id="delete-timestamp-button" @click="deleteTimestamp(index)">Delete</button>
                         </li>
+                        <button id="delete-timestamp-button" @click="updateAPI(selectedVideo._id,timestamps)">Submit</button>
                     </ul>
                 </div>
             </div>
@@ -102,6 +103,9 @@ export default {
         deleteTimestamp(deletedTimestamp) {
             this.timestamps.splice(deletedTimestamp,1)
             this.formattedTimestamps.splice(deletedTimestamp,1)
+        },
+        async updateAPI(id, timestamps) {
+            await this.updateTimestamps(id,timestamps)
         }
     },
     setup() {
@@ -170,8 +174,8 @@ export default {
 }
 
 video {
-  width: 75%;
-  height: 75%;
+  width: 900px;
+  height: 500px;
   display: block;
   margin: 0 auto;
 }
