@@ -18,13 +18,15 @@
                 </div>
                 <div v-if="timestamps.length >= 1" class="timestamps-div">
                     <ul class="timestamp-ul">
-                        <li v-for="timestamp in formattedTimestamps" :key="timestamp">
+                        <li v-for="(timestamp,index) in formattedTimestamps" :key="timestamp">
                             {{timestamp}}
-                            <button id="delete-timestamp-button" @click="deleteTimestamp(timestamp)">Delete</button>
+                            <button id="delete-timestamp-button" @click="deleteTimestamp(index)">Delete</button>
                         </li>
                     </ul>
                 </div>
             </div>
+            {{timestamps}}
+            {{formattedTimestamps}}
             <AssignTimestampsModal v-if="isTimestampModalVisible" :currentTimestamp="currentTimestamp" @close="toggleTimestampsModal" />
         </div>
     </div>
@@ -98,9 +100,8 @@ export default {
             }
         },
         deleteTimestamp(deletedTimestamp) {
-            let deleted = this.formattedTimestamps.indexOf(deletedTimestamp)
-            this.timestamps.splice(deleted,1)
-            this.formattedTimestamps.splice(deleted,1)
+            this.timestamps.splice(deletedTimestamp,1)
+            this.formattedTimestamps.splice(deletedTimestamp,1)
         }
     },
     setup() {
