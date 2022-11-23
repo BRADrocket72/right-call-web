@@ -1,7 +1,7 @@
 <template>
     <header>
         <nav class="navbar navbar-expand-sm navbar-light">
-            <a href="#" class="navbar-brand"><img src="../../images/refreps_logo_web.webp"></a>
+            <router-link class="navbar-brand" to="/"><img src="../../images/refreps_logo_web.webp"></router-link>
             <div class="container-fluid">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
@@ -14,7 +14,6 @@
                        <a href="#" class="nav-link">Contact Us</a>
                     </li>
                     <router-link class="button" type="submit" to="/AdminPage">Admin Page</router-link>
-                    <router-link class="button" type="submit" to="/">Temporary Home Button</router-link>
                 </ul>
             </div>
             <div class="d-inline">
