@@ -21,6 +21,16 @@ export const useVideoClipStore = defineStore("VideoClip", {
                 console.log(error);
             }
         },
+        async fetchVideoClipById(videoId) {
+            try {
+                const data = await axios.get('http://localhost:3000/api/videoclip/getOne/' + videoId)
+                this.videoClip = data.data
+                return data.data
+            } catch (error) {
+                alert(error)
+                console.log(error);
+            }
+        },
         async postVideo(videoUrl) {
             try{
                 const data = await axios.post('http://localhost:3000/api/videoclip/post', { videoURL: videoUrl})

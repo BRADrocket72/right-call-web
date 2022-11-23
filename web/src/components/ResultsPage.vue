@@ -47,7 +47,9 @@ export default {
   },
   methods: {
     close() {
-      this.$emit('close');
+      this.$router.push({
+        name: "LessonSelection"
+      });
     },
     findNumberOfQuestionsAnswered() {
       for (const answer of this.answersArray) {
