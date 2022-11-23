@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import ActivityPopUp from '@/components/ActivityPopUp.vue';
-import ResultsPage from "@/components/ResultsPage.vue"
+import ActivityPopUp from '@/components/modals/ActivityPopUp.vue';
+import ResultsPage from "@/components/modals/ResultsPage.vue"
 import VideoClip from '@/models/VideoClip';
 import { retrieveAndCreateAllQuestions } from "@/models/RetrieveAndCreate.js"
 import { retrieveAndCreateAllAnswers } from "@/models/RetrieveAndCreate.js"

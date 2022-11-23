@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import 'jest'
-import ResultsPage from '@/components/ResultsPage.vue';
+import ResultsPage from '@/components/modals/ResultsPage.vue';
 import Answer from "@/models/Answer.js";
 
 describe('ResultsPage.vue', () => {

@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import Activity from '@/models/Activity'
 import 'jest'
-import ActivityPopUp from '@/components/ActivityPopUp.vue';
+import ActivityPopUp from '@/components/modals/ActivityPopUp.vue';
 
 describe('ActivityPopUp.vue', () => {
     let wrapper: any;
