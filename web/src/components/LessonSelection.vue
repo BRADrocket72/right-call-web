@@ -1,47 +1,39 @@
 <template>
   <div v-if="ready">
-    <div v-if="selectedVideo == null" class="lesson-container">
       <div class="div-header">
         <h1>Lesson Selection Page</h1>
       </div>
       <div class="lesson-div" v-if="this.videoClips.length > 0">
         <div class="lesson" v-for="video in this.videoClips" :key="video._id">
-          <a class="nav-link" @click="openVideo(video)">
+          <a class="nav-link" @click="openVideo(video._id)">
             <img class="lesson-img" :alt="video._id" src="../../images/richard-bagan-SmQ2Cku3alc-unsplash.jpg" /> -->
             <p>{{ video._id }}</p>
           </a>
         </div>
       </div>
-    </div>
-    <div v-else>
-      <VideoEditor :video="selectedVideo" @close="closeVideo" />
-    </div>
   </div>
 </template>
 
 <script>
-import VideoEditor from "@/components/VideoEditor.vue";
 import { useVideoClipStore } from "@/stores/VideoClipStore";
 
 export default {
   name: "LessonSelection",
-  components: {
-    VideoEditor,
-  },
   data() {
     return {
       ready: false,
-      videoClips: [],
-      selectedVideo: null,
+      videoClips: []
     };
   },
   methods: {
-    openVideo(video) {
-      this.selectedVideo = video;
-    },
-    closeVideo() {
-      this.selectedVideo = null;
-    },
+    openVideo(videoID) {
+      this.$router.push({
+        name: "VideoEditor", 
+        params: { 
+          videoId: videoID
+        }
+      });
+    }
   },
   setup() {
     var VideoClip = useVideoClipStore();
