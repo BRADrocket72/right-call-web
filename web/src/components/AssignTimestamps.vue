@@ -8,41 +8,42 @@
                 <p><a :href="video.videoURL" target="_blank">{{video.videoURL}}</a></p>
             </div>
         </div>
-        <div v-else>
-            <div class="video-div">
+        <div v-else class="assign-timestamps-container">
+            <div class="main-content-div">
                 <video :id="selectedVideo._id" :src="selectedVideo.videoURL" controls/>
-            </div>
-            <div class="actions-div">
-                <div class="button-div">
-                    <button id="add-timestamp-button" @click="toggleTimestampsModal()">Add Timestamp Here</button>
+                <div class="timestamps-div">
+                    <div v-if="timestamps.length >= 1" class="display-timestamps-div">
+                        <ul class="timestamp-ul">
+                            <li v-for="(timestamp,index) in formattedTimestamps" :key="timestamp">
+                                {{timestamp}}
+                                <button id="delete-timestamp-button" @click="deleteTimestamp(index)">Delete</button>
+                            </li>
+                            <button id="save-timestamps-button" @click="updateAPIandShowModal(selectedVideo._id,timestamps)">Save</button>
+                        </ul>
+                    </div>
+                    <div class="add-button-div">
+                        <button id="add-timestamp-button" @click="toggleTimestampsModal()">Add Timestamp Here</button>
+                    </div>
                 </div>
-                <div v-if="timestamps.length >= 1" class="timestamps-div">
-                    <ul class="timestamp-ul">
-                        <li v-for="(timestamp,index) in formattedTimestamps" :key="timestamp">
-                            {{timestamp}}
-                            <button id="delete-timestamp-button" @click="deleteTimestamp(index)">Delete</button>
-                        </li>
-                        <button id="delete-timestamp-button" @click="updateAPI(selectedVideo._id,timestamps)">Submit</button>
-                    </ul>
-                </div>
             </div>
-            {{timestamps}}
-            {{formattedTimestamps}}
             <AssignTimestampsModal v-if="isTimestampModalVisible" :currentTimestamp="currentTimestamp" @close="toggleTimestampsModal" />
+            <SaveTimestampsModal v-if="isSaveTimestampsModalVisible" @close="toggleSaveTimestampsModal" />
         </div>
     </div>
 </template>
 
 <script>
 import VideoClip from '@/models/VideoClip.js'
-import AssignTimestampsModal from '@/components/AssignTimestampsModal.vue'
+import AssignTimestampsModal from '@/components/modals/AssignTimestampsModal.vue'
+import SaveTimestampsModal from '@/components/modals/SaveTimestampsModal.vue'
 import { useVideoClipStore } from "@/stores/VideoClipStore";
 import {formatTimeForVideo} from '@/models/FormatVideosTime.js'
 
 export default {
     name: 'AssignTimestamps',
     components: { 
-        AssignTimestampsModal 
+        AssignTimestampsModal,
+        SaveTimestampsModal
     },
     data() {
         return {
@@ -50,10 +51,12 @@ export default {
             selectedVideo: VideoClip,
             videoClips: [],
             isTimestampModalVisible: false,
+            isSaveTimestampsModalVisible: false,
             currentTimestamp: Number,
             timestamps: [],
             formattedTimestamps: [],
-            ready: false
+            ready: false,
+            returnToVideoSelectionPage: false
         }
     },
     methods: {
@@ -80,6 +83,17 @@ export default {
                 } 
             }
         },
+        toggleSaveTimestampsModal(returnToVideoSelectionPage) {
+            this.isSaveTimestampsModalVisible = !this.isSaveTimestampsModalVisible
+            if(returnToVideoSelectionPage) {
+                this.isVideoSelected = false
+                this.timestamps = []
+                this.formattedTimestamps = []
+                this.$router.push({
+                    name: "AssignTimestamps"
+                })
+            }
+        },
         modalData() {
             const video = document.getElementById(this.selectedVideo._id)
             this.currentTimestamp = video.currentTime
@@ -102,8 +116,8 @@ export default {
                         }
                     }
                 } else {
-                    this.timestamps.splice(count,0,this.currentTimestamp)
-                    this.formattedTimestamps.splice(count,0,formatTimeForVideo(this.currentTimestamp)) 
+                    this.timestamps.splice(0,0,this.currentTimestamp)
+                    this.formattedTimestamps.splice(0,0,formatTimeForVideo(this.currentTimestamp)) 
                 }
             }
         },
@@ -111,8 +125,9 @@ export default {
             this.timestamps.splice(deletedTimestamp,1)
             this.formattedTimestamps.splice(deletedTimestamp,1)
         },
-        async updateAPI(id, timestamps) {
+        async updateAPIandShowModal(id, timestamps) {
             await this.updateTimestamps(id,timestamps)
+            this.toggleSaveTimestampsModal(this.returnToVideoSelectionPage)
         }
     },
     setup() {
@@ -184,12 +199,15 @@ video {
   width: 900px;
   height: 500px;
   display: block;
-  margin: 0 auto;
+  margin: 0;
+}
+
+.main-content-div {
+    display: flex;
+    flex-direction: row;
 }
 
 .actions-div {
-    display: flex;
-    flex-direction: row;
     width: 100%;
     margin: 30px auto;
     justify-content: space-around;
@@ -197,6 +215,7 @@ video {
 
 #add-timestamp-button {
     text-align: center;
+    margin-left: 22px;
     border: none;
     font-size: 30px;
     color: white;
@@ -214,8 +233,15 @@ video {
 }
 
 .timestamps-div {
-    min-width: 250px;
-    min-height: 200px;
+    flex-direction: column;
+    height: 600px;
+}
+
+.display-timestamps-div {
+    width: 310px;
+    height: 400px;
+    overflow-y: auto;
+    margin-left: 10px;
     background: #0e333c;
     border:  1px solid black;
     border-radius: 10px;
@@ -250,6 +276,26 @@ video {
 }
 
 #delete-timestamp-button:hover {
+    background: #349b88;
+    box-shadow: 0 8px 8px #000000;
+}
+
+#save-timestamps-button {
+    float: left;
+    margin: 20px 10px 10px 0;
+    text-align: center;
+    font-size: 35px;
+    border: none;
+    color: white;
+    text-shadow: 1px 1px 1px black;
+    box-shadow: 0 6px 6px #000000;
+    background: #4AAE9B;
+    width: 130px;
+    height: 60px;
+    border-radius: 15px;
+}
+
+#save-timestamps-button:hover {
     background: #349b88;
     box-shadow: 0 8px 8px #000000;
 }
