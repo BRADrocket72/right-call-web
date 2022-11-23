@@ -43,8 +43,7 @@ export const useVideoClipStore = defineStore("VideoClip", {
 
         async updateTimestamps(id,timestamps) {
             try {
-                const data = await axios.patch(`http://localhost:3000/api/videoclip/update/${id}`, { timeStamps: timestamps})
-                return data
+                await axios.patch(`http://localhost:3000/api/videoclip/update/${id}`, { timeStamps: timestamps})
             } catch(error) {
                 alert(error)
                 console.log(error)
