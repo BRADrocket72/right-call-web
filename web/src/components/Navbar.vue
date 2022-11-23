@@ -14,6 +14,7 @@
                        <a href="#" class="nav-link">Contact Us</a>
                     </li>
                     <router-link class="button" type="submit" to="/AdminPage">Admin Page</router-link>
+                    <router-link class="button" type="submit" to="/UserResultsPage">View My Results</router-link>
                 </ul>
             </div>
             <div class="d-inline">
