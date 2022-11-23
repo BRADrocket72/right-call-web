@@ -12,6 +12,7 @@ router.post('/users/post', async (req, res) => {
     })
 
     try {
+        res.header('Access-Control-Allow-Origin', '*')
         const dataToSave = await data.save();
         res.status(200).json(dataToSave)
     }
@@ -23,6 +24,7 @@ router.post('/users/post', async (req, res) => {
 //Get all Method
 router.get('/users/getAll', async (req, res) => {
     try {
+        res.header('Access-Control-Allow-Origin', '*')
         const data = await User.find();
         res.json(data)
     }

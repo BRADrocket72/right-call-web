@@ -9,12 +9,10 @@ router.post('/videoClip/post', async (req, res) => {
         videoURL: req.body.videoURL,
         timeStamps: req.body.timeStamps
     })
-
+    res.header('Access-Control-Allow-Origin', '*')
     try {
         const dataToSave = await data.save();
-        res.header('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
-        res.header('Access-Control-Allow-Headers', 'Accept, Content-type');
-        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Origin', '*')
         res.status(200).json(dataToSave)
     }
     catch (error) {
@@ -24,11 +22,10 @@ router.post('/videoClip/post', async (req, res) => {
 
 //Get all Method
 router.get('/videoClip/getAll', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*')
     try {
         const data = await VideoClip.find();
-        res.header('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
-        res.header('Access-Control-Allow-Headers', 'Accept, Content-type');
-        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Origin', '*')
         res.json(data)
     }
     catch (error) {
@@ -38,6 +35,7 @@ router.get('/videoClip/getAll', async (req, res) => {
 
 //Get by ID Method
 router.get('/videoClip/getOne/:id', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*')
     try {
         const data = await VideoClip.findById(req.params.id);
         res.json(data)
@@ -49,6 +47,7 @@ router.get('/videoClip/getOne/:id', async (req, res) => {
 
 //Update by ID Method
 router.patch('/videoClip/update/:id', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*')
     try {
         const id = req.params.id;
         const updatedData = req.body;
@@ -67,6 +66,7 @@ router.patch('/videoClip/update/:id', async (req, res) => {
 
 //Delete by ID Method
 router.delete('/videoClip/delete/:id', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*')
     try {
         const id = req.params.id;
         const data = await VideoClip.findByIdAndDelete(id)
