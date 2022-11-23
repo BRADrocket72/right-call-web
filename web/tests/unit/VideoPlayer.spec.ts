@@ -1,6 +1,5 @@
 import { mount } from '@vue/test-utils'
 import VideoEditor from '@/components/VideoEditor.vue'
-import VideoClip from '@/models/VideoClip.js'
 import 'jest'
 
 describe('VideoEditor.vue', () => {
@@ -8,7 +7,7 @@ describe('VideoEditor.vue', () => {
     beforeEach(() => {
         wrapper = mount(VideoEditor, {
           props: {
-            video: new VideoClip("BasketballLessonOne", "https://d2vue776t14pjd.cloudfront.net/basketball/REG-SE-BSK-PCK-4-DLC/gameplay/P15_Shooting_Foul.m4v", [2, 7.9])
+            videoId: "637a61d49db11c5b4dd1b3b8"
           }
         })
     })
@@ -22,11 +21,11 @@ describe('VideoEditor.vue', () => {
   })
 
   it('renders the test video object', () => {
-    expect(wrapper.vm.video).toMatchObject({id: "BasketballLessonOne", videoUrl: "https://d2vue776t14pjd.cloudfront.net/basketball/REG-SE-BSK-PCK-4-DLC/gameplay/P15_Shooting_Foul.m4v", timestamps: [2, 7.9]})
+    expect(wrapper.vm.video).toMatchObject({id: "637a61d49db11c5b4dd1b3b8", videoUrl: "https://d2vue776t14pjd.cloudfront.net/basketball/REG-SE-BSK-PCK-4-DLC/gameplay/P15_Shooting_Foul.m4v", timeStamps: [5, 10]})
   })
 
   it('renders the test video', () => {
-    const displayedVideo = wrapper.find('video#BasketballLessonOne')
+    const displayedVideo = wrapper.find('video#637a61d49db11c5b4dd1b3b8')
     expect(displayedVideo.exists()).toBe(true);
   })
 

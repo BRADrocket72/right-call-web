@@ -1,14 +1,14 @@
 <template>
   <div class="video-player">
-    <h1>{{video._id}}</h1>
+    <h1>{{videoId}}</h1>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <video :id="video._id" :src="video.videoURL"></video>
+    <video :id="videoId" :src="currentVideoClip.videoURL"></video>
     <div id="videoControls">
       <button id="playOrPause" @click="playOrPauseVideo">Play</button>
       <span id="videoCurrentTime">00:00</span> / <span id="videoDuration">00:00</span>
     </div>
-    <results-page v-if="isResultsPageModalVisible" :answersArray="answers" @close="closeResultsPageModal">
+    <results-page v-if="isResultsPageModalVisible" :answersArray="answers">
     </results-page>
     <activity-pop-up v-if="questionsLoaded && isModalVisible" :allPossibleAnswers="answers"
       :question="currentVideoQuestions[questionIndex]" :questionNumber="questionIndex + 1" @close="closeModal" />
@@ -18,19 +18,23 @@
 <script>
 import ActivityPopUp from '@/components/ActivityPopUp.vue';
 import ResultsPage from "@/components/ResultsPage.vue"
+import VideoClip from '@/models/VideoClip';
 import { retrieveAndCreateAllQuestions } from "@/models/RetrieveAndCreate.js"
 import { retrieveAndCreateAllAnswers } from "@/models/RetrieveAndCreate.js"
 import { retrieveVideosQuestionsById } from "@/models/RetrieveAndCreate.js"
 import { formatTimeForVideo } from "@/models/FormatVideosTime.js"
-
-import VideoClip from '@/models/VideoClip';
-
+import { useVideoClipStore } from "@/stores/VideoClipStore";
 
 export default {
   name: 'VideoEditor',
   components: {
     ActivityPopUp,
     ResultsPage
+  },
+  props: {
+    videoId: {
+      type: String
+    }
   },
   data() {
     return {
@@ -41,21 +45,24 @@ export default {
       questionIndex: 0,
       questionsLoaded: false,
       answers: [],
-      questionCounter: 0
+      questionCounter: 0,
+      currentVideoClip: VideoClip
     };
   },
-  props: {
-    video: VideoClip
+  setup() {
+    var VideoClip = useVideoClipStore();
+    return VideoClip;
   },
-  mounted() {
-    const video2 = document.getElementById(this.video._id)
+  async mounted() {
+    this.currentVideoClip = await this.fetchVideoClipById(this.videoId);
+    const video2 = document.getElementById(this.videoId)
     if (video2) {
       video2.addEventListener('timeupdate', () => {
         const videoCurrentTime = document.getElementById("videoCurrentTime")
         const videoDuration = document.getElementById("videoDuration")
         videoCurrentTime.innerHTML = formatTimeForVideo(video2.currentTime);
         videoDuration.innerHTML = formatTimeForVideo(video2.duration)
-        this.stopVideoAtTimestamp(video2, this.video.timeStamps)
+        this.stopVideoAtTimestamp(video2, this.currentVideoClip.timeStamps)
       })
       video2.addEventListener('ended', () => {
         this.showModal();
@@ -63,7 +70,7 @@ export default {
       })
     }
     this.questionsArray = retrieveAndCreateAllQuestions()
-    this.currentVideoQuestions = retrieveVideosQuestionsById(this.video._id, this.questionsArray)
+    this.currentVideoQuestions = retrieveVideosQuestionsById(this.videoId, this.questionsArray)
     this.questionsLoaded = true;
     this.answers = retrieveAndCreateAllAnswers()
   },
@@ -82,7 +89,7 @@ export default {
       }
     },
     playOrPauseVideo() {
-      const video2 = document.getElementById(this.video._id);
+      const video2 = document.getElementById(this.videoId);
       const playOrPauseButton = document.getElementById("playOrPause")
       if (video2.paused) {
         playOrPauseButton.innerHTML = "Pause"
@@ -103,16 +110,9 @@ export default {
       this.answers = updatedAnswers
       this.questionIndex++;
 
-      if (this.questionCounter == this.video.timeStamps.length) {
+      if (this.questionCounter == this.currentVideoClip.timeStamps.length) {
         this.isResultsPageModalVisible = true;
       }
-    },
-    closeResultsPageModal() {
-      this.isResultsPageModalVisible = false;
-      this.close()
-    },
-    close() {
-      this.$emit('close');
     }
   }
 }

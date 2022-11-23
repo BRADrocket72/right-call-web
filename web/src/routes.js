@@ -1,9 +1,11 @@
 import LessonSelection from "@/components/LessonSelection.vue";
+import VideoEditor from "@/components/VideoEditor.vue";
 import LoginPage from "@/components/LoginPage.vue"
 import AdminPage from "@/components/AdminPage.vue"
 import AddQuestions from "@/components/AddQuestions.vue"
 import VideoUpload from "@/components/VideoUpload.vue"
 import AssignTimestamps from "@/components/AssignTimestamps.vue"
+import UserResultsPage from "@/components/UserResultsPage.vue"
 import { createRouter, createWebHistory } from 'vue-router'
 
 
@@ -12,6 +14,12 @@ const routesArray = [
         path: "/",
         name: "LessonSelection",
         component: LessonSelection
+    },
+    {
+        path: "/VideoEditor:videoId",
+        name: "VideoEditor",
+        component: VideoEditor,
+        props: true
     },
     {
         path: "/LoginPage",
@@ -37,6 +45,11 @@ const routesArray = [
         path: "/AssignTimestamps",
         name: "AssignTimestamps",
         component: AssignTimestamps
+    },
+    {
+        path: "/UserResultsPage",
+        name: "UserResultsPage",
+        component: UserResultsPage
     }
 ]
 
