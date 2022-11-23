@@ -87,17 +87,24 @@ export default {
         updateTimestampsList(timestampSaved) {
             if(timestampSaved) {
                 let count = 0
-                for(const timestamp of this.timestamps) {
-                    if(timestamp > this.currentTimestamp) {
-                        this.timestamps.splice(count,0,this.currentTimestamp)
-                        this.formattedTimestamps.splice(count,0,formatTimeForVideo(this.currentTimestamp)) 
-                        break
-                    } else {
-                        count++
-                        console.log(count)
+                if(this.timestamps.length > 0) {
+                    for(const timestamp of this.timestamps) {
+                        if(timestamp > this.currentTimestamp) {
+                            this.timestamps.splice(count,0,this.currentTimestamp)
+                            this.formattedTimestamps.splice(count,0,formatTimeForVideo(this.currentTimestamp)) 
+                            break
+                        } else if(count == this.timestamps.length-1) {
+                            this.timestamps.splice(count+1,0,this.currentTimestamp)
+                            this.formattedTimestamps.splice(count+1,0,formatTimeForVideo(this.currentTimestamp)) 
+                            break
+                        }else {
+                            count++
+                        }
                     }
+                } else {
+                    this.timestamps.splice(count,0,this.currentTimestamp)
+                    this.formattedTimestamps.splice(count,0,formatTimeForVideo(this.currentTimestamp)) 
                 }
-                console.log(this.timestamps)
             }
         },
         deleteTimestamp(deletedTimestamp) {
