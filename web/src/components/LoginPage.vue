@@ -1,7 +1,7 @@
 <template>
     <div id="app">
     <div id="alert" v-if="alert">{{ alert }}</div>
-    <h1>Login Page</h1>
+    <h1>Login  Page</h1>
     <br><br>
     <form @submit.prevent="loginWithPassword">
       <label>
