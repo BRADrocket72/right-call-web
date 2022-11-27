@@ -4,7 +4,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const mongoString = process.env.DATABASE_URL;
 const videoClipRoutes = require('./routes/videoClipRouter');
-const userRoutes = require('./routes/userRouter')
+const userRoutes = require('./routes/userRouter');
+const lessonRoutes = require('./routes/lessonsRouter');
 
 mongoose.connect(mongoString);
 const database = mongoose.connection;
@@ -27,6 +28,7 @@ app.use(cors({
 
 app.use('/api', videoClipRoutes)
 app.use('/api', userRoutes)
+app.use('/api', lessonRoutes)
 
 app.listen(3000, () => {
     console.log(`Server Started at ${3000}`)
