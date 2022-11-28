@@ -1,10 +1,17 @@
 const express = require('express');
 const User = require('../models/User');
-
+const crypto = require('crypto');
 const router = express.Router()
 
 //Post Method
 router.post('/users/post', async (req, res) => {
+
+    let salt = crypto.randomBytes(16).toString('base64');
+    let hash = crypto.createHmac('sha512',salt)
+                                     .update(req.body.password)
+                                     .digest("base64");
+    req.body.password = salt + "$" + hash;
+
     const data = new User({
         userName: req.body.userName,
         password: req.body.password,
