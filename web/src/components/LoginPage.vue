@@ -20,9 +20,18 @@
 
 <script>
 
+import { useUsersStore } from "@/stores/UserStore";
     
 export default {
   name: 'LoginPage',
+  setup() {
+        var Users = useUsersStore();
+        return Users;
+    },
+
+  methods: {
+    async uploadUsers(){}
+  },
   mounted() {
     // const videoUrl = document.getElementById("urlUpload")
   }
