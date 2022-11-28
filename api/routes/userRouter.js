@@ -40,4 +40,17 @@ router.get('/users/getAll', async (req, res) => {
     }
 })
 
+//Delete by ID Method
+router.delete('/user/delete/:id', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*')
+    try {
+        const id = req.params.id;
+        const data = await User.findByIdAndDelete(id)
+        res.send(`Document with ${data.userName} has been deleted..`)
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+})
+
 module.exports = router;
