@@ -30,7 +30,12 @@ export default {
     },
 
   methods: {
-    async uploadUsers(){}
+    async uploadUsers(){
+      await this.postUser(userName, password, userType)
+      var getUsername = getElementById.postUser.userName
+      var getPassword = getElementById.postUser.password
+      var getUsertype = getElementById.postUser.userType
+    }
   },
   mounted() {
     // const videoUrl = document.getElementById("urlUpload")
