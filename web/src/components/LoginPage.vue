@@ -6,7 +6,7 @@
     <form @submit.prevent="loginWithPassword">
       <label>
         Email or username
-        <input type="text" id="userName" v-model="emailOrUsername" />
+        <input type="text" id="userName" v-model="username" />
       </label>
       <label>
         Password
@@ -39,7 +39,11 @@ import { useUsersStore } from "@/stores/UserStore";
 export default {
   name: 'LoginPage',
   data(){
-    return {error:false}
+    return {
+      error:false,
+      username: "",
+      password: ""
+    }
   },
   setup() {
         var Users = useUsersStore();
@@ -58,9 +62,14 @@ export default {
       
     }
   },
-  mounted() {
-    // const videoUrl = document.getElementById("urlUpload")
-  }
+  watch: {
+        username() {
+            this.error = false;
+        },
+        password() {
+            this.error = false;
+        }
+    }
 }
 </script>
 

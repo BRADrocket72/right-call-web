@@ -1,6 +1,6 @@
 import LessonSelection from "@/components/LessonSelection.vue";
 import VideoEditor from "@/components/VideoEditor.vue";
-import LoginPage from "@/components/RegistrationPage.vue"
+import LoginPage from "@/components/LoginPage.vue"
 import RegistrationPage from "@/components/RegistrationPage.vue";
 import AdminPage from "@/components/AdminPage.vue"
 import AddQuestions from "@/components/AddQuestions.vue"
