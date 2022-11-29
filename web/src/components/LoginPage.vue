@@ -6,13 +6,24 @@
     <form @submit.prevent="loginWithPassword">
       <label>
         Email or username
-        <input type="text" v-model="emailOrUsername" />
+        <input type="text" id="userName" v-model="emailOrUsername" />
       </label>
       <label>
         Password
-        <input type="password" v-model="password" />
+        <input type="password" id="password" v-model="password" />
       </label>
-      <button type="submit">Log in</button>
+      <br/><br/>
+      <h3>Are you an Student, Instructor, or Admin?</h3>
+      <label> Student: </label>
+      <input type="radio" name="userType" id="userType" value="Student">
+      <br/>
+      <label>Instructor: </label>
+      <input type="radio" name="userType"  id="userType" value="Instructor"/>
+      <br/>
+      <label> Admin: </label>
+      <input type="radio" name="userType"  id="userType" value="Admin"/>
+      <br/><br/>
+      <button type="submit" @click="uploadUsers">Log in</button>
     </form>
     <nav></nav>
   </div>
@@ -31,10 +42,15 @@ export default {
 
   methods: {
     async uploadUsers(){
+      var userName = document.getElementById("userName").value
+      var password = document.getElementById("password").value
+      var userType = document.getElementById("userType").value
+      
       await this.postUser(userName, password, userType)
-      var getUsername = getElementById.postUser.userName
-      var getPassword = getElementById.postUser.password
-      var getUsertype = getElementById.postUser.userType
+      this.$router.push({
+        name: "LessonSelection"
+      });
+      
     }
   },
   mounted() {
