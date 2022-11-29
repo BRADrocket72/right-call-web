@@ -15,8 +15,9 @@
                     <div v-if="timestamps.length >= 1" class="display-timestamps-div">
                         <ul class="timestamp-ul">
                             <li v-for="(timestamp,index) in formattedTimestamps" :key="timestamp">
+                                <button id="delete-timestamp-button" @click="deleteTimestamp(index)">X</button>
                                 {{timestamp}}
-                                <button id="delete-timestamp-button" @click="deleteTimestamp(index)">Delete</button>
+                                <button id="assign-activity-button">Activity</button>
                             </li>
                             <button id="save-timestamps-button" @click="updateAPIandShowModal(selectedVideo._id,timestamps)">Save</button>
                         </ul>
@@ -246,36 +247,60 @@ video {
     border:  1px solid black;
     border-radius: 10px;
     margin-bottom: 20px;
+    font-size: 0;
 }
 
-.timestamp-ul {
-    margin: 0 0 0 0;
-    list-style-type: none;
+.display-timestamps-div ul{
+    margin-left: auto;
+}
+
+ul.timestamp-ul {
+    padding: 0 0 0 7px;
 }
 
 .timestamp-ul li{
+    display: flex;
+    flex-direction: row;
     color: white;
     margin: 15px 10px 0 0;
-    font-size: 40px;
-    min-width: 80px;
-    min-height: 55px;
+    font-size: 35px;
 }
 
 #delete-timestamp-button {
-    float: right;
-    margin: 0 10px 10px 10px;
+    margin: 0 6px 0 6px;
     text-align: center;
     border: none;
     color: white;
+    font-weight: bold;
     text-shadow: 1px 1px 1px black;
     box-shadow: 0 6px 6px #000000;
-    background: #4AAE9B;
-    min-width: 80px;
+    background: #B22222;
+    min-width: 50px;
     min-height: 55px;
     border-radius: 15px;
 }
 
 #delete-timestamp-button:hover {
+    background: #8B0000;
+    box-shadow: 0 8px 8px #000000;
+}
+
+#assign-activity-button {
+    margin: 0 15px 0 25px;
+    text-align: center;
+    border: none;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px black;
+    box-shadow: 0 6px 6px #000000;
+    background: #4AAE9B;
+    min-width: 85px;
+    min-height: 55px;
+    border-radius: 15px;
+}
+
+#assign-activity-button:hover {
     background: #349b88;
     box-shadow: 0 8px 8px #000000;
 }
