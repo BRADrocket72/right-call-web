@@ -39,7 +39,11 @@ import { useUsersStore } from "@/stores/UserStore";
 export default {
   name: 'LoginPage',
   data(){
-    return {error:false}
+    return {
+      error:false,
+      username: "",
+      password: ""
+    }
   },
   setup() {
         var Users = useUsersStore();
@@ -58,9 +62,14 @@ export default {
       
     }
   },
-  mounted() {
-    // const videoUrl = document.getElementById("urlUpload")
-  }
+  watch: {
+        username() {
+            this.error = false;
+        },
+        password() {
+            this.error = false;
+        }
+    }
 }
 </script>
 
