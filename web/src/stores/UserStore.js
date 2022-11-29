@@ -23,6 +23,18 @@ export const useUsersStore = defineStore("Users", {
                 alert(error)
                 console.log(error)
             }
+        },
+        async loginUser(userName, password) {
+            try{
+                const data = await axios.post('http://localhost:3000/api/users/login', { 
+                    userName: userName,
+                    password: password
+                })
+                return data.data
+            } catch(error) {
+                alert(error)
+                console.log(error)
+            }
         }
     }
 })

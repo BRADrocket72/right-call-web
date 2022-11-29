@@ -1,7 +1,7 @@
 <template>
     <div id="app">
     <div id="alert" v-if="alert">{{ alert }}</div>
-    <h1>Login  Page</h1>
+    <h1>Registration  Page</h1>
     <br><br>
     <form @submit.prevent="loginWithPassword">
       <label>
@@ -23,10 +23,7 @@
       <label> Admin: </label>
       <input type="radio" name="userType"  id="userType" value="Admin"/>
       <br/><br/>
-      <button type="submit" @click="login">Log in</button>
-    <div v-if = "error">
-      Invalid Username or Password
-    </div>
+      <button type="submit" @click="uploadUsers">Log in</button>
     </form>
     <nav></nav>
   </div>
@@ -38,23 +35,21 @@ import { useUsersStore } from "@/stores/UserStore";
     
 export default {
   name: 'LoginPage',
-  data(){
-    return {error:false}
-  },
   setup() {
         var Users = useUsersStore();
         return Users;
     },
 
   methods: {
-    async login(){
+    async uploadUsers(){
       var userName = document.getElementById("userName").value
       var password = document.getElementById("password").value
+      var userType = document.getElementById("userType").value
       
-      var loginStatus = await this.loginUser(userName, password)
-      if (!loginStatus.success){
-          this.error = true
-      }
+      await this.postUser(userName, password, userType)
+      this.$router.push({
+        name: "LessonSelection"
+      });
       
     }
   },
