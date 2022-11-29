@@ -1,10 +1,8 @@
 const AWS = require('aws-sdk');
 const fs = require('fs');
 const path = require('path');
-require('dotenv').config();
 
-export class AmazonS3Service {
-
+class AmazonS3Service {
     constructor() {
         AWS.config.update({
             accessKeyId: process.env.AMAZON_S3_ACCESS_KEY,
@@ -14,10 +12,12 @@ export class AmazonS3Service {
     }
 
     uploadBLOBToStorage(bucketName, fileObject, videoName) {
+        
+        const fileStream = fs.createReadStream(fileObject);
         var params = {
             Bucket: bucketName,
-            Body: fs.createReadStream(fileObject),
-            Key: "folder/" + Date.now() + "_" + path.basename(videoName)
+            Body: fileStream,
+            Key: Date.now() + "_" + videoName
         };
 
         this.s3.upload(params, function (err, data) {
@@ -32,4 +32,8 @@ export class AmazonS3Service {
             }
         });
     }
+
 }
+module.exports = AmazonS3Service;
+
+

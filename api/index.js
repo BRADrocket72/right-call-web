@@ -1,11 +1,11 @@
 require('dotenv').config();
-
 const express = require('express');
 const mongoose = require('mongoose');
 const mongoString = process.env.DATABASE_URL;
 const videoClipRoutes = require('./routes/videoClipRouter');
 const userRoutes = require('./routes/userRouter')
-const s3Routes = require('./routes/s3Router')
+const s3Routes = require('./routes/S3Router')
+
 
 mongoose.connect(mongoString);
 const database = mongoose.connection;
