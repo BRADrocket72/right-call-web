@@ -24,6 +24,9 @@
       <input type="radio" name="userType"  id="userType" value="Admin"/>
       <br/><br/>
       <button type="submit" @click="login">Log in</button>
+    <div v-if = "error">
+      Invalid Username or Password
+    </div>
     </form>
     <nav></nav>
   </div>
@@ -35,6 +38,9 @@ import { useUsersStore } from "@/stores/UserStore";
     
 export default {
   name: 'LoginPage',
+  data(){
+    return {error:false}
+  },
   setup() {
         var Users = useUsersStore();
         return Users;
@@ -44,12 +50,11 @@ export default {
     async login(){
       var userName = document.getElementById("userName").value
       var password = document.getElementById("password").value
-      var userType = document.getElementById("userType").value
       
-      await this.postUser(userName, password, userType)
-      this.$router.push({
-        name: "LessonSelection"
-      });
+      var loginStatus = await this.loginUser(userName, password)
+      if (!loginStatus.success){
+          this.error = true
+      }
       
     }
   },

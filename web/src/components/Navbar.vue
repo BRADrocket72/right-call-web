@@ -19,6 +19,7 @@
             </div>
             <div class="d-inline">
                 <router-link class="button" type="submit" to="/LoginPage">Login</router-link>
+                <router-link class="button" type="submit" to="/RegistrationPage">Register</router-link>
             </div>
         </nav>
     </header>

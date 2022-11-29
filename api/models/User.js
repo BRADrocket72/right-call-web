@@ -14,7 +14,11 @@ const userSchema = new mongoose.Schema({
     userType: {
         required: true,
         type: String
-    } 
+    }, 
+    salt: {
+        required: true,
+        type: String
+    }
 })
 
 module.exports = mongoose.model('User', userSchema)
