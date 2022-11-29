@@ -23,7 +23,7 @@
       <label> Admin: </label>
       <input type="radio" name="userType"  id="userType" value="Admin"/>
       <br/><br/>
-      <button type="submit" @click="login">Log in</button>
+      <button type="submit" @click="uploadUsers">Log in</button>
     </form>
     <nav></nav>
   </div>
@@ -41,7 +41,7 @@ export default {
     },
 
   methods: {
-    async login(){
+    async uploadUsers(){
       var userName = document.getElementById("userName").value
       var password = document.getElementById("password").value
       var userType = document.getElementById("userType").value
