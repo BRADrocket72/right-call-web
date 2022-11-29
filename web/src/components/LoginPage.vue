@@ -6,7 +6,7 @@
     <form @submit.prevent="loginWithPassword">
       <label>
         Email or username
-        <input type="text" id="userName" v-model="emailOrUsername" />
+        <input type="text" id="userName" v-model="username" />
       </label>
       <label>
         Password
