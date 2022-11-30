@@ -17,7 +17,7 @@
                             <li v-for="(timestamp,index) in formattedTimestamps" :key="timestamp">
                                 <button id="delete-timestamp-button" @click="deleteTimestamp(index)">X</button>
                                 {{timestamp}}
-                                <button id="assign-activity-button">Activity</button>
+                                <button id="assign-activity-button" @click="toggleAssignActivityModal(index)">Activity</button>
                             </li>
                             <button id="save-timestamps-button" @click="updateAPIandShowModal(selectedVideo._id,timestamps)">Save</button>
                         </ul>
@@ -27,25 +27,29 @@
                     </div>
                 </div>
             </div>
-            <AssignTimestampsModal v-if="isTimestampModalVisible" :currentTimestamp="currentTimestamp" @close="toggleTimestampsModal" />
+            <AssignTimestampsModal v-if="isTimestampModalVisible" :newTimestamp="newTimestamp" @close="toggleTimestampsModal" />
             <SaveTimestampsModal v-if="isSaveTimestampsModalVisible" @close="toggleSaveTimestampsModal" />
+            <AssignActivityModal v-if="isAssignActivityModalVisible" :activities="activities" :index="currentIndex" @close="assignActivityModalReturnArray" @save="assignActivitySaved"/>
         </div>
     </div>
 </template>
 
 <script>
 import VideoClip from '@/models/VideoClip.js'
+import AssignActivity from '@/models/AssignActivity.js'
 import AssignTimestampsModal from '@/components/modals/AssignTimestampsModal.vue'
 import SaveTimestampsModal from '@/components/modals/SaveTimestampsModal.vue'
+import AssignActivityModal from '@/components/modals/AssignActivityModal.vue'
 import { useVideoClipStore } from "@/stores/VideoClipStore";
 import {formatTimeForVideo} from '@/models/FormatVideosTime.js'
-import { useUsersStore } from '@/stores/UserStore';
+//import { useUsersStore } from '@/stores/UserStore';
 
 export default {
     name: 'AssignTimestamps',
     components: { 
         AssignTimestampsModal,
-        SaveTimestampsModal
+        SaveTimestampsModal,
+        AssignActivityModal
     },
     data() {
         return {
@@ -54,11 +58,17 @@ export default {
             videoClips: [],
             isTimestampModalVisible: false,
             isSaveTimestampsModalVisible: false,
-            currentTimestamp: Number,
+            isAssignActivityModalVisible: false,
+            newTimestamp: Number,
+            currentActivityTimestamp: Number,
             timestamps: [],
             formattedTimestamps: [],
             ready: false,
-            returnToVideoSelectionPage: false
+            returnToVideoSelectionPage: false,
+            activityModalArray: [],
+            activities: [],
+            currentIndex: Number,
+            activitySaved: false
         }
     },
     methods: {
@@ -68,6 +78,7 @@ export default {
                 this.timestamps = this.selectedVideo.timeStamps
                 for(var timestamp of this.timestamps) {
                     this.formattedTimestamps.push(formatTimeForVideo(timestamp))
+                    this.activities.push('')
                 }
             }
             this.isVideoSelected = !this.isVideoSelected
@@ -78,10 +89,10 @@ export default {
         toggleTimestampsModal(timestampSaved) {
             this.isTimestampModalVisible = !this.isTimestampModalVisible
             if(this.isTimestampModalVisible) {
-                this.modalData()
+                this.timestampsModalData()
             } else {
                 if(timestampSaved == true) {
-                    this.updateTimestampsList(timestampSaved)
+                    this.updateTimestampsAndActivitiesList(timestampSaved)
                 } 
             }
         },
@@ -96,36 +107,62 @@ export default {
                 })
             }
         },
-        modalData() {
-            const video = document.getElementById(this.selectedVideo._id)
-            this.currentTimestamp = video.currentTime
+        toggleAssignActivityModal(activityIndex) {
+            this.isAssignActivityModalVisible = !this.isAssignActivityModalVisible
+            if(this.isAssignActivityModalVisible) {
+                this.currentIndex = activityIndex
+                this.currentActivityTimestamp = this.timestamps[activityIndex]
+            } else {
+                if(this.activitySaved) {
+                    this.activities[this.currentIndex] = new AssignActivity(this.currentActivityTimestamp,this.activityModalArray[0],[this.activityModalArray[1],this.activityModalArray[2]],this.selectedVideo._id)
+                    this.activitySaved = false
+                }
+            }
         },
-        updateTimestampsList(timestampSaved) {
+        timestampsModalData() {
+            const video = document.getElementById(this.selectedVideo._id)
+            this.newTimestamp = video.currentTime
+        },
+        assignActivityModalReturnArray(activityModalArray) {
+            if(activityModalArray != undefined) {
+                this.activityModalArray = activityModalArray
+            }
+            this.toggleAssignActivityModal()
+        },
+        assignActivitySaved(activitySaved) {
+            this.activitySaved = activitySaved
+        },
+        updateTimestampsAndActivitiesList(timestampSaved) {
             if(timestampSaved) {
                 let count = 0
                 if(this.timestamps.length > 0) {
                     for(const timestamp of this.timestamps) {
-                        if(timestamp > this.currentTimestamp) {
-                            this.timestamps.splice(count,0,this.currentTimestamp)
-                            this.formattedTimestamps.splice(count,0,formatTimeForVideo(this.currentTimestamp)) 
+                        if(timestamp > this.newTimestamp) {
+                            this.timestamps.splice(count,0,this.newTimestamp)
+                            this.formattedTimestamps.splice(count,0,formatTimeForVideo(this.newTimestamp))
+                            this.activities.splice(count,0,'')
                             break
                         } else if(count == this.timestamps.length-1) {
-                            this.timestamps.splice(count+1,0,this.currentTimestamp)
-                            this.formattedTimestamps.splice(count+1,0,formatTimeForVideo(this.currentTimestamp)) 
+                            this.timestamps.splice(count+1,0,this.newTimestamp)
+                            this.formattedTimestamps.splice(count+1,0,formatTimeForVideo(this.newTimestamp))
+                            this.activities.splice(count+1,0,'')
                             break
                         }else {
                             count++
                         }
                     }
                 } else {
-                    this.timestamps.splice(0,0,this.currentTimestamp)
-                    this.formattedTimestamps.splice(0,0,formatTimeForVideo(this.currentTimestamp)) 
+                    this.timestamps.splice(0,0,this.newTimestamp)
+                    this.formattedTimestamps.splice(0,0,formatTimeForVideo(this.newTimestamp))
+                    this.activities.splice(0,0,'')
                 }
             }
         },
         deleteTimestamp(deletedTimestamp) {
             this.timestamps.splice(deletedTimestamp,1)
             this.formattedTimestamps.splice(deletedTimestamp,1)
+            this.activities.splice(deletedTimestamp,1)
+            console.log(this.activities)
         },
         async updateAPIandShowModal(id, timestamps) {
             await this.updateTimestamps(id,timestamps)
@@ -137,12 +174,12 @@ export default {
         return VideoClip;
     },
     async mounted() {
-        var store = useUsersStore();
+        /*var store = useUsersStore();
         if (store.currentUserToken.length < 1) {
             this.$router.push({
                 name: "LoginPage"
             })
-        }
+        }*/
         await this.fetchVideoClips();
         this.VideoClips = this.clips;
         this.ready = true;
@@ -282,7 +319,7 @@ ul.timestamp-ul {
     text-shadow: 1px 1px 1px black;
     box-shadow: 0 6px 6px #000000;
     background: #B22222;
-    min-width: 65px;
+    min-width: 55px;
     min-height: 55px;
     border-radius: 15px;
 }

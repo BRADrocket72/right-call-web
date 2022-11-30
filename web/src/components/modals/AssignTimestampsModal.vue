@@ -29,7 +29,7 @@ export default {
         }
     },
     props: {
-        currentTimestamp: Number
+        newTimestamp: Number
     },
     methods: {
         close() {
@@ -39,7 +39,7 @@ export default {
             this.timestampSaved = true
         },
         convertToReadableTime() {
-            this.formattedTimestamp = formatTimeForVideo(this.currentTimestamp)
+            this.formattedTimestamp = formatTimeForVideo(this.newTimestamp)
         }
     },
     mounted() {
