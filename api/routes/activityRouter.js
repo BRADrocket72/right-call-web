@@ -34,6 +34,19 @@ router.get('/activity/getAll', async (req, res) => {
     }
 })
 
+//Get by VideoClip Method
+router.get('/activity/get/:videoclipId', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*')
+    try {
+        const data = await Activity.find({"videoclipId": req.params.videoclipId});
+        res.json(data)
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+})
+
+//Update by ID Method
 router.patch('/activity/update/:id', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
@@ -45,6 +58,19 @@ router.patch('/activity/update/:id', async (req, res) => {
             id, updatedData, options
         )
 
+        res.send(result)
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+})
+
+router.delete('/activity/delete/:id', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*')
+    try {
+        const id = req.params.id;
+
+        const result = await Activity.findByIdAndDelete(id)
         res.send(result)
     }
     catch (error) {
