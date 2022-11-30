@@ -18,7 +18,6 @@ export default {
   name: 'AdminPage',
   mounted() {
     var store = useUsersStore();
-    console.log(store.currentUserToken)
     if (store.currentUserToken.length < 1) {
       this.$router.push({
         name: "LoginPage"

@@ -35,9 +35,7 @@ export default {
   methods: {
     logout() {
         var store = useUsersStore();
-        console.log(store.currentUserToken)
         store.currentUserToken = ""
-        console.log(store.currentUserToken)
         this.$router.push({
           name: "LoginPage"
         })
