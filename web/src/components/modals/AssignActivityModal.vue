@@ -9,7 +9,7 @@
           <slot name="body">
             <div class="assign-activity-div">
                 <div v-if="activities[index] != ''" class="activity-info"> 
-                    <label for="question-text">Question Text yes: </label><input type="text" id="question-text" name="question-text" :value="activities[index].questionText">
+                    <label for="question-text">Question Text: </label><input type="text" id="question-text" name="question-text" :value="activities[index].questionText">
                     <label for="question-text">Answer 1: </label><input type="text" id="answer-one" name="answer-one" :value="activities[index].answers[0]">
                     <label for="question-text">Answer 2: </label><input type="text" id="answer-two" name="answer-two" :value="activities[index].answers[1]">
                 </div>

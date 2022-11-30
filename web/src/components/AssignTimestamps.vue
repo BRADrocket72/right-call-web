@@ -162,7 +162,6 @@ export default {
             this.timestamps.splice(deletedTimestamp,1)
             this.formattedTimestamps.splice(deletedTimestamp,1)
             this.activities.splice(deletedTimestamp,1)
-            console.log(this.activities)
         },
         async updateAPIandShowModal(id, timestamps) {
             await this.updateTimestamps(id,timestamps)
