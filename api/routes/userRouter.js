@@ -75,11 +75,8 @@ router.post('/users/login', async (req, res) => {
                 let hash = crypto.createHmac('sha512', salt).update(refreshId).digest("base64");
                 // req.body.refreshKey = salt;
                 let token = jwt.sign({userId: user._id}, process.env.jwtSecret);
-                console.log("token")
                 let b = Buffer.from(hash);
                 let refresh_token = b.toString('base64');
-                res.header('authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Mzg2MzU1ODUyMzM5YWNiZDM5MDJjYWQiLCJpYXQiOjE2Njk3Njc0NDB9.uD-ep1mKhlGewkePOfLo6OL1-n_IHd2okL7XidOL-j0')
-                res.cookie('token', token, {httpOnly: true})
                 res.status(201).send({accessToken: token, refreshToken: refresh_token, success: true});
             }
         }
