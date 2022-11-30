@@ -343,6 +343,36 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\":\"6372b3cc4d8dfa7ff6590623\",\r\n    \"videoURL\":\"gmail.com\",\r\n    \"timeStamps\":[23]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/activity/update/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"activity",
+								"update",
+								":id"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
