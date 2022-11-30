@@ -40,7 +40,7 @@ export default {
         }
     },
     props: {
-        activities: [],
+        activities: Array,
         index: Number
     },
     methods: {
@@ -49,7 +49,6 @@ export default {
         },
         save() {
             let invalid = document.getElementById('invalid-save')
-            let valid = document.getElementById('valid-save')
             this.checkInputs()
             if(this.allInputsValid) {
                 invalid.innerHTML = ""
@@ -58,7 +57,6 @@ export default {
                 this.$emit('close',this.activityModalArray)
             } else {
                 invalid.innerHTML = "Please fill out all fields."
-                valid.innerHTML = ""
                 this.activityModalArray = []
             }
         },
