@@ -58,6 +58,11 @@ export default {
       var loginStatus = await this.loginUser(userName, password)
       if (!loginStatus.success){
           this.error = true
+      }else{
+        this.currentUserToken = loginStatus.accessToken
+        this.$router.push({
+          name: "HomePage"
+        })
       }
       
     }

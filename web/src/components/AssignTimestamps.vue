@@ -38,6 +38,7 @@ import AssignTimestampsModal from '@/components/modals/AssignTimestampsModal.vue
 import SaveTimestampsModal from '@/components/modals/SaveTimestampsModal.vue'
 import { useVideoClipStore } from "@/stores/VideoClipStore";
 import {formatTimeForVideo} from '@/models/FormatVideosTime.js'
+import { useUsersStore } from '@/stores/UserStore';
 
 export default {
     name: 'AssignTimestamps',
@@ -135,6 +136,13 @@ export default {
         return VideoClip;
     },
     async mounted() {
+        var store = useUsersStore();
+        console.log(store.currentUserToken)
+        if (store.currentUserToken.length < 1) {
+            this.$router.push({
+                name: "LoginPage"
+            })
+        }
         await this.fetchVideoClips();
         this.VideoClips = this.clips;
         this.ready = true;
