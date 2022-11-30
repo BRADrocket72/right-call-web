@@ -3,7 +3,8 @@ import axios from 'axios'
 
 export const useUsersStore = defineStore("Users", {
     state: () => ({
-        users: []
+        users: [],
+        currentUserToken: ""
     }),
     getters: {
         getUsers(state) {

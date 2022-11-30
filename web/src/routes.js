@@ -7,12 +7,13 @@ import AddQuestions from "@/components/AddQuestions.vue"
 import VideoUpload from "@/components/VideoUpload.vue"
 import AssignTimestamps from "@/components/AssignTimestamps.vue"
 import UserResultsPage from "@/components/UserResultsPage.vue"
+import HomePage from "@/components/HomePage.vue"
 import { createRouter, createWebHistory } from 'vue-router'
 
 
 const routesArray = [
     {
-        path: "/",
+        path: "/LessonSelection",
         name: "LessonSelection",
         component: LessonSelection
     },
@@ -28,7 +29,7 @@ const routesArray = [
         component: RegistrationPage,
     },
     {
-        path: "/LoginPage",
+        path: "/",
         name: "LoginPage",
         component: LoginPage
     },
@@ -36,6 +37,11 @@ const routesArray = [
         path: "/AdminPage",
         name: "AdminPage",
         component: AdminPage
+    },
+    {
+        path: "/HomePage",
+        name: "HomePage",
+        component: HomePage
     },
     {
         path: "/VideoUpload",

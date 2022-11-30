@@ -11,12 +11,18 @@
 </template>
 
 <script>
+import { useUsersStore } from '@/stores/UserStore';
 
     
 export default {
   name: 'AdminPage',
   mounted() {
-    // const videoUrl = document.getElementById("urlUpload")
+    var store = useUsersStore();
+    if (store.currentUserToken.length < 1) {
+      this.$router.push({
+        name: "LoginPage"
+      })
+    }
   }
 }
 </script>

@@ -16,6 +16,7 @@
 
 <script>
 import { useVideoClipStore } from "@/stores/VideoClipStore";
+import { useUsersStore } from '@/stores/UserStore';
 
 export default {
   name: "LessonSelection",
@@ -40,6 +41,12 @@ export default {
     return VideoClip;
   },
   async mounted() {
+    var store = useUsersStore();
+    if (store.currentUserToken.length < 1) {
+      this.$router.push({
+        name: "LoginPage"
+      })
+    }
     await this.fetchVideoClips();
     this.VideoClips = this.clips;
     this.ready = true;

@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require('../models/User');
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 const router = express.Router()
 
 //Post Method
@@ -22,7 +23,7 @@ router.post('/users/post', async (req, res) => {
     try {
         res.header('Access-Control-Allow-Origin', '*')
         const dataToSave = await data.save();
-        res.status(200).json(dataToSave)
+        res.status(200).json(dataToSave._id)
     }
     catch (error) {
         res.status(400).json({ message: error.message })
@@ -68,10 +69,20 @@ router.post('/users/login', async (req, res) => {
             if (user.password != req.body.password){
                 res.status(200).json({success:false})
             }else{
-                res.status(200).json({success:true})
+                // res.status(200).json({success:true})
+                let refreshId = user._id + process.env.jwtSecret
+                let salt = crypto.randomBytes(16).toString('base64');
+                let hash = crypto.createHmac('sha512', salt).update(refreshId).digest("base64");
+                // req.body.refreshKey = salt;
+                let token = jwt.sign({userId: user._id}, process.env.jwtSecret);
+                console.log("token")
+                let b = Buffer.from(hash);
+                let refresh_token = b.toString('base64');
+                res.header('authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Mzg2MzU1ODUyMzM5YWNiZDM5MDJjYWQiLCJpYXQiOjE2Njk3Njc0NDB9.uD-ep1mKhlGewkePOfLo6OL1-n_IHd2okL7XidOL-j0')
+                res.cookie('token', token, {httpOnly: true})
+                res.status(201).send({accessToken: token, refreshToken: refresh_token, success: true});
             }
         }
-
     }
     catch (error) {
         res.status(400).json({ message: error.message })

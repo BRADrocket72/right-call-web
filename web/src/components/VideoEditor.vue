@@ -24,6 +24,7 @@ import { retrieveAndCreateAllAnswers } from "@/models/RetrieveAndCreate.js"
 import { retrieveVideosQuestionsById } from "@/models/RetrieveAndCreate.js"
 import { formatTimeForVideo } from "@/models/FormatVideosTime.js"
 import { useVideoClipStore } from "@/stores/VideoClipStore";
+import { useUsersStore } from '@/stores/UserStore';
 
 export default {
   name: 'VideoEditor',
@@ -54,6 +55,12 @@ export default {
     return VideoClip;
   },
   async mounted() {
+    var store = useUsersStore();
+    if (store.currentUserToken.length < 1) {
+      this.$router.push({
+        name: "LoginPage"
+      })
+    }
     this.currentVideoClip = await this.fetchVideoClipById(this.videoId);
     const video2 = document.getElementById(this.videoId)
     if (video2) {

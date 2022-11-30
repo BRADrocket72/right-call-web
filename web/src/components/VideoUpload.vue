@@ -14,12 +14,21 @@
 
 <script>
 import { useVideoClipStore } from "@/stores/VideoClipStore";
+import { useUsersStore } from '@/stores/UserStore';
 
 export default {
     name: 'VideoUpload',
     setup() {
         var VideoClip = useVideoClipStore();
         return VideoClip;
+    },
+    mounted(){
+        var store = useUsersStore();
+        if (store.currentUserToken.length < 1) {
+            this.$router.push({
+            name: "LoginPage"
+            })
+        }
     },
     methods: {
         async uploadVideo() {
