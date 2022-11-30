@@ -3,7 +3,8 @@ import axios from 'axios'
 
 export const useUsersStore = defineStore("Users", {
     state: () => ({
-        users: []
+        users: [],
+        currentUserToken: ""
     }),
     getters: {
         getUsers(state) {
@@ -17,6 +18,18 @@ export const useUsersStore = defineStore("Users", {
                     userName: userName,
                     password: password,
                     userType: userType
+                })
+                return data.data
+            } catch(error) {
+                alert(error)
+                console.log(error)
+            }
+        },
+        async loginUser(userName, password) {
+            try{
+                const data = await axios.post('http://localhost:3000/api/users/login', { 
+                    userName: userName,
+                    password: password
                 })
                 return data.data
             } catch(error) {
