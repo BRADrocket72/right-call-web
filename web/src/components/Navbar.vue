@@ -1,7 +1,7 @@
 <template>
     <header>
         <nav class="navbar navbar-expand-sm navbar-light">
-            <router-link class="navbar-brand" to="/"><img src="../../images/refreps_logo_web.webp"></router-link>
+            <router-link class="navbar-brand" to="/LessonSelection"><img src="../../images/refreps_logo_web.webp"></router-link>
             <div class="container-fluid">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
@@ -18,7 +18,9 @@
                 </ul>
             </div>
             <div class="d-inline">
-                <router-link class="button" type="submit" to="/LoginPage">Login</router-link>
+                <button class="button" type="submit" @click="logout">Logout</button>
+                    <!-- <router-link class="button" type="submit" to="/">Login</router-link> -->
+                <router-link class="button" type="submit" to="/RegistrationPage">Register</router-link>
             </div>
         </nav>
     </header>
@@ -26,9 +28,19 @@
 </template>
 
 <script>
+import { useUsersStore } from '@/stores/UserStore';
 
 export default {
   name: 'NavBar',
+  methods: {
+    logout() {
+        var store = useUsersStore();
+        store.currentUserToken = ""
+        this.$router.push({
+          name: "LoginPage"
+        })
+    }
+  },
   components: {
   }
 }
