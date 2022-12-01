@@ -43,6 +43,7 @@ import AssignActivityModal from '@/components/modals/AssignActivityModal.vue'
 import { useVideoClipStore } from "@/stores/VideoClipStore";
 import {formatTimeForVideo} from '@/models/FormatVideosTime.js'
 //import { useUsersStore } from '@/stores/UserStore';
+import { useActivityStore } from '@/stores/ActivityStore';
 
 export default {
     name: 'AssignTimestamps',
@@ -68,7 +69,9 @@ export default {
             activityModalArray: [],
             activities: [],
             currentIndex: Number,
-            activitySaved: false
+            activitySaved: false,
+            deletedActivities: [],
+            updatedActivities: []
         }
     },
     methods: {
@@ -81,10 +84,16 @@ export default {
                     this.activities.push('')
                 }
             }
+            this.getFromActivityStore()
             this.isVideoSelected = !this.isVideoSelected
         },
         closeVideo() {
             this.selectedVideo = null
+        },
+        async getFromActivityStore() {
+            var store = useActivityStore()
+            await store.fetchActivitiesByVideoclipId(this.selectedVideo._id)
+            this.activities = store.activityList
         },
         toggleTimestampsModal(timestampSaved) {
             this.isTimestampModalVisible = !this.isTimestampModalVisible
@@ -110,11 +119,15 @@ export default {
         toggleAssignActivityModal(activityIndex) {
             this.isAssignActivityModalVisible = !this.isAssignActivityModalVisible
             if(this.isAssignActivityModalVisible) {
-                this.currentIndex = activityIndex
                 this.currentActivityTimestamp = this.timestamps[activityIndex]
             } else {
                 if(this.activitySaved) {
-                    this.activities[this.currentIndex] = new AssignActivity(this.currentActivityTimestamp,this.activityModalArray[0],[this.activityModalArray[1],this.activityModalArray[2]],this.selectedVideo._id)
+                    console.log(this.updatedActivities.indexOf(this.activities[activityIndex]))
+                    if((this.activities[activityIndex]._id) && (this.updatedActivities.indexOf(this.activities[activityIndex]._id))){
+                        this.updatedActivities.push(this.activities[activityIndex]._id)
+                        console.log(this.updatedActivities)
+                    }
+                    this.activities[activityIndex] = new AssignActivity(this.currentActivityTimestamp,this.activityModalArray[0],[this.activityModalArray[1],this.activityModalArray[2]],this.selectedVideo._id)
                     this.activitySaved = false
                 }
             }
@@ -123,9 +136,9 @@ export default {
             const video = document.getElementById(this.selectedVideo._id)
             this.newTimestamp = video.currentTime
         },
-        assignActivityModalReturnArray(activityModalArray) {
-            if(activityModalArray != undefined) {
-                this.activityModalArray = activityModalArray
+        assignActivityModalReturnArray(returnedArray) {
+            if(returnedArray != undefined) {
+                this.activityModalArray = returnedArray
             }
             this.toggleAssignActivityModal()
         },
@@ -161,6 +174,9 @@ export default {
         deleteTimestamp(deletedTimestamp) {
             this.timestamps.splice(deletedTimestamp,1)
             this.formattedTimestamps.splice(deletedTimestamp,1)
+            if(this.activities[deletedTimestamp]._id && !this.deletedActivities.indexOf(this.activities[deletedTimestamp]._id)){
+                this.deletedActivities.push(this.activities[deletedTimestamp]._id)
+            }
             this.activities.splice(deletedTimestamp,1)
         },
         async updateAPIandShowModal(id, timestamps) {
