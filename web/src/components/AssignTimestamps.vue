@@ -70,8 +70,8 @@ export default {
             activities: [],
             currentIndex: Number,
             activitySaved: false,
-            deletedTimestamps: [],
-            updatedTimestamps: []
+            deletedActivities: [],
+            updatedActivities: []
         }
     },
     methods: {
@@ -119,16 +119,16 @@ export default {
         toggleAssignActivityModal(activityIndex) {
             this.isAssignActivityModalVisible = !this.isAssignActivityModalVisible
             if(this.isAssignActivityModalVisible) {
-                this.currentIndex = activityIndex
                 this.currentActivityTimestamp = this.timestamps[activityIndex]
             } else {
                 if(this.activitySaved) {
-                    if(this.activities[this.currentIndex]._id && !this.activities.indexOf(this.activities[this.currentIndex]._id)){
-                        this.updatedTimestamps.push(this.activities[this.currentIndex]._id)
+                    console.log(this.updatedActivities.indexOf(this.activities[activityIndex]))
+                    if((this.activities[activityIndex]._id) && (this.updatedActivities.indexOf(this.activities[activityIndex]._id))){
+                        this.updatedActivities.push(this.activities[activityIndex]._id)
+                        console.log(this.updatedActivities)
                     }
-                    this.activities[this.currentIndex] = new AssignActivity(this.currentActivityTimestamp,this.activityModalArray[0],[this.activityModalArray[1],this.activityModalArray[2]],this.selectedVideo._id)
+                    this.activities[activityIndex] = new AssignActivity(this.currentActivityTimestamp,this.activityModalArray[0],[this.activityModalArray[1],this.activityModalArray[2]],this.selectedVideo._id)
                     this.activitySaved = false
-                    console.log(this.updatedTimestamps)
                 }
             }
         },
@@ -169,17 +169,15 @@ export default {
                     this.formattedTimestamps.splice(0,0,formatTimeForVideo(this.newTimestamp))
                     this.activities.splice(0,0,'')
                 }
-                console.log(this.activities)
             }
         },
         deleteTimestamp(deletedTimestamp) {
             this.timestamps.splice(deletedTimestamp,1)
             this.formattedTimestamps.splice(deletedTimestamp,1)
-            if(this.activities[deletedTimestamp]._id){
-                this.deletedTimestamps.push(this.ctivities[deletedTimestamp]._id)
+            if(this.activities[deletedTimestamp]._id && !this.deletedActivities.indexOf(this.activities[deletedTimestamp]._id)){
+                this.deletedActivities.push(this.activities[deletedTimestamp]._id)
             }
             this.activities.splice(deletedTimestamp,1)
-            console.log(this.deletedTimestamps)
         },
         async updateAPIandShowModal(id, timestamps) {
             await this.updateTimestamps(id,timestamps)
