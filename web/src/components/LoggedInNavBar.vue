@@ -19,8 +19,6 @@
             </div>
             <div class="d-inline">
                 <button class="button" type="submit" @click="logout">Logout</button>
-                    <!-- <router-link class="button" type="submit" to="/">Login</router-link> -->
-                <router-link class="button" type="submit" to="/RegistrationPage">Register</router-link>
             </div>
         </nav>
     </header>
@@ -36,6 +34,7 @@ export default {
     logout() {
         var store = useUsersStore();
         store.currentUserToken = ""
+        store.currentUserType = ""
         this.$router.push({
           name: "LoginPage"
         })

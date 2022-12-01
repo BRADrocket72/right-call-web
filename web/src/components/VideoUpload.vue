@@ -1,4 +1,6 @@
 <template>
+    <LoggedInNavBarVue/>
+    <br/><br/>
     <div>
         <label><h4>Upload Video File:</h4></label>
         <input type="file" id="videoUpload" name="videoUpload" />
@@ -15,9 +17,13 @@
 <script>
 import { useVideoClipStore } from "@/stores/VideoClipStore";
 import { useUsersStore } from '@/stores/UserStore';
+import LoggedInNavBarVue from "./LoggedInNavBar.vue";
 
 export default {
     name: 'VideoUpload',
+    components: {
+        LoggedInNavBarVue
+    },
     setup() {
         var VideoClip = useVideoClipStore();
         return VideoClip;

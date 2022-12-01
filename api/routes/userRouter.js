@@ -77,7 +77,7 @@ router.post('/users/login', async (req, res) => {
                 let token = jwt.sign({userId: user._id}, process.env.jwtSecret);
                 let b = Buffer.from(hash);
                 let refresh_token = b.toString('base64');
-                res.status(201).send({accessToken: token, refreshToken: refresh_token, success: true});
+                res.status(201).send({accessToken: token, refreshToken: refresh_token, success: true, userType: user.userType});
             }
         }
     }

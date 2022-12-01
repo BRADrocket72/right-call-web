@@ -1,4 +1,6 @@
 <template>
+  <LoggedInNavBar />
+  <br/><br/>
   <div v-if="ready">
       <div class="div-header">
         <h1>Lesson Selection Page</h1>
@@ -17,40 +19,42 @@
 <script>
 import { useVideoClipStore } from "@/stores/VideoClipStore";
 import { useUsersStore } from '@/stores/UserStore';
+import LoggedInNavBar from "./LoggedInNavBar.vue";
 
 export default {
-  name: "LessonSelection",
-  data() {
-    return {
-      ready: false,
-      videoClips: []
-    };
-  },
-  methods: {
-    openVideo(videoID) {
-      this.$router.push({
-        name: "VideoEditor", 
-        params: { 
-          videoId: videoID
+    name: "LessonSelection",
+    components: { LoggedInNavBar },
+    data() {
+        return {
+            ready: false,
+            videoClips: []
+        };
+    },
+    methods: {
+        openVideo(videoID) {
+            this.$router.push({
+                name: "VideoEditor",
+                params: {
+                    videoId: videoID
+                }
+            });
         }
-      });
+    },
+    setup() {
+        var VideoClip = useVideoClipStore();
+        return VideoClip;
+    },
+    async mounted() {
+        var store = useUsersStore();
+        if (store.currentUserToken.length < 1) {
+            this.$router.push({
+                name: "LoginPage"
+            });
+        }
+        await this.fetchVideoClips();
+        this.VideoClips = this.clips;
+        this.ready = true;
     }
-  },
-  setup() {
-    var VideoClip = useVideoClipStore();
-    return VideoClip;
-  },
-  async mounted() {
-    var store = useUsersStore();
-    if (store.currentUserToken.length < 1) {
-      this.$router.push({
-        name: "LoginPage"
-      })
-    }
-    await this.fetchVideoClips();
-    this.VideoClips = this.clips;
-    this.ready = true;
-  },
 };
 </script>
 

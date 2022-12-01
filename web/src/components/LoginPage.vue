@@ -1,4 +1,6 @@
 <template>
+    <LoginNavBar />
+    <br/><br/>
     <div id="app">
     <div id="alert" v-if="alert">{{ alert }}</div>
     <h1>Login  Page</h1>
@@ -13,16 +15,6 @@
         <input type="password" id="password" v-model="password" />
       </label>
       <br/><br/>
-      <h3>Are you an Student, Instructor, or Admin?</h3>
-      <label> Student: </label>
-      <input type="radio" name="userType" id="userType" value="Student">
-      <br/>
-      <label>Instructor: </label>
-      <input type="radio" name="userType"  id="userType" value="Instructor"/>
-      <br/>
-      <label> Admin: </label>
-      <input type="radio" name="userType"  id="userType" value="Admin"/>
-      <br/><br/>
       <button type="submit" @click="login">Log in</button>
     <div v-if = "error">
       Invalid Username or Password
@@ -35,9 +27,13 @@
 <script>
 
 import { useUsersStore } from "@/stores/UserStore";
+import LoginNavBar from "@/components/LoginNavBar.vue";
     
 export default {
   name: 'LoginPage',
+  components: {
+    LoginNavBar
+  },
   data(){
     return {
       error:false,
@@ -60,9 +56,18 @@ export default {
           this.error = true
       }else{
         this.currentUserToken = loginStatus.accessToken
-        this.$router.push({
-          name: "HomePage"
-        })
+        this.currentUserType = loginStatus.userType
+        console.log(this.currentUserType)
+         if (this.currentUserType == "Student") {
+          this.$router.push({
+            name: "LessonSelection"
+          })
+        }
+        else {
+          this.$router.push({
+            name: "AdminPage"
+          })
+        }
       }
       
     }

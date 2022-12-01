@@ -1,4 +1,6 @@
 <template>
+    <LoggedInNavBarVue />
+    <br/><br/>
     <div v-if="ready" class="assign-timestamps">
         <div class="video-list-div" v-if="isVideoSelected == false">
             <div class="lesson" v-for="video in this.videoClips" :key="video.id">
@@ -34,6 +36,7 @@
 </template>
 
 <script>
+import LoggedInNavBarVue from './LoggedInNavBar.vue';
 import VideoClip from '@/models/VideoClip.js'
 import AssignTimestampsModal from '@/components/modals/AssignTimestampsModal.vue'
 import SaveTimestampsModal from '@/components/modals/SaveTimestampsModal.vue'
@@ -45,7 +48,8 @@ export default {
     name: 'AssignTimestamps',
     components: { 
         AssignTimestampsModal,
-        SaveTimestampsModal
+        SaveTimestampsModal,
+        LoggedInNavBarVue
     },
     data() {
         return {
