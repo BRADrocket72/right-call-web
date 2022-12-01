@@ -21,5 +21,40 @@ export const useActivityStore = defineStore("Activity", {
                 console.log(error);
             }
         },
+        async postActivities(timestamp,questionText,answers,videoclipId) {
+            try {
+                await axios.post(`http://localhost:3000/api/activity/post`, 
+                { 
+                    timestamp: timestamp,
+                    questionText: questionText,
+                    answers: answers,
+                    videoclipId: videoclipId
+                })
+            } catch(error) {
+                alert(error)
+                console.log(error)
+            }
+        },
+        async updateActivities(id,timestamp,questionText,answers) {
+            try {
+                await axios.patch(`http://localhost:3000/api/activity/update/${id}`, 
+                { 
+                    timestamp: timestamp,
+                    questionText: questionText,
+                    answers: answers,
+                })
+            } catch(error) {
+                alert(error)
+                console.log(error)
+            }
+        },
+        async deleteActivities(id) {
+            try {
+                await axios.delete(`http://localhost:3000/api/activity/delete/${id}`)
+            } catch(error) {
+                alert(error)
+                console.log(error)
+            }
+        }
     }
 })
