@@ -1,4 +1,6 @@
 <template>
+  <LoggedInNavBar />
+  <br/><br/>
   <div class="video-player">
     <h1>{{videoId}}</h1>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -25,13 +27,15 @@ import { retrieveVideosQuestionsById } from "@/models/RetrieveAndCreate.js"
 import { formatTimeForVideo } from "@/models/FormatVideosTime.js"
 import { useVideoClipStore } from "@/stores/VideoClipStore";
 import { useUsersStore } from '@/stores/UserStore';
+import LoggedInNavBar from './LoggedInNavBar.vue';
 
 export default {
   name: 'VideoEditor',
   components: {
     ActivityPopUp,
-    ResultsPage
-  },
+    ResultsPage,
+    LoggedInNavBar
+},
   props: {
     videoId: {
       type: String

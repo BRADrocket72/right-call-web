@@ -1,4 +1,6 @@
 <template>
+  <LoginNavBar />
+  <br/><br/>
     <div id="app">
     <div id="alert" v-if="alert">{{ alert }}</div>
     <h1>Registration  Page</h1>
@@ -15,7 +17,7 @@
       <br/><br/>
       <h3>Are you an Student, Instructor, or Admin?</h3>
       <label> Student: </label>
-      <input type="radio" name="userType" id="userType" value="Student">
+      <input type="radio" name="userType" id="userType" value="Student" checked>
       <br/>
       <label>Instructor: </label>
       <input type="radio" name="userType"  id="userType" value="Instructor"/>
@@ -32,9 +34,13 @@
 <script>
 
 import { useUsersStore } from "@/stores/UserStore";
-    
+import LoginNavBar from "@/components/LoginNavBar.vue";
+
 export default {
   name: 'LoginPage',
+  components: {
+    LoginNavBar
+  },
   setup() {
         var Users = useUsersStore();
         return Users;
@@ -44,7 +50,12 @@ export default {
     async uploadUsers(){
       var userName = document.getElementById("userName").value
       var password = document.getElementById("password").value
-      var userType = document.getElementById("userType").value
+      var userTypes = document.getElementsByName("userType")
+      for (let i=0; i< userTypes.length; i++) {
+        if (userTypes[i].checked) {
+          var userType = userTypes[i].value
+        }
+      }
       
       await this.postUser(userName, password, userType)
       this.$router.push({
