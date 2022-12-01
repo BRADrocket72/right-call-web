@@ -1,16 +1,19 @@
+require('dotenv').config();
 const express = require('express');
 const VideoClip = require('../models/VideoClip');
+const upload = require('../services/Storage/AmazonS3Service')
 
 const router = express.Router()
 
 //Post Method
-router.post('/videoClip/post', async (req, res) => {
-    const data = new VideoClip({
-        videoURL: req.body.videoURL,
-        timeStamps: req.body.timeStamps
-    })
-    res.header('Access-Control-Allow-Origin', '*')
+router.post('/videoClip/post', upload.single('video'), async (req, res) => {
+
     try {
+        const data = new VideoClip({
+            videoURL: req.file.location,
+            timeStamps: req.body.timeStamps
+        })
+        res.header('Access-Control-Allow-Origin', '*')
         const dataToSave = await data.save();
         res.header('Access-Control-Allow-Origin', '*')
         res.status(200).json(dataToSave)

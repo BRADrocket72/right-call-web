@@ -1,39 +1,23 @@
-const AWS = require('aws-sdk');
-const fs = require('fs');
-const path = require('path');
+require('dotenv').config();
+const AWS3 = require('@aws-sdk/client-s3');
+const multer = require('multer')
+const multerS3 = require('multer-s3')
 
-class AmazonS3Service {
-    constructor() {
-        AWS.config.update({
-            accessKeyId: process.env.AMAZON_S3_ACCESS_KEY,
-            secretAccessKey: process.env.AMAZON_S3_SECRET_ACCESS_KEY
-        });
-        this.s3 = new AWS.S3();
-    }
+const s3Instance = new AWS3.S3Client({ accessKeyId: process.env.AWSAccessKeyId, secretAccessKey: process.env.AWSSecretKey })
 
-    uploadBLOBToStorage(bucketName, fileObject, videoName) {
-        
-        const fileStream = fs.createReadStream(fileObject);
-        var params = {
-            Bucket: bucketName,
-            Body: fileStream,
-            Key: Date.now() + "_" + videoName
-        };
+const upload = multer({
+    storage: multerS3({
+        s3: s3Instance,
+        bucket: process.env.AMAZON_S3_VIDEO_BUCKET,
+        acl: "public-read",
+        contentType: multerS3.AUTO_CONTENT_TYPE,
+        metadata: (req, file, cb) => {
+            cb(null, { fieldName: file.fieldname })
+        },
+        key: (req, file, cb) => {
+            cb(null, Date.now().toString() + file.originalname)
+        }
+    })
+})
 
-        this.s3.upload(params, function (err, data) {
-            //handle error
-            if (err) {
-                console.log("Error", err);
-            }
-            //success
-            if (data) {
-                console.log("Uploaded in:", data.Location);
-                return data.Location;
-            }
-        });
-    }
-
-}
-module.exports = AmazonS3Service;
-
-
+module.exports = upload
