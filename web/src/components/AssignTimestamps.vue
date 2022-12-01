@@ -119,15 +119,16 @@ export default {
         toggleAssignActivityModal(activityIndex) {
             this.isAssignActivityModalVisible = !this.isAssignActivityModalVisible
             if(this.isAssignActivityModalVisible) {
+                this.currentIndex = activityIndex
                 this.currentActivityTimestamp = this.timestamps[activityIndex]
             } else {
                 if(this.activitySaved) {
-                    console.log(this.updatedActivities.indexOf(this.activities[activityIndex]))
-                    if((this.activities[activityIndex]._id) && (this.updatedActivities.indexOf(this.activities[activityIndex]._id))){
-                        this.updatedActivities.push(this.activities[activityIndex]._id)
+                    console.log(this.updatedActivities.indexOf(this.activities[this.currentIndex]))
+                    if((this.activities[this.currentIndex]._id) && (this.updatedActivities.indexOf(this.activities[this.currentIndex]._id))){
+                        this.updatedActivities.push(this.activities[this.currentIndex]._id)
                         console.log(this.updatedActivities)
                     }
-                    this.activities[activityIndex] = new AssignActivity(this.currentActivityTimestamp,this.activityModalArray[0],[this.activityModalArray[1],this.activityModalArray[2]],this.selectedVideo._id)
+                    this.activities[this.currentIndex] = new AssignActivity(this.currentActivityTimestamp,this.activityModalArray[0],[this.activityModalArray[1],this.activityModalArray[2]],this.selectedVideo._id)
                     this.activitySaved = false
                 }
             }
