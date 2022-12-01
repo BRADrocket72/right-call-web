@@ -167,6 +167,8 @@ export default {
 
 .assign-activity-div input {
     width: 400px;
+    background: #e8dede;
+    border-radius: 4px;
 }
 
 #invalid-save {
