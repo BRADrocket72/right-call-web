@@ -120,6 +120,7 @@ export default {
       if (video2.duration == video2.currentTime) {
           this.isResultsPageModalVisible = true;
       }
+      video2.play();
     }
   }
 }
