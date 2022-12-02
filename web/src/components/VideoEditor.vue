@@ -74,10 +74,11 @@ export default {
         videoCurrentTime.innerHTML = formatTimeForVideo(video2.currentTime);
         videoDuration.innerHTML = formatTimeForVideo(video2.duration)
         this.stopVideoAtTimestamp(video2, this.currentVideoClip.timeStamps)
-      })
-      video2.addEventListener('ended', () => {
-        this.showModal();
-        this.questionCounter++
+        if (video2.duration == video2.currentTime) {
+          if (video2.duration != this.currentVideoClip.timeStamps[this.currentVideoClip.timeStamps.length-1]){
+            this.isResultsPageModalVisible = true;
+          }
+        }
       })
     }
     this.questionsArray = retrieveAndCreateAllQuestions()
@@ -88,15 +89,10 @@ export default {
   methods: {
     stopVideoAtTimestamp(video, timestamps) {
       var currentTime = video.currentTime;
-      if (timestamps[this.questionCounter] == timestamps[timestamps.length - 1]) {
-        return
-      }
-      else {
-        if (currentTime >= timestamps[this.questionCounter]) {
-          video.pause();
-          this.questionCounter++
-          this.showModal();
-        }
+      if (currentTime >= timestamps[this.questionCounter]) {
+        video.pause();
+        this.questionCounter++
+        this.showModal();
       }
     },
     playOrPauseVideo() {
@@ -120,9 +116,9 @@ export default {
       this.isModalVisible = false;
       this.answers = updatedAnswers
       this.questionIndex++;
-
-      if (this.questionCounter == this.currentVideoClip.timeStamps.length) {
-        this.isResultsPageModalVisible = true;
+      const video2 = document.getElementById(this.videoId)
+      if (video2.duration == video2.currentTime) {
+          this.isResultsPageModalVisible = true;
       }
     }
   }
