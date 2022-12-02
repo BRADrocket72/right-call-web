@@ -11,4 +11,7 @@ describe('Navbar.vue', () => {
     it('renders the navbar', () => {
         expect(wrapper.exists()).toBe(true)
     })
+    it('renders the navbar', () => {
+        expect(wrapper.findAll('.container-fluid').length).toBe(1)
+    })
 })
