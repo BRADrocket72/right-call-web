@@ -8,18 +8,30 @@
         <section class="modal-body" id="modalDescription">
           <slot name="body">
             <div class="assign-activity-div">
-                <div v-if="activities[index] != ''" class="activity-info"> 
-                    <label for="question-text">Question Text: </label><input type="text" id="question-text" name="question-text" :value="activities[index].questionText">
-                    <label for="question-text">Answer 1: </label><input type="text" id="answer-one" name="answer-one" :value="activities[index].answers[0]">
-                    <label for="question-text">Answer 2: </label><input type="text" id="answer-two" name="answer-two" :value="activities[index].answers[1]">
+                <div v-if="activities.length >= 1 && activities[activityIndex] != ''" class="activity-info"> 
+                    <label for="question-text">Question Text: </label><input type="text" id="question-text" name="question-text" :value="activities[activityIndex].questionText">
+                    <label for="question-text">Answer 1: </label><input type="text" id="answer-one" name="answer-one" :value="2">
+                    <label for="question-text">Answer 2: </label><input type="text" id="answer-two" name="answer-two" :value="3">
+                    <label for="answers">Correct Answer: </label>
+                    <select id="answers" name="answers">
+                        <option v-for="(answer,index) in activities[activityIndex].answers" :key="answer" v-bind:value="answer" :selected="answer === activities[activityIndex].correctAnswer" v-bind:id="optionIds[index]">{{answer}}</option>
+                    </select>
                 </div>
                 <div v-else class="activity-info">
                     <label for="question-text">Question Text: </label><input type="text" id="question-text" name="question-text">
-                    <label for="question-text">Answer 1: </label><input type="text" id="answer-one" name="answer-one">
-                    <label for="question-text">Answer 2: </label><input type="text" id="answer-two" name="answer-two">
+                    <label for="question-text">Answer 1: </label><input type="text" id="answer-one" name="answer-one" :onchange="populateSelectOptions">
+                    <label for="question-text">Answer 2: </label><input type="text" id="answer-two" name="answer-two" :onchange="populateSelectOptions">
+                    <label for="answers">Correct Answer: </label>
+                    <select id="answers" name="answers">
+                        <option id="option-one" value=""></option>
+                        <option id="option-two" value=""></option>
+                        {{activityIndex}}
+                    </select> 
                 </div>
-                    <button type="button" class="btn-green" @click="save()">Save</button>
-                    <button type="button" class="btn-green" @click="close()">Close</button>
+                <div class="button-div">
+                    <div class="save"><button type="button" class="btn-green" @click="save()">Save</button></div>
+                    <div class="close"><button type="button" class="btn-green" @click="close()">Close</button></div>
+                </div>
                 <p id="invalid-save"></p>
             </div>
           </slot>
@@ -36,12 +48,13 @@ export default {
         return {
             activityModalArray: [],
             allInputsValid: false,
-            activitySaved: false
+            activitySaved: false,
+            optionIds: ['answer-one','answer-two']
         }
     },
     props: {
         activities: Array,
-        index: Number
+        activityIndex: Number
     },
     methods: {
         close() {
@@ -64,13 +77,35 @@ export default {
             let questionText = document.getElementById('question-text')
             let questionOne = document.getElementById('answer-one')
             let questionTwo = document.getElementById('answer-two')
+            let option = document.getElementById('answers')
             if(questionText.value != "" && questionOne.value != "" && questionTwo.value != "") {
                 this.allInputsValid = true
-                this.activityModalArray = [questionText.value,questionOne.value,questionTwo.value]
+                this.activityModalArray = [questionText.value,questionOne.value,questionTwo.value,option.value]
             } else {
                 this.allInputsValid = false
             }
+            console.log(this.activityModalArray)
+        },
+        populateSelectOptions() {
+            let optionOne = document.getElementById('option-one')
+            let optionTwo = document.getElementById('option-two')
+            let answerOne = document.getElementById('answer-one').value
+            let answerTwo = document.getElementById('answer-two').value
+            console.log(answerOne)
+            console.log(answerTwo)
+            optionOne.value = answerOne
+            optionOne.innerHTML = answerOne
+            optionTwo.value = answerTwo
+            optionTwo.innerHTML = answerTwo
         }
+    },
+    mounted() {
+      if(this.activities[this.activityIndex] == '') {
+        this.populateSelectOptions()
+      }
+      console.log(this.activities)
+      console.log(this.activities[0])
+      console.log(this.activityIndex)
     }
 }
 </script>
@@ -91,7 +126,7 @@ export default {
 .modal {
   background: white;
   width: 600px;
-  height: 400px;
+  height: 450px;
   border-radius: 2px;
   position: fixed;
   left: auto;
@@ -122,20 +157,15 @@ export default {
   padding: 20px 10px;
 }
 
-.btn-close {
-  position: absolute;
-  top: 0;
-  right: 0;
-  border: none;
-  font-size: 20px;
-  padding: 10px;
-  cursor: pointer;
-  font-weight: bold;
-  color: #4AAE9B;
-  background: transparent;
+.button-div {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
 }
 
+
 .btn-green {
+  margin: 0 auto;
   color: white;
   background: #4AAE9B;
   border: 1px solid #eeeeee;
@@ -155,14 +185,19 @@ export default {
   transition: opacity .5s ease;
 }
 
-.assign-activity-div div{
-    display: flex;
-    flex-direction: column;
-}
+/*.assign-activity-div div{
+    
+}*/
 
 .activity-info {
-    flex-direction: row;
+    display: flex;
+    flex-direction: column;
     height: 200px;
+}
+
+.activity-info select {
+  width: 200px;
+  margin: 10px 0 10px 0;
 }
 
 .assign-activity-div input {
