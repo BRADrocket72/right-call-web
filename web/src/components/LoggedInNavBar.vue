@@ -29,7 +29,7 @@
 import { useUsersStore } from '@/stores/UserStore';
 
 export default {
-  name: 'NavBar',
+  name: 'LoggedInNavBar',
   methods: {
     logout() {
         var store = useUsersStore();
