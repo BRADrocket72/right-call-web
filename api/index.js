@@ -5,7 +5,6 @@ const mongoString = process.env.DATABASE_URL;
 const videoClipRoutes = require('./routes/videoClipRouter');
 const userRoutes = require('./routes/userRouter');
 const lessonRoutes = require('./routes/lessonsRouter');
-const s3Routes = require('./routes/S3Router')
 const multer = require('multer')
 
 const activityRoutes = require('./routes/activityRouter');
@@ -30,7 +29,6 @@ app.use(cors({
 
 app.use('/api', videoClipRoutes)
 app.use('/api', userRoutes)
-app.use('/api', s3Routes)
 app.use('/api', lessonRoutes)
 app.use('/api', activityRoutes)
 app.use((error, req, res, next) => {
