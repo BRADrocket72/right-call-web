@@ -15,7 +15,6 @@ const fileFilter = (req, file, cb) => {
         cb(new multer.MulterError("LIMIT_UNEXPECTED_FILE"), false);
     }
 };
-
 const upload = multer({ storage: storage, fileFilter })
 
 //Post Method
