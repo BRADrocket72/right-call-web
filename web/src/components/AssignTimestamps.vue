@@ -1,4 +1,7 @@
 <template>
+<div>
+    <LoggedInNavBarVue />
+    <br/><br/>
     <div v-if="ready" class="assign-timestamps">
         <div class="video-list-div" v-if="isVideoSelected == false">
             <div class="lesson" v-for="video in this.videoClips" :key="video.id">
@@ -15,8 +18,9 @@
                     <div v-if="timestamps.length >= 1" class="display-timestamps-div">
                         <ul class="timestamp-ul">
                             <li v-for="(timestamp,index) in formattedTimestamps" :key="timestamp">
+                                <button id="delete-timestamp-button" @click="deleteTimestamp(index)">X</button>
                                 {{timestamp}}
-                                <button id="delete-timestamp-button" @click="deleteTimestamp(index)">Delete</button>
+                                <button id="assign-activity-button" @click="toggleAssignActivityModal(index)">Activity</button>
                             </li>
                             <button id="save-timestamps-button" @click="updateAPIandShowModal(selectedVideo._id,timestamps)">Save</button>
                         </ul>
@@ -26,25 +30,33 @@
                     </div>
                 </div>
             </div>
-            <AssignTimestampsModal v-if="isTimestampModalVisible" :currentTimestamp="currentTimestamp" @close="toggleTimestampsModal" />
+            <AssignTimestampsModal v-if="isTimestampModalVisible" :newTimestamp="newTimestamp" @close="toggleTimestampsModal" />
             <SaveTimestampsModal v-if="isSaveTimestampsModalVisible" @close="toggleSaveTimestampsModal" />
+            <AssignActivityModal v-if="isAssignActivityModalVisible" :activities="activities" :activityIndex="currentIndex" @close="assignActivityModalReturnArray" @save="assignActivitySaved"/>
         </div>
     </div>
+</div>
 </template>
 
 <script>
+import LoggedInNavBarVue from './LoggedInNavBar.vue';
 import VideoClip from '@/models/VideoClip.js'
+import AssignActivity from '@/models/AssignActivity.js'
 import AssignTimestampsModal from '@/components/modals/AssignTimestampsModal.vue'
 import SaveTimestampsModal from '@/components/modals/SaveTimestampsModal.vue'
+import AssignActivityModal from '@/components/modals/AssignActivityModal.vue'
 import { useVideoClipStore } from "@/stores/VideoClipStore";
 import {formatTimeForVideo} from '@/models/FormatVideosTime.js'
 import { useUsersStore } from '@/stores/UserStore';
+import { useActivityStore } from '@/stores/ActivityStore';
 
 export default {
     name: 'AssignTimestamps',
     components: { 
         AssignTimestampsModal,
-        SaveTimestampsModal
+        SaveTimestampsModal,
+        AssignActivityModal,
+        LoggedInNavBarVue
     },
     data() {
         return {
@@ -53,11 +65,19 @@ export default {
             videoClips: [],
             isTimestampModalVisible: false,
             isSaveTimestampsModalVisible: false,
-            currentTimestamp: Number,
+            isAssignActivityModalVisible: false,
+            newTimestamp: Number,
+            currentActivityTimestamp: Number,
             timestamps: [],
             formattedTimestamps: [],
             ready: false,
-            returnToVideoSelectionPage: false
+            returnToVideoSelectionPage: false,
+            activityModalArray: [],
+            activities: [],
+            currentIndex: Number,
+            activitySaved: false,
+            deletedActivities: [],
+            updatedActivities: []
         }
     },
     methods: {
@@ -69,18 +89,28 @@ export default {
                     this.formattedTimestamps.push(formatTimeForVideo(timestamp))
                 }
             }
+            this.getFromActivityStore()
             this.isVideoSelected = !this.isVideoSelected
+        },
+        orderActivitiesByTimestamp() {
+            this.activities.sort((a,b) => a.timestamp - b.timestamp)
         },
         closeVideo() {
             this.selectedVideo = null
         },
+        async getFromActivityStore() {
+            var store = useActivityStore()
+            await store.fetchActivitiesByVideoclipId(this.selectedVideo._id)
+            this.activities = store.activityList
+            this.orderActivitiesByTimestamp()
+        },
         toggleTimestampsModal(timestampSaved) {
             this.isTimestampModalVisible = !this.isTimestampModalVisible
             if(this.isTimestampModalVisible) {
-                this.modalData()
+                this.timestampsModalData()
             } else {
                 if(timestampSaved == true) {
-                    this.updateTimestampsList(timestampSaved)
+                    this.updateTimestampsAndActivitiesList(timestampSaved)
                 } 
             }
         },
@@ -90,45 +120,114 @@ export default {
                 this.isVideoSelected = false
                 this.timestamps = []
                 this.formattedTimestamps = []
+                this.deletedActivities = []
+                this.updatedActivities = []
                 this.$router.push({
                     name: "AssignTimestamps"
                 })
             }
         },
-        modalData() {
-            const video = document.getElementById(this.selectedVideo._id)
-            this.currentTimestamp = video.currentTime
+        toggleAssignActivityModal(activityIndex) {
+            this.isAssignActivityModalVisible = !this.isAssignActivityModalVisible
+            if(this.isAssignActivityModalVisible) {
+                this.currentIndex = activityIndex
+                this.currentActivityTimestamp = this.timestamps[activityIndex]
+            } else {
+                if(this.activitySaved) {
+                    if((this.activities[this.currentIndex]._id) && (this.updatedActivities.indexOf(this.activities[this.currentIndex]._id != -1))){
+                        this.activities[this.currentIndex].timestamp = this.currentActivityTimestamp
+                        this.activities[this.currentIndex].questionText = this.activityModalArray[0]
+                        this.activities[this.currentIndex].answers = [this.activityModalArray[1],this.activityModalArray[2]]
+                        this.activities[this.currentIndex].correctAnswer =this.activityModalArray[3]
+                        this.updatedActivities.push(this.activities[this.currentIndex]._id)
+                    } else {
+                        this.activities[this.currentIndex] = new AssignActivity(this.currentActivityTimestamp,this.activityModalArray[0],[this.activityModalArray[1],this.activityModalArray[2]],this.activityModalArray[3],this.selectedVideo._id)
+                    }
+                    this.activitySaved = false
+                }
+            }
         },
-        updateTimestampsList(timestampSaved) {
+        timestampsModalData() {
+            const video = document.getElementById(this.selectedVideo._id)
+            this.newTimestamp = video.currentTime
+        },
+        assignActivityModalReturnArray(returnedArray) {
+            if(returnedArray != undefined) {
+                this.activityModalArray = returnedArray
+            }
+            this.toggleAssignActivityModal()
+        },
+        assignActivitySaved(activitySaved) {
+            this.activitySaved = activitySaved
+        },
+        updateTimestampsAndActivitiesList(timestampSaved) {
             if(timestampSaved) {
                 let count = 0
                 if(this.timestamps.length > 0) {
                     for(const timestamp of this.timestamps) {
-                        if(timestamp > this.currentTimestamp) {
-                            this.timestamps.splice(count,0,this.currentTimestamp)
-                            this.formattedTimestamps.splice(count,0,formatTimeForVideo(this.currentTimestamp)) 
+                        if(timestamp > this.newTimestamp) {
+                            this.timestamps.splice(count,0,this.newTimestamp)
+                            this.formattedTimestamps.splice(count,0,formatTimeForVideo(this.newTimestamp))
+                            this.activities.splice(count,0,'')
                             break
                         } else if(count == this.timestamps.length-1) {
-                            this.timestamps.splice(count+1,0,this.currentTimestamp)
-                            this.formattedTimestamps.splice(count+1,0,formatTimeForVideo(this.currentTimestamp)) 
+                            this.timestamps.splice(count+1,0,this.newTimestamp)
+                            this.formattedTimestamps.splice(count+1,0,formatTimeForVideo(this.newTimestamp))
+                            this.activities.splice(count+1,0,'')
                             break
                         }else {
                             count++
                         }
                     }
                 } else {
-                    this.timestamps.splice(0,0,this.currentTimestamp)
-                    this.formattedTimestamps.splice(0,0,formatTimeForVideo(this.currentTimestamp)) 
+                    this.timestamps.splice(0,0,this.newTimestamp)
+                    this.formattedTimestamps.splice(0,0,formatTimeForVideo(this.newTimestamp))
+                    this.activities.splice(0,0,'')
                 }
             }
         },
         deleteTimestamp(deletedTimestamp) {
             this.timestamps.splice(deletedTimestamp,1)
             this.formattedTimestamps.splice(deletedTimestamp,1)
+            if((this.activities[deletedTimestamp]._id) && (this.deletedActivities.indexOf(this.activities[deletedTimestamp]._id != -1))){
+                this.deletedActivities.push(this.activities[deletedTimestamp]._id)
+            }
+            this.activities.splice(deletedTimestamp,1)
         },
         async updateAPIandShowModal(id, timestamps) {
             await this.updateTimestamps(id,timestamps)
+            this.postActivitiesAPI()
+            this.updateActivitiesAPI()
+            this.deleteActivitiesAPI()
             this.toggleSaveTimestampsModal(this.returnToVideoSelectionPage)
+        },
+        async postActivitiesAPI() {
+            var store = useActivityStore()
+            for(const activity of this.activities) {
+                if(!activity._id) {
+                    await store.postActivities(activity.timestamp,activity.questionText,activity.answers,activity.correctAnswer,activity.videoclipId)
+                } 
+            }
+        },
+        async updateActivitiesAPI() {
+            var store = useActivityStore()
+            for(const id of this.updatedActivities) {
+                var index = this.activities.findIndex(activity => {
+                    return activity._id === id
+                })
+                if(index != -1 || index != undefined) {
+                    await store.updateActivities(this.activities[index]._id,this.activities[index].timestamp,this.activities[index].questionText,this.activities[index].answers,this.activities[index].correctAnswer)
+                } else {
+                    alert('There was an error updating.')
+                }
+            }
+            
+        },
+        async deleteActivitiesAPI() {
+            var store = useActivityStore()
+            for(const activity of this.deletedActivities) {
+                await store.deleteActivities(activity)
+            }
         }
     },
     setup() {
@@ -253,36 +352,60 @@ video {
     border:  1px solid black;
     border-radius: 10px;
     margin-bottom: 20px;
+    font-size: 0;
 }
 
-.timestamp-ul {
-    margin: 0 0 0 0;
-    list-style-type: none;
+.display-timestamps-div ul{
+    margin-left: auto;
+}
+
+ul.timestamp-ul {
+    padding: 0 0 0 7px;
 }
 
 .timestamp-ul li{
+    display: flex;
+    flex-direction: row;
     color: white;
     margin: 15px 10px 0 0;
-    font-size: 40px;
-    min-width: 80px;
-    min-height: 55px;
+    font-size: 35px;
 }
 
 #delete-timestamp-button {
-    float: right;
-    margin: 0 10px 10px 10px;
+    margin: 0 6px 0 6px;
     text-align: center;
     border: none;
     color: white;
+    font-weight: bold;
     text-shadow: 1px 1px 1px black;
     box-shadow: 0 6px 6px #000000;
-    background: #4AAE9B;
-    min-width: 80px;
+    background: #B22222;
+    min-width: 55px;
     min-height: 55px;
     border-radius: 15px;
 }
 
 #delete-timestamp-button:hover {
+    background: #8B0000;
+    box-shadow: 0 8px 8px #000000;
+}
+
+#assign-activity-button {
+    margin: 0 15px 0 25px;
+    text-align: center;
+    border: none;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px black;
+    box-shadow: 0 6px 6px #000000;
+    background: #4AAE9B;
+    min-width: 85px;
+    min-height: 55px;
+    border-radius: 15px;
+}
+
+#assign-activity-button:hover {
     background: #349b88;
     box-shadow: 0 8px 8px #000000;
 }

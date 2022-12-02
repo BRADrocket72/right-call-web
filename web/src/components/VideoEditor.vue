@@ -1,4 +1,6 @@
 <template>
+  <LoggedInNavBar />
+  <br/><br/>
   <div class="video-player">
     <h1>{{videoId}}</h1>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -25,13 +27,15 @@ import { retrieveVideosQuestionsById } from "@/models/RetrieveAndCreate.js"
 import { formatTimeForVideo } from "@/models/FormatVideosTime.js"
 import { useVideoClipStore } from "@/stores/VideoClipStore";
 import { useUsersStore } from '@/stores/UserStore';
+import LoggedInNavBar from './LoggedInNavBar.vue';
 
 export default {
   name: 'VideoEditor',
   components: {
     ActivityPopUp,
-    ResultsPage
-  },
+    ResultsPage,
+    LoggedInNavBar
+},
   props: {
     videoId: {
       type: String
@@ -70,10 +74,11 @@ export default {
         videoCurrentTime.innerHTML = formatTimeForVideo(video2.currentTime);
         videoDuration.innerHTML = formatTimeForVideo(video2.duration)
         this.stopVideoAtTimestamp(video2, this.currentVideoClip.timeStamps)
-      })
-      video2.addEventListener('ended', () => {
-        this.showModal();
-        this.questionCounter++
+        if (video2.duration == video2.currentTime) {
+          if (video2.duration != this.currentVideoClip.timeStamps[this.currentVideoClip.timeStamps.length-1]){
+            this.isResultsPageModalVisible = true;
+          }
+        }
       })
     }
     this.questionsArray = retrieveAndCreateAllQuestions()
@@ -84,15 +89,10 @@ export default {
   methods: {
     stopVideoAtTimestamp(video, timestamps) {
       var currentTime = video.currentTime;
-      if (timestamps[this.questionCounter] == timestamps[timestamps.length - 1]) {
-        return
-      }
-      else {
-        if (currentTime >= timestamps[this.questionCounter]) {
-          video.pause();
-          this.questionCounter++
-          this.showModal();
-        }
+      if (currentTime >= timestamps[this.questionCounter]) {
+        video.pause();
+        this.questionCounter++
+        this.showModal();
       }
     },
     playOrPauseVideo() {
@@ -116,10 +116,13 @@ export default {
       this.isModalVisible = false;
       this.answers = updatedAnswers
       this.questionIndex++;
-
-      if (this.questionCounter == this.currentVideoClip.timeStamps.length) {
-        this.isResultsPageModalVisible = true;
+      const video2 = document.getElementById(this.videoId)
+      if (video2.duration == video2.currentTime) {
+          this.isResultsPageModalVisible = true;
       }
+      const playOrPauseButton = document.getElementById("playOrPause")
+      playOrPauseButton.innerHTML = "Pause"
+      video2.play();
     }
   }
 }

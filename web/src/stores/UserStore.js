@@ -4,7 +4,8 @@ import axios from 'axios'
 export const useUsersStore = defineStore("Users", {
     state: () => ({
         users: [],
-        currentUserToken: ""
+        currentUserToken: "",
+        currentUserType: ""
     }),
     getters: {
         getUsers(state) {

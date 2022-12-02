@@ -1,23 +1,16 @@
 require('dotenv').config();
-const AWS3 = require('@aws-sdk/client-s3');
-const multer = require('multer')
-const multerS3 = require('multer-s3')
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const uuid = require('uuid').v4
 
-const s3Instance = new AWS3.S3Client({ accessKeyId: process.env.AWSAccessKeyId, secretAccessKey: process.env.AWSSecretKey })
+exports.s3Upload = async (file) => {
+    const s3Client = new S3Client()
+    const resourceName = `uploads/${uuid()}-${file.originalname}}`
+    const param = {
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: resourceName,
+        Body: file.buffer,
+    }
 
-const upload = multer({
-    storage: multerS3({
-        s3: s3Instance,
-        bucket: process.env.AMAZON_S3_VIDEO_BUCKET,
-        acl: "public-read",
-        contentType: multerS3.AUTO_CONTENT_TYPE,
-        metadata: (req, file, cb) => {
-            cb(null, { fieldName: file.fieldname })
-        },
-        key: (req, file, cb) => {
-            cb(null, Date.now().toString() + file.originalname)
-        }
-    })
-})
-
-module.exports = upload
+    await s3Client.send(new PutObjectCommand(param));
+    return 'https://right-call-videos.s3.us-east-2.amazonaws.com/' + resourceName
+}

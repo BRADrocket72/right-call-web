@@ -14,6 +14,10 @@ const activitySchema = new mongoose.Schema({
         required: true,
         type: Array
     },
+    correctAnswer: {
+        required: true,
+        type: String
+    },
     videoclipId: {
         required: true,
         type: String

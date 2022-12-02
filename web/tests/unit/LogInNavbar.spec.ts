@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import NavBar from '@/components/Navbar.vue'
+import NavBar from '@/components/LoginNavBar.vue'
 import 'jest'
 
 describe('Navbar.vue', () => {
@@ -10,5 +10,8 @@ describe('Navbar.vue', () => {
 
     it('renders the navbar', () => {
         expect(wrapper.exists()).toBe(true)
+    })
+    it('renders the navbar', () => {
+        expect(wrapper.findAll('.container-fluid').length).toBe(1)
     })
 })

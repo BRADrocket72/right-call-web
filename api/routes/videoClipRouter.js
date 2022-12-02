@@ -1,16 +1,29 @@
 require('dotenv').config();
+const multer = require('multer')
 const express = require('express');
 const VideoClip = require('../models/VideoClip');
-const upload = require('../services/Storage/AmazonS3Service')
+const { s3Upload } = require('../services/Storage/AmazonS3Service');
+const { memoryStorage } = require('multer');
 
 const router = express.Router()
 
-//Post Method
-router.post('/videoClip/post', upload.single('video'), async (req, res) => {
+const storage = multer.memoryStorage()
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype.split("/")[0] === "video") {
+        cb(null, true);
+    } else {
+        cb(new multer.MulterError("LIMIT_UNEXPECTED_FILE"), false);
+    }
+};
 
+const upload = multer({ storage: storage, fileFilter })
+
+//Post Method
+router.post('/videoClip/post', upload.single("file"), async (req, res) => {
     try {
+        const fileUploadURL = await s3Upload(req.file);
         const data = new VideoClip({
-            videoURL: req.file.location,
+            videoURL: fileUploadURL,
             timeStamps: req.body.timeStamps
         })
         res.header('Access-Control-Allow-Origin', '*')
