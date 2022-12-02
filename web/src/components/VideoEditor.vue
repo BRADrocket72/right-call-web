@@ -120,6 +120,8 @@ export default {
       if (video2.duration == video2.currentTime) {
           this.isResultsPageModalVisible = true;
       }
+      const playOrPauseButton = document.getElementById("playOrPause")
+      playOrPauseButton.innerHTML = "Pause"
       video2.play();
     }
   }
