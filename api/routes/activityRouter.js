@@ -9,6 +9,7 @@ router.post('/activity/post', async (req, res) => {
         timestamp: req.body.timestamp,
         questionText: req.body.questionText,
         answers: req.body.answers,
+        correctAnswer: req.body.correctAnswer,
         videoclipId: req.body.videoclipId
     })
 

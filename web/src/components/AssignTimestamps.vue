@@ -32,7 +32,7 @@
             </div>
             <AssignTimestampsModal v-if="isTimestampModalVisible" :newTimestamp="newTimestamp" @close="toggleTimestampsModal" />
             <SaveTimestampsModal v-if="isSaveTimestampsModalVisible" @close="toggleSaveTimestampsModal" />
-            <AssignActivityModal v-if="isAssignActivityModalVisible" :activities="activities" :index="currentIndex" @close="assignActivityModalReturnArray" @save="assignActivitySaved"/>
+            <AssignActivityModal v-if="isAssignActivityModalVisible" :activities="activities" :activityIndex="currentIndex" @close="assignActivityModalReturnArray" @save="assignActivitySaved"/>
         </div>
     </div>
 </div>
@@ -138,9 +138,10 @@ export default {
                         this.activities[this.currentIndex].timestamp = this.currentActivityTimestamp
                         this.activities[this.currentIndex].questionText = this.activityModalArray[0]
                         this.activities[this.currentIndex].answers = [this.activityModalArray[1],this.activityModalArray[2]]
+                        this.activities[this.currentIndex].correctAnswer =this.activityModalArray[3]
                         this.updatedActivities.push(this.activities[this.currentIndex]._id)
                     } else {
-                        this.activities[this.currentIndex] = new AssignActivity(this.currentActivityTimestamp,this.activityModalArray[0],[this.activityModalArray[1],this.activityModalArray[2]],this.selectedVideo._id)
+                        this.activities[this.currentIndex] = new AssignActivity(this.currentActivityTimestamp,this.activityModalArray[0],[this.activityModalArray[1],this.activityModalArray[2]],this.activityModalArray[3],this.selectedVideo._id)
                     }
                     this.activitySaved = false
                 }
@@ -204,7 +205,7 @@ export default {
             var store = useActivityStore()
             for(const activity of this.activities) {
                 if(!activity._id) {
-                    await store.postActivities(activity.timestamp,activity.questionText,activity.answers,activity.videoclipId)
+                    await store.postActivities(activity.timestamp,activity.questionText,activity.answers,activity.correctAnswer,activity.videoclipId)
                 } 
             }
         },
@@ -215,7 +216,7 @@ export default {
                     return activity._id === id
                 })
                 if(index != -1 || index != undefined) {
-                    await store.updateActivities(this.activities[index]._id,this.activities[index].timestamp,this.activities[index].questionText,this.activities[index].answers)
+                    await store.updateActivities(this.activities[index]._id,this.activities[index].timestamp,this.activities[index].questionText,this.activities[index].answers,this.activities[index].correctAnswer)
                 } else {
                     alert('There was an error updating.')
                 }
