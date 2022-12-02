@@ -1,4 +1,5 @@
 <template>
+  <div>
   <LoginNavBar />
   <br/><br/>
     <div id="app">
@@ -29,6 +30,7 @@
     </form>
     <nav></nav>
   </div>
+</div>
 </template>
 
 <script>
