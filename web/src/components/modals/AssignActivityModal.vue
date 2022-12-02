@@ -10,8 +10,8 @@
             <div class="assign-activity-div">
                 <div v-if="activities.length >= 1 && activities[activityIndex] != ''" class="activity-info"> 
                     <label for="question-text">Question Text: </label><input type="text" id="question-text" name="question-text" :value="activities[activityIndex].questionText">
-                    <label for="question-text">Answer 1: </label><input type="text" id="answer-one" name="answer-one" :value="2">
-                    <label for="question-text">Answer 2: </label><input type="text" id="answer-two" name="answer-two" :value="3">
+                    <label for="question-text">Answer 1: </label><input type="text" id="answer-one" name="answer-one" :value="activities[activityIndex].answers[0]" :onchange="populateSelectOptions">
+                    <label for="question-text">Answer 2: </label><input type="text" id="answer-two" name="answer-two" :value="activities[activityIndex].answers[1]" :onchange="populateSelectOptions">
                     <label for="answers">Correct Answer: </label>
                     <select id="answers" name="answers">
                         <option v-for="(answer,index) in activities[activityIndex].answers" :key="answer" v-bind:value="answer" :selected="answer === activities[activityIndex].correctAnswer" v-bind:id="optionIds[index]">{{answer}}</option>
@@ -49,7 +49,7 @@ export default {
             activityModalArray: [],
             allInputsValid: false,
             activitySaved: false,
-            optionIds: ['answer-one','answer-two']
+            optionIds: ['option-one','option-two']
         }
     },
     props: {
@@ -84,28 +84,17 @@ export default {
             } else {
                 this.allInputsValid = false
             }
-            console.log(this.activityModalArray)
         },
         populateSelectOptions() {
             let optionOne = document.getElementById('option-one')
             let optionTwo = document.getElementById('option-two')
             let answerOne = document.getElementById('answer-one').value
             let answerTwo = document.getElementById('answer-two').value
-            console.log(answerOne)
-            console.log(answerTwo)
             optionOne.value = answerOne
             optionOne.innerHTML = answerOne
             optionTwo.value = answerTwo
             optionTwo.innerHTML = answerTwo
         }
-    },
-    mounted() {
-      if(this.activities[this.activityIndex] == '') {
-        this.populateSelectOptions()
-      }
-      console.log(this.activities)
-      console.log(this.activities[0])
-      console.log(this.activityIndex)
     }
 }
 </script>
