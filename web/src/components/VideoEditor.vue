@@ -12,7 +12,7 @@
     </div>
     <results-page v-if="isResultsPageModalVisible" :answersArray="answers">
     </results-page>
-    <activity-pop-up v-if="questionsLoaded && isModalVisible" :allPossibleAnswers="answers"
+    <activity-pop-up v-if="questionsLoaded && isModalVisible" :answersArray="answers"
       :question="currentVideoQuestions[questionIndex]" :questionNumber="questionIndex + 1" @close="closeModal" />
   </div>
 </template>
@@ -21,12 +21,10 @@
 import ActivityPopUp from '@/components/modals/ActivityPopUp.vue';
 import ResultsPage from "@/components/modals/ResultsPage.vue"
 import VideoClip from '@/models/VideoClip';
-import { retrieveAndCreateAllQuestions } from "@/models/RetrieveAndCreate.js"
-import { retrieveAndCreateAllAnswers } from "@/models/RetrieveAndCreate.js"
-import { retrieveVideosQuestionsById } from "@/models/RetrieveAndCreate.js"
 import { formatTimeForVideo } from "@/models/FormatVideosTime.js"
 import { useVideoClipStore } from "@/stores/VideoClipStore";
 import { useUsersStore } from '@/stores/UserStore';
+import { useActivityStore } from '@/stores/ActivityStore';
 import LoggedInNavBar from './LoggedInNavBar.vue';
 
 export default {
@@ -67,6 +65,11 @@ export default {
     }
     this.currentVideoClip = await this.fetchVideoClipById(this.videoId);
     const video2 = document.getElementById(this.videoId)
+    var activityStore = useActivityStore();
+    this.currentVideoQuestions = await activityStore.fetchActivitiesByVideoclipId(this.videoId)
+    this.currentVideoQuestions.sort((a,b) => a.timestamp - b.timestamp)
+    this.questionsLoaded = true;
+    
     if (video2) {
       video2.addEventListener('timeupdate', () => {
         const videoCurrentTime = document.getElementById("videoCurrentTime")
@@ -81,10 +84,6 @@ export default {
         }
       })
     }
-    this.questionsArray = retrieveAndCreateAllQuestions()
-    this.currentVideoQuestions = retrieveVideosQuestionsById(this.videoId, this.questionsArray)
-    this.questionsLoaded = true;
-    this.answers = retrieveAndCreateAllAnswers()
   },
   methods: {
     stopVideoAtTimestamp(video, timestamps) {

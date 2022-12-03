@@ -12,7 +12,7 @@
           <slot name="body">
             <p>{{this.percentageCorrect}} Correct</p>
             <br>
-            <p v-for="n in this.eachQuestionResults.length" :key="n">Question {{n}}: {{this.eachQuestionResults[n-1]}}
+            <p v-for="n in this.answersArray.length" :key="n">Question {{n}}: {{this.answersArray[n-1]}}
             </p>
 
             <button type="button" class="btn-green" @click="close()"> Back to Lesson Selection Page </button>
@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import { getEachQuestionResults } from "@/models/GetResults.js"
 import { getPercentageResults } from "@/models/GetResults.js"
 
 export default {
@@ -32,8 +31,6 @@ export default {
   data() {
     return {
       numberOfQuestions: 0,
-      usersAnswers: [],
-      eachQuestionResults: [],
       percentageCorrect: ""
     }
   },
@@ -42,8 +39,7 @@ export default {
   },
   mounted() {
     this.findNumberOfQuestionsAnswered()
-    this.eachQuestionResults = getEachQuestionResults(this.numberOfQuestions, this.usersAnswers)
-    this.percentageCorrect = getPercentageResults(this.eachQuestionResults, this.numberOfQuestions)
+    this.percentageCorrect = getPercentageResults(this.answersArray, this.numberOfQuestions)
   },
   methods: {
     close() {
@@ -52,11 +48,8 @@ export default {
       });
     },
     findNumberOfQuestionsAnswered() {
-      for (const answer of this.answersArray) {
-        if (answer.isCorrect != null) {
-          this.usersAnswers.push(answer)
-          this.numberOfQuestions += 1
-        }
+      for (let i = 0; i< this.answersArray.length; i++) {
+        this.numberOfQuestions += 1
       }
     }
   }
