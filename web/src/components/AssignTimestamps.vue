@@ -15,15 +15,17 @@
             <div class="main-content-div">
                 <video :id="selectedVideo._id" :src="selectedVideo.videoURL" controls/>
                 <div class="timestamps-div">
-                    <div v-if="timestamps.length >= 1" class="display-timestamps-div">
-                        <ul class="timestamp-ul">
-                            <li v-for="(timestamp,index) in formattedTimestamps" :key="timestamp">
-                                <button id="delete-timestamp-button" @click="deleteTimestamp(index)">X</button>
-                                {{timestamp}}
-                                <button id="assign-activity-button" @click="toggleAssignActivityModal(index)">Activity</button>
-                            </li>
-                            <button id="save-timestamps-button" @click="updateAPIandShowModal(selectedVideo._id,timestamps)">Save</button>
-                        </ul>
+                    <div class="display-timestamps-div">
+                        <div class="timestamps">
+                            <ul class="timestamp-ul" v-if="timestamps.length >= 1">
+                                <li v-for="(timestamp,index) in formattedTimestamps" :key="timestamp">
+                                    <button id="delete-timestamp-button" @click="deleteTimestamp(index)">X</button>
+                                    {{timestamp}}
+                                    <button id="assign-activity-button" @click="toggleAssignActivityModal(index)">Activity</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <button id="save-timestamps-button" @click="updateAPIandShowModal(selectedVideo._id,timestamps)">Save</button>
                     </div>
                     <div class="add-button-div">
                         <button id="add-timestamp-button" @click="toggleTimestampsModal()">Add Timestamp Here</button>
@@ -344,9 +346,9 @@ video {
 }
 
 .display-timestamps-div {
+    position: relative;
     width: 310px;
     height: 400px;
-    overflow-y: auto;
     margin-left: 10px;
     background: #0e333c;
     border:  1px solid black;
@@ -357,6 +359,14 @@ video {
 
 .display-timestamps-div ul{
     margin-left: auto;
+    
+}
+
+.timestamps {
+    overflow-y: auto;
+    width: 310px;
+    height: 300px;
+    font-size: 0;
 }
 
 ul.timestamp-ul {
@@ -411,8 +421,10 @@ ul.timestamp-ul {
 }
 
 #save-timestamps-button {
-    float: left;
-    margin: 20px 10px 10px 0;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    margin: 20px 10px;
     text-align: center;
     font-size: 35px;
     border: none;
