@@ -8,9 +8,9 @@ describe('ActivityPopUp.vue', () => {
     beforeEach(() => {
         wrapper = mount(ActivityPopUp, {
             props:{
-                question:new Activity("question_one", "What was the call ?", "Basketball Lesson One", ["Shooting Foul", "Traveling"]),
+                question:new Activity(2, "What was the call ?", ["Traveling", "Double Dribble"], "Traveling", ),
                 questionNumber: 1,
-                allPossibleAnswers: [Object]
+                answersArray: [Object]
             }
         })
     })

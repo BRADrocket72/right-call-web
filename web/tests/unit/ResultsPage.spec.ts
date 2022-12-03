@@ -8,7 +8,7 @@ describe('ResultsPage.vue', () => {
     beforeEach(() => {
         wrapper = mount(ResultsPage, {
             props: {
-                answersArray: [new Answer("question_one", true, "No Foul Call"), new Answer("question_two", false, "Shooting Foul")]
+                answersArray: ["Correct", "Incorrect"]
               }
         })
     })
@@ -26,8 +26,7 @@ describe('ResultsPage.vue', () => {
     })
 
     it('variables are set on time', () => {
-        expect(wrapper.vm.usersAnswers.length).toBe(2)
-        expect(wrapper.vm.eachQuestionResults).toEqual(["Correct", "Incorrect"])
+        expect(wrapper.vm.numberOfQuestions).toEqual(2)
         expect(wrapper.vm.percentageCorrect).toEqual("50.00%")
     })
    // error with $router.push
