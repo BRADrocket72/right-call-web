@@ -115,6 +115,7 @@ export default {
                     this.updateTimestampsAndActivitiesList(timestampSaved)
                 } 
             }
+            this.toggleSaveButton()
         },
         toggleSaveTimestampsModal(returnToVideoSelectionPage) {
             this.isSaveTimestampsModalVisible = !this.isSaveTimestampsModalVisible
@@ -147,6 +148,20 @@ export default {
                     }
                     this.activitySaved = false
                 }
+            }
+            this.toggleSaveButton()
+        },
+        toggleSaveButton() {
+            let count = 0
+            for(const activity of this.activities) {
+                if(activity === '') {
+                    count++
+                }
+            }
+            if(count > 0) {
+                document.getElementById('save-timestamps-button').disabled = true
+            } else {
+                document.getElementById('save-timestamps-button').disabled = false
             }
         },
         timestampsModalData() {
@@ -187,6 +202,7 @@ export default {
                     this.activities.splice(0,0,'')
                 }
             }
+            this.toggleSaveButton()
         },
         deleteTimestamp(deletedTimestamp) {
             this.timestamps.splice(deletedTimestamp,1)
@@ -195,6 +211,7 @@ export default {
                 this.deletedActivities.push(this.activities[deletedTimestamp]._id)
             }
             this.activities.splice(deletedTimestamp,1)
+            this.toggleSaveButton()
         },
         async updateAPIandShowModal(id, timestamps) {
             await this.updateTimestamps(id,timestamps)
@@ -448,5 +465,10 @@ ul.timestamp-ul {
 #save-timestamps-button:hover {
     background: #349b88;
     box-shadow: 0 8px 8px #000000;
+}
+
+#save-timestamps-button:disabled {
+    background: #52746d;
+    color: #cfcccc
 }
 </style>
