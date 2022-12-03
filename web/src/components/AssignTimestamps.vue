@@ -274,15 +274,19 @@ export default {
 .video-list-div {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     width: 100%;
-     margin: 0 auto;
+    margin: 0 auto;
 }
 
 .lesson {
-     margin: 0 2% 0 2%;
+    flex: 1 0 33%;
+    margin: 0 30px 30px 0;
     text-align: left;
-    height: 300px;
-    width: 285px;
+    height: 350px;
+    max-height: 350px;
+    width: 200px;
+    max-width: 285px;
     box-shadow: 0 10px 10px #d1d1d1;
 }
 
