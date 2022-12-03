@@ -8,7 +8,7 @@
                 <a class="nav-link" @click="videoSelection(video)">
                     <h1>{{video.lessonName}}</h1>
                 </a>    
-                <p><a :href="video.videoURL" target="_blank">{{video.videoURL}}</a></p>
+                <p class="video-link"><a :href="video.videoURL" target="_blank">{{video.videoURL}}</a></p>
             </div>
         </div>
         <div v-else class="assign-timestamps-container">
@@ -342,7 +342,11 @@ video {
     flex-direction: column;
     height: 600px;
 }
-
+.video-link {
+  margin: none;
+  width: 285px;
+  height: 170px;
+}
 .display-timestamps-div {
     width: 310px;
     height: 400px;

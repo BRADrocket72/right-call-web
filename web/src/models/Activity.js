@@ -4,10 +4,11 @@ export default class Activity {
     videoId = "";
     answerOptions = []
 
-    constructor(id, questionText, videoId, answerOptions) {
-        this.id = id;
+    constructor(timestamp, questionText, answers, correctAnswer, videoClipId) {
+        this.timestamp = timestamp
         this.questionText = questionText;
-        this.videoId = videoId
-        this.answerOptions = answerOptions
+        this.answers = answers
+        this.correctAnswer = correctAnswer
+        this.videoClipId = videoClipId
     }
 }
