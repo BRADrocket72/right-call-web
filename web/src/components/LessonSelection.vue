@@ -42,19 +42,15 @@ export default {
             });
         }
     },
-    setup() {
-        var VideoClip = useVideoClipStore();
-        return VideoClip;
-    },
     async mounted() {
+        var videoClip = useVideoClipStore();
         var store = useUsersStore();
         if (store.currentUserToken.length < 1) {
             this.$router.push({
                 name: "LoginPage"
             });
         }
-        await this.fetchVideoClips();
-        this.VideoClips = this.clips;
+        this.videoClips = await videoClip.fetchVideoClips();
         this.ready = true;
     }
 };

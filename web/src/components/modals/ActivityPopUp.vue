@@ -35,7 +35,6 @@
 
 <script>
 import {checkAnswer} from "@/models/GetResults.js"
-import Activity from '@/models/Activity';
 
   export default {
     name: 'ActivityPopUp',
@@ -45,7 +44,7 @@ import Activity from '@/models/Activity';
       }
     },
     props:{
-      question: Activity,
+      question: Object,
       questionNumber: Number,
       answersArray: [Object]
     },
