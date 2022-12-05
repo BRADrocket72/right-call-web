@@ -46,6 +46,7 @@ export default {
     },
     async uploadVideo() {
       await this.postVideo(this.videoFile);
+      this.$router.push({name: "AdminPage"})
     },
   },
 };
