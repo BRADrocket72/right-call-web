@@ -43,6 +43,7 @@ export default {
     async uploadVideo() {
       var videoClipStore = useVideoClipStore();
       await videoClipStore.postVideo(this.videoFile);
+      this.$router.push({name: "AdminPage"})
     },
   },
 };

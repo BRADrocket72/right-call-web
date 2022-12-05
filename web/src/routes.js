@@ -6,6 +6,7 @@ import AdminPage from "@/components/AdminPage.vue"
 import VideoUpload from "@/components/VideoUpload.vue"
 import AssignTimestamps from "@/components/AssignTimestamps.vue"
 import UserResultsPage from "@/components/UserResultsPage.vue"
+import LessonDeletion from "@/components/LessonDeletion.vue"
 import { createRouter, createWebHistory } from 'vue-router'
 
 
@@ -50,6 +51,11 @@ const routesArray = [
         path: "/UserResultsPage",
         name: "UserResultsPage",
         component: UserResultsPage
+    },
+    {
+        path: "/LessonDeletion",
+        name: "LessonDeletion",
+        component: LessonDeletion
     }
 ]
 

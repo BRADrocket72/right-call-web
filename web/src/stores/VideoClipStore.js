@@ -46,6 +46,15 @@ export const useVideoClipStore = defineStore("VideoClip", {
             } catch (error) {
                 console.log(error)
             }
+        },
+        async deleteVideoClip(videoClipId) {
+            try {
+                const data = await axios.delete('http://localhost:3000/api/videoclip/delete/' + videoClipId)
+                return data.data
+            } catch (error) {
+                alert(error)
+                console.log(error)
+            }
         }
-    },
+    }
 })
