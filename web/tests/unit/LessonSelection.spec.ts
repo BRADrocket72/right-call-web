@@ -1,4 +1,4 @@
-import { mount,createLocalVue  } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import LessonSelection from '@/components/LessonSelection.vue'
 import 'jest'
 import VideoEditor from '@/components/VideoEditor.vue';
