@@ -26,13 +26,9 @@ export default {
   components: {
     LoggedInNavBarVue,
   },
-  setup() {
-    var VideoClip = useVideoClipStore();
-    return VideoClip;
-  },
   mounted() {
-    var store = useUsersStore();
-    if (store.currentUserToken.length < 1) {
+    var userStore = useUsersStore();
+    if (userStore.currentUserToken.length < 1) {
       this.$router.push({
         name: "LoginPage",
       });
@@ -45,7 +41,8 @@ export default {
       console.log(this.videoFile);
     },
     async uploadVideo() {
-      await this.postVideo(this.videoFile);
+      var videoClipStore = useVideoClipStore();
+      await videoClipStore.postVideo(this.videoFile);
       this.$router.push({name: "AdminPage"})
     },
   },

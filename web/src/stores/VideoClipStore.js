@@ -17,7 +17,6 @@ export const useVideoClipStore = defineStore("VideoClip", {
                 this.videoClips = data.data
                 return data.data
             } catch (error) {
-                alert(error)
                 console.log(error);
             }
         },
@@ -27,7 +26,6 @@ export const useVideoClipStore = defineStore("VideoClip", {
                 this.videoClip = data.data
                 return data.data
             } catch (error) {
-                alert(error)
                 console.log(error);
             }
         },
@@ -38,7 +36,6 @@ export const useVideoClipStore = defineStore("VideoClip", {
                 const data = await axios({ method: 'post', url: 'http://localhost:3000/api/videoclip/post', data: bodyFormData, headers: { "Content-Type": "multipart/form-data" } })
                 return data.data
             } catch (error) {
-                alert(error)
                 console.log(error)
             }
         },
@@ -47,7 +44,6 @@ export const useVideoClipStore = defineStore("VideoClip", {
             try {
                 await axios.patch(`http://localhost:3000/api/videoclip/update/${id}`, { timeStamps: timestamps })
             } catch (error) {
-                alert(error)
                 console.log(error)
             }
         },

@@ -43,13 +43,9 @@ export default {
   components: {
     LoginNavBar
   },
-  setup() {
-        var Users = useUsersStore();
-        return Users;
-    },
-
   methods: {
     async uploadUsers(){
+      var userStore = useUsersStore();
       var userName = document.getElementById("userName").value
       var password = document.getElementById("password").value
       var userTypes = document.getElementsByName("userType")
@@ -59,15 +55,12 @@ export default {
         }
       }
       
-      await this.postUser(userName, password, userType)
+      await userStore.postUser(userName, password, userType)
       this.$router.push({
         name: "LessonSelection"
       });
       
     }
-  },
-  mounted() {
-    // const videoUrl = document.getElementById("urlUpload")
   }
 }
 </script>

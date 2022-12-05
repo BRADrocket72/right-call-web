@@ -1,14 +1,25 @@
 import { mount } from '@vue/test-utils'
 import 'jest'
 import ResultsPage from '@/components/modals/ResultsPage.vue';
-import Answer from "@/models/Answer.js";
 
 describe('ResultsPage.vue', () => {
     let wrapper: any;
+    let mockRouter: any;
+    let mockRoute: any;
     beforeEach(() => {
+        mockRoute = {}
+        mockRouter = {
+            push: jest.fn()
+        }
         wrapper = mount(ResultsPage, {
             props: {
                 answersArray: ["Correct", "Incorrect"]
+              },
+              global: {
+                mocks: {
+                    $router: mockRouter,
+                    $route: mockRoute
+                }
               }
         })
     })
@@ -29,12 +40,13 @@ describe('ResultsPage.vue', () => {
         expect(wrapper.vm.numberOfQuestions).toEqual(2)
         expect(wrapper.vm.percentageCorrect).toEqual("50.00%")
     })
-   // error with $router.push
    
-    // it('calls the close modal function on button click', async () => {
-    //     const button = wrapper.find('.btn-green')
-    //     const closeFunction = jest.spyOn(wrapper.vm, 'close')
-    //     await button.trigger('click')
-    //     expect(closeFunction).toBeCalled
-    // })
+    it('calls the close modal function and sends to the router on button click', async () => {
+        const button = wrapper.find('.btn-green')
+        const closeFunction = jest.spyOn(wrapper.vm, 'close')
+        await button.trigger('click')
+        expect(closeFunction).toHaveBeenCalledTimes(1)
+        expect(mockRouter.push).toHaveBeenCalledTimes(1)
+        expect(mockRouter.push).toHaveBeenCalledWith({"name": "LessonSelection"})
+    })
 })
