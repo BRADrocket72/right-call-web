@@ -1,4 +1,5 @@
 <template>
+<div>
   <LoggedInNavBar />
   <br/><br/>
   <div v-if="ready">
@@ -14,6 +15,7 @@
         </div>
       </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -40,19 +42,15 @@ export default {
             });
         }
     },
-    setup() {
-        var VideoClip = useVideoClipStore();
-        return VideoClip;
-    },
     async mounted() {
+        var videoClip = useVideoClipStore();
         var store = useUsersStore();
         if (store.currentUserToken.length < 1) {
             this.$router.push({
                 name: "LoginPage"
             });
         }
-        await this.fetchVideoClips();
-        this.VideoClips = this.clips;
+        this.videoClips = await videoClip.fetchVideoClips();
         this.ready = true;
     }
 };
@@ -75,17 +73,20 @@ export default {
 
 .lesson-div {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
   width: 100%;
   margin: 0 auto;
 }
 
 .lesson {
-  margin: 0 2% 0 2%;
+  flex: 1 0 33%;
+  margin: 0 30px 30px 0;
   text-align: left;
-  height: 300px;
-  width: 285px;
+  height: 350px;
+  max-height: 350px;
+  width: 200px;
+  max-width: 285px;
   box-shadow: 0 10px 10px #d1d1d1;
 }
 

@@ -17,7 +17,6 @@ export const useVideoClipStore = defineStore("VideoClip", {
                 this.videoClips = data.data
                 return data.data
             } catch (error) {
-                alert(error)
                 console.log(error);
             }
         },
@@ -27,27 +26,35 @@ export const useVideoClipStore = defineStore("VideoClip", {
                 this.videoClip = data.data
                 return data.data
             } catch (error) {
-                alert(error)
                 console.log(error);
             }
         },
-        async postVideo(videoUrl) {
-            try{
-                const data = await axios.post('http://localhost:3000/api/videoclip/post', { videoURL: videoUrl})
+        async postVideo(videoFile) {
+            try {
+                var bodyFormData = new FormData();
+                bodyFormData.append("file", videoFile)
+                const data = await axios({ method: 'post', url: 'http://localhost:3000/api/videoclip/post', data: bodyFormData, headers: { "Content-Type": "multipart/form-data" } })
                 return data.data
-            } catch(error) {
-                alert(error)
+            } catch (error) {
                 console.log(error)
             }
         },
 
-        async updateTimestamps(id,timestamps) {
+        async updateTimestamps(id, timestamps) {
             try {
-                await axios.patch(`http://localhost:3000/api/videoclip/update/${id}`, { timeStamps: timestamps})
-            } catch(error) {
+                await axios.patch(`http://localhost:3000/api/videoclip/update/${id}`, { timeStamps: timestamps })
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async deleteVideoClip(videoClipId) {
+            try {
+                const data = await axios.delete('http://localhost:3000/api/videoclip/delete/' + videoClipId)
+                return data.data
+            } catch (error) {
                 alert(error)
                 console.log(error)
             }
         }
-    },
+    }
 })

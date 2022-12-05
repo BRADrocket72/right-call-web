@@ -10,7 +10,6 @@ router.post('/lessons/post', async (req, res) => {
         description: req.body.description,
         videoClipsArray: req.body.videoClipsArray
     })
-
     try {
         res.header('Access-Control-Allow-Origin', '*')
         const dataToSave = await data.save();

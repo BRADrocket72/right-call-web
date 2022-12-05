@@ -24,9 +24,9 @@
             <br>
             <br>
           </slot>
-            <button type = "button" class="btn-green" @click="handleAnswerSelected(question, allPossibleAnswers, question.answerOptions[0]); close()"> {{question.answerOptions[0]}} </button>
+            <button type = "button" class="btn-green" @click="handleAnswerSelected(question, answersArray, question.answers[0]); close()"> {{question.answers[0]}} </button>
             
-            <button type = "button" class="btn-green" @click="handleAnswerSelected(question, allPossibleAnswers, question.answerOptions[1]); close()">  {{question.answerOptions[1]}}</button>
+            <button type = "button" class="btn-green" @click="handleAnswerSelected(question, answersArray, question.answers[1]); close()">  {{question.answers[1]}}</button>
         </section>
       </div>
     </div>
@@ -35,7 +35,6 @@
 
 <script>
 import {checkAnswer} from "@/models/GetResults.js"
-import Activity from '@/models/Activity';
 
   export default {
     name: 'ActivityPopUp',
@@ -45,9 +44,9 @@ import Activity from '@/models/Activity';
       }
     },
     props:{
-      question: Activity,
+      question: Object,
       questionNumber: Number,
-      allPossibleAnswers: [Object]
+      answersArray: [Object]
     },
     methods: {
       close() {

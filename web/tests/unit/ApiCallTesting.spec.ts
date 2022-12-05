@@ -20,10 +20,13 @@ describe('API CALLS INTEGRATION TESTING', () => {
   it('fetchVideoClips() retrieves the correct amount of videos from the DB', async () => {
     await expect(retrieveAllVideos.length).toBeGreaterThan(1)
   });
+  
   it('fetchVideoClips() retrieves the correct Videos from a db', async () => {
     await expect(retrieveAllVideos[0]._id).toEqual("637a61d49db11c5b4dd1b3b8")
   });
+
   it('fetchVideoClipById() retrieves the correct videos by id successfully from a db', async () => {
     await expect(retrieveSpecificVideo.timeStamps.length).toBeGreaterThan(0)
   });
+  
 })

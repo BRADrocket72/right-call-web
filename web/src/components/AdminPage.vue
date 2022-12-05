@@ -6,7 +6,7 @@
     <br><br>
     <nav>
         <router-link to="/VideoUpload">Upload Lesson Video</router-link> |
-        <router-link to="/AddQuestions">Add Question/s to Video</router-link> |
+        <router-link to="/LessonDeletion">Delete Lesson</router-link> |
         <router-link to="/AssignTimestamps">Assign Timestamps to a Video</router-link>
     </nav>
   </div>

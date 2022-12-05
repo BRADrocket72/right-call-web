@@ -1,17 +1,3 @@
-export function getEachQuestionResults(numberOfQuestions, usersAnswers) {
-  let correctOrIncorrectResults = []
-  for (let i=0; i<numberOfQuestions; i++) {
-    if (usersAnswers[i].isCorrect == true) {
-      correctOrIncorrectResults.push("Correct")
-    }
-    else{
-      correctOrIncorrectResults.push("Incorrect")
-    }
-  } 
-  return correctOrIncorrectResults
-}
-
-
 export function getPercentageResults(resultsArray, numberOfQuestions) {
   let correctCounter = 0;
   for (const result of resultsArray) {
@@ -25,10 +11,11 @@ export function getPercentageResults(resultsArray, numberOfQuestions) {
 
 
 export function checkAnswer(question, answersArray, answerChoice) {
-  for (const answer of answersArray) {
-    if (question.id == answer.activityId) {
-      answer.isCorrect = (answerChoice === answer.answerText);
-    }
+  if (question.correctAnswer == answerChoice) {
+    answersArray.push("Correct")
+  }
+  else{
+    answersArray.push("Incorrect")
   }
   return answersArray
 }

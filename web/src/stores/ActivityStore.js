@@ -17,7 +17,6 @@ export const useActivityStore = defineStore("Activity", {
                 this.activityList = data.data
                 return data.data
             } catch (error) {
-                alert(error)
                 console.log(error);
             }
         },
@@ -32,7 +31,6 @@ export const useActivityStore = defineStore("Activity", {
                     videoclipId: videoclipId
                 })
             } catch(error) {
-                alert(error)
                 console.log(error)
             }
         },
@@ -46,7 +44,6 @@ export const useActivityStore = defineStore("Activity", {
                     correctAnswer: correctAnswer
                 })
             } catch(error) {
-                alert(error)
                 console.log(error)
             }
         },
@@ -54,7 +51,6 @@ export const useActivityStore = defineStore("Activity", {
             try {
                 await axios.delete(`http://localhost:3000/api/activity/delete/${id}`)
             } catch(error) {
-                alert(error)
                 console.log(error)
             }
         }
