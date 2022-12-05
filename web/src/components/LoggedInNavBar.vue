@@ -13,8 +13,12 @@
                     <li class="nav-item">
                        <a href="#" class="nav-link">Contact Us</a>
                     </li>
-                    <router-link class="button" type="submit" to="/AdminPage">Admin Page</router-link>
-                    <router-link class="button" type="submit" to="/UserResultsPage">View My Results</router-link>
+                    <div v-if="isUserAdminOrInstructor">
+                        <router-link class="button" type="submit" to="/AdminPage">Admin Page</router-link>
+                    </div>
+                    <div v-if="isUserStudent"> 
+                        <router-link class="button" type="submit" to="/UserResultsPage">View My Results</router-link>
+                    </div>
                 </ul>
             </div>
             <div class="d-inline">
@@ -30,6 +34,21 @@ import { useUsersStore } from '@/stores/UserStore';
 
 export default {
   name: 'LoggedInNavBar',
+  data() {
+    return {
+        isUserAdminOrInstructor: false,
+        isUserStudent: false
+    }
+  },
+  mounted() {
+    var userStore = useUsersStore();
+    if (userStore.currentUserType== "Admin" || userStore.currentUserType== "Instructor" ) {
+        this.isUserAdminOrInstructor = true
+    }
+    if (userStore.currentUserType == "Student") {
+        this.isUserStudent = true
+    }
+  },
   methods: {
     logout() {
         var store = useUsersStore();
