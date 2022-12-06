@@ -1,5 +1,5 @@
 export default class VideoClip {
-    id = ""
+    _id = ""
     videoUrl = ""
     videoName = ""
     timeStamps = []

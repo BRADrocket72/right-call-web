@@ -2,49 +2,68 @@ import { mount } from '@vue/test-utils'
 import LessonSelection from '@/components/LessonSelection.vue'
 import 'jest'
 import VideoEditor from '@/components/VideoEditor.vue';
-import { setActivePinia, createPinia } from 'pinia'
-import { useVideoClipStore } from "@/stores/VideoClipStore";
-import VueRouter from 'vue-router'
-
-
+import {createPinia, setActivePinia} from 'pinia'
+import { createTestingPinia } from '@pinia/testing'
 
 describe('LessonSelection.vue', () => {
-    
-    let newStore = null
-    let retrieveAllVideos: any
-    let retrieveSpecificVideo: any
+    let videoClips: [{
+        _id: "123",
+        videoURL: "youtube.com",
+        timestamps: [1,2]
+    }]
     let wrapper: any;
+    let mockRouter: any;
+    let mockRoute: any;
     beforeEach(() => {
-        wrapper = mount(LessonSelection)
+        mockRouter = {
+            push: jest.fn()
+        }, 
+        // jest.spyOn(LessonSelection, 'fetchVideos').mockResolvedValue(videoClips)
+        setActivePinia(createPinia())
+        wrapper = mount(LessonSelection, {
+            data() {
+                return {
+                    ready: true,
+                    videoClips: [{_id: "123test", videoUrl: "youtube.com", videoName: "Football Lesson One", timeStamps: [1,5,25]}, {_id: "123test", videoUrl: "youtube.com", videoName: "Football Lesson One", timeStamps: [1,5,25]}]
+                }
+            },
+            global: {
+                mocks: {
+                    $router: mockRouter,
+                    $route: mockRoute
+                }
+                // plugins: [
+                //     createTestingPinia()
+                // ]
+            }
+        })
     })
 
-    beforeAll(async () => {
-        setActivePinia(createPinia())
-      
-        // create an instance of the data store
-        newStore = useVideoClipStore()
-        retrieveAllVideos = await newStore.fetchVideoClips()
-        retrieveSpecificVideo = await newStore.fetchVideoClipById('637a61d49db11c5b4dd1b3b8')
-      })
-
-    it('renders LessonSelection', async () => {
+    it('renders LessonSelection', () => {
         expect(wrapper.exists()).toBe(true)
     })
 
-    it('renders child divs equal to amount of lesson videos', async () => {
-        const parentDiv = wrapper.find('div.lesson-div')
-        const childDivs = parentDiv.findAll('div.lesson')
-        expect(childDivs.length).toEqual(wrapper.vm.videoClips.length)
+    it('renders Lesson Selection Page Header', () => {
+        const header = wrapper.find('.div-header')
+        expect(header.exists()).toBe(true)
+    })
+    
+    it('videoClips variable is set to the array of videos from data()', () => {
+        expect(wrapper.vm.videoClips.length).toEqual(2)
     })
 
-    it('renders the image for the first lesson', async () => {
-        const firstLesson = wrapper.find('div.lesson')
-        expect(firstLesson.find('img.lesson-img').exists()).toEqual(true)
+    it('renders lessons Div', () => {
+        const lessonDiv = wrapper.find('.lesson-div')
+        expect(lessonDiv.exists()).toBe(true)
     })
 
-    it('opens a video lesson when clicked', async () => {
-        const lesson = wrapper.find('a.nav-link')
-        await lesson.trigger('click')
-        expect(wrapper.findComponent(VideoEditor).exists()).toBe(true)
+    it('displays correct number of lessons', () => {
+        const lessons = wrapper.findAll('.lesson')
+        expect(lessons.length).toBe(2)
+    })
+
+    it('router.push is called successfully when no user token is set', async () => {
+        expect(mockRouter.push).toHaveBeenCalledWith({'name': 'LoginPage'})
+        expect(mockRouter.push).toHaveBeenCalledTimes(1)
     })
 })
