@@ -3,17 +3,17 @@
   <LoginNavBar />
   <br/><br/>
     <div id="app">
-    <div id="alert" v-if="alert">{{ alert }}</div>
+    <!-- <div id="alert" v-if="alert">{{ alert }}</div> -->
     <h1>Registration  Page</h1>
     <br><br>
     <form @submit.prevent="loginWithPassword">
       <label>
         Email or username
-        <input type="text" id="userName" v-model="emailOrUsername" />
+        <input type="text" id="userName" />
       </label>
       <label>
         Password
-        <input type="password" id="password" v-model="password" />
+        <input type="password" id="password" />
       </label>
       <br/><br/>
       <h3>Are you an Student, Instructor, or Admin?</h3>
