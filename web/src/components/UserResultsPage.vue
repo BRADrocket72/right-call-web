@@ -5,11 +5,11 @@
         <div class="results-table">
             <table>
                 <tr>
-                    <th>Lesson ID</th>
+                    <th>Lesson Name</th>
                     <th>Score</th>
                 </tr>
                 <tr v-for="result in results" :key="result">
-                    <td>{{result.lessonId}}</td>
+                    <td>{{result.lessonName}}</td>
                     <td>{{result.score}}</td>
                 </tr>
             </table>

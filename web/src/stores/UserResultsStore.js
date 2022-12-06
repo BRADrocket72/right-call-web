@@ -11,13 +11,14 @@ export const useUserResultsStore = defineStore("UserResults", {
         }
     },
     actions: {
-        async postUserResults(username,score,lessonId) {
+        async postUserResults(username,score,lessonId, lessonName) {
             try {
                 await axios.post(`http://localhost:3000/api/userResults/post`, 
                 { 
                     username: username,
                     score: score,
-                    lessonId: lessonId
+                    lessonId: lessonId,
+                    lessonName: lessonName
                 })
             } catch(error) {
                 console.log(error)

@@ -8,7 +8,8 @@ router.post('/userResults/post', async (req, res) => {
     const data = new UserResults({
         username: req.body.username,
         score: req.body.score,
-        lessonId: req.body.lessonId
+        lessonId: req.body.lessonId,
+        lessonName: req.body.lessonName
     })
 
     try {

@@ -34,11 +34,11 @@ export default {
     ActivityPopUp,
     ResultsPage,
     LoggedInNavBar
-},
+  },
   props: {
     videoId: {
       type: String
-    }
+    },
   },
   data() {
     return {
@@ -51,7 +51,8 @@ export default {
       answers: [],
       questionCounter: 0,
       currentVideoClip: VideoClip,
-      percentageCorrect: ""
+      percentageCorrect: "",
+      videoName: ""
     };
   },
   async mounted() {
@@ -63,6 +64,7 @@ export default {
       })
     }
     this.currentVideoClip = await videoClipStore.fetchVideoClipById(this.videoId);
+    this.videoName = this.currentVideoClip.videoName
     const video2 = document.getElementById(this.videoId)
     var activityStore = useActivityStore();
     this.currentVideoQuestions = await activityStore.fetchActivitiesByVideoclipId(this.videoId)
@@ -128,7 +130,7 @@ export default {
     async closeResultsPage(percentageCorrect) {
       var userResults = useUserResultsStore()
       var userStore = useUsersStore()
-      await userResults.postUserResults(userStore.currentUserName,percentageCorrect,this.videoId)
+      await userResults.postUserResults(userStore.currentUserName,percentageCorrect,this.videoId,this.videoName)
       this.$router.push({
         name: "LessonSelection"
       })

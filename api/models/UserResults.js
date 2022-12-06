@@ -13,6 +13,10 @@ const userResultsSchema = new mongoose.Schema({
     lessonId: {
         required: true,
         type: String
+    },
+    lessonName: {
+        required: true,
+        type: String
     }
 })
 
