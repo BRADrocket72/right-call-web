@@ -56,9 +56,15 @@ nav.navbar {
     padding-left: 20%;
 }
 
+.nav-link {
+    min-height: 90px;
+}
+
 a.nav-link {
+    min-height: 45px;
     font-weight: bold;
     color: #0e333c;
+    margin-right: 15px;
 }
 
 .container {
