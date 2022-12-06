@@ -43,9 +43,7 @@ export default {
   },
   methods: {
     close() {
-      this.$router.push({
-        name: "LessonSelection"
-      });
+      this.$emit('close',this.percentageCorrect)
     },
     findNumberOfQuestionsAnswered() {
       for (let i = 0; i< this.answersArray.length; i++) {

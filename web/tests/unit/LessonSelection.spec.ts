@@ -4,8 +4,12 @@ import 'jest'
 import VideoEditor from '@/components/VideoEditor.vue';
 import { setActivePinia, createPinia } from 'pinia'
 import { useVideoClipStore } from "@/stores/VideoClipStore";
+import VueRouter from 'vue-router'
+
+
 
 describe('LessonSelection.vue', () => {
+    
     let newStore = null
     let retrieveAllVideos: any
     let retrieveSpecificVideo: any

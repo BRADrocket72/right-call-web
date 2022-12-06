@@ -52,7 +52,7 @@ export default {
       }else{
         userStore.currentUserToken = loginStatus.accessToken
         userStore.currentUserType = loginStatus.userType
-        console.log(userStore.currentUserType)
+        userStore.currentUserName = userName
          if (userStore.currentUserType == "Student") {
           this.$router.push({
             name: "LessonSelection"
