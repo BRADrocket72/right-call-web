@@ -22,7 +22,7 @@ export const useActivityStore = defineStore("Activity", {
         },
         async postActivities(timestamp,questionText,answers,correctAnswer,videoclipId) {
             try {
-                await axios.post(`http://localhost:3000/api/activity/post`, 
+                const data = await axios.post(`http://localhost:3000/api/activity/post`, 
                 { 
                     timestamp: timestamp,
                     questionText: questionText,
@@ -30,26 +30,29 @@ export const useActivityStore = defineStore("Activity", {
                     correctAnswer: correctAnswer,
                     videoclipId: videoclipId
                 })
+                return data.data
             } catch(error) {
                 console.log(error)
             }
         },
         async updateActivities(id,timestamp,questionText,answers,correctAnswer) {
             try {
-                await axios.patch(`http://localhost:3000/api/activity/update/${id}`, 
+                const data = await axios.patch(`http://localhost:3000/api/activity/update/${id}`, 
                 { 
                     timestamp: timestamp,
                     questionText: questionText,
                     answers: answers,
                     correctAnswer: correctAnswer
                 })
+                return data.data
             } catch(error) {
                 console.log(error)
             }
         },
         async deleteActivities(id) {
             try {
-                await axios.delete(`http://localhost:3000/api/activity/delete/${id}`)
+                const data = await axios.delete(`http://localhost:3000/api/activity/delete/${id}`)
+                return data.data
             } catch(error) {
                 console.log(error)
             }
