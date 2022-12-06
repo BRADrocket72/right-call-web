@@ -10,7 +10,7 @@
       <button id="playOrPause" @click="playOrPauseVideo">Play</button>
       <span id="videoCurrentTime">00:00</span> / <span id="videoDuration">00:00</span>
     </div>
-    <results-page v-if="isResultsPageModalVisible" :answersArray="answers">
+    <results-page v-if="isResultsPageModalVisible" :answersArray="answers" @close="closeResultsPage">
     </results-page>
     <activity-pop-up v-if="questionsLoaded && isModalVisible" :answersArray="answers"
       :question="currentVideoQuestions[questionIndex]" :questionNumber="questionIndex + 1" @close="closeModal" />
@@ -25,6 +25,7 @@ import { formatTimeForVideo } from "@/models/FormatVideosTime.js"
 import { useVideoClipStore } from "@/stores/VideoClipStore";
 import { useUsersStore } from '@/stores/UserStore';
 import { useActivityStore } from '@/stores/ActivityStore';
+import { useUserResultsStore } from "@/stores/UserResultsStore"
 import LoggedInNavBar from './LoggedInNavBar.vue';
 
 export default {
@@ -33,11 +34,11 @@ export default {
     ActivityPopUp,
     ResultsPage,
     LoggedInNavBar
-},
+  },
   props: {
     videoId: {
       type: String
-    }
+    },
   },
   data() {
     return {
@@ -49,21 +50,21 @@ export default {
       questionsLoaded: false,
       answers: [],
       questionCounter: 0,
-      currentVideoClip: VideoClip
+      currentVideoClip: VideoClip,
+      percentageCorrect: "",
+      videoName: ""
     };
   },
-  setup() {
-    var VideoClip = useVideoClipStore();
-    return VideoClip;
-  },
   async mounted() {
-    var store = useUsersStore();
-    if (store.currentUserToken.length < 1) {
+    var videoClipStore = useVideoClipStore();
+    var userStore = useUsersStore();
+    if (userStore.currentUserToken.length < 1) {
       this.$router.push({
         name: "LoginPage"
       })
     }
-    this.currentVideoClip = await this.fetchVideoClipById(this.videoId);
+    this.currentVideoClip = await videoClipStore.fetchVideoClipById(this.videoId);
+    this.videoName = this.currentVideoClip.videoName
     const video2 = document.getElementById(this.videoId)
     var activityStore = useActivityStore();
     this.currentVideoQuestions = await activityStore.fetchActivitiesByVideoclipId(this.videoId)
@@ -80,6 +81,7 @@ export default {
         if (video2.duration == video2.currentTime) {
           if (video2.duration != this.currentVideoClip.timeStamps[this.currentVideoClip.timeStamps.length-1]){
             this.isResultsPageModalVisible = true;
+            video2.pause()
           }
         }
       })
@@ -118,10 +120,20 @@ export default {
       const video2 = document.getElementById(this.videoId)
       if (video2.duration == video2.currentTime) {
           this.isResultsPageModalVisible = true;
+          video2.pause()
+      } else{
+          const playOrPauseButton = document.getElementById("playOrPause")
+          playOrPauseButton.innerHTML = "Pause"
+          video2.play();
       }
-      const playOrPauseButton = document.getElementById("playOrPause")
-      playOrPauseButton.innerHTML = "Pause"
-      video2.play();
+    },
+    async closeResultsPage(percentageCorrect) {
+      var userResults = useUserResultsStore()
+      var userStore = useUsersStore()
+      await userResults.postUserResults(userStore.currentUserName,percentageCorrect,this.videoId,this.videoName)
+      this.$router.push({
+        name: "LessonSelection"
+      })
     }
   }
 }

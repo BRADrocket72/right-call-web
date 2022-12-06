@@ -5,7 +5,8 @@ export const useUsersStore = defineStore("Users", {
     state: () => ({
         users: [],
         currentUserToken: "",
-        currentUserType: ""
+        currentUserType: "",
+        currentUserName: ""
     }),
     getters: {
         getUsers(state) {
@@ -22,7 +23,6 @@ export const useUsersStore = defineStore("Users", {
                 })
                 return data.data
             } catch(error) {
-                alert(error)
                 console.log(error)
             }
         },
@@ -34,7 +34,6 @@ export const useUsersStore = defineStore("Users", {
                 })
                 return data.data
             } catch(error) {
-                alert(error)
                 console.log(error)
             }
         }
