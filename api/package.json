@@ -19,7 +19,6 @@
   "homepage": "https://github.com/BRADrocket72/right-call-web#readme",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.218.0",
-    "@shelf/jest-mongodb": "^4.1.4",
     "aws-sdk": "^2.1264.0",
     "body-parser": "^1.20.1",
     "cors": "^2.8.5",
@@ -27,12 +26,10 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.12.1",
-    "mongodb-memory-server": "^8.10.1",
     "mongoose": "^6.7.0",
     "multer": "^1.4.5-lts.1",
     "multer-s3": "^3.0.1",
     "nodemon": "^2.0.20",
-    "supertest": "^6.3.2",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
