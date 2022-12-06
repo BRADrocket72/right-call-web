@@ -23,7 +23,7 @@ router.post('/videoClip/post', upload.single("file"), async (req, res) => {
         const fileUploadURL = await s3Upload(req.file)
         const data = new VideoClip({
             videoURL: fileUploadURL,
-            videoName: req.body.videoName
+            videoName: req.body.name
         })
         res.header('Access-Control-Allow-Origin', '*')
         const dataToSave = await data.save();

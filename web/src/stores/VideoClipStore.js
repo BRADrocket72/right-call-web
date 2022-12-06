@@ -31,9 +31,13 @@ export const useVideoClipStore = defineStore("VideoClip", {
         },
         async postVideo(videoFile,videoName) {
             try {
+                const config = {
+                    onUploadProgress: progressEvent => console.log(progressEvent.loaded)
+                }
                 var bodyFormData = new FormData();
                 bodyFormData.append("file", videoFile)
-                await axios({ method: 'post', url: 'http://localhost:3000/api/videoclip/post', data: (bodyFormData, videoName), headers: { "Content-Type": "multipart/form-data" } })
+                bodyFormData.append("name",videoName)
+                await axios({ method: 'post', url: 'http://localhost:3000/api/videoclip/post', data: bodyFormData, headers: { "Content-Type": "multipart/form-data" }, config: config })
             } catch (error) {
                 console.log(error)
             }

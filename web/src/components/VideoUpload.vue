@@ -8,6 +8,9 @@
         <label for="video-name">Name of Video: </label><input type="text" id="video-name" name="video-name" />
         <button @click="uploadVideo">Upload Video</button>
       </div>
+      <div class="uploading-video-div">
+        <p v-if="uploading" class="upload-in-progress">Please wait, upload in progress...</p>
+      </div>
     </div>
   </div>
 </template>
@@ -24,7 +27,8 @@ export default {
   },
   data() {
     return {
-      videoName: ""
+      videoName: "",
+      uploading: false
     }
   },
   mounted() {
@@ -41,6 +45,7 @@ export default {
       this.videoURL = fileInput.files[0]
     },
     async uploadVideo() {
+      this.uploading = true
       const videoName = document.getElementById('video-name')
       this.videoName = videoName.value
       var videoClipStore = useVideoClipStore();
@@ -54,7 +59,7 @@ export default {
 <style scoped>
 .upload-video-div {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
 }
 
 .video-info-div {
@@ -64,9 +69,26 @@ export default {
 
 .video-info-div label {
   text-align: left;
+  font-weight: bold;
 }
 
 .video-info-div input {
   margin: 10px 0 30px 0;
+  width: 300px;
+}
+
+.video-info-div button {
+  width: 200px;
+  height: 50px;
+}
+
+.uploading-video-div {
+  display: flex;
+}
+
+.upload-in-progress {
+  font-size: 30px;
+  font-weight: bold;
+  margin: 20px 0 0 0;
 }
 </style>
