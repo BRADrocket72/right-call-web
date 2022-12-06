@@ -25,7 +25,7 @@ router.post('/userResults/post', async (req, res) => {
 router.get('/userResults/getAll', async (req, res) => {
     try {
         res.header('Access-Control-Allow-Origin', '*')
-        const data = await Activity.find();
+        const data = await UserResults.find();
         res.json(data)
     }
     catch (error) {
@@ -37,7 +37,7 @@ router.get('/userResults/getAll', async (req, res) => {
 router.get('/userResults/get/:videoclipId', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
-        const data = await User.find({"userName": req.params.userName});
+        const data = await UserResults.find({"userName": req.params.userName});
         res.json(data)
     }
     catch (error) {
