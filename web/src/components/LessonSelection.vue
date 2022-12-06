@@ -10,7 +10,7 @@
         <div class="lesson" v-for="video in this.videoClips" :key="video._id">
           <a class="nav-link" @click="openVideo(video._id)">
             <img class="lesson-img" :alt="video._id" src="../../images/richard-bagan-SmQ2Cku3alc-unsplash.jpg" /> -->
-            <p>{{ video._id }}</p>
+            <p>{{ video.videoName }}</p>
           </a>
         </div>
       </div>
@@ -33,8 +33,7 @@ export default {
         };
     },
     methods: {
-        openVideo(videoID,videoName) {
-          console.log(videoName)
+        openVideo(videoID) {
             this.$router.push({
                 name: "VideoEditor",
                 params: {
