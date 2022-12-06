@@ -2,10 +2,12 @@ export default class VideoClip {
     id = ""
     videoUrl = ""
     videoName = ""
+    timeStamps = []
 
-    constructor(id, videoUrl, videoName) {
-        this.id = id;
+    constructor(_id, videoUrl, videoName, timeStamps) {
+        this._id = _id;
         this.videoUrl = videoUrl,
-        this.videoName = videoName
+        this.videoName = videoName,
+        this.timeStamps = timeStamps
     }
 }

@@ -7,7 +7,7 @@
         <div class="video-list-div" >
             <div class="lesson" v-for="video in this.lessons" :key="video.id">
                 <a class="nav-link" @click="videoSelection(video)">
-                    <h1>{{video.lessonName}}</h1>
+                    <h1>{{video.videoName}}</h1>
                 </a>   
                 <p>View Video Before Deletion:</p> 
                 <p class="video-link"><a :href="video.videoURL" target="_blank">{{video.videoURL}}</a></p>
