@@ -20,14 +20,14 @@ const upload = multer({ storage: storage, fileFilter })
 //Post Method
 router.post('/videoClip/post', upload.single("file"), async (req, res) => {
     try {
-        const fileUploadURL = await s3Upload(req.file);
+        const fileUploadURL = await s3Upload(req.file)
         const data = new VideoClip({
             videoURL: fileUploadURL,
-            timeStamps: req.body.timeStamps
+            videoName: req.body.videoName
         })
         res.header('Access-Control-Allow-Origin', '*')
         const dataToSave = await data.save();
-        res.header('Access-Control-Allow-Origin', '*')
+        res.header('Content-Type', 'multipart/form-data')
         res.status(200).json(dataToSave)
     }
     catch (error) {
