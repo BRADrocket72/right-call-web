@@ -34,10 +34,10 @@ router.get('/userResults/getAll', async (req, res) => {
 })
 
 //Get by username
-router.get('/userResults/get/:videoclipId', async (req, res) => {
+router.get('/userResults/get/:username', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
-        const data = await UserResults.find({"userName": req.params.userName});
+        const data = await UserResults.find({"username": req.params.username});
         res.json(data)
     }
     catch (error) {

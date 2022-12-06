@@ -477,7 +477,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/userResults/:username",
+							"raw": "localhost:3000/api/userResults/get/:username",
 							"host": [
 								"localhost"
 							],
@@ -485,6 +485,7 @@
 							"path": [
 								"api",
 								"userResults",
+								"get",
 								":username"
 							]
 						}
