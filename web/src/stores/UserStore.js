@@ -5,7 +5,8 @@ export const useUsersStore = defineStore("Users", {
     state: () => ({
         users: [],
         currentUserToken: "",
-        currentUserType: ""
+        currentUserType: "",
+        currentUserName: ""
     }),
     getters: {
         getUsers(state) {
