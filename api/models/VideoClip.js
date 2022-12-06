@@ -5,6 +5,10 @@ const videoSchema = new mongoose.Schema({
         required: true,
         type: String
     },
+    videoName: {
+        required: true,
+        type: String
+    },
     timeStamps: {
         required: true,
         type: Array
