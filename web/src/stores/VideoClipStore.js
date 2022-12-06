@@ -37,7 +37,8 @@ export const useVideoClipStore = defineStore("VideoClip", {
                 var bodyFormData = new FormData();
                 bodyFormData.append("file", videoFile)
                 bodyFormData.append("name",videoName)
-                await axios({ method: 'post', url: 'http://localhost:3000/api/videoclip/post', data: bodyFormData, headers: { "Content-Type": "multipart/form-data" }, config: config })
+                const data = await axios({ method: 'post', url: 'http://localhost:3000/api/videoclip/post', data: bodyFormData, headers: { "Content-Type": "multipart/form-data" }, config: config })
+                return data.data
             } catch (error) {
                 console.log(error)
             }
@@ -45,7 +46,8 @@ export const useVideoClipStore = defineStore("VideoClip", {
 
         async updateTimestamps(id, timestamps) {
             try {
-                await axios.patch(`http://localhost:3000/api/videoclip/update/${id}`, { timeStamps: timestamps })
+                const data = await axios.patch(`http://localhost:3000/api/videoclip/update/${id}`, { timeStamps: timestamps })
+                return data.data
             } catch (error) {
                 console.log(error)
             }
