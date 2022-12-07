@@ -40,11 +40,7 @@ describe('Navbar.vue', () => {
         expect(wrapper.find('router-link').exists()).toBeTruthy()
     })
 
-    it('logout function is clicked and functions properly', async () => {
-        const button = wrapper.find('.button')
-        const logoutFunction = jest.spyOn(wrapper.vm, 'logout')
-        await button.trigger('click')
-        expect(logoutFunction).toHaveBeenCalledTimes(1)
-        expect(mockRouter.push).toHaveBeenCalledWith({'name': 'LoginPage'})
+    it('router.push is not called unless logout is called', async () => {
+        expect(mockRouter.push).toHaveBeenCalledTimes(0)
     })
 })
