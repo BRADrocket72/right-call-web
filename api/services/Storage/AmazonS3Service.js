@@ -4,7 +4,7 @@ const uuid = require('uuid').v4
 
 exports.s3Upload = async (file) => {
     const s3Client = new S3Client()
-    const resourceName = `uploads/${uuid()}-${file.originalname}}`
+    const resourceName = `uploads/${uuid()}-${file.originalname}`
     const param = {
         Bucket: process.env.AWS_BUCKET_NAME,
         Key: resourceName,
