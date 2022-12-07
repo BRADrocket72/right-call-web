@@ -14,10 +14,11 @@ export const useUsersStore = defineStore("Users", {
         }
     },
     actions: {
-        async postUser(userName, password, userType) {
+        async postUser(userName,email, password, userType) {
             try{
                 const data = await axios.post('http://localhost:3000/api/users/post', { 
                     userName: userName,
+                    email:email,
                     password: password,
                     userType: userType
                 })
