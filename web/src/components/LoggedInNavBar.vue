@@ -17,10 +17,10 @@
                         <router-link class="user-button" type="submit" to="/AdminPage">Admin</router-link>
                     </div>
                     <div v-if="isUserInstructor">
-                        <router-link class="user-button" type="submit" to="/AssignTimestamps">Timestamp Videos</router-link>
+                        <router-link class="user-button-multiline-text" type="submit" to="/AssignTimestamps">Timestamp Videos</router-link>
                     </div>
                     <div v-if="isUserStudent"> 
-                        <router-link class="user-button" type="submit" to="/UserResultsPage">View My Results</router-link>
+                        <router-link class="user-button-multiline-text" type="submit" to="/UserResultsPage">View My Results</router-link>
                     </div>
                 </ul>
             </div>
@@ -127,6 +127,23 @@ a.nav-link {
 }
 
 .user-button:hover {
+    background: #0e333c;
+    color: #FFFFFF;
+    animation: fadeInFromNone 0.5s ease-out;
+}
+
+.user-button-multiline-text {
+    width: 86px;
+    font-size: 13px;
+    height: 40px;
+    border: 1px solid #0e333c;
+    background: #FFFFFF;
+    color: #000000;
+    font-weight: normal;
+    text-decoration: none;
+}
+
+.user-button-multiline-text:hover {
     background: #0e333c;
     color: #FFFFFF;
     animation: fadeInFromNone 0.5s ease-out;
