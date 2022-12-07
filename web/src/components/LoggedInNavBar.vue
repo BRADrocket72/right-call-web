@@ -14,13 +14,13 @@
                        <a href="#" class="nav-link">Contact Us</a>
                     </li>
                     <div v-if="isUserAdmin">
-                        <router-link class="button" type="submit" to="/AdminPage">Admin</router-link>
+                        <router-link class="user-button" type="submit" to="/AdminPage">Admin</router-link>
                     </div>
                     <div v-if="isUserInstructor">
-                        <router-link class="button" type="submit" to="/AssignTimestamps">Timestamp Videos</router-link>
+                        <router-link class="user-button" type="submit" to="/AssignTimestamps">Timestamp Videos</router-link>
                     </div>
                     <div v-if="isUserStudent"> 
-                        <router-link class="button" type="submit" to="/UserResultsPage">View My Results</router-link>
+                        <router-link class="user-button" type="submit" to="/UserResultsPage">View My Results</router-link>
                     </div>
                 </ul>
             </div>
@@ -109,6 +109,24 @@ a.nav-link {
 }
 
 .button:hover {
+    background: #0e333c;
+    color: #FFFFFF;
+    animation: fadeInFromNone 0.5s ease-out;
+}
+
+.user-button {
+    width: 86px;
+    height: 40px;
+    border: 1px solid #0e333c;
+    background: #FFFFFF;
+    color: #000000;
+    font-weight: normal;
+    padding-top: 8px;
+    margin-top: 2px;
+    text-decoration: none;
+}
+
+.user-button:hover {
     background: #0e333c;
     color: #FFFFFF;
     animation: fadeInFromNone 0.5s ease-out;

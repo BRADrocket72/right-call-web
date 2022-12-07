@@ -50,3 +50,36 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.user-results {
+    display: flex;
+    width: 100%;
+}
+
+.results-table {
+    display: flex;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.results-table table {
+    margin: 0 auto;
+    padding: 10px;
+}
+
+table {
+    padding: 20px;
+}
+
+th {
+    font-size: 40px;
+    padding: 0 25px 0 25px;
+}
+
+td {
+    text-align: left;
+    font-size: 20px;
+    padding: 0 25px 0 25px;
+}
+</style>
