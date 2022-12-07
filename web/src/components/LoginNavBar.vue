@@ -16,7 +16,7 @@
                 </ul>
             </div>
             <div class="d-inline">
-                <router-link class="button" type="submit" to="/RegistrationPage">Register</router-link>
+                <router-link class="register-button" type="submit" to="/RegistrationPage">Register</router-link>
             </div>
         </nav>
     </header>
@@ -75,14 +75,19 @@ a.nav-link {
     padding-right: 20%;
 }
 
-.button {
+.register-button {
     width: 86px;
     height: 40px;
     border: 1px solid #0e333c;
     background: #FFFFFF;
+    color: #000000;
+    font-weight: normal;
+    padding-top: 8px;
+    margin-top: 2px;
+    text-decoration: none;
 }
 
-.button:hover {
+.register-button:hover {
     background: #0e333c;
     color: #FFFFFF;
     animation: fadeInFromNone 0.5s ease-out;

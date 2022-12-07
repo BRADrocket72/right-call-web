@@ -60,11 +60,13 @@ export default {
 .upload-video-div {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .video-info-div {
   display: flex;
   flex-direction: column;
+  margin: 0 auto;
 }
 
 .video-info-div label {

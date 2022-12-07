@@ -6,9 +6,10 @@
         <div class="video-list-div" v-if="isVideoSelected == false">
             <div class="lesson" v-for="video in this.videoClips" :key="video.id">
                 <a class="nav-link" @click="videoSelection(video)">
-                    <h1>{{video.videoName}}</h1>
+                    <img class="lesson-img" :alt="video._id" src="../../images/american-football-referees-1476038_960_720.jpg" />
+                    <p>{{ video.videoName }}</p>
+                    <p style="font-weight: normal">Timestamps: {{video.timeStamps}}</p>
                 </a>    
-                <p class="video-link"><a :href="video.videoURL" target="_blank">{{video.videoURL}}</a></p>
             </div>
         </div>
         <div v-else class="assign-timestamps-container">
@@ -267,7 +268,7 @@ export default {
 }
 
 .nav-link {
-    min-height: 150px;
+    min-height: 350px;
 }
 
 .nav-link h1 {
@@ -291,14 +292,26 @@ export default {
 }
 
 .lesson {
-    flex: 1 0 33%;
-    margin: 0 30px 30px 0;
-    text-align: left;
-    height: 350px;
-    max-height: 350px;
-    width: 200px;
-    max-width: 285px;
-    box-shadow: 0 10px 10px #d1d1d1;
+  flex: 1 0 25%;
+  margin: 0 30px 30px 0;
+  text-align: left;
+  height: 350px;
+  max-height: 350px;
+  width: 285px;
+  max-width: 285px;
+  border-radius: 6px;
+  box-shadow: 0 10px 10px #d1d1d1;
+}
+
+.lesson:hover {
+    box-shadow: 0 15px 15px #d1d1d1;
+}
+
+.lesson-img {
+  margin: none;
+  width: 285px;
+  height: 170px;
+  border-radius: 6px 6px 0 0;
 }
 
 .lesson p {
