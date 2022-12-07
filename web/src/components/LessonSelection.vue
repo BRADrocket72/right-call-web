@@ -32,6 +32,7 @@ export default {
             videoClips: []
         };
     },
+    props:{},
     methods: {
         openVideo(videoID) {
             this.$router.push({

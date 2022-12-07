@@ -27,10 +27,12 @@ describe('ActivityPopUp.vue', () => {
         expect(wrapper.findAll('.btn-green').length).toBe(2)
     })
 
-    it('calls the close modal function on button click', async () => {
+    it('calls the close modal and handle selected answers functions on button click', async () => {
         const button = wrapper.find('.btn-green')
         const closeFunction = jest.spyOn(wrapper.vm, 'close')
+        const handleAnswersFunction = jest.spyOn(wrapper.vm, 'handleAnswerSelected')
         await button.trigger('click')
         expect(closeFunction).toHaveBeenCalled
+        expect(handleAnswersFunction).toHaveBeenCalled
     })
 })

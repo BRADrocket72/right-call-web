@@ -8,11 +8,6 @@ describe('ResultsPage.vue', () => {
      let mockRouter: any;
      let mockRoute: any;
 
-     mockRoute = {}
-     mockRouter = {
-         push: jest.fn()
-     }
-
      beforeEach(async () => {
         mockRoute = {}
         mockRouter = {

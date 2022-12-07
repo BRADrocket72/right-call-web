@@ -37,9 +37,6 @@ import { useVideoClipStore } from '@/stores/VideoClipStore';
     props: {
       selectedVideo: Object
     },
-    mounted() {
-      
-    },
     methods: {
       close() {
         this.$emit('close');

@@ -70,15 +70,13 @@ router.post('/users/login', async (req, res) => {
                 .update(req.body.password)
                 .digest("base64");
             req.body.password = user.salt + "$" + hash;
-            if (user.password != req.body.password) {
-                res.status(200).json({ success: false })
-            } else {
-                // res.status(200).json({success:true})
+            if (user.password != req.body.password){
+                res.status(200).json({success:false})
+            }else{
                 let refreshId = user._id + process.env.jwtSecret
                 let salt = crypto.randomBytes(16).toString('base64');
                 let hash = crypto.createHmac('sha512', salt).update(refreshId).digest("base64");
-                // req.body.refreshKey = salt;
-                let token = jwt.sign({ userId: user._id }, process.env.jwtSecret);
+                let token = jwt.sign({userId: user._id}, process.env.jwtSecret);
                 let b = Buffer.from(hash);
                 let refresh_token = b.toString('base64');
                 res.status(201).send({ accessToken: token, refreshToken: refresh_token, success: true, userType: user.userType });
