@@ -37,7 +37,7 @@ describe('ResultsPage.vue', () => {
 
     it('displays the two admin router-links and the navbar router-link', () => {
         expect(wrapper.find('router-link').exists()).toBe(true)
-        expect(wrapper.findAll('router-link').length).toEqual(4)
+        expect(wrapper.findAll('router-link').length).toEqual(5)
     })
     it('router.push is called successfully when no user token is set', async () => {
         expect(mockRouter.push).toHaveBeenCalledWith({'name': 'LoginPage'})
