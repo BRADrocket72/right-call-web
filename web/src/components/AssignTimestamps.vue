@@ -26,7 +26,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <button id="save-timestamps-button" @click="updateAPIandShowModal(selectedVideo._id,timestamps)">Save</button>
+                        <button id="save-timestamps-button" @click="updateAPI(selectedVideo._id,timestamps)">Save</button>
                     </div>
                     <div class="add-button-div">
                         <button id="add-timestamp-button" @click="toggleTimestampsModal()">Add Timestamp Here</button>
@@ -210,7 +210,7 @@ export default {
             this.activities.splice(deletedTimestamp,1)
             this.toggleSaveButton()
         },
-        async updateAPIandShowModal(id, timestamps) {
+        async updateAPI(id, timestamps) {
             var videoClipStore = useVideoClipStore();
             await videoClipStore.updateTimestamps(id,timestamps)
             this.postActivitiesAPI()
