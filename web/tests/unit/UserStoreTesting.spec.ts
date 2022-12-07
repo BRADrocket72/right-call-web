@@ -1,4 +1,3 @@
-// import axios from 'axios';
 import 'jest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useUsersStore } from "@/stores/UserStore";
