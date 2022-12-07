@@ -13,8 +13,11 @@
                     <li class="nav-item">
                        <a href="#" class="nav-link">Contact Us</a>
                     </li>
-                    <div v-if="isUserAdminOrInstructor">
+                    <div v-if="isUserAdmin">
                         <router-link class="button" type="submit" to="/AdminPage">Admin</router-link>
+                    </div>
+                    <div v-if="isUserInstructor">
+                        <router-link class="button" type="submit" to="/AssignTimestamps">Timestamp Videos</router-link>
                     </div>
                     <div v-if="isUserStudent"> 
                         <router-link class="button" type="submit" to="/UserResultsPage">View My Results</router-link>
@@ -36,16 +39,18 @@ export default {
   name: 'LoggedInNavBar',
   data() {
     return {
-        isUserAdminOrInstructor: false,
+        isUserAdmin: false,
+        isUserInstructor: false,
         isUserStudent: false
     }
   },
   mounted() {
     var userStore = useUsersStore();
-    if (userStore.currentUserType== "Admin" || userStore.currentUserType== "Instructor" ) {
-        this.isUserAdminOrInstructor = true
-    }
-    if (userStore.currentUserType == "Student") {
+    if (userStore.currentUserType== "Admin") {
+        this.isUserAdmin = true
+    } else if(userStore.currentUserType== "Instructor" ) {
+        this.isUserInstructor = true
+    } else {
         this.isUserStudent = true
     }
   },
@@ -59,8 +64,6 @@ export default {
         })
     }
   },
-  components: {
-  }
 }
 </script>
 
