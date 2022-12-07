@@ -1,24 +1,16 @@
 import { mount } from '@vue/test-utils'
 import LessonSelection from '@/components/LessonSelection.vue'
 import 'jest'
-import VideoEditor from '@/components/VideoEditor.vue';
 import {createPinia, setActivePinia} from 'pinia'
-import { createTestingPinia } from '@pinia/testing'
 
 describe('LessonSelection.vue', () => {
-    let videoClips: [{
-        _id: "123",
-        videoURL: "youtube.com",
-        timestamps: [1,2]
-    }]
-    let wrapper: any;
-    let mockRouter: any;
-    let mockRoute: any;
+    let wrapper;
+    let mockRouter;
+    let mockRoute;
     beforeEach(() => {
         mockRouter = {
             push: jest.fn()
         }, 
-        // jest.spyOn(LessonSelection, 'fetchVideos').mockResolvedValue(videoClips)
         setActivePinia(createPinia())
         wrapper = mount(LessonSelection, {
             data() {
@@ -32,9 +24,6 @@ describe('LessonSelection.vue', () => {
                     $router: mockRouter,
                     $route: mockRoute
                 }
-                // plugins: [
-                //     createTestingPinia()
-                // ]
             }
         })
     })

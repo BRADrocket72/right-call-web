@@ -49,10 +49,4 @@ describe('LessonSelection.vue', () => {
         await registerButton.trigger('click')
         expect(registerMock).toHaveBeenCalledTimes(1)
     })
-    // it('register button functions properly', async () => {
-    //     wrapper.vm.uploadUsers=  jest.fn()
-    //     const registerButton = wrapper.find('button')
-    //     await registerButton.trigger('click')
-    //     expect(wrapper.vm.uploadUsers).toHaveBeenCalledTimes(1)
-    // })
 })

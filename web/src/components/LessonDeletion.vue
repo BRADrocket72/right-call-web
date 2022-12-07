@@ -31,6 +31,7 @@
       LoggedInNavBarVue,
       LessonDeletionModal
     },
+    props:{},
     data() {
         return {
             lessons: [],

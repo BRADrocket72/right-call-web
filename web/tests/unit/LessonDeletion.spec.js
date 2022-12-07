@@ -4,21 +4,21 @@ import 'jest'
 import {createPinia, setActivePinia} from 'pinia'
 
 describe('LessonDeletion.vue', () => {
-    let wrapper: any;
-    let mockRouter: any;
-    let mockRoute: any;
+    let wrapper;
+    let mockRouter;
+    let mockRoute;
     beforeEach(() => {
         mockRouter = {
             push: jest.fn()
         }, 
-        // jest.spyOn(LessonSelection, 'fetchVideos').mockResolvedValue(videoClips)
         setActivePinia(createPinia())
 
         wrapper = mount(LessonDeletion, {
             data() {
                 return {
                     lessons: [{_id: "123test", videoUrl: "youtube.com", videoName: "Football Lesson One", timeStamps: [1,5,25]}, {_id: "123test", videoUrl: "youtube.com", videoName: "Football Lesson One", timeStamps: [1,5,25]}],
-                    selectedVideo: ({_id: "123test", videoUrl: "youtube.com", videoName: "Football Lesson One", timeStamps: [1,5,25]})
+                    selectedVideo: ({_id: "123test", videoUrl: "youtube.com", videoName: "Football Lesson One", timeStamps: [1,5,25]}),
+                    isVideoSelected: true
                 }
             },
             global: {
