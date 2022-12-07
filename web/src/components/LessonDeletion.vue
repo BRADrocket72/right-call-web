@@ -17,9 +17,9 @@
       </div>
       <LessonDeletionModal v-if="isVideoSelected" :selectedVideo="selectedVideo" @close="closeModal"></LessonDeletionModal>
     </div>
-  </template>
+</template>
   
-  <script>
+<script>
   import { useVideoClipStore } from "@/stores/VideoClipStore";
   import { useUsersStore } from "@/stores/UserStore";
   import LoggedInNavBarVue from "./LoggedInNavBar.vue";
@@ -59,8 +59,8 @@
         }
     },
   };
-  </script>
-  <style>
+</script>
+<style scoped>
 .video-list-div {
     display: flex;
     flex-direction: row;
@@ -69,12 +69,28 @@
 }
 
 .lesson {
-     margin: 0 2% 0 2%;
-    text-align: left;
-    height: 300px;
-    width: 285px;
-    box-shadow: 0 10px 10px #d1d1d1;
+  flex: 1 0 25%;
+  margin: 0 30px 30px 0;
+  text-align: left;
+  height: 350px;
+  max-height: 350px;
+  width: 285px;
+  max-width: 285px;
+  border-radius: 6px;
+  box-shadow: 0 10px 10px #d1d1d1;
 }
+
+.lesson:hover {
+    box-shadow: 0 15px 15px #d1d1d1;
+}
+
+.nav-link h1 {
+  margin: none;
+  min-width: 285px;
+  height: 170px;
+  border-radius: 6px 6px 0 0;
+}
+
 .lesson p {
     margin: 20px 0 0 0;
 }
