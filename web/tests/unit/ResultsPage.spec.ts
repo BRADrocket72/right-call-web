@@ -4,22 +4,10 @@ import ResultsPage from '@/components/modals/ResultsPage.vue';
 
 describe('ResultsPage.vue', () => {
     let wrapper: any;
-    let mockRouter: any;
-    let mockRoute: any;
     beforeEach(() => {
-        mockRoute = {}
-        mockRouter = {
-            push: jest.fn()
-        }
         wrapper = mount(ResultsPage, {
             props: {
                 answersArray: ["Correct", "Incorrect"]
-              },
-              global: {
-                mocks: {
-                    $router: mockRouter,
-                    $route: mockRoute
-                }
               }
         })
     })
@@ -46,7 +34,5 @@ describe('ResultsPage.vue', () => {
         const closeFunction = jest.spyOn(wrapper.vm, 'close')
         await button.trigger('click')
         expect(closeFunction).toHaveBeenCalledTimes(1)
-        expect(mockRouter.push).toHaveBeenCalledTimes(1)
-        expect(mockRouter.push).toHaveBeenCalledWith({"name": "LessonSelection"})
     })
 })

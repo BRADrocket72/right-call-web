@@ -8,8 +8,12 @@
     <br><br>
     <form @submit.prevent="loginWithPassword">
       <label>
-        Email or username
+        Username
         <input type="text" id="userName" />
+      </label>
+      <label>
+        Email
+        <input type="text" id="email" />
       </label>
       <label>
         Password
@@ -47,6 +51,7 @@ export default {
     async uploadUsers(){
       var userStore = useUsersStore();
       var userName = document.getElementById("userName").value
+      var email = document.getElementById("email").value
       var password = document.getElementById("password").value
       var userTypes = document.getElementsByName("userType")
       for (let i=0; i< userTypes.length; i++) {
@@ -55,7 +60,7 @@ export default {
         }
       }
       
-      await userStore.postUser(userName, password, userType)
+      await userStore.postUser(userName,email, password, userType)
       this.$router.push({
         name: "LessonSelection"
       });

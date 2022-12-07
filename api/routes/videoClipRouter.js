@@ -3,7 +3,6 @@ const multer = require('multer')
 const express = require('express');
 const VideoClip = require('../models/VideoClip');
 const { s3Upload } = require('../services/Storage/AmazonS3Service');
-const { memoryStorage } = require('multer');
 
 const router = express.Router()
 
