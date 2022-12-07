@@ -33,8 +33,7 @@ export default {
         };
     },
     methods: {
-        openVideo(videoID,videoName) {
-          console.log(videoName)
+        openVideo(videoID) {
             this.$router.push({
                 name: "VideoEditor",
                 params: {
