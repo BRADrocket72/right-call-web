@@ -70,8 +70,6 @@ router.post('/users/login', async (req, res) => {
                 .update(req.body.password)
                 .digest("base64");
             req.body.password = user.salt + "$" + hash;
-            console.log(user.password)
-            console.log(req.body.password)
             if (user.password != req.body.password) {
                 res.status(200).json({ success: false })
             } else {
