@@ -57,8 +57,11 @@ export default {
           this.$router.push({
             name: "LessonSelection"
           })
-        }
-        else {
+        } else if(userStore.currentUserType == "Instructor") {
+          this.$router.push({
+            name: "AssignTimestamps"
+          })
+        }else {
           this.$router.push({
             name: "AdminPage"
           })
