@@ -2,7 +2,7 @@
   <LoggedInNavBar />
   <br/><br/>
   <div class="video-player">
-    <h1>{{videoId}}</h1>
+    <h1>{{videoName}}</h1>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <video :id="videoId" :src="currentVideoClip.videoURL"></video>
@@ -10,7 +10,7 @@
       <button id="playOrPause" @click="playOrPauseVideo">Play</button>
       <span id="videoCurrentTime">00:00</span> / <span id="videoDuration">00:00</span>
     </div>
-    <results-page v-if="isResultsPageModalVisible" :answersArray="answers">
+    <results-page v-if="isResultsPageModalVisible" :answersArray="answers" @close="closeResultsPage">
     </results-page>
     <activity-pop-up v-if="questionsLoaded && isModalVisible" :answersArray="answers"
       :question="currentVideoQuestions[questionIndex]" :questionNumber="questionIndex + 1" @close="closeModal" />
@@ -25,6 +25,7 @@ import { formatTimeForVideo } from "@/models/FormatVideosTime.js"
 import { useVideoClipStore } from "@/stores/VideoClipStore";
 import { useUsersStore } from '@/stores/UserStore';
 import { useActivityStore } from '@/stores/ActivityStore';
+import { useUserResultsStore } from "@/stores/UserResultsStore"
 import LoggedInNavBar from './LoggedInNavBar.vue';
 
 export default {
@@ -33,53 +34,53 @@ export default {
     ActivityPopUp,
     ResultsPage,
     LoggedInNavBar
-},
+  },
   props: {
     videoId: {
       type: String
-    }
+    },
   },
   data() {
     return {
       isModalVisible: false,
       isResultsPageModalVisible: false,
       currentVideoQuestions: [],
-      questionsArray: [],
       questionIndex: 0,
       questionsLoaded: false,
       answers: [],
       questionCounter: 0,
-      currentVideoClip: VideoClip
+      currentVideoClip: VideoClip,
+      percentageCorrect: "",
+      videoName: ""
     };
   },
-  setup() {
-    var VideoClip = useVideoClipStore();
-    return VideoClip;
-  },
   async mounted() {
-    var store = useUsersStore();
-    if (store.currentUserToken.length < 1) {
+    var videoClipStore = useVideoClipStore();
+    var userStore = useUsersStore();
+    if (userStore.currentUserToken.length < 1) {
       this.$router.push({
         name: "LoginPage"
       })
     }
-    this.currentVideoClip = await this.fetchVideoClipById(this.videoId);
-    const video2 = document.getElementById(this.videoId)
+    this.currentVideoClip = await videoClipStore.fetchVideoClipById(this.videoId);
+    this.videoName = this.currentVideoClip.videoName
+    const videoElement = document.getElementById(this.videoId)
     var activityStore = useActivityStore();
     this.currentVideoQuestions = await activityStore.fetchActivitiesByVideoclipId(this.videoId)
     this.currentVideoQuestions.sort((a,b) => a.timestamp - b.timestamp)
     this.questionsLoaded = true;
     
-    if (video2) {
-      video2.addEventListener('timeupdate', () => {
+    if (videoElement) {
+      videoElement.addEventListener('timeupdate', () => {
         const videoCurrentTime = document.getElementById("videoCurrentTime")
         const videoDuration = document.getElementById("videoDuration")
-        videoCurrentTime.innerHTML = formatTimeForVideo(video2.currentTime);
-        videoDuration.innerHTML = formatTimeForVideo(video2.duration)
-        this.stopVideoAtTimestamp(video2, this.currentVideoClip.timeStamps)
-        if (video2.duration == video2.currentTime) {
-          if (video2.duration != this.currentVideoClip.timeStamps[this.currentVideoClip.timeStamps.length-1]){
+        videoCurrentTime.innerHTML = formatTimeForVideo(videoElement.currentTime);
+        videoDuration.innerHTML = formatTimeForVideo(videoElement.duration)
+        this.stopVideoAtTimestamp(videoElement, this.currentVideoClip.timeStamps)
+        if (videoElement.duration == videoElement.currentTime) {
+          if (videoElement.duration != this.currentVideoClip.timeStamps[this.currentVideoClip.timeStamps.length-1]){
             this.isResultsPageModalVisible = true;
+            videoElement.pause()
           }
         }
       })
@@ -95,15 +96,15 @@ export default {
       }
     },
     playOrPauseVideo() {
-      const video2 = document.getElementById(this.videoId);
+      const videoElement = document.getElementById(this.videoId);
       const playOrPauseButton = document.getElementById("playOrPause")
-      if (video2.paused) {
+      if (videoElement.paused) {
         playOrPauseButton.innerHTML = "Pause"
-        video2.play()
+        videoElement.play()
       }
       else {
         playOrPauseButton.innerHTML = "Play"
-        video2.pause()
+        videoElement.pause()
       }
     },
     showModal() {
@@ -115,13 +116,23 @@ export default {
       this.isModalVisible = false;
       this.answers = updatedAnswers
       this.questionIndex++;
-      const video2 = document.getElementById(this.videoId)
-      if (video2.duration == video2.currentTime) {
+      const videoElement = document.getElementById(this.videoId)
+      if (videoElement.duration == videoElement.currentTime) {
           this.isResultsPageModalVisible = true;
+          videoElement.pause()
+      } else{
+          const playOrPauseButton = document.getElementById("playOrPause")
+          playOrPauseButton.innerHTML = "Pause"
+          videoElement.play();
       }
-      const playOrPauseButton = document.getElementById("playOrPause")
-      playOrPauseButton.innerHTML = "Pause"
-      video2.play();
+    },
+    async closeResultsPage(percentageCorrect) {
+      var userResults = useUserResultsStore()
+      var userStore = useUsersStore()
+      await userResults.postUserResults(userStore.currentUserName,percentageCorrect,this.videoId,this.videoName)
+      this.$router.push({
+        name: "LessonSelection"
+      })
     }
   }
 }

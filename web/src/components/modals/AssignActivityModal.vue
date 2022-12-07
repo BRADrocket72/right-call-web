@@ -114,8 +114,8 @@ export default {
 
 .modal {
   background: white;
-  width: 600px;
-  height: 450px;
+  min-width: 600px;
+  min-height: 450px;
   border-radius: 2px;
   position: fixed;
   left: auto;
@@ -174,10 +174,6 @@ export default {
   transition: opacity .5s ease;
 }
 
-/*.assign-activity-div div{
-    
-}*/
-
 .activity-info {
     display: flex;
     flex-direction: column;
@@ -193,6 +189,12 @@ export default {
     width: 400px;
     background: #e8dede;
     border-radius: 4px;
+}
+
+.activity-info select {
+  background: #e8dede;
+  border: 2px solid rgb(10, 10, 10);
+  border-radius: 4px;
 }
 
 #invalid-save {

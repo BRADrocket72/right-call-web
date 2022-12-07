@@ -3,17 +3,21 @@
   <LoginNavBar />
   <br/><br/>
     <div id="app">
-    <div id="alert" v-if="alert">{{ alert }}</div>
+    <!-- <div id="alert" v-if="alert">{{ alert }}</div> -->
     <h1>Registration  Page</h1>
     <br><br>
     <form @submit.prevent="loginWithPassword">
       <label>
-        Email or username
-        <input type="text" id="userName" v-model="emailOrUsername" />
+        Username
+        <input type="text" id="userName" />
+      </label>
+      <label>
+        Email
+        <input type="text" id="email" />
       </label>
       <label>
         Password
-        <input type="password" id="password" v-model="password" />
+        <input type="password" id="password" />
       </label>
       <br/><br/>
       <h3>Are you an Student, Instructor, or Admin?</h3>
@@ -43,14 +47,11 @@ export default {
   components: {
     LoginNavBar
   },
-  setup() {
-        var Users = useUsersStore();
-        return Users;
-    },
-
   methods: {
     async uploadUsers(){
+      var userStore = useUsersStore();
       var userName = document.getElementById("userName").value
+      var email = document.getElementById("email").value
       var password = document.getElementById("password").value
       var userTypes = document.getElementsByName("userType")
       for (let i=0; i< userTypes.length; i++) {
@@ -59,15 +60,12 @@ export default {
         }
       }
       
-      await this.postUser(userName, password, userType)
+      await userStore.postUser(userName,email, password, userType)
       this.$router.push({
         name: "LessonSelection"
       });
       
     }
-  },
-  mounted() {
-    // const videoUrl = document.getElementById("urlUpload")
   }
 }
 </script>

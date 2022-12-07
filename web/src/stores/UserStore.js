@@ -5,7 +5,8 @@ export const useUsersStore = defineStore("Users", {
     state: () => ({
         users: [],
         currentUserToken: "",
-        currentUserType: ""
+        currentUserType: "",
+        currentUserName: ""
     }),
     getters: {
         getUsers(state) {
@@ -13,16 +14,16 @@ export const useUsersStore = defineStore("Users", {
         }
     },
     actions: {
-        async postUser(userName, password, userType) {
+        async postUser(userName,email, password, userType) {
             try{
                 const data = await axios.post('http://localhost:3000/api/users/post', { 
                     userName: userName,
+                    email:email,
                     password: password,
                     userType: userType
                 })
                 return data.data
             } catch(error) {
-                alert(error)
                 console.log(error)
             }
         },
@@ -34,7 +35,6 @@ export const useUsersStore = defineStore("Users", {
                 })
                 return data.data
             } catch(error) {
-                alert(error)
                 console.log(error)
             }
         }

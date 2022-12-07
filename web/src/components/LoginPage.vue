@@ -2,7 +2,6 @@
     <LoginNavBar />
     <br/><br/>
     <div id="app">
-    <div id="alert" v-if="alert">{{ alert }}</div>
     <h1>Login  Page</h1>
     <br><br>
     <form @submit.prevent="loginWithPassword">
@@ -41,29 +40,28 @@ export default {
       password: ""
     }
   },
-  setup() {
-        var Users = useUsersStore();
-        return Users;
-    },
-
   methods: {
     async login(){
+      var userStore = useUsersStore();
       var userName = document.getElementById("userName").value
       var password = document.getElementById("password").value
       
-      var loginStatus = await this.loginUser(userName, password)
+      var loginStatus = await userStore.loginUser(userName, password)
       if (!loginStatus.success){
           this.error = true
       }else{
-        this.currentUserToken = loginStatus.accessToken
-        this.currentUserType = loginStatus.userType
-        console.log(this.currentUserType)
-         if (this.currentUserType == "Student") {
+        userStore.currentUserToken = loginStatus.accessToken
+        userStore.currentUserType = loginStatus.userType
+        userStore.currentUserName = userName
+         if (userStore.currentUserType == "Student") {
           this.$router.push({
             name: "LessonSelection"
           })
-        }
-        else {
+        } else if(userStore.currentUserType == "Instructor") {
+          this.$router.push({
+            name: "AssignTimestamps"
+          })
+        }else {
           this.$router.push({
             name: "AdminPage"
           })

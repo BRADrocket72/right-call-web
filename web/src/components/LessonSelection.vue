@@ -9,8 +9,8 @@
       <div class="lesson-div" v-if="this.videoClips.length > 0">
         <div class="lesson" v-for="video in this.videoClips" :key="video._id">
           <a class="nav-link" @click="openVideo(video._id)">
-            <img class="lesson-img" :alt="video._id" src="../../images/richard-bagan-SmQ2Cku3alc-unsplash.jpg" /> -->
-            <p>{{ video._id }}</p>
+            <img class="lesson-img" :alt="video._id" src="../../images/richard-bagan-SmQ2Cku3alc-unsplash.jpg" />
+            <p>{{ video.videoName }}</p>
           </a>
         </div>
       </div>
@@ -32,6 +32,7 @@ export default {
             videoClips: []
         };
     },
+    props:{},
     methods: {
         openVideo(videoID) {
             this.$router.push({
@@ -42,19 +43,15 @@ export default {
             });
         }
     },
-    setup() {
-        var VideoClip = useVideoClipStore();
-        return VideoClip;
-    },
     async mounted() {
+        var videoClip = useVideoClipStore();
         var store = useUsersStore();
         if (store.currentUserToken.length < 1) {
             this.$router.push({
                 name: "LoginPage"
             });
         }
-        await this.fetchVideoClips();
-        this.VideoClips = this.clips;
+        this.videoClips = await videoClip.fetchVideoClips();
         this.ready = true;
     }
 };
@@ -83,21 +80,31 @@ export default {
   margin: 0 auto;
 }
 
+.nav-link {
+    min-height: 350px;
+}
+
 .lesson {
-  flex: 1 0 33%;
+  flex: 1 0 25%;
   margin: 0 30px 30px 0;
   text-align: left;
   height: 350px;
   max-height: 350px;
-  width: 200px;
+  width: 285px;
   max-width: 285px;
+  border-radius: 6px;
   box-shadow: 0 10px 10px #d1d1d1;
+}
+
+.lesson:hover {
+    box-shadow: 0 15px 15px #d1d1d1;
 }
 
 .lesson-img {
   margin: none;
   width: 285px;
   height: 170px;
+  border-radius: 6px 6px 0 0;
 }
 
 .lesson-div a {

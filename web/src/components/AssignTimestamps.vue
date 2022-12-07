@@ -6,9 +6,10 @@
         <div class="video-list-div" v-if="isVideoSelected == false">
             <div class="lesson" v-for="video in this.videoClips" :key="video.id">
                 <a class="nav-link" @click="videoSelection(video)">
-                    <h1>{{video.lessonName}}</h1>
+                    <img class="lesson-img" :alt="video._id" src="../../images/american-football-referees-1476038_960_720.jpg" />
+                    <p>{{ video.videoName }}</p>
+                    <p style="font-weight: normal">Timestamps: {{video.timeStamps}}</p>
                 </a>    
-                <p class="video-link"><a :href="video.videoURL" target="_blank">{{video.videoURL}}</a></p>
             </div>
         </div>
         <div v-else class="assign-timestamps-container">
@@ -33,7 +34,6 @@
                 </div>
             </div>
             <AssignTimestampsModal v-if="isTimestampModalVisible" :newTimestamp="newTimestamp" @close="toggleTimestampsModal" />
-            <SaveTimestampsModal v-if="isSaveTimestampsModalVisible" @close="toggleSaveTimestampsModal" />
             <AssignActivityModal v-if="isAssignActivityModalVisible" :activities="activities" :activityIndex="currentIndex" @close="assignActivityModalReturnArray" @save="assignActivitySaved"/>
         </div>
     </div>
@@ -45,7 +45,6 @@ import LoggedInNavBarVue from './LoggedInNavBar.vue';
 import VideoClip from '@/models/VideoClip.js'
 import AssignActivity from '@/models/AssignActivity.js'
 import AssignTimestampsModal from '@/components/modals/AssignTimestampsModal.vue'
-import SaveTimestampsModal from '@/components/modals/SaveTimestampsModal.vue'
 import AssignActivityModal from '@/components/modals/AssignActivityModal.vue'
 import { useVideoClipStore } from "@/stores/VideoClipStore";
 import {formatTimeForVideo} from '@/models/FormatVideosTime.js'
@@ -56,7 +55,6 @@ export default {
     name: 'AssignTimestamps',
     components: { 
         AssignTimestampsModal,
-        SaveTimestampsModal,
         AssignActivityModal,
         LoggedInNavBarVue
     },
@@ -73,7 +71,6 @@ export default {
             timestamps: [],
             formattedTimestamps: [],
             ready: false,
-            returnToVideoSelectionPage: false,
             activityModalArray: [],
             activities: [],
             currentIndex: Number,
@@ -117,18 +114,18 @@ export default {
             }
             this.toggleSaveButton()
         },
-        toggleSaveTimestampsModal(returnToVideoSelectionPage) {
-            this.isSaveTimestampsModalVisible = !this.isSaveTimestampsModalVisible
-            if(returnToVideoSelectionPage) {
-                this.isVideoSelected = false
-                this.timestamps = []
-                this.formattedTimestamps = []
-                this.deletedActivities = []
-                this.updatedActivities = []
-                this.$router.push({
-                    name: "AssignTimestamps"
-                })
-            }
+        returnToVideoSelectionPage(){
+            this.isVideoSelected = false
+            this.timestamps = []
+            this.formattedTimestamps = []
+            this.deletedActivities = []
+            this.updatedActivities = []
+            this.activityModalArray = []
+            this.activities = []
+            this.$router.push({
+                name: "AssignTimestamps"
+            })
+            
         },
         toggleAssignActivityModal(activityIndex) {
             this.isAssignActivityModalVisible = !this.isAssignActivityModalVisible
@@ -214,11 +211,13 @@ export default {
             this.toggleSaveButton()
         },
         async updateAPIandShowModal(id, timestamps) {
-            await this.updateTimestamps(id,timestamps)
+            var videoClipStore = useVideoClipStore();
+            await videoClipStore.updateTimestamps(id,timestamps)
             this.postActivitiesAPI()
             this.updateActivitiesAPI()
             this.deleteActivitiesAPI()
-            this.toggleSaveTimestampsModal(this.returnToVideoSelectionPage)
+            this.returnToVideoSelectionPage()
+            
         },
         async postActivitiesAPI() {
             var store = useActivityStore()
@@ -249,19 +248,15 @@ export default {
             }
         }
     },
-    setup() {
-        var VideoClip = useVideoClipStore();
-        return VideoClip;
-    },
     async mounted() {
+        var videoClip = useVideoClipStore();
         var store = useUsersStore();
         if (store.currentUserToken.length < 1) {
             this.$router.push({
                 name: "LoginPage"
             })
         }
-        await this.fetchVideoClips();
-        this.VideoClips = this.clips;
+        this.videoClips =  await videoClip.fetchVideoClips();
         this.ready = true;
     }
 }
@@ -273,7 +268,7 @@ export default {
 }
 
 .nav-link {
-    min-height: 150px;
+    min-height: 350px;
 }
 
 .nav-link h1 {
@@ -297,14 +292,26 @@ export default {
 }
 
 .lesson {
-    flex: 1 0 33%;
-    margin: 0 30px 30px 0;
-    text-align: left;
-    height: 350px;
-    max-height: 350px;
-    width: 200px;
-    max-width: 285px;
-    box-shadow: 0 10px 10px #d1d1d1;
+  flex: 1 0 25%;
+  margin: 0 30px 30px 0;
+  text-align: left;
+  height: 350px;
+  max-height: 350px;
+  width: 285px;
+  max-width: 285px;
+  border-radius: 6px;
+  box-shadow: 0 10px 10px #d1d1d1;
+}
+
+.lesson:hover {
+    box-shadow: 0 15px 15px #d1d1d1;
+}
+
+.lesson-img {
+  margin: none;
+  width: 285px;
+  height: 170px;
+  border-radius: 6px 6px 0 0;
 }
 
 .lesson p {
