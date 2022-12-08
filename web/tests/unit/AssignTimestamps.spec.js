@@ -2,9 +2,6 @@ import { mount } from '@vue/test-utils'
 import { setActivePinia, createPinia } from 'pinia'
 import AssignTimestamps from '@/components/AssignTimestamps.vue'
 import '@/routes.js'
-//import AssignTimestampsModal from '@/components/modals/AssignTimestampsModal.vue'
-//import AssignActivityModal from '@/components/modals/AssignActivityModal.vue'
-//import SaveTimestampsModal from '@/components/modals/SaveTimestampsModal.vue'
 import 'jest'
 
 describe('AssignTimestamps.vue', () => {
