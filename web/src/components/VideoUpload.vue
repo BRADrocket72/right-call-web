@@ -6,7 +6,7 @@
       <div class="video-info-div">
         <label for="videoUpload">Upload Video File: </label><input type="file" id="videoUpload" name="file" v-on:change="fileChange" />
         <label for="video-name">Name of Video: </label><input type="text" id="video-name" name="video-name" />
-        <button @click="uploadVideo">Upload Video</button>
+        <button id="upload-button" @click="uploadVideo">Upload Video</button>
       </div>
       <div class="uploading-video-div">
         <p v-if="uploading" class="upload-in-progress">Please wait, upload in progress...</p>
