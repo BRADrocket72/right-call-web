@@ -1,4 +1,3 @@
-// import axios from 'axios';
 import 'jest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useVideoClipStore } from "@/stores/VideoClipStore";
@@ -8,21 +7,11 @@ jest.mock('axios')
 describe('VideoClipStore API CALLS Unit TESTING', () => {
    let store: any;
    let videoClips: any;
-  // let retrieveAllVideos: any
-  // let retrieveSpecificVideo: any
   
 
   beforeAll(async () => {
     setActivePinia(createPinia())
     store = useVideoClipStore()
-    // retrieveAllVideos = await store.fetchVideoClips()
-    
-    // store = useVideoClipStore()
-    // videoClips = await store.fetchVideoClips()
-    // // create an instance of the data store
-    // store = useVideoClipStore()
-    // retrieveAllVideos = await store.fetchVideoClips()
-    // retrieveSpecificVideo = await store.fetchVideoClipById('637a61d49db11c5b4dd1b3b8')
   })
 
 
