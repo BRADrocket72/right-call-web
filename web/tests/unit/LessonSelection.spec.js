@@ -16,7 +16,7 @@ describe('LessonSelection.vue', () => {
             data() {
                 return {
                     ready: true,
-                    videoClips: [{_id: "123test", videoUrl: "youtube.com", videoName: "Football Lesson One", timeStamps: [1,5,25]}, {_id: "123test", videoUrl: "youtube.com", videoName: "Football Lesson One", timeStamps: [1,5,25]}]
+                    videoClips: [({_id: "123test", videoUrl: "youtube.com", videoName: "Football Lesson One", timeStamps: [1,5,25]}), ({_id: "123test", videoUrl: "youtube.com", videoName: "Football Lesson One", timeStamps: [1,5,25]})]
                 }
             },
             global: {
