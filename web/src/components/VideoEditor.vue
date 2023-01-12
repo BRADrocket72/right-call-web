@@ -17,6 +17,9 @@
   </div>
 </template>
 
+<!-- WebGazer.js library -->
+<script src="webgazer.js" type="text/javascript"></script>
+
 <script>
 import ActivityPopUp from '@/components/modals/ActivityPopUp.vue';
 import ResultsPage from "@/components/modals/ResultsPage.vue"
@@ -62,6 +65,7 @@ export default {
         name: "LoginPage"
       })
     }
+    webg
     this.currentVideoClip = await videoClipStore.fetchVideoClipById(this.videoId);
     this.videoName = this.currentVideoClip.videoName
     const videoElement = document.getElementById(this.videoId)
