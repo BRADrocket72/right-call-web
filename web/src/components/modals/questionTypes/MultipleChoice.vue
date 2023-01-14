@@ -1,12 +1,12 @@
 <template>
     <div>
-        <div v-if="activities.length >= 1 && activities[activityIndex] != ''" class="activity-info">
-            <label for="question-text">Question Text: </label><input type="text" id="question-text" name="question-text" :value="activities[activityIndex].questionText">
-            <label for="question-text">Answer 1: </label><input type="text" id="answer-one" name="answer-one" :value="activities[activityIndex].answers[0]" :onchange="populateSelectOptions">
-            <label for="question-text">Answer 2: </label><input type="text" id="answer-two" name="answer-two" :value="activities[activityIndex].answers[1]" :onchange="populateSelectOptions">
+        <div v-if="activity != ''" class="activity-info">
+            <label for="question-text">Question Text: </label><input type="text" id="question-text" name="question-text" :value="activity.questionText">
+            <label for="question-text">Answer 1: </label><input type="text" id="answer-one" name="answer-one" :value="activity.answers[0]" :onchange="populateSelectOptions">
+            <label for="question-text">Answer 2: </label><input type="text" id="answer-two" name="answer-two" :value="activity.answers[1]" :onchange="populateSelectOptions">
             <label for="answers">Correct Answer: </label>
             <select id="answers" name="answers">
-                <option v-for="(answer,index) in activities[activityIndex].answers" :key="answer" v-bind:value="answer" :selected="answer === activities[activityIndex].correctAnswer" v-bind:id="optionIds[index]">{{answer}}</option>
+                <option v-for="(answer,index) in activity.answers" :key="answer" v-bind:value="answer" :selected="answer === activity.correctAnswer" v-bind:id="optionIds[index]">{{answer}}</option>
             </select>
         </div>
         <div v-else class="activity-info">
@@ -17,7 +17,6 @@
             <select id="answers" name="answers">
                 <option id="option-one" value=""></option>
                 <option id="option-two" value=""></option>
-                {{activityIndex}}
             </select> 
         </div>
         <div class="button-div">
@@ -33,7 +32,7 @@ export default {
     name: 'MultipleChoice',
     data() {
         return {
-            questionType: 'MultipleChoice',
+            questionType: 'multiple-choice',
             activityModalArray: [],
             allInputsValid: false,
             activitySaved: false,
@@ -41,7 +40,7 @@ export default {
         }
     },
     props: {
-        activities: Array,
+        activity: {},
         activityIndex: Number
     },
     methods: {

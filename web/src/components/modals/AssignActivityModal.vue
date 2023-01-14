@@ -7,13 +7,21 @@
         </header>
         <section class="modal-body" id="modalDescription">
           <slot name="body">
-            <div v-if="questionTypeSelected" class="assign-activity-div">
-                <div v-if="questionType=='MultipleChoice'">
-                  <MultipleChoice :activities="activities" :activityIndex="activityIndex" @close="close" @save="save"/>
+            <div v-if="questionTypeSelected || questionTypeExists" class="assign-activity-div">
+                <div v-if="questionType=='multiple-choice' || questionTypeExists=='multiple-choice'">
+                  <MultipleChoice :activity="activity" @close="close" @save="save"/>
+                </div>
+                <div v-if="questionType=='short-answer'">
+                  
                 </div>
             </div>
             <div v-else class="assign-activity-div">
               <p>Select a question type: </p>
+              <select id="question-type" name="question-type">
+                <option id="multiple-choice" value="multiple-choice">Multiple Choice</option>
+                <option id="short-answer" value="short-answer">Short Answer</option>
+              </select>
+              <div class="save"><button type="button" class="btn-green" @click="questionTypeSelection()">Select</button></div>
             </div>
           </slot>
         </section>
@@ -32,15 +40,16 @@ export default {
     },
     data() {
         return {
-            questionTypeSelected: true,
-            questionType: 'MultipleChoice',
+            questionTypeSelected: false,
+            questionType: String,
             activityModalArray: [],
             activitySaved: false
         }
     },
     props: {
-        activities: Array,
-        activityIndex: Number
+        activity: {},
+        currentIndex: Number,
+        questionTypeExists: String
     },
     methods: {
         close() {
@@ -49,6 +58,11 @@ export default {
         save(activityArray) {
           this.activityModalArray = activityArray
           this.$emit('save',this.activityModalArray)
+        },
+        questionTypeSelection() {
+          const option = document.getElementById('question-type').value
+          this.questionType = option
+          this.questionTypeSelected = true
         }
     }
 }
@@ -130,9 +144,9 @@ export default {
 }
 
 .activity-info {
-    display: flex;
-    flex-direction: column;
-    height: 200px;
+  display: flex;
+  flex-direction: column;
+  height: 200px;
 }
 
 .activity-info select {
@@ -141,9 +155,9 @@ export default {
 }
 
 .assign-activity-div input {
-    width: 400px;
-    background: #e8dede;
-    border-radius: 4px;
+  width: 400px;
+  background: #e8dede;
+  border-radius: 4px;
 }
 
 .activity-info select {
@@ -153,8 +167,8 @@ export default {
 }
 
 #invalid-save {
-    font-size: 20px;
-    font-weight: bold;
-    color: #dd2a2a;
+  font-size: 20px;
+  font-weight: bold;
+  color: #dd2a2a;
 }
 </style>
