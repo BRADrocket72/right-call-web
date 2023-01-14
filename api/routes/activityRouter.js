@@ -7,6 +7,7 @@ const router = express.Router()
 router.post('/activity/post', async (req, res) => {
     const data = new Activity({
         timestamp: req.body.timestamp,
+        questionType: req.body.questionType,
         questionText: req.body.questionText,
         answers: req.body.answers,
         correctAnswer: req.body.correctAnswer,

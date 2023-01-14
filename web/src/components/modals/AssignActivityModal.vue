@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div v-else class="assign-activity-div">
-              <p>Select a question type: {{questionType}}</p>
+              <p>Select a question type: </p>
             </div>
           </slot>
         </section>

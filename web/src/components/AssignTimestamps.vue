@@ -158,19 +158,18 @@ export default {
             this.activityModalArray = returnedArray
             this.toggleAssignActivityModal()
             if(this.activities[this.currentIndex]._id){
-                console.log('old')
                 this.activities[this.currentIndex].timestamp = this.currentActivityTimestamp
-                this.activities[this.currentIndex].questionText = this.activityModalArray[0]
-                this.activities[this.currentIndex].answers = [this.activityModalArray[1],this.activityModalArray[2]]
-                this.activities[this.currentIndex].correctAnswer =this.activityModalArray[3]
+                this.activities[this.currentIndex].questionType = this.activityModalArray[0]
+                this.activities[this.currentIndex].questionText = this.activityModalArray[1]
+                this.activities[this.currentIndex].answers = [this.activityModalArray[2],this.activityModalArray[3]]
+                this.activities[this.currentIndex].correctAnswer = this.activityModalArray[4]
                 if(this.updatedActivities.indexOf(this.activities[this.currentIndex]._id) == -1) {
-                    console.log('updated')
                     this.updatedActivities.push(this.activities[this.currentIndex]._id)
                 }
             } else {
-                console.log('new')
-                this.activities[this.currentIndex] = new AssignActivity(this.currentActivityTimestamp,this.activityModalArray[0],[this.activityModalArray[1],this.activityModalArray[2]],this.activityModalArray[3],this.selectedVideo._id)
+                this.activities[this.currentIndex] = new AssignActivity(this.currentActivityTimestamp,this.activityModalArray[0],this.activityModalArray[1],[this.activityModalArray[2],this.activityModalArray[3]],this.activityModalArray[4],this.selectedVideo._id)
             }
+            this.toggleSaveButton()
         },
         updateTimestampsAndActivitiesList(timestampSaved) {
             if(timestampSaved) {
@@ -212,7 +211,7 @@ export default {
             var store = useActivityStore()
             for(const activity of this.activities) {
                 if(!activity._id) {
-                    await store.postActivities(activity.timestamp,activity.questionText,activity.answers,activity.correctAnswer,activity.videoclipId)
+                    await store.postActivities(activity.timestamp,activity.questionType,activity.questionText,activity.answers,activity.correctAnswer,activity.videoclipId)
                 } 
             }
         },
@@ -223,7 +222,7 @@ export default {
                     return activity._id === id
                 })
                 if(index != -1 || index != undefined) {
-                    await store.updateActivities(this.activities[index]._id,this.activities[index].timestamp,this.activities[index].questionText,this.activities[index].answers,this.activities[index].correctAnswer)
+                    await store.updateActivities(this.activities[index]._id,this.activities[index].timestamp,this.activities[index].questionType,this.activities[index].questionText,this.activities[index].answers,this.activities[index].correctAnswer)
                 } else {
                     alert('There was an error updating.')
                 }

@@ -33,6 +33,7 @@ export default {
     name: 'MultipleChoice',
     data() {
         return {
+            questionType: 'MultipleChoice',
             activityModalArray: [],
             allInputsValid: false,
             activitySaved: false,
@@ -66,7 +67,7 @@ export default {
             let option = document.getElementById('answers')
             if(questionText.value != "" && questionOne.value != "" && questionTwo.value != "") {
                 this.allInputsValid = true
-                this.activityModalArray = [questionText.value,questionOne.value,questionTwo.value,option.value]
+                this.activityModalArray = [this.questionType,questionText.value,questionOne.value,questionTwo.value,option.value]
             } else {
                 this.allInputsValid = false
             }
