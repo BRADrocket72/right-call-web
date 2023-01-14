@@ -41,15 +41,15 @@
 </template>
 
 <script>
-import LoggedInNavBarVue from './LoggedInNavBar.vue';
+import LoggedInNavBarVue from './LoggedInNavBar.vue'
 import VideoClip from '@/models/VideoClip.js'
 import AssignActivity from '@/models/AssignActivity.js'
 import AssignTimestampsModal from '@/components/modals/AssignTimestampsModal.vue'
 import AssignActivityModal from '@/components/modals/AssignActivityModal.vue'
-import { useVideoClipStore } from "@/stores/VideoClipStore";
+import { useVideoClipStore } from "@/stores/VideoClipStore"
 import {formatTimeForVideo} from '@/models/FormatVideosTime.js'
-import { useUsersStore } from '@/stores/UserStore';
-import { useActivityStore } from '@/stores/ActivityStore';
+import { useUsersStore } from '@/stores/UserStore'
+import { useActivityStore } from '@/stores/ActivityStore'
 
 export default {
     name: 'AssignTimestamps',
@@ -82,6 +82,13 @@ export default {
     methods: {
         videoSelection(video) {
             this.selectedVideo = video
+            this.getVideoTimestampsAndActivities()
+            this.isVideoSelected = !this.isVideoSelected
+        },
+        closeVideo() {
+            this.selectedVideo = null
+        },
+        getVideoTimestampsAndActivities() {
             if(this.selectedVideo.timeStamps) {
                 this.timestamps = this.selectedVideo.timeStamps
                 for(var timestamp of this.timestamps) {
@@ -89,13 +96,9 @@ export default {
                 }
             }
             this.getFromActivityStore()
-            this.isVideoSelected = !this.isVideoSelected
         },
         orderActivitiesByTimestamp() {
             this.activities.sort((a,b) => a.timestamp - b.timestamp)
-        },
-        closeVideo() {
-            this.selectedVideo = null
         },
         async getFromActivityStore() {
             var store = useActivityStore()
@@ -130,23 +133,29 @@ export default {
         toggleAssignActivityModal(activityIndex) {
             this.isAssignActivityModalVisible = !this.isAssignActivityModalVisible
             if(this.isAssignActivityModalVisible) {
-                this.currentIndex = activityIndex
-                this.currentActivityTimestamp = this.timestamps[activityIndex]
+                this.openAssignActivityModal(activityIndex)
             } else {
-                if(this.activitySaved) {
-                    if((this.activities[this.currentIndex]._id) && (this.updatedActivities.indexOf(this.activities[this.currentIndex]._id != -1))){
-                        this.activities[this.currentIndex].timestamp = this.currentActivityTimestamp
-                        this.activities[this.currentIndex].questionText = this.activityModalArray[0]
-                        this.activities[this.currentIndex].answers = [this.activityModalArray[1],this.activityModalArray[2]]
-                        this.activities[this.currentIndex].correctAnswer =this.activityModalArray[3]
-                        this.updatedActivities.push(this.activities[this.currentIndex]._id)
-                    } else {
-                        this.activities[this.currentIndex] = new AssignActivity(this.currentActivityTimestamp,this.activityModalArray[0],[this.activityModalArray[1],this.activityModalArray[2]],this.activityModalArray[3],this.selectedVideo._id)
-                    }
-                    this.activitySaved = false
-                }
+                this.closeAssignActivityModal()
             }
             this.toggleSaveButton()
+        },
+        openAssignActivityModal(activityIndex) {
+            this.currentIndex = activityIndex
+            this.currentActivityTimestamp = this.timestamps[activityIndex]
+        },
+        closeAssignActivityModal() {
+            if(this.activitySaved) {
+                if((this.activities[this.currentIndex]._id) && (this.updatedActivities.indexOf(this.activities[this.currentIndex]._id != -1))){
+                    this.activities[this.currentIndex].timestamp = this.currentActivityTimestamp
+                    this.activities[this.currentIndex].questionText = this.activityModalArray[0]
+                    this.activities[this.currentIndex].answers = [this.activityModalArray[1],this.activityModalArray[2]]
+                    this.activities[this.currentIndex].correctAnswer =this.activityModalArray[3]
+                    this.updatedActivities.push(this.activities[this.currentIndex]._id)
+                } else {
+                    this.activities[this.currentIndex] = new AssignActivity(this.currentActivityTimestamp,this.activityModalArray[0],[this.activityModalArray[1],this.activityModalArray[2]],this.activityModalArray[3],this.selectedVideo._id)
+                }
+                this.activitySaved = false
+            }
         },
         toggleSaveButton() {
             let count = 0
