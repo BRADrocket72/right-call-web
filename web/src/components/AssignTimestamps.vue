@@ -34,7 +34,7 @@
                 </div>
             </div>
             <AssignTimestampsModal v-if="isTimestampModalVisible" :newTimestamp="newTimestamp" @close="toggleTimestampsModal" />
-            <AssignActivityModal v-if="isAssignActivityModalVisible" :activities="activities" :activityIndex="currentIndex" @close="assignActivityModalReturnArray" @save="assignActivitySaved"/>
+            <AssignActivityModal v-if="isAssignActivityModalVisible" :activities="activities" :activityIndex="currentIndex" @close="toggleAssignActivityModal" @save="assignActivityModalSave"/>
         </div>
     </div>
 </div>
@@ -74,7 +74,6 @@ export default {
             activityModalArray: [],
             activities: [],
             currentIndex: Number,
-            activitySaved: false,
             deletedActivities: [],
             updatedActivities: []
         }
@@ -85,8 +84,18 @@ export default {
             this.getVideoTimestampsAndActivities()
             this.isVideoSelected = !this.isVideoSelected
         },
-        closeVideo() {
-            this.selectedVideo = null
+        returnToVideoSelectionPage(){
+            this.isVideoSelected = false
+            this.timestamps = []
+            this.formattedTimestamps = []
+            this.deletedActivities = []
+            this.updatedActivities = []
+            this.activityModalArray = []
+            this.activities = []
+            this.$router.push({
+                name: "AssignTimestamps"
+            })
+            
         },
         getVideoTimestampsAndActivities() {
             if(this.selectedVideo.timeStamps) {
@@ -117,45 +126,9 @@ export default {
             }
             this.toggleSaveButton()
         },
-        returnToVideoSelectionPage(){
-            this.isVideoSelected = false
-            this.timestamps = []
-            this.formattedTimestamps = []
-            this.deletedActivities = []
-            this.updatedActivities = []
-            this.activityModalArray = []
-            this.activities = []
-            this.$router.push({
-                name: "AssignTimestamps"
-            })
-            
-        },
-        toggleAssignActivityModal(activityIndex) {
-            this.isAssignActivityModalVisible = !this.isAssignActivityModalVisible
-            if(this.isAssignActivityModalVisible) {
-                this.openAssignActivityModal(activityIndex)
-            } else {
-                this.closeAssignActivityModal()
-            }
-            this.toggleSaveButton()
-        },
-        openAssignActivityModal(activityIndex) {
-            this.currentIndex = activityIndex
-            this.currentActivityTimestamp = this.timestamps[activityIndex]
-        },
-        closeAssignActivityModal() {
-            if(this.activitySaved) {
-                if((this.activities[this.currentIndex]._id) && (this.updatedActivities.indexOf(this.activities[this.currentIndex]._id != -1))){
-                    this.activities[this.currentIndex].timestamp = this.currentActivityTimestamp
-                    this.activities[this.currentIndex].questionText = this.activityModalArray[0]
-                    this.activities[this.currentIndex].answers = [this.activityModalArray[1],this.activityModalArray[2]]
-                    this.activities[this.currentIndex].correctAnswer =this.activityModalArray[3]
-                    this.updatedActivities.push(this.activities[this.currentIndex]._id)
-                } else {
-                    this.activities[this.currentIndex] = new AssignActivity(this.currentActivityTimestamp,this.activityModalArray[0],[this.activityModalArray[1],this.activityModalArray[2]],this.activityModalArray[3],this.selectedVideo._id)
-                }
-                this.activitySaved = false
-            }
+        timestampsModalData() {
+            const video = document.getElementById(this.selectedVideo._id)
+            this.newTimestamp = video.currentTime
         },
         toggleSaveButton() {
             let count = 0
@@ -170,18 +143,34 @@ export default {
                 document.getElementById('save-timestamps-button').disabled = false
             }
         },
-        timestampsModalData() {
-            const video = document.getElementById(this.selectedVideo._id)
-            this.newTimestamp = video.currentTime
+        toggleAssignActivityModal(activityIndex) {
+            this.isAssignActivityModalVisible = !this.isAssignActivityModalVisible
+            if(this.isAssignActivityModalVisible) {
+                this.openAssignActivityModal(activityIndex)
+            } 
+            this.toggleSaveButton()
         },
-        assignActivityModalReturnArray(returnedArray) {
-            if(returnedArray != undefined) {
-                this.activityModalArray = returnedArray
-            }
+        openAssignActivityModal(activityIndex) {
+            this.currentIndex = activityIndex
+            this.currentActivityTimestamp = this.timestamps[activityIndex]
+        },
+        assignActivityModalSave(returnedArray) {
+            this.activityModalArray = returnedArray
             this.toggleAssignActivityModal()
-        },
-        assignActivitySaved(activitySaved) {
-            this.activitySaved = activitySaved
+            if(this.activities[this.currentIndex]._id){
+                console.log('old')
+                this.activities[this.currentIndex].timestamp = this.currentActivityTimestamp
+                this.activities[this.currentIndex].questionText = this.activityModalArray[0]
+                this.activities[this.currentIndex].answers = [this.activityModalArray[1],this.activityModalArray[2]]
+                this.activities[this.currentIndex].correctAnswer =this.activityModalArray[3]
+                if(this.updatedActivities.indexOf(this.activities[this.currentIndex]._id) == -1) {
+                    console.log('updated')
+                    this.updatedActivities.push(this.activities[this.currentIndex]._id)
+                }
+            } else {
+                console.log('new')
+                this.activities[this.currentIndex] = new AssignActivity(this.currentActivityTimestamp,this.activityModalArray[0],[this.activityModalArray[1],this.activityModalArray[2]],this.activityModalArray[3],this.selectedVideo._id)
+            }
         },
         updateTimestampsAndActivitiesList(timestampSaved) {
             if(timestampSaved) {
@@ -219,15 +208,6 @@ export default {
             this.activities.splice(deletedTimestamp,1)
             this.toggleSaveButton()
         },
-        async updateAPI(id, timestamps) {
-            var videoClipStore = useVideoClipStore();
-            await videoClipStore.updateTimestamps(id,timestamps)
-            this.postActivitiesAPI()
-            this.updateActivitiesAPI()
-            this.deleteActivitiesAPI()
-            this.returnToVideoSelectionPage()
-            
-        },
         async postActivitiesAPI() {
             var store = useActivityStore()
             for(const activity of this.activities) {
@@ -255,6 +235,15 @@ export default {
             for(const activity of this.deletedActivities) {
                 await store.deleteActivities(activity)
             }
+        },
+        async updateAPI(id, timestamps) {
+            var videoClipStore = useVideoClipStore();
+            await videoClipStore.updateTimestamps(id,timestamps)
+            this.postActivitiesAPI()
+            this.updateActivitiesAPI()
+            this.deleteActivitiesAPI()
+            this.returnToVideoSelectionPage()
+            
         }
     },
     async mounted() {
