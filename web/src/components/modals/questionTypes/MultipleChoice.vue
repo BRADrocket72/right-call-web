@@ -2,11 +2,12 @@
     <div>
         <div v-if="activity != ''" class="activity-info">
             <label for="question-text">Question Text: </label><input type="text" id="question-text" name="question-text" :value="activity.questionText">
-            <label for="question-text">Answer 1: </label><input type="text" id="answer-one" name="answer-one" :value="activity.answers[0]" :onchange="populateSelectOptions">
-            <label for="question-text">Answer 2: </label><input type="text" id="answer-two" name="answer-two" :value="activity.answers[1]" :onchange="populateSelectOptions">
+            <div v-for="(answer,index) in activity.answers" :key="answer" class="answers-div">
+                <label :for="answerIDs[index]">Answer {{index + 1}}: </label><input type="text" :id="answerIDs[index]" :name="answerIDs[index]" :value="answer" :onchange="populateSelectOptions">
+            </div>
             <label for="answers">Correct Answer: </label>
             <select id="answers" name="answers">
-                <option v-for="(answer,index) in activity.answers" :key="answer" v-bind:value="answer" :selected="answer === activity.correctAnswer" v-bind:id="optionIds[index]">{{answer}}</option>
+                <option v-for="(answer,index) in activity.answers" :key="answer" :value="answer" :selected="answer === activity.correctAnswer" :id="optionIds[index]">{{answer}}</option>
             </select>
         </div>
         <div v-else class="activity-info">
@@ -33,10 +34,10 @@ export default {
     data() {
         return {
             questionType: 'multiple-choice',
-            activityModalArray: [],
+            activityModalData: [],
             allInputsValid: false,
-            activitySaved: false,
-            optionIds: ['option-one','option-two']
+            answerIDs: ['answer-one','answer-two','answer-three','answer-four'],
+            optionIds: ['option-one','option-two','option-three','option-four']
         }
     },
     props: {
@@ -52,21 +53,20 @@ export default {
             this.checkInputs()
             if(this.allInputsValid) {
                 invalid.innerHTML = ""
-                this.activitySaved = true
-                this.$emit('save',this.activityModalArray)
+                this.$emit('save',this.activityModalData)
             } else {
                 invalid.innerHTML = "Please fill out all fields."
-                this.activityModalArray = []
+                this.activityModalData = []
             }
         },
         checkInputs() {
             let questionText = document.getElementById('question-text')
-            let questionOne = document.getElementById('answer-one')
-            let questionTwo = document.getElementById('answer-two')
+            let answerOne = document.getElementById('answer-one')
+            let answerTwo = document.getElementById('answer-two')
             let option = document.getElementById('answers')
-            if(questionText.value != "" && questionOne.value != "" && questionTwo.value != "") {
+            if(questionText.value != "" && answerOne.value != "" && answerTwo.value != "") {
                 this.allInputsValid = true
-                this.activityModalArray = [this.questionType,questionText.value,questionOne.value,questionTwo.value,option.value]
+                this.activityModalData = [this.questionType,questionText.value,[answerOne.value,answerTwo.value],option.value]
             } else {
                 this.allInputsValid = false
             }
@@ -81,10 +81,15 @@ export default {
             optionTwo.value = answerTwo
             optionTwo.innerHTML = answerTwo
         }
+    },
+    mounted() {
+        console.log(this.activity)
     }
 }
 </script>
 
 <style scoped>
-
+.answers-div label {
+    width: 100%;
+}
 </style>

@@ -71,7 +71,7 @@ export default {
             timestamps: [],
             formattedTimestamps: [],
             ready: false,
-            activityModalArray: [],
+            activityModalData: [],
             activities: [],
             currentIndex: Number,
             deletedActivities: [],
@@ -90,7 +90,7 @@ export default {
             this.formattedTimestamps = []
             this.deletedActivities = []
             this.updatedActivities = []
-            this.activityModalArray = []
+            this.activityModalData = []
             this.activities = []
             this.$router.push({
                 name: "AssignTimestamps"
@@ -146,28 +146,31 @@ export default {
         toggleAssignActivityModal(activityIndex) {
             this.isAssignActivityModalVisible = !this.isAssignActivityModalVisible
             if(this.isAssignActivityModalVisible) {
-                this.openAssignActivityModal(activityIndex)
+                this.currentIndex = activityIndex
+                this.currentActivityTimestamp = this.timestamps[activityIndex]
             } 
             this.toggleSaveButton()
         },
-        openAssignActivityModal(activityIndex) {
-            this.currentIndex = activityIndex
-            this.currentActivityTimestamp = this.timestamps[activityIndex]
-        },
         assignActivityModalSave(returnedArray) {
-            this.activityModalArray = returnedArray
+            this.activityModalData = returnedArray
             this.toggleAssignActivityModal()
+            let answers = []
+            for(const answer of this.activityModalData[2]) {
+                console.log(answer)
+                answers.push(answer)
+                console.log(answers)
+            }
             if(this.activities[this.currentIndex]._id){
                 this.activities[this.currentIndex].timestamp = this.currentActivityTimestamp
-                this.activities[this.currentIndex].questionType = this.activityModalArray[0]
-                this.activities[this.currentIndex].questionText = this.activityModalArray[1]
-                this.activities[this.currentIndex].answers = [this.activityModalArray[2],this.activityModalArray[3]]
-                this.activities[this.currentIndex].correctAnswer = this.activityModalArray[4]
+                this.activities[this.currentIndex].questionType = this.activityModalData[0]
+                this.activities[this.currentIndex].questionText = this.activityModalData[1]
+                this.activities[this.currentIndex].answers = answers
+                this.activities[this.currentIndex].correctAnswer = this.activityModalData[3]
                 if(this.updatedActivities.indexOf(this.activities[this.currentIndex]._id) == -1) {
                     this.updatedActivities.push(this.activities[this.currentIndex]._id)
                 }
             } else {
-                this.activities[this.currentIndex] = new AssignActivity(this.currentActivityTimestamp,this.activityModalArray[0],this.activityModalArray[1],[this.activityModalArray[2],this.activityModalArray[3]],this.activityModalArray[4],this.selectedVideo._id)
+                this.activities[this.currentIndex] = new AssignActivity(this.currentActivityTimestamp,this.activityModalData[0],this.activityModalData[1],answers,this.activityModalData[3],this.selectedVideo._id)
             }
             this.toggleSaveButton()
         },

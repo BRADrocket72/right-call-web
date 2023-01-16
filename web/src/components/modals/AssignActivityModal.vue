@@ -12,7 +12,7 @@
                   <MultipleChoice :activity="activity" @close="close" @save="save"/>
                 </div>
                 <div v-if="questionType=='short-answer'">
-                  
+                  <ShortAnswer :activity="activity" @close="close" @save="save"/>
                 </div>
             </div>
             <div v-else class="assign-activity-div">
@@ -32,22 +32,23 @@
 
 <script>
 import MultipleChoice from '@/components/modals/questionTypes/MultipleChoice.vue'
+import ShortAnswer from '@/components/modals/questionTypes/ShortAnswer.vue'
 
 export default {
     name: 'AssignActivityModal',
     components: { 
-        MultipleChoice
+        MultipleChoice,
+        ShortAnswer
     },
     data() {
         return {
             questionTypeSelected: false,
             questionType: String,
-            activityModalArray: []
+            activityModalData: []
         }
     },
     props: {
         activity: {},
-        currentIndex: Number,
         questionTypeExists: String
     },
     methods: {
@@ -55,8 +56,8 @@ export default {
           this.$emit('close')
         },
         save(activityArray) {
-          this.activityModalArray = activityArray
-          this.$emit('save',this.activityModalArray)
+          this.activityModalData = activityArray
+          this.$emit('save',this.activityModalData)
         },
         questionTypeSelection() {
           const option = document.getElementById('question-type').value
