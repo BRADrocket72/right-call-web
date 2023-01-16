@@ -42,8 +42,7 @@ export default {
         return {
             questionTypeSelected: false,
             questionType: String,
-            activityModalArray: [],
-            activitySaved: false
+            activityModalArray: []
         }
     },
     props: {
@@ -101,7 +100,6 @@ export default {
   background-color: #4AAE9B;
   justify-content: space-between;
   border-radius: 2px 2px 0px 0px;
-
 }
 
 .modal-footer {
