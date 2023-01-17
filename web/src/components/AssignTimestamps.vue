@@ -208,19 +208,16 @@ export default {
         },
         async updateActivitiesAPI() {
             var store = useActivityStore()
+            const activitiesList = this.activities
             for(const id of this.updatedActivities) {
-                var index = this.activities.findIndex(activity => {
-                    return activity._id === id
-                })
-                if(index != -1 || index != undefined) {
-                    await store.updateActivities(this.activities[index]._id,this.activities[index].timestamp,this.activities[index].questionType,this.activities[index].questionText,this.activities[index].answers,this.activities[index].correctAnswer)
-                }
+                var index = activitiesList.findIndex(activity => activity._id == id)
+                await store.updateActivities(activitiesList[index]._id,activitiesList[index].timestamp,activitiesList[index].questionType,activitiesList[index].questionText,activitiesList[index].answers,activitiesList[index].correctAnswer)
             }
         },
         async deleteActivitiesAPI() {
             var store = useActivityStore()
-            for(const activity of this.deletedActivities) {
-                await store.deleteActivities(activity)
+            for(const id of this.deletedActivities) {
+                await store.deleteActivities(id)
             }
         },
         async updateAPI(id, timestamps) {
@@ -230,7 +227,6 @@ export default {
             this.updateActivitiesAPI()
             this.deleteActivitiesAPI()
             this.returnToVideoSelectionPage()
-            
         }
     },
     async mounted() {
