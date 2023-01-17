@@ -81,9 +81,6 @@ export default {
             optionTwo.value = answerTwo
             optionTwo.innerHTML = answerTwo
         }
-    },
-    mounted() {
-        console.log(this.activity)
     }
 }
 </script>

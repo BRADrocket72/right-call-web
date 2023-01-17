@@ -11,7 +11,7 @@
                 <div v-if="questionType=='multiple-choice' || questionTypeExists=='multiple-choice'">
                   <MultipleChoice :activity="activity" @close="close" @save="save"/>
                 </div>
-                <div v-if="questionType=='short-answer'">
+                <div v-if="questionType=='short-answer' || questionTypeExists=='short-answer'">
                   <ShortAnswer :activity="activity" @close="close" @save="save"/>
                 </div>
             </div>

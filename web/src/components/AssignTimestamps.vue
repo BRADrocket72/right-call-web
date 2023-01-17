@@ -156,9 +156,7 @@ export default {
             this.toggleAssignActivityModal()
             let answers = []
             for(const answer of this.activityModalData[2]) {
-                console.log(answer)
                 answers.push(answer)
-                console.log(answers)
             }
             if(this.activities[this.currentIndex]._id){
                 this.activities[this.currentIndex].timestamp = this.currentActivityTimestamp
@@ -174,40 +172,42 @@ export default {
             }
             this.toggleSaveButton()
         },
-        updateTimestampsAndActivitiesList(timestampSaved) {
-            if(timestampSaved) {
+        updateTimestampsAndActivitiesList() {
+            if(this.timestamps.length > 0) {
                 let count = 0
-                if(this.timestamps.length > 0) {
-                    for(const timestamp of this.timestamps) {
-                        if(timestamp > this.newTimestamp) {
-                            this.timestamps.splice(count,0,this.newTimestamp)
-                            this.formattedTimestamps.splice(count,0,formatTimeForVideo(this.newTimestamp))
-                            this.activities.splice(count,0,'')
-                            break
-                        } else if(count == this.timestamps.length-1) {
-                            this.timestamps.splice(count+1,0,this.newTimestamp)
-                            this.formattedTimestamps.splice(count+1,0,formatTimeForVideo(this.newTimestamp))
-                            this.activities.splice(count+1,0,'')
-                            break
-                        }else {
-                            count++
-                        }
+                for(const timestamp of this.timestamps) {
+                    if(timestamp > this.newTimestamp) {
+                        this.timestamps.splice(count,0,this.newTimestamp)
+                        this.formattedTimestamps.splice(count,0,formatTimeForVideo(this.newTimestamp))
+                        this.activities.splice(count,0,'')
+                        break
+                    } else if(count == this.timestamps.length-1) {
+                        this.timestamps.splice(count+1,0,this.newTimestamp)
+                        this.formattedTimestamps.splice(count+1,0,formatTimeForVideo(this.newTimestamp))
+                        this.activities.splice(count+1,0,'')
+                        break
+                    }else {
+                        count++
                     }
-                } else {
-                    this.timestamps.splice(0,0,this.newTimestamp)
-                    this.formattedTimestamps.splice(0,0,formatTimeForVideo(this.newTimestamp))
-                    this.activities.splice(0,0,'')
                 }
+            } else {
+                this.timestamps.splice(0,0,this.newTimestamp)
+                this.formattedTimestamps.splice(0,0,formatTimeForVideo(this.newTimestamp))
+                this.activities.splice(0,0,'')
             }
             this.toggleSaveButton()
         },
-        deleteTimestamp(deletedTimestamp) {
-            this.timestamps.splice(deletedTimestamp,1)
-            this.formattedTimestamps.splice(deletedTimestamp,1)
-            if((this.activities[deletedTimestamp]._id) && (this.deletedActivities.indexOf(this.activities[deletedTimestamp]._id != -1))){
-                this.deletedActivities.push(this.activities[deletedTimestamp]._id)
+        deleteTimestamp(deletedTimestampIndex) {
+            this.timestamps.splice(deletedTimestampIndex,1)
+            this.formattedTimestamps.splice(deletedTimestampIndex,1)
+            if((this.activities[deletedTimestampIndex]._id) && (this.deletedActivities.indexOf(this.activities[deletedTimestampIndex]._id != -1))){
+                this.deletedActivities.push(this.activities[deletedTimestampIndex]._id)
             }
-            this.activities.splice(deletedTimestamp,1)
+            if((this.activities[deletedTimestampIndex]._id) && (this.updatedActivities.indexOf(this.activities[deletedTimestampIndex]._id != -1))){
+                const removeFromUpdatedList = this.updatedActivities.indexOf(this.activities[deletedTimestampIndex]._id)
+                this.updatedActivities.splice(removeFromUpdatedList,1)
+            }
+            this.activities.splice(deletedTimestampIndex,1)
             this.toggleSaveButton()
         },
         async postActivitiesAPI() {
@@ -226,11 +226,8 @@ export default {
                 })
                 if(index != -1 || index != undefined) {
                     await store.updateActivities(this.activities[index]._id,this.activities[index].timestamp,this.activities[index].questionType,this.activities[index].questionText,this.activities[index].answers,this.activities[index].correctAnswer)
-                } else {
-                    alert('There was an error updating.')
                 }
             }
-            
         },
         async deleteActivitiesAPI() {
             var store = useActivityStore()
