@@ -118,48 +118,6 @@ export default {
             this.createNewTimestampAndActivity()
             this.toggleSaveButton()
         },
-        toggleSaveButton() {
-            let count = 0
-            for(const activity of this.activities) {
-                if(activity === '') {
-                    count++
-                }
-            }
-            if(count > 0) {
-                document.getElementById('save-timestamps-button').disabled = true
-            } else {
-                document.getElementById('save-timestamps-button').disabled = false
-            }
-        },
-        toggleAssignActivityModal(activityIndex) {
-            this.isAssignActivityModalVisible = !this.isAssignActivityModalVisible
-            if(this.isAssignActivityModalVisible) {
-                this.currentIndex = activityIndex
-                this.currentActivityTimestamp = this.timestamps[activityIndex]
-            } 
-            this.toggleSaveButton()
-        },
-        assignActivityModalSave(returnedArray) {
-            this.activityModalData = returnedArray
-            this.toggleAssignActivityModal()
-            let answers = []
-            for(const answer of this.activityModalData[2]) {
-                answers.push(answer)
-            }
-            if(this.activities[this.currentIndex]._id){
-                this.activities[this.currentIndex].timestamp = this.currentActivityTimestamp
-                this.activities[this.currentIndex].questionType = this.activityModalData[0]
-                this.activities[this.currentIndex].questionText = this.activityModalData[1]
-                this.activities[this.currentIndex].answers = answers
-                this.activities[this.currentIndex].correctAnswer = this.activityModalData[3]
-                if(this.updatedActivities.indexOf(this.activities[this.currentIndex]._id) == -1) {
-                    this.updatedActivities.push(this.activities[this.currentIndex]._id)
-                }
-            } else {
-                this.activities[this.currentIndex] = new AssignActivity(this.currentActivityTimestamp,this.activityModalData[0],this.activityModalData[1],answers,this.activityModalData[3],this.selectedVideo._id)
-            }
-            this.toggleSaveButton()
-        },
         createNewTimestampAndActivity() {
             if(this.timestamps.length > 0) {
                 let count = 0
@@ -182,6 +140,48 @@ export default {
                 this.timestamps.splice(0,0,this.newTimestamp)
                 this.formattedTimestamps.splice(0,0,formatTimeForVideo(this.newTimestamp))
                 this.activities.splice(0,0,'')
+            }
+            this.toggleSaveButton()
+        },
+        toggleSaveButton() {
+            let count = 0
+            for(const activity of this.activities) {
+                if(activity === '') {
+                    count++
+                }
+            }
+            if(count > 0) {
+                document.getElementById('save-timestamps-button').disabled = true
+            } else {
+                document.getElementById('save-timestamps-button').disabled = false
+            }
+        },
+        toggleAssignActivityModal(activityIndex) {
+            this.isAssignActivityModalVisible = !this.isAssignActivityModalVisible
+            if(this.isAssignActivityModalVisible) {
+                this.currentIndex = activityIndex
+                this.currentActivityTimestamp = this.timestamps[activityIndex]
+            } 
+            this.toggleSaveButton()
+        },
+        assignActivityModalSave(returnedData) {
+            this.activityModalData = returnedData
+            this.toggleAssignActivityModal()
+            let answers = []
+            for(const answer of this.activityModalData[2]) {
+                answers.push(answer)
+            }
+            if(this.activities[this.currentIndex]._id){
+                this.activities[this.currentIndex].timestamp = this.currentActivityTimestamp
+                this.activities[this.currentIndex].questionType = this.activityModalData[0]
+                this.activities[this.currentIndex].questionText = this.activityModalData[1]
+                this.activities[this.currentIndex].answers = answers
+                this.activities[this.currentIndex].correctAnswer = this.activityModalData[3]
+                if(this.updatedActivities.indexOf(this.activities[this.currentIndex]._id) == -1) {
+                    this.updatedActivities.push(this.activities[this.currentIndex]._id)
+                }
+            } else {
+                this.activities[this.currentIndex] = new AssignActivity(this.currentActivityTimestamp,this.activityModalData[0],this.activityModalData[1],answers,this.activityModalData[3],this.selectedVideo._id)
             }
             this.toggleSaveButton()
         },
