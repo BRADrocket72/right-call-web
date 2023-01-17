@@ -29,11 +29,10 @@
                         <button id="save-timestamps-button" @click="updateAPI(selectedVideo._id,timestamps)">Save</button>
                     </div>
                     <div class="add-button-div">
-                        <button id="add-timestamp-button" @click="toggleTimestampsModal()">Add Timestamp Here</button>
+                        <button id="add-timestamp-button" @click="newTimestampButtonClick()">Add Timestamp Here</button>
                     </div>
                 </div>
             </div>
-            <AssignTimestampsModal v-if="isTimestampModalVisible" :newTimestamp="newTimestamp" @close="toggleTimestampsModal" />
             <AssignActivityModal v-if="isAssignActivityModalVisible" :activity="activities[currentIndex]" :questionTypeExists="activities[currentIndex].questionType" @close="toggleAssignActivityModal" @save="assignActivityModalSave"/>
         </div>
     </div>
@@ -44,7 +43,6 @@
 import LoggedInNavBarVue from './LoggedInNavBar.vue'
 import VideoClip from '@/models/VideoClip.js'
 import AssignActivity from '@/models/AssignActivity.js'
-import AssignTimestampsModal from '@/components/modals/AssignTimestampsModal.vue'
 import AssignActivityModal from '@/components/modals/AssignActivityModal.vue'
 import { useVideoClipStore } from "@/stores/VideoClipStore"
 import {formatTimeForVideo} from '@/models/FormatVideosTime.js'
@@ -54,7 +52,6 @@ import { useActivityStore } from '@/stores/ActivityStore'
 export default {
     name: 'AssignTimestamps',
     components: { 
-        AssignTimestampsModal,
         AssignActivityModal,
         LoggedInNavBarVue
     },
@@ -115,20 +112,11 @@ export default {
             this.activities = store.activityList
             this.orderActivitiesByTimestamp()
         },
-        toggleTimestampsModal(timestampSaved) {
-            this.isTimestampModalVisible = !this.isTimestampModalVisible
-            if(this.isTimestampModalVisible) {
-                this.timestampsModalData()
-            } else {
-                if(timestampSaved == true) {
-                    this.updateTimestampsAndActivitiesList(timestampSaved)
-                } 
-            }
-            this.toggleSaveButton()
-        },
-        timestampsModalData() {
+        newTimestampButtonClick() {
             const video = document.getElementById(this.selectedVideo._id)
             this.newTimestamp = video.currentTime
+            this.createNewTimestampAndActivity()
+            this.toggleSaveButton()
         },
         toggleSaveButton() {
             let count = 0
@@ -172,7 +160,7 @@ export default {
             }
             this.toggleSaveButton()
         },
-        updateTimestampsAndActivitiesList() {
+        createNewTimestampAndActivity() {
             if(this.timestamps.length > 0) {
                 let count = 0
                 for(const timestamp of this.timestamps) {
