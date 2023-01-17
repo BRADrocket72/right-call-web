@@ -6,7 +6,7 @@
         </div>
         <div v-else class="activity-info">
             <label for="question-text">Question Text: </label><input type="text" id="question-text" name="question-text">
-            <label for="question-text">Answer: </label><input type="text" id="answer-one" name="answer-one">
+            <label for="answer-one">Answer: </label><input type="text" id="answer-one" name="answer-one">
         </div>
         <div class="button-div">
             <div class="save"><button type="button" class="btn-green" @click="save()">Save</button></div>

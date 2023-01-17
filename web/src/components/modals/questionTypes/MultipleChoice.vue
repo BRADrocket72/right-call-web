@@ -12,8 +12,8 @@
         </div>
         <div v-else class="activity-info">
             <label for="question-text">Question Text: </label><input type="text" id="question-text" name="question-text">
-            <label for="question-text">Answer 1: </label><input type="text" id="answer-one" name="answer-one" :onchange="populateSelectOptions">
-            <label for="question-text">Answer 2: </label><input type="text" id="answer-two" name="answer-two" :onchange="populateSelectOptions">
+            <label for="answer-one">Answer 1: </label><input type="text" id="answer-one" name="answer-one" :onchange="populateSelectOptions">
+            <label for="answer-two">Answer 2: </label><input type="text" id="answer-two" name="answer-two" :onchange="populateSelectOptions">
             <label for="answers">Correct Answer: </label>
             <select id="answers" name="answers">
                 <option id="option-one" value=""></option>

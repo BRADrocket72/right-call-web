@@ -1,4 +1,5 @@
 <template>
+<div>
   <LoggedInNavBar />
   <br/><br/>
   <div class="video-player">
@@ -15,6 +16,7 @@
     <activity-pop-up v-if="questionsLoaded && isModalVisible" :answersArray="answers"
       :question="currentVideoQuestions[questionIndex]" :questionNumber="questionIndex + 1" @close="closeModal" />
   </div>
+</div>
 </template>
 
 <script>

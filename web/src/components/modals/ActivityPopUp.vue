@@ -1,32 +1,23 @@
 <template>
   <transition name="modal-fade">
     <div class="modal-backdrop">
-      <div class="modal"
-        role="dialog"
-        aria-labelledby="modalTitle"
-        aria-describedby="modalDescription"
-      >
-        <header
-          class="modal-header"
-          id="modalTitle"
-        >
+      <div class="modal" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription">
+        <header class="modal-header" id="modalTitle">
           <slot name="header">
             Question {{questionNumber}}
           </slot>
         </header>
-
-        <section
-          class="modal-body"
-          id="modalDescription"
-        >
+        <section class="modal-body" id="modalDescription">
           <slot name="body">
             <p>{{question.questionText}}</p>
-            <br>
-            <br>
           </slot>
-            <button type = "button" class="btn-green" @click="handleAnswerSelected(question, answersArray, question.answers[0]); close()"> {{question.answers[0]}} </button>
-            
-            <button type = "button" class="btn-green" @click="handleAnswerSelected(question, answersArray, question.answers[1]); close()">  {{question.answers[1]}}</button>
+          <div v-if="question.questionType == 'multiple-choice'">
+            <button v-for="answer in question.answers" :key="answer" type="button" class="btn-green" @click="handleAnswerSelected(question, answersArray, answer); close()"> {{answer}} </button>
+          </div>
+          <div v-if="question.questionType == 'short-answer'">
+            <input type="text" id="answer" name="answer">
+            <button type="button" class="btn-green" @click="handleTextAnswer(); close()">Submit</button>
+          </div>
         </section>
       </div>
     </div>
@@ -54,6 +45,10 @@ import {checkAnswer} from "@/models/GetResults.js"
       },
       handleAnswerSelected(question, answersArray, answerChoice) {
         this.updatedAnswers = checkAnswer(question, answersArray, answerChoice)
+      },
+      handleTextAnswer() {
+        const answer = document.getElementById('answer').value
+        this.handleAnswerSelected(this.question,this.answersArray,answer)
       }
     }
   };
