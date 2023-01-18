@@ -159,7 +159,8 @@ export default {
 .video video {
   max-width: 972px;
   min-width: 972px;
-  height: 75%;
+  max-height: 550px;
+  min-height: 550px;
   margin: 0 auto;
 }
 
@@ -182,8 +183,10 @@ export default {
   text-align: center;
 }
 .quadrant {
-  width: 50%;
-  height: 50%;
+  max-width: 486px;
+  min-width: 486px;
+  max-height: 275px;
+  min-height: 275px;
   border: 1px solid black;
   float: left;
 }
