@@ -84,13 +84,13 @@ export default {
 .modal {
   background: white;
   min-width: 600px;
-  min-height: 450px;
+  min-height: 550px;
   border-radius: 2px;
   position: fixed;
   left: auto;
   top: auto;
   box-shadow: 2px 2px 20px 1px;
-  overflow-x: auto;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
