@@ -17,10 +17,9 @@
   </div>
 </template>
 
-<!-- WebGazer.js library -->
-<!-- <script src="webgazer.js" type="text/javascript"></script> -->
 
 <script>
+import webgazer from 'webgazer';
 import ActivityPopUp from '@/components/modals/ActivityPopUp.vue';
 import ResultsPage from "@/components/modals/ResultsPage.vue"
 import VideoClip from '@/models/VideoClip';
@@ -58,6 +57,17 @@ export default {
     };
   },
   async mounted() {
+    //Starts webgazer on application
+    webgazer.setGazeListener(function(data, elapsedTime) {
+      if (data == null) {
+          return;
+      }
+      var xprediction = data.x; //these x coordinates are relative to the viewport
+      var yprediction = data.y; //these y coordinates are relative to the viewport
+      console.log(xprediction, yprediction); //elapsed time is based on time since begin was called
+      console.log(elapsedTime)
+    }).begin()
+
     var videoClipStore = useVideoClipStore();
     var userStore = useUsersStore();
     if (userStore.currentUserToken.length < 1) {
@@ -72,7 +82,7 @@ export default {
     this.currentVideoQuestions = await activityStore.fetchActivitiesByVideoclipId(this.videoId)
     this.currentVideoQuestions.sort((a,b) => a.timestamp - b.timestamp)
     this.questionsLoaded = true;
-    
+
     if (videoElement) {
       videoElement.addEventListener('timeupdate', () => {
         const videoCurrentTime = document.getElementById("videoCurrentTime")
