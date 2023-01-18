@@ -6,7 +6,15 @@
     <h1>{{videoName}}</h1>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <video :id="videoId" :src="currentVideoClip.videoURL"></video>
+    <div class="video">
+      <video :id="videoId" :src="currentVideoClip.videoURL"></video>
+      <div class="quadrants">
+        <div class="quadrant-one quadrant"></div>
+        <div class="quadrant-two quadrant"></div>
+        <div class="quadrant-three quadrant"></div>
+        <div class="quadrant-four quadrant"></div>
+      </div>
+    </div>
     <div id="videoControls">
       <button id="playOrPause" @click="playOrPauseVideo">Play</button>
       <span id="videoCurrentTime">00:00</span> / <span id="videoDuration">00:00</span>
@@ -142,16 +150,41 @@ export default {
 </script>
 
 <style scoped>
-video {
-  width: 75%;
+.video {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.video video {
+  max-width: 972px;
+  min-width: 972px;
   height: 75%;
-  display: block;
   margin: 0 auto;
 }
 
 #videoControls {
-  width: 75%;
+  max-width: 972px;
+  min-width: 972px;
   margin: 0 auto;
   background-color: #4AAE9B;
+}
+
+.quadrants {
+  position: absolute;
+  max-width: 972px;
+  min-width: 972px;
+  height: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+.quadrant {
+  width: 50%;
+  height: 50%;
+  border: 1px solid black;
+  float: left;
 }
 </style>
