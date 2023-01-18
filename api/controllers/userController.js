@@ -1,3 +1,6 @@
+const User = require('../models/User');
+
+
 exports.create_user = async (req, res) => {
 
     let salt = crypto.randomBytes(16).toString('base64');
