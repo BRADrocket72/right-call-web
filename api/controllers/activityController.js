@@ -3,6 +3,7 @@ const Activity = require('../models/Activity');
 exports.activities_create_activity = async (req, res) => {
     const data = new Activity({
         timestamp: req.body.timestamp,
+        questionType: req.body.questionType,
         questionText: req.body.questionText,
         answers: req.body.answers,
         correctAnswer: req.body.correctAnswer,

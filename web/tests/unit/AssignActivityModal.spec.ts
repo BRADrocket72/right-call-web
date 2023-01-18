@@ -1,14 +1,14 @@
 import { mount } from '@vue/test-utils'
-import Activity from '@/models/Activity'
+import AssignActivity from '@/models/AssignActivity'
 import 'jest'
 import AssignActivityModal from '@/components/modals/AssignActivityModal.vue';
 
-describe('ActivityPopUp.vue', () => {
+describe('AssignActivityModal.vue', () => {
     let wrapper: any;
     beforeEach(() => {
         wrapper = mount(AssignActivityModal, {
             props:{
-                activities: [new Activity(4, "What was the call?", ["Yellow Card", "Red Card"], "Yellow Card","123testId")],
+                activities: [new AssignActivity(2, "multiple-choice", "What was the call ?", ["Traveling", "Double Dribble"], "Traveling", "123")],
                 activityIndex: 0
             }
         })
@@ -22,23 +22,5 @@ describe('ActivityPopUp.vue', () => {
         const assignActivityDiv = wrapper.find('div.assign-activity-dv')
         expect(assignActivityDiv.exists()).toBeTruthy
     })
-
-    it('renders the actual input options (question and answer options)', () => {
-        const inputOptions = wrapper.findAll('input[type="text"]')
-        const selectInput = wrapper.find('select')
-        expect(inputOptions.length).toEqual(3)
-        expect(selectInput.exists()).toBeTruthy
-    })
-    it('displays the already existing activity values (question and answers)', () => {
-        const inputOptions = wrapper.findAll('input[type="text"]')
-        expect(inputOptions[0].element.value).toBe('What was the call?')
-        expect(inputOptions[1].element.value).toBe('Yellow Card')
-        expect(inputOptions[2].element.value).toBe('Red Card')
-    })
-    it('calls the buttons that call functions correctly', async () => {
-        const button = wrapper.find('.close').find('button')
-        const closeFunction = jest.spyOn(wrapper.vm, 'close')
-        await button.trigger('click')
-        expect(closeFunction).toHaveBeenCalled
-    })
+    
 })

@@ -20,11 +20,12 @@ export const useActivityStore = defineStore("Activity", {
                 console.log(error);
             }
         },
-        async postActivities(timestamp,questionText,answers,correctAnswer,videoclipId) {
+        async postActivities(timestamp,questionType,questionText,answers,correctAnswer,videoclipId) {
             try {
                 const data = await axios.post(`http://localhost:3000/api/activity/post`, 
                 { 
                     timestamp: timestamp,
+                    questionType: questionType,
                     questionText: questionText,
                     answers: answers,
                     correctAnswer: correctAnswer,
@@ -35,11 +36,12 @@ export const useActivityStore = defineStore("Activity", {
                 console.log(error)
             }
         },
-        async updateActivities(id,timestamp,questionText,answers,correctAnswer) {
+        async updateActivities(id,timestamp,questionType,questionText,answers,correctAnswer) {
             try {
                 const data = await axios.patch(`http://localhost:3000/api/activity/update/${id}`, 
                 { 
                     timestamp: timestamp,
+                    questionType: questionType,
                     questionText: questionText,
                     answers: answers,
                     correctAnswer: correctAnswer

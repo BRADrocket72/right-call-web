@@ -1,13 +1,15 @@
 export default class AssignActivity {
-    timestamp = "";
-    questionText = "";
+    timestamp = ""
+    questionType = ""
+    questionText = ""
     answers = []
     correctAnswer=""
-    videoclipId = "";
+    videoclipId = ""
 
-    constructor(timestamp, questionText, answers, correctAnswer, videoclipId) {
-        this.timestamp = timestamp;
-        this.questionText = questionText;
+    constructor(timestamp, questionType, questionText, answers, correctAnswer, videoclipId) {
+        this.timestamp = timestamp
+        this.questionType = questionType
+        this.questionText = questionText
         this.answers = answers
         this.correctAnswer = correctAnswer
         this.videoclipId = videoclipId

@@ -1,11 +1,14 @@
 <template>
+<div>
   <LoggedInNavBar />
   <br/><br/>
   <div class="video-player">
     <h1>{{videoName}}</h1>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <video :id="videoId" :src="currentVideoClip.videoURL"></video>
+    <div class="video">
+      <video :id="videoId" :src="currentVideoClip.videoURL"></video>
+    </div>
     <div id="videoControls">
       <button id="playOrPause" @click="playOrPauseVideo">Play</button>
       <span id="videoCurrentTime">00:00</span> / <span id="videoDuration">00:00</span>
@@ -15,6 +18,7 @@
     <activity-pop-up v-if="questionsLoaded && isModalVisible" :answersArray="answers"
       :question="currentVideoQuestions[questionIndex]" :questionNumber="questionIndex + 1" @close="closeModal" />
   </div>
+</div>
 </template>
 
 <!-- WebGazer.js library -->
@@ -143,15 +147,23 @@ export default {
 </script>
 
 <style scoped>
-video {
-  width: 75%;
-  height: 75%;
-  display: block;
+.video {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.video video {
+  max-width: 972px;
+  min-width: 972px;
+  max-height: 550px;
+  min-height: 550px;
   margin: 0 auto;
 }
 
 #videoControls {
-  width: 75%;
+  max-width: 972px;
+  min-width: 972px;
   margin: 0 auto;
   background-color: #4AAE9B;
 }

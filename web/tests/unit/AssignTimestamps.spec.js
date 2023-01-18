@@ -8,6 +8,7 @@ describe('AssignTimestamps.vue', () => {
     let wrapper
     let mockRouter
     let mockRoute
+    jest.spyOn(console, 'warn').mockImplementation(() => {})
     beforeEach(() => {
         mockRouter = {
             push: jest.fn()
@@ -62,15 +63,15 @@ describe('AssignTimestamps.vue', () => {
         expect(content.exists()).toBe(true)
     })
 
-    it('calls the toggleTimestampsModal method when Add New Timestamp button is clicked', async () => {
+    it('adds a new timestamp when Add New Timestamp button is clicked', async () => {
         const lesson = wrapper.find('div.lesson').find('a.nav-link')
         await lesson.trigger('click')
-        wrapper.vm.toggleTimestampsModal = jest.fn()
-        const toggleModal = jest.spyOn(wrapper.vm, 'toggleTimestampsModal')
+        wrapper.vm.newTimestampButtonClick = jest.fn()
+        const newTimestamp = jest.spyOn(wrapper.vm, 'newTimestampButtonClick')
         const addTimestamp = wrapper.find('.add-button-div').find('#add-timestamp-button')
         expect(addTimestamp.exists()).toBe(true)
         await addTimestamp.trigger('click')
-        expect(toggleModal).toHaveBeenCalled
+        expect(newTimestamp).toHaveBeenCalled
     })
 
     it('calls the updateAPI method when Save button is clicked', async () => {

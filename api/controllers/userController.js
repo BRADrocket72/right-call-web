@@ -1,5 +1,6 @@
-const User = require('../models/User');
-
+const User = require('../models/User')
+const crypto = require('crypto')
+const jwt = require('jsonwebtoken')
 
 exports.create_user = async (req, res) => {
 
