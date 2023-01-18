@@ -1,8 +1,8 @@
 require('dotenv').config();
 const multer = require('multer')
 const express = require('express');
-const VideoClip = require('../models/VideoClip');
-const { s3Upload } = require('../services/Storage/AmazonS3Service');
+const VideoClipController = require('../controllers/videoClipController.js')
+
 
 const router = express.Router()
 
@@ -17,78 +17,18 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({ storage: storage, fileFilter })
 
 //Post Method
-router.post('/videoClip/post', upload.single("file"), async (req, res) => {
-    try {
-        const fileUploadURL = await s3Upload(req.file)
-        const data = new VideoClip({
-            videoURL: fileUploadURL,
-            videoName: req.body.name
-        })
-        res.header('Access-Control-Allow-Origin', '*')
-        const dataToSave = await data.save();
-        res.header('Content-Type', 'multipart/form-data')
-        res.status(200).json(dataToSave)
-    }
-    catch (error) {
-        res.status(400).json({ message: error.message })
-    }
-})
+router.post('/videoClip/post', upload.single("file"), VideoClipController.create_clip)
 
 //Get all Method
-router.get('/videoClip/getAll', async (req, res) => {
-    res.header('Access-Control-Allow-Origin', '*')
-    try {
-        const data = await VideoClip.find();
-        res.header('Access-Control-Allow-Origin', '*')
-        res.json(data)
-    }
-    catch (error) {
-        res.status(500).json({ message: error.message })
-    }
-})
+router.get('/videoClip/getAll', VideoClipController.get_all)
 
 //Get by ID Method
-router.get('/videoClip/getOne/:id', async (req, res) => {
-    res.header('Access-Control-Allow-Origin', '*')
-    try {
-        const data = await VideoClip.findById(req.params.id);
-        res.json(data)
-    }
-    catch (error) {
-        res.status(500).json({ message: error.message })
-    }
-})
+router.get('/videoClip/getOne/:id', VideoClipController.get_by_id)
 
 //Update by ID Method
-router.patch('/videoClip/update/:id', async (req, res) => {
-    res.header('Access-Control-Allow-Origin', '*')
-    try {
-        const id = req.params.id;
-        const updatedData = req.body;
-        const options = { new: true };
-
-        const result = await VideoClip.findByIdAndUpdate(
-            id, updatedData, options
-        )
-
-        res.send(result)
-    }
-    catch (error) {
-        res.status(400).json({ message: error.message })
-    }
-})
+router.patch('/videoClip/update/:id', VideoClipController.update_clip)
 
 //Delete by ID Method
-router.delete('/videoClip/delete/:id', async (req, res) => {
-    res.header('Access-Control-Allow-Origin', '*')
-    try {
-        const id = req.params.id;
-        const data = await VideoClip.findByIdAndDelete(id)
-        res.send(`Document with ${data.videoURL} has been deleted..`)
-    }
-    catch (error) {
-        res.status(400).json({ message: error.message })
-    }
-})
+router.delete('/videoClip/delete/:id', VideoClipController.delete_clip)
 
 module.exports = router;
