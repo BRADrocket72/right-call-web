@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import Activity from '@/models/Activity'
+import AssignActivity from '@/models/AssignActivity'
 import 'jest'
 import ActivityPopUp from '@/components/modals/ActivityPopUp.vue';
 
@@ -8,7 +8,7 @@ describe('ActivityPopUp.vue', () => {
     beforeEach(() => {
         wrapper = mount(ActivityPopUp, {
             props:{
-                question:new Activity(2, "What was the call ?", ["Traveling", "Double Dribble"], "Traveling", ),
+                question:new AssignActivity(2, "multiple-choice", "What was the call ?", ["Traveling", "Double Dribble"], "Traveling", "123"),
                 questionNumber: 1,
                 answersArray: [Object]
             }
@@ -24,12 +24,14 @@ describe('ActivityPopUp.vue', () => {
     })
 
     it('displays 2 answer buttons', () => {
-        expect(wrapper.findAll('.btn-green').length).toBe(2)
+        expect(wrapper.findAll('button.btn-green').length).toBe(2)
     })
 
     it('calls the close modal and handle selected answers functions on button click', async () => {
-        const button = wrapper.find('.btn-green')
+        const button = wrapper.find('button.btn-green')
+        wrapper.vm.close = jest.fn()
         const closeFunction = jest.spyOn(wrapper.vm, 'close')
+        wrapper.vm.handleAnswerSelected = jest.fn()
         const handleAnswersFunction = jest.spyOn(wrapper.vm, 'handleAnswerSelected')
         await button.trigger('click')
         expect(closeFunction).toHaveBeenCalled
