@@ -21,6 +21,9 @@
 </div>
 </template>
 
+<!-- WebGazer.js library -->
+<!-- <script src="webgazer.js" type="text/javascript"></script> -->
+
 <script>
 import ActivityPopUp from '@/components/modals/ActivityPopUp.vue';
 import ResultsPage from "@/components/modals/ResultsPage.vue"
