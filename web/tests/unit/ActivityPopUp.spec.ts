@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import Activity from '@/models/Activity'
+import ActivityDto from '@/models/ActivityDto'
 import 'jest'
 import ActivityPopUp from '@/components/modals/ActivityPopUp.vue';
 
@@ -8,7 +8,7 @@ describe('ActivityPopUp.vue', () => {
     beforeEach(() => {
         wrapper = mount(ActivityPopUp, {
             props:{
-                question:new Activity(2, "What was the call ?", ["Traveling", "Double Dribble"], "Traveling", ),
+                question:new ActivityDto(2, "What was the call ?", ["Traveling", "Double Dribble"], "Traveling", ),
                 questionNumber: 1,
                 answersArray: [Object]
             }

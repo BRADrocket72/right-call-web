@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import VideoClip from '@/models/Activity'
+import VideoClip from '@/models/ActivityDto'
 import { createPinia, setActivePinia } from 'pinia';
 import 'jest'
 import SaveTimestampsModal from '@/components/modals/SaveTimestampsModal.vue';

@@ -1,7 +1,7 @@
-import Answer from '@/models/Answer'
-import {getPercentageResults} from '@/models/GetResults.js'
-import {checkAnswer} from "@/models/GetResults"
-import Activity from '@/models/Activity'
+import AnswerDto from '@/models/AnswerDto'
+import {getPercentageResults} from '@/util/GetResults.js'
+import {checkAnswer} from "@/util/GetResults.js"
+import ActivityDto from '@/models/ActivityDto'
 import 'jest'
 
 describe('Get Results functions', () => {
@@ -17,7 +17,7 @@ describe('Get Results functions', () => {
     })
 
     test('checkAnswer returns the correct result to users answer', () => {
-        const questionObject = new Activity(5, "What was the call ?", ["Travel", "No Foul Call"], "Travel", "123")
+        const questionObject = new ActivityDto(5, "What was the call ?", ["Travel", "No Foul Call"], "Travel", "123")
         const rightResultsList = checkAnswer(questionObject, [], "Travel")
         expect(rightResultsList[0]).toEqual("Correct")
     })

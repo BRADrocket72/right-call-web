@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import Activity from '@/models/Activity'
+import ActivityDto from '@/models/ActivityDto'
 import 'jest'
 import AssignTimestampsModal from '@/components/modals/AssignTimestampsModal.vue';
 
