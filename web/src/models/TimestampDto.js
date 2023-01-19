@@ -1,4 +1,4 @@
-export default class Timestamp {
+export default class TimestampDto {
     id = '';
     time = '';
 

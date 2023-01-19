@@ -1,4 +1,4 @@
-export default class Activity {
+export default class ActivityDto {
     id = "";
     questionText = "";
     videoId = "";

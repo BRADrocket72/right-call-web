@@ -1,4 +1,4 @@
-export default class AssignActivity {
+export default class AssignActivityDto {
     timestamp = "";
     questionText = "";
     answers = []
