@@ -43,8 +43,9 @@ describe('VideoEditor.vue', () => {
         expect(wrapper.exists()).toBe(true)
     })
 
-    it('renders video div', async () => {
-      expect(wrapper.find('div').classes()).toContain('video-player')
+    it('renders video in video div', async () => {
+      const video = wrapper.find('div.video').find('video')
+      expect(video.exists()).toBe(true)
     })
 
      it('sets currentVideoClip correctly', () => {
