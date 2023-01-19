@@ -20,8 +20,8 @@
 <script>
 import ActivityPopUp from '@/components/modals/ActivityPopUp.vue';
 import ResultsPage from "@/components/modals/ResultsPage.vue"
-import VideoClip from '@/models/VideoClip';
-import { formatTimeForVideo } from "@/models/FormatVideosTime.js"
+import VideoClip from '@/models/VideoClipDto';
+import { formatTimeForVideo } from "@/util/FormatVideosTime.js"
 import { useVideoClipStore } from "@/stores/VideoClipStore";
 import { useUsersStore } from '@/stores/UserStore';
 import { useActivityStore } from '@/stores/ActivityStore';

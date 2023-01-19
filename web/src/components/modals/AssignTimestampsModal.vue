@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import {formatTimeForVideo} from '@/models/FormatVideosTime.js'
+import {formatTimeForVideo} from '@/util/FormatVideosTime.js'
 export default {
     name: 'AssignTimestampsModal',
     data() {

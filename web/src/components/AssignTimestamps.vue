@@ -42,12 +42,12 @@
 
 <script>
 import LoggedInNavBarVue from './LoggedInNavBar.vue';
-import VideoClip from '@/models/VideoClip.js'
-import AssignActivity from '@/models/AssignActivity.js'
+import VideoClip from '@/models/VideoClipDto.js'
+import AssignActivity from '@/models/AssignActivityDto.js'
 import AssignTimestampsModal from '@/components/modals/AssignTimestampsModal.vue'
 import AssignActivityModal from '@/components/modals/AssignActivityModal.vue'
 import { useVideoClipStore } from "@/stores/VideoClipStore";
-import {formatTimeForVideo} from '@/models/FormatVideosTime.js'
+import {formatTimeForVideo} from '@/util/FormatVideosTime.js'
 import { useUsersStore } from '@/stores/UserStore';
 import { useActivityStore } from '@/stores/ActivityStore';
 
