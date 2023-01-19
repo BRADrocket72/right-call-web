@@ -19,7 +19,6 @@
 
 
 <script>
-import webgazer from 'webgazer';
 import ActivityPopUp from '@/components/modals/ActivityPopUp.vue';
 import ResultsPage from "@/components/modals/ResultsPage.vue"
 import VideoClip from '@/models/VideoClip';
@@ -29,6 +28,7 @@ import { useUsersStore } from '@/stores/UserStore';
 import { useActivityStore } from '@/stores/ActivityStore';
 import { useUserResultsStore } from "@/stores/UserResultsStore"
 import LoggedInNavBar from './LoggedInNavBar.vue';
+import webgazer from 'webgazer';
 
 export default {
   name: 'VideoEditor',
@@ -66,7 +66,8 @@ export default {
       var yprediction = data.y; //these y coordinates are relative to the viewport
       console.log(xprediction, yprediction); //elapsed time is based on time since begin was called
       console.log(elapsedTime)
-    }).begin()
+    })
+    webgazer.begin()
 
     var videoClipStore = useVideoClipStore();
     var userStore = useUsersStore();
