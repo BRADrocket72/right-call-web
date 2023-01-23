@@ -1,11 +1,11 @@
-const VideoClip = require('../models/VideoClip');
+const VideoClipSchema = require('../../data/mongo/schemas/VideoClipSchema');
 const { s3Upload } = require('../services/Storage/AmazonS3Service');
 
 
 exports.create_clip = async (req, res) => {
     try {
         const fileUploadURL = await s3Upload(req.file)
-        const data = new VideoClip({
+        const data = new VideoClipSchema({
             videoURL: fileUploadURL,
             videoName: req.body.name
         })
@@ -19,10 +19,10 @@ exports.create_clip = async (req, res) => {
     }
 }
 
-exports.get_all =  async (req, res) => {
+exports.get_all = async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
-        const data = await VideoClip.find();
+        const data = await VideoClipSchema.find();
         res.header('Access-Control-Allow-Origin', '*')
         res.json(data)
     }
@@ -31,10 +31,10 @@ exports.get_all =  async (req, res) => {
     }
 }
 
-exports.get_by_id =  async (req, res) => {
+exports.get_by_id = async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
-        const data = await VideoClip.findById(req.params.id);
+        const data = await VideoClipSchema.findById(req.params.id);
         res.json(data)
     }
     catch (error) {
@@ -42,14 +42,14 @@ exports.get_by_id =  async (req, res) => {
     }
 }
 
-exports.update_clip =  async (req, res) => {
+exports.update_clip = async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
         const id = req.params.id;
         const updatedData = req.body;
         const options = { new: true };
 
-        const result = await VideoClip.findByIdAndUpdate(
+        const result = await VideoClipSchema.findByIdAndUpdate(
             id, updatedData, options
         )
 
@@ -60,11 +60,11 @@ exports.update_clip =  async (req, res) => {
     }
 }
 
-exports.delete_clip =  async (req, res) => {
+exports.delete_clip = async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
         const id = req.params.id;
-        const data = await VideoClip.findByIdAndDelete(id)
+        const data = await VideoClipSchema.findByIdAndDelete(id)
         res.send(`Document with ${data.videoURL} has been deleted..`)
     }
     catch (error) {

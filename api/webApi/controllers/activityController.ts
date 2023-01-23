@@ -1,27 +1,23 @@
-const Activity = require('../models/Activity');
+import { Activity } from "../../data/mongo/Activity"
 
-exports.activities_create_activity = async (req, res) => {
-    const data = new Activity({
-        timestamp: req.body.timestamp,
-        questionText: req.body.questionText,
-        answers: req.body.answers,
-        correctAnswer: req.body.correctAnswer,
-        videoclipId: req.body.videoclipId
-    })
+const activityDb: ActivityDb = new Activity();
+
+export async function activities_create_activity(req, res) {
+
 
     try {
         res.header('Access-Control-Allow-Origin', '*')
-        const dataToSave = await data.save();
+        var dataToSave = await activityDb.createActivity(req)
         res.status(200).json(dataToSave)
     }
     catch (error) {
         res.status(400).json({ message: error.message })
     }
 }
-exports.activities_get_all = async (req, res) => {
+export async function activities_get_all(req, res) {
     try {
         res.header('Access-Control-Allow-Origin', '*')
-        const data = await Activity.find();
+        const data = await find();
         res.json(data)
     }
     catch (error) {
@@ -29,10 +25,10 @@ exports.activities_get_all = async (req, res) => {
     }
 }
 
-exports.activities_get_by_videoId = async (req, res) => {
+export async function activities_get_by_videoId(req, res) {
     res.header('Access-Control-Allow-Origin', '*')
     try {
-        const data = await Activity.find({"videoclipId": req.params.videoclipId});
+        const data = await find({"videoclipId": req.params.videoclipId});
         res.json(data)
     }
     catch (error) {
@@ -40,14 +36,14 @@ exports.activities_get_by_videoId = async (req, res) => {
     }
 }
 
-exports.activities_update = async (req, res) => {
+export async function activities_update(req, res) {
     res.header('Access-Control-Allow-Origin', '*')
     try {
         const id = req.params.id;
         const updatedData = req.body;
         const options = { new: true };
 
-        const result = await Activity.findByIdAndUpdate(
+        const result = await findByIdAndUpdate(
             id, updatedData, options
         )
 
@@ -58,12 +54,12 @@ exports.activities_update = async (req, res) => {
     }
 }
 
-exports.activities_delete_activity = async (req, res) => {
+export async function activities_delete_activity(req, res) {
     res.header('Access-Control-Allow-Origin', '*')
     try {
         const id = req.params.id;
 
-        const result = await Activity.findByIdAndDelete(id)
+        const result = await findByIdAndDelete(id)
         res.send(result)
     }
     catch (error) {
