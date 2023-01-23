@@ -22,7 +22,7 @@
 
             <label for="answers">Correct Answer: </label>
             <select id="answers" name="answers">
-                <option v-for="(answer,index) in currentActivity.answers" :key="answer" :value="answer" :selected="answer === currentActivity.correctAnswer" :id="optionIds[index]">{{answer}}</option>
+                <option v-for="(answer,index) in currentActivity.answers" :key="answer" :value="answer" :selected="answer === currentActivity.correctAnswer" :id="optionIDs[index]">{{answer}}</option>
             </select>
         </div>
 
@@ -75,13 +75,12 @@ export default {
             minAnswers: 2,
             maxAnswers: 4,
             answerIDs: ['answer-one','answer-two','answer-three','answer-four'],
-            optionIds: ['option-one','option-two','option-three','option-four'],
+            optionIDs: ['option-one','option-two','option-three','option-four'],
             currentActivity: {}
         }
     },
     props: {
-        activity: {},
-        activityIndex: Number
+        activity: {}
     },
     methods: {
         close() {
