@@ -3,6 +3,11 @@ import 'jest'
 import VideoEditor from '@/components/VideoEditor.vue';
 import {createPinia, setActivePinia} from 'pinia'
 
+jest.mock('webgazer', () => ({
+  setGazeListener: () => Promise.resolve(),
+  begin: () => Promise.resolve()
+}))
+
 describe('VideoEditor.vue', () => {
   
     let wrapper;
