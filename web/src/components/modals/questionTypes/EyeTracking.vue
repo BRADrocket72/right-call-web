@@ -17,10 +17,10 @@
         </select>
     </div>
     <div class="quadrants">
-        <div class="quadrant-one quadrant selected" id="quadrant-one"></div>
-        <div class="quadrant-two quadrant" id="quadrant-two"></div>
-        <div class="quadrant-three quadrant" id="quadrant-three"></div>
-        <div class="quadrant-four quadrant" id="quadrant-four"></div>
+        <div class="quadrant selected" id="quadrant-one"></div>
+        <div class="quadrant" id="quadrant-two"></div>
+        <div class="quadrant" id="quadrant-three"></div>
+        <div class="quadrant" id="quadrant-four"></div>
     </div>
     <div class="button-div">
         <div class="save"><button type="button" class="btn-green" @click="save()">Save</button></div>
