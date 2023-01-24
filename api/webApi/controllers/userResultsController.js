@@ -1,4 +1,4 @@
-const UserResults = require('../../data/mongo/schemas/UserResultsSchema');
+const UserResults = require('../../data/mongo/schemas/UserResultsSchema.ts');
 
 exports.create_results = async (req, res) => {
     const data = new UserResults({

@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+const mongoose = require( "mongoose")
+
 
 const lessonSchema = new mongoose.Schema({
     // name of the lesson
@@ -18,4 +19,4 @@ const lessonSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('Lessons', lessonSchema)
+export default  mongoose.model('Lessons', lessonSchema)

@@ -1,4 +1,4 @@
-const VideoClipSchema = require('../../data/mongo/schemas/VideoClipSchema');
+const VideoClipSchema = require('../../data/mongo/schemas/VideoClipSchema.ts');
 const { s3Upload } = require('../services/Storage/AmazonS3Service');
 
 

@@ -1,4 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require( "mongoose")
+
+
 
 const videoSchema = new mongoose.Schema({
     videoURL: {
@@ -14,5 +16,5 @@ const videoSchema = new mongoose.Schema({
         type: Array
     }
 })
-const VideoClipSchema = mongoose.model('VideoClip', videoSchema)
-export VideoClipSchema;
+
+export default  mongoose.model('VideoClip', videoSchema)

@@ -1,23 +1,23 @@
-import { Activity } from "../../data/mongo/Activity"
+import Activity from "../../data/mongo/Activity";
 
-const activityDb: ActivityDb = new Activity();
+let activityDb = new Activity();
 
-export async function activities_create_activity(req, res) {
+  module.exports.activities_create_activity =async (req, res)=>  {
 
 
     try {
         res.header('Access-Control-Allow-Origin', '*')
-        var dataToSave = await activityDb.createActivity(req)
+        var dataToSave = await activityDb.createActivity(req.body)
         res.status(200).json(dataToSave)
     }
     catch (error) {
         res.status(400).json({ message: error.message })
     }
 }
-export async function activities_get_all(req, res) {
+module.exports.activities_get_all = async(req, res) => {
     try {
         res.header('Access-Control-Allow-Origin', '*')
-        const data = await find();
+        const data = await activityDb.getAll();
         res.json(data)
     }
     catch (error) {
@@ -25,10 +25,10 @@ export async function activities_get_all(req, res) {
     }
 }
 
-export async function activities_get_by_videoId(req, res) {
+module.exports.activities_get_by_videoId =async(req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
-        const data = await find({"videoclipId": req.params.videoclipId});
+        const data = await activityDb.findByVideoId( req.params.videoclipId);
         res.json(data)
     }
     catch (error) {
@@ -36,16 +36,11 @@ export async function activities_get_by_videoId(req, res) {
     }
 }
 
-export async function activities_update(req, res) {
+module.exports.activities_update= async(req, res)=> {
     res.header('Access-Control-Allow-Origin', '*')
     try {
-        const id = req.params.id;
-        const updatedData = req.body;
-        const options = { new: true };
 
-        const result = await findByIdAndUpdate(
-            id, updatedData, options
-        )
+        const result = await activityDb.update(req.body)
 
         res.send(result)
     }
@@ -54,12 +49,12 @@ export async function activities_update(req, res) {
     }
 }
 
-export async function activities_delete_activity(req, res) {
+module.exports.activities_delete_activity = async(req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
         const id = req.params.id;
 
-        const result = await findByIdAndDelete(id)
+        const result = await activityDb.findByIdAndDelete(id)
         res.send(result)
     }
     catch (error) {

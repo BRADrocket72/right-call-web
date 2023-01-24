@@ -1,4 +1,4 @@
-const User = require('../../data/mongo/schemas/UserSchema');
+const User = require('../../data/mongo/schemas/UserSchema.ts');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 

@@ -1,4 +1,4 @@
-const LessonSchema = require('../../data/mongo/schemas/LessonSchema');
+const LessonSchema = require('../../data/mongo/schemas/LessonSchema.ts');
 
 
 exports.lessons_create_lesson = async (req, res) => {
