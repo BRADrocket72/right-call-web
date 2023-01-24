@@ -9,8 +9,6 @@ import ActivitySchema from "../mongo/schemas/ActivitySchema"
      
     async createActivity(activity:ActivityDto) {
         try{
-            console.log("before model")
-            console.log(activity)
         const data = new ActivitySchema({
             timestamp:1232,
             questionText: activity.questionText,
@@ -18,43 +16,41 @@ import ActivitySchema from "../mongo/schemas/ActivitySchema"
             correctAnswer: activity.correctAnswer,
             videoclipId: activity.videoclipId
         })
-        console.log(data)
-        console.log("after model")
         var dataToSave = await data.save()
-        console.log("after save")
-
         return Activity.toDto(dataToSave);
     }catch(e){
         throw e;
     }
 }
     async getAll(){
-        // return ActivitySchema.find()
-        var result: ActivityDto = {questionText:"",answerOptions:[""],videoclipId:"",id:"",correctAnswer:""}
+        var data = await  ActivitySchema.find()
+        var result = data.map((x:any)=>{
+            return Activity.toDto(x)
+        })
         return result;
 
     }
-    async findByVideoId(videoclipId:string){
-        // return ActivitySchema.find({"videoclipId": videoclipId})
-        var result: ActivityDto = {questionText:"",answerOptions:[""],videoclipId:"",id:"",correctAnswer:""}
+    async findAllByVideoId(videoclipId:string){
+        var data = await ActivitySchema.find({"videoclipId": videoclipId})
+        var result = data.map((x)=>{
+            return Activity.toDto(x)
+        })
         return result;
 
     }
     async update(activity: ActivityDto){
-        // return ActivitySchema.update(activity)
-        var result: ActivityDto = {questionText:"",answerOptions:[""],videoclipId:"",id:"",correctAnswer:""}
-        return result;
+        var data =  ActivitySchema.update(activity)
+        return Activity.toDto(data);
 
     }
     async findByIdAndDelete(id:string){
-        // return ActivitySchema.findByIdAndDelete(id);
-        var result: ActivityDto = {questionText:"",answerOptions:[""],videoclipId:"",id:"",correctAnswer:""}
-        return result;
+        var data =  ActivitySchema.findByIdAndDelete(id); 
+        return Activity.toDto(data);
     }
 
     private static toDto = (
         res: any
-      ): ActivityDto => // projection
+      ): ActivityDto =>
         {
             var result: ActivityDto = {questionText:res.questionText,answerOptions:res.answers ,videoclipId:res.videoclipId,id:res._id,correctAnswer:res.correctAnswer}
             return result;

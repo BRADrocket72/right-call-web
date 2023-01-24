@@ -28,7 +28,8 @@ module.exports.activities_get_all = async(req, res) => {
 module.exports.activities_get_by_videoId =async(req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
-        const data = await activityDb.findByVideoId( req.params.videoclipId);
+        console.log(req.params)
+        const data = await activityDb.findAllByVideoId( req.params.videoclipId);
         res.json(data)
     }
     catch (error) {
