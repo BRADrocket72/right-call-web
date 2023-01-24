@@ -1,11 +1,20 @@
 <template>
+<div>
   <LoggedInNavBar />
   <br/><br/>
   <div class="video-player">
     <h1>{{videoName}}</h1>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <video :id="videoId" :src="currentVideoClip.videoURL"></video>
+    <div class="video">
+      <video :id="videoId" :src="currentVideoClip.videoURL"></video>
+      <div class="quadrants">
+        <div class="quadrant-one quadrant "></div>
+        <div class="quadrant-two quadrant"></div>
+        <div class="quadrant-three quadrant"></div>
+        <div class="quadrant-four quadrant"></div>
+      </div>
+    </div>
     <div id="videoControls">
       <button id="playOrPause" @click="playOrPauseVideo">Play</button>
       <span id="videoCurrentTime">00:00</span> / <span id="videoDuration">00:00</span>
@@ -15,7 +24,9 @@
     <activity-pop-up v-if="questionsLoaded && isModalVisible" :answersArray="answers"
       :question="currentVideoQuestions[questionIndex]" :questionNumber="questionIndex + 1" @close="closeModal" />
   </div>
+</div>
 </template>
+
 
 <script>
 import ActivityPopUp from '@/components/modals/ActivityPopUp.vue';
@@ -27,6 +38,7 @@ import { useUsersStore } from '@/stores/UserStore';
 import { useActivityStore } from '@/stores/ActivityStore';
 import { useUserResultsStore } from "@/stores/UserResultsStore"
 import LoggedInNavBar from './LoggedInNavBar.vue';
+import webgazer from 'webgazer';
 
 export default {
   name: 'VideoEditor',
@@ -55,6 +67,18 @@ export default {
     };
   },
   async mounted() {
+    //Starts webgazer on application
+    webgazer.setGazeListener(function(data, elapsedTime) {
+      if (data == null) {
+          return;
+      }
+      var xprediction = data.x; //these x coordinates are relative to the viewport
+      var yprediction = data.y; //these y coordinates are relative to the viewport
+      console.log(xprediction, yprediction); //elapsed time is based on time since begin was called
+      console.log(elapsedTime)
+    })
+    webgazer.begin()
+
     var videoClipStore = useVideoClipStore();
     var userStore = useUsersStore();
     if (userStore.currentUserToken.length < 1) {
@@ -69,7 +93,7 @@ export default {
     this.currentVideoQuestions = await activityStore.fetchActivitiesByVideoclipId(this.videoId)
     this.currentVideoQuestions.sort((a,b) => a.timestamp - b.timestamp)
     this.questionsLoaded = true;
-    
+
     if (videoElement) {
       videoElement.addEventListener('timeupdate', () => {
         const videoCurrentTime = document.getElementById("videoCurrentTime")
@@ -140,16 +164,44 @@ export default {
 </script>
 
 <style scoped>
-video {
-  width: 75%;
-  height: 75%;
-  display: block;
+.video {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.video video {
+  max-width: 972px;
+  min-width: 972px;
+  max-height: 550px;
+  min-height: 550px;
   margin: 0 auto;
 }
 
 #videoControls {
-  width: 75%;
+  max-width: 972px;
+  min-width: 972px;
   margin: 0 auto;
   background-color: #4AAE9B;
+}
+
+.quadrants {
+  position: absolute;
+  max-width: 972px;
+  min-width: 972px;
+  height: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+.quadrant {
+  max-width: 486px;
+  min-width: 486px;
+  max-height: 275px;
+  min-height: 275px;
+  border: 1px solid black;
+  float: left;
 }
 </style>

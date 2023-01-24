@@ -7,32 +7,25 @@
         </header>
         <section class="modal-body" id="modalDescription">
           <slot name="body">
-            <div class="assign-activity-div">
-                <div v-if="activities.length >= 1 && activities[activityIndex] != ''" class="activity-info"> 
-                    <label for="question-text">Question Text: </label><input type="text" id="question-text" name="question-text" :value="activities[activityIndex].questionText">
-                    <label for="question-text">Answer 1: </label><input type="text" id="answer-one" name="answer-one" :value="activities[activityIndex].answers[0]" :onchange="populateSelectOptions">
-                    <label for="question-text">Answer 2: </label><input type="text" id="answer-two" name="answer-two" :value="activities[activityIndex].answers[1]" :onchange="populateSelectOptions">
-                    <label for="answers">Correct Answer: </label>
-                    <select id="answers" name="answers">
-                        <option v-for="(answer,index) in activities[activityIndex].answers" :key="answer" v-bind:value="answer" :selected="answer === activities[activityIndex].correctAnswer" v-bind:id="optionIds[index]">{{answer}}</option>
-                    </select>
+            <div v-if="questionTypeSelected || questionTypeExists" class="assign-activity-div">
+                <div v-if="questionType=='multiple-choice' || questionTypeExists=='multiple-choice'">
+                  <MultipleChoice :activity="activity" @close="close" @save="save"/>
                 </div>
-                <div v-else class="activity-info">
-                    <label for="question-text">Question Text: </label><input type="text" id="question-text" name="question-text">
-                    <label for="question-text">Answer 1: </label><input type="text" id="answer-one" name="answer-one" :onchange="populateSelectOptions">
-                    <label for="question-text">Answer 2: </label><input type="text" id="answer-two" name="answer-two" :onchange="populateSelectOptions">
-                    <label for="answers">Correct Answer: </label>
-                    <select id="answers" name="answers">
-                        <option id="option-one" value=""></option>
-                        <option id="option-two" value=""></option>
-                        {{activityIndex}}
-                    </select> 
+                <div v-if="questionType=='short-answer' || questionTypeExists=='short-answer'">
+                  <ShortAnswer :activity="activity" @close="close" @save="save"/>
                 </div>
-                <div class="button-div">
-                    <div class="save"><button type="button" class="btn-green" @click="save()">Save</button></div>
-                    <div class="close"><button type="button" class="btn-green" @click="close()">Close</button></div>
+                <div v-if="questionType=='eye-tracking' || questionTypeExists=='eye-tracking'">
+                  <EyeTracking :activity="activity" @close="close" @save="save"/>
                 </div>
-                <p id="invalid-save"></p>
+            </div>
+            <div v-else class="assign-activity-div">
+              <p>Select a question type: </p>
+              <select id="question-type" name="question-type">
+                <option id="multiple-choice" value="multiple-choice">Multiple Choice</option>
+                <option id="short-answer" value="short-answer">Short Answer</option>
+                <option id="eye-tracking" value="eye-tracking">Eye Tracking</option>
+              </select>
+              <div class="save"><button type="button" class="btn-green" @click="questionTypeSelection()">Select</button></div>
             </div>
           </slot>
         </section>
@@ -42,58 +35,40 @@
 </template>
 
 <script>
+import MultipleChoice from '@/components/modals/questionTypes/MultipleChoice.vue'
+import ShortAnswer from '@/components/modals/questionTypes/ShortAnswer.vue'
+import EyeTracking from '@/components/modals/questionTypes/EyeTracking.vue'
+
 export default {
     name: 'AssignActivityModal',
+    components: { 
+        MultipleChoice,
+        ShortAnswer,
+        EyeTracking
+    },
     data() {
         return {
-            activityModalArray: [],
-            allInputsValid: false,
-            activitySaved: false,
-            optionIds: ['option-one','option-two']
+            questionTypeSelected: false,
+            questionType: String,
+            activityModalData: []
         }
     },
     props: {
-        activities: Array,
-        activityIndex: Number
+        activity: {},
+        questionTypeExists: String
     },
     methods: {
         close() {
-            this.$emit('close')
+          this.$emit('close')
         },
-        save() {
-            let invalid = document.getElementById('invalid-save')
-            this.checkInputs()
-            if(this.allInputsValid) {
-                invalid.innerHTML = ""
-                this.activitySaved = true
-                this.$emit('save',this.activitySaved)
-                this.$emit('close',this.activityModalArray)
-            } else {
-                invalid.innerHTML = "Please fill out all fields."
-                this.activityModalArray = []
-            }
+        save(activityArray) {
+          this.activityModalData = activityArray
+          this.$emit('save',this.activityModalData)
         },
-        checkInputs() {
-            let questionText = document.getElementById('question-text')
-            let questionOne = document.getElementById('answer-one')
-            let questionTwo = document.getElementById('answer-two')
-            let option = document.getElementById('answers')
-            if(questionText.value != "" && questionOne.value != "" && questionTwo.value != "") {
-                this.allInputsValid = true
-                this.activityModalArray = [questionText.value,questionOne.value,questionTwo.value,option.value]
-            } else {
-                this.allInputsValid = false
-            }
-        },
-        populateSelectOptions() {
-            let optionOne = document.getElementById('option-one')
-            let optionTwo = document.getElementById('option-two')
-            let answerOne = document.getElementById('answer-one').value
-            let answerTwo = document.getElementById('answer-two').value
-            optionOne.value = answerOne
-            optionOne.innerHTML = answerOne
-            optionTwo.value = answerTwo
-            optionTwo.innerHTML = answerTwo
+        questionTypeSelection() {
+          const option = document.getElementById('question-type').value
+          this.questionType = option
+          this.questionTypeSelected = true
         }
     }
 }
@@ -115,13 +90,13 @@ export default {
 .modal {
   background: white;
   min-width: 600px;
-  min-height: 450px;
+  min-height: 550px;
   border-radius: 2px;
   position: fixed;
   left: auto;
   top: auto;
   box-shadow: 2px 2px 20px 1px;
-  overflow-x: auto;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
@@ -132,7 +107,6 @@ export default {
   background-color: #4AAE9B;
   justify-content: space-between;
   border-radius: 2px 2px 0px 0px;
-
 }
 
 .modal-footer {
@@ -175,9 +149,9 @@ export default {
 }
 
 .activity-info {
-    display: flex;
-    flex-direction: column;
-    height: 200px;
+  display: flex;
+  flex-direction: column;
+  height: 200px;
 }
 
 .activity-info select {
@@ -186,9 +160,9 @@ export default {
 }
 
 .assign-activity-div input {
-    width: 400px;
-    background: #e8dede;
-    border-radius: 4px;
+  width: 400px;
+  background: #e8dede;
+  border-radius: 4px;
 }
 
 .activity-info select {
@@ -198,8 +172,8 @@ export default {
 }
 
 #invalid-save {
-    font-size: 20px;
-    font-weight: bold;
-    color: #dd2a2a;
+  font-size: 20px;
+  font-weight: bold;
+  color: #dd2a2a;
 }
 </style>

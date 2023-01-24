@@ -1,10 +1,13 @@
 import mongoose from 'mongoose';
 
 const activitySchema = new mongoose.Schema({
-    // descriptions of the lessons 
     timestamp: {
         required: true,
         type: Number
+    },
+    questionType: {
+        required: true,
+        type: String
     },
     questionText: {
         required: true,
