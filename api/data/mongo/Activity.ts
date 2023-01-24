@@ -12,6 +12,7 @@ import ActivitySchema from "../mongo/schemas/ActivitySchema"
         const data = new ActivitySchema({
             timestamp:1232,
             questionText: activity.questionText,
+            questionType: activity.questionType,
             answers: activity.answerOptions,
             correctAnswer: activity.correctAnswer,
             videoclipId: activity.videoclipId
@@ -52,7 +53,7 @@ import ActivitySchema from "../mongo/schemas/ActivitySchema"
         res: any
       ): ActivityDto =>
         {
-            var result: ActivityDto = {questionText:res.questionText,answerOptions:res.answers ,videoclipId:res.videoclipId,id:res._id,correctAnswer:res.correctAnswer}
+            var result: ActivityDto = {questionText:res.questionText,questionType:res.questionType,answerOptions:res.answers ,videoclipId:res.videoclipId,id:res._id,correctAnswer:res.correctAnswer}
             return result;
         }
 }

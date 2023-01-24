@@ -17,7 +17,7 @@ describe('Get Results functions', () => {
     })
 
     test('checkAnswer returns the correct result to users answer', () => {
-        const questionObject = new ActivityDto(5, "What was the call ?", ["Travel", "No Foul Call"], "Travel", "123")
+        const questionObject = new ActivityDto(5, "What was the call ?","multiple-choice", ["Travel", "No Foul Call"], "Travel", "123")
         const rightResultsList = checkAnswer(questionObject, [], "Travel")
         expect(rightResultsList[0]).toEqual("Correct")
     })
