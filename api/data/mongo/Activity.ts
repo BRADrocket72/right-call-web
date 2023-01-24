@@ -39,12 +39,12 @@ import ActivitySchema from "../mongo/schemas/ActivitySchema"
 
     }
     async update(activity: ActivityDto){
-        var data =  ActivitySchema.update(activity)
+        var data =await  ActivitySchema.update(activity)
         return Activity.toDto(data);
 
     }
     async findByIdAndDelete(id:string){
-        var data =  ActivitySchema.findByIdAndDelete(id); 
+        var data =  await ActivitySchema.findByIdAndDelete(id); 
         return Activity.toDto(data);
     }
 

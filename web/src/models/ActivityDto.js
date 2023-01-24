@@ -1,8 +1,9 @@
 export default class ActivityDto {
     id = "";
     questionText = "";
-    videoId = "";
+    videoclipId = "";
     answerOptions = []
+    correctAnswer =""
 
     constructor(timestamp, questionText, answers, correctAnswer, videoClipId) {
         this.timestamp = timestamp

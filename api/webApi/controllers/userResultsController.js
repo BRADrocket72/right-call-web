@@ -1,16 +1,13 @@
-const UserResults = require('../../data/mongo/schemas/UserResultsSchema.ts');
+import UserResults from "../../data/mongo/UserResults"
+
+let userResultsDb = new UserResults();
 
 exports.create_results = async (req, res) => {
-    const data = new UserResults({
-        username: req.body.username,
-        score: req.body.score,
-        lessonId: req.body.lessonId,
-        lessonName: req.body.lessonName
-    })
+
 
     try {
         res.header('Access-Control-Allow-Origin', '*')
-        const dataToSave = await data.save();
+        var dataToSave = await userResultsDb.createUserResult(res.body)
         res.status(200).json(dataToSave)
     }
     catch (error) {
@@ -21,7 +18,7 @@ exports.create_results = async (req, res) => {
 exports.get_all = async (req, res) => {
     try {
         res.header('Access-Control-Allow-Origin', '*')
-        const data = await UserResults.find();
+        const data = await userResultsDb.getAllUserResults()
         res.json(data)
     }
     catch (error) {
@@ -32,7 +29,7 @@ exports.get_all = async (req, res) => {
 exports.get_by_username = async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
-        const data = await UserResults.find({ "username": req.params.username });
+        const data = await userResultsDb.getResultsByUsername(req.params.username);
         res.json(data)
     }
     catch (error) {
