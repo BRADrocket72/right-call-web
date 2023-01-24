@@ -14,12 +14,16 @@
                 <div v-if="questionType=='short-answer' || questionTypeExists=='short-answer'">
                   <ShortAnswer :activity="activity" @close="close" @save="save"/>
                 </div>
+                <div v-if="questionType=='eye-tracking' || questionTypeExists=='eye-tracking'">
+                  <EyeTracking :activity="activity" @close="close" @save="save"/>
+                </div>
             </div>
             <div v-else class="assign-activity-div">
               <p>Select a question type: </p>
               <select id="question-type" name="question-type">
                 <option id="multiple-choice" value="multiple-choice">Multiple Choice</option>
                 <option id="short-answer" value="short-answer">Short Answer</option>
+                <option id="eye-tracking" value="eye-tracking">Eye Tracking</option>
               </select>
               <div class="save"><button type="button" class="btn-green" @click="questionTypeSelection()">Select</button></div>
             </div>
@@ -33,12 +37,14 @@
 <script>
 import MultipleChoice from '@/components/modals/questionTypes/MultipleChoice.vue'
 import ShortAnswer from '@/components/modals/questionTypes/ShortAnswer.vue'
+import EyeTracking from '@/components/modals/questionTypes/EyeTracking.vue'
 
 export default {
     name: 'AssignActivityModal',
     components: { 
         MultipleChoice,
-        ShortAnswer
+        ShortAnswer,
+        EyeTracking
     },
     data() {
         return {

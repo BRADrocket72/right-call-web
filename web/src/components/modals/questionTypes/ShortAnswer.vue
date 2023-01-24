@@ -46,8 +46,8 @@ export default {
             }
         },
         checkInputs() {
-            let questionText = document.getElementById('question-text')
-            let answer = document.getElementById('answer-one')
+            const questionText = document.getElementById('question-text')
+            const answer = document.getElementById('answer-one')
             if(questionText.value != "" && answer.value != "") {
                 this.allInputsValid = true
                 this.activityModalData = [this.questionType,questionText.value,[answer.value],answer.value]
