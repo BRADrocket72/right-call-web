@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import VideoClip from '@/models/Activity'
+import VideoClip from '@/models/ActivityDto'
 import { createPinia, setActivePinia } from 'pinia';
 import 'jest'
 import LessonDeletionModal from '@/components/modals/LessonDeletionModal.vue';

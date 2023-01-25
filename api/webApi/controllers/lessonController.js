@@ -1,8 +1,8 @@
-const Lessons = require('../models/Lessons');
+const LessonSchema = require('../../data/mongo/schemas/LessonSchema.ts');
 
 
 exports.lessons_create_lesson = async (req, res) => {
-    const data = new Lessons({
+    const data = new LessonSchema({
         name: req.body.name,
         description: req.body.description,
         videoClipsArray: req.body.videoClipsArray
@@ -20,7 +20,7 @@ exports.lessons_create_lesson = async (req, res) => {
 exports.lessons_get_all = async (req, res) => {
     try {
         res.header('Access-Control-Allow-Origin', '*')
-        const data = await Lessons.find();
+        const data = await LessonSchema.find();
         res.json(data)
     }
     catch (error) {

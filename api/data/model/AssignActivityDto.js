@@ -1,7 +1,7 @@
-export default class AssignActivity {
-    timestamp = ""
-    questionType = ""
-    questionText = ""
+export default class AssignActivityDto {
+    timestamp = "";
+    questionText = "";
+    questionType ="";
     answers = []
     correctAnswer=""
     videoclipId = ""

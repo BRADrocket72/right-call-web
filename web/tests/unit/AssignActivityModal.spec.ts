@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import AssignActivity from '@/models/AssignActivity'
+import ActivityDto from '@/models/ActivityDto'
 import 'jest'
 import AssignActivityModal from '@/components/modals/AssignActivityModal.vue';
 
@@ -8,7 +8,7 @@ describe('AssignActivityModal.vue', () => {
     beforeEach(() => {
         wrapper = mount(AssignActivityModal, {
             props:{
-                activities: [new AssignActivity(2, "multiple-choice", "What was the call ?", ["Traveling", "Double Dribble"], "Traveling", "123")],
+                activities: [new ActivityDto(4, "What was the call?", ["Yellow Card", "Red Card"], "Yellow Card","123testId")],
                 activityIndex: 0
             }
         })

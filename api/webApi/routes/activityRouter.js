@@ -1,5 +1,5 @@
 const express = require('express');
-const activitiesController = require('../controllers/activityController.js')
+const activitiesController = require('../controllers/activityController.ts')
 
 const router = express.Router()
 

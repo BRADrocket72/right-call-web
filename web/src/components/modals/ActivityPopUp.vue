@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import {checkAnswer} from "@/models/GetResults.js"
+import {checkAnswer} from "../../util/GetResults"
 
   export default {
     name: 'ActivityPopUp',

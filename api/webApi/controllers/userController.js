@@ -1,6 +1,7 @@
-const User = require('../models/User')
-const crypto = require('crypto')
-const jwt = require('jsonwebtoken')
+const User = require('../../data/mongo/schemas/UserSchema.ts');
+const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
+
 
 exports.create_user = async (req, res) => {
 

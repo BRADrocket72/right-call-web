@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { getPercentageResults } from "@/models/GetResults.js"
+import { getPercentageResults } from "@/util/GetResults.js"
 
 export default {
   name: 'ResultsPage',

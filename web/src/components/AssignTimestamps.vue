@@ -41,11 +41,11 @@
 
 <script>
 import LoggedInNavBarVue from './LoggedInNavBar.vue'
-import VideoClip from '@/models/VideoClip.js'
-import AssignActivity from '@/models/AssignActivity.js'
+import VideoClipDto from '@/models/VideoClipDto.js'
+import AssignActivityDto from '@/models/AssignActivityDto.js'
 import AssignActivityModal from '@/components/modals/AssignActivityModal.vue'
 import { useVideoClipStore } from "@/stores/VideoClipStore"
-import {formatTimeForVideo} from '@/models/FormatVideosTime.js'
+import {formatTimeForVideo} from '@/util/FormatVideosTime.js'
 import { useUsersStore } from '@/stores/UserStore'
 import { useActivityStore } from '@/stores/ActivityStore'
 
@@ -58,7 +58,7 @@ export default {
     data() {
         return {
             isVideoSelected: false,
-            selectedVideo: VideoClip,
+            selectedVideo: VideoClipDto,
             videoClips: [],
             isTimestampModalVisible: false,
             isSaveTimestampsModalVisible: false,
@@ -181,7 +181,7 @@ export default {
                     this.updatedActivities.push(this.activities[this.currentIndex]._id)
                 }
             } else {
-                this.activities[this.currentIndex] = new AssignActivity(this.currentActivityTimestamp,this.activityModalData[0],this.activityModalData[1],answers,this.activityModalData[3],this.selectedVideo._id)
+                this.activities[this.currentIndex] = new AssignActivityDto(this.currentActivityTimestamp,this.activityModalData[0],this.activityModalData[1],answers,this.activityModalData[3],this.selectedVideo._id)
             }
             this.toggleSaveButton()
         },

@@ -1,5 +1,5 @@
 import 'jest'
-import {formatTimeForVideo} from "@/models/FormatVideosTime.js"
+import {formatTimeForVideo} from "@/util/FormatVideosTime.js"
 
 describe('Time Formatted in minutes : seconds format', () => {
     test('correctlyFormatTime() returns correct value for varying times', () => {

@@ -1,4 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+
+
 
 const lessonSchema = new mongoose.Schema({
     // name of the lesson
@@ -18,4 +20,4 @@ const lessonSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('Lessons', lessonSchema)
+module.exports =  mongoose.model('Lessons', lessonSchema)

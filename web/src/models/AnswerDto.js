@@ -1,4 +1,4 @@
-export default class Answer {
+export default class AnswerDto {
     activityId = "";
     isCorrect = null;
     answerText = "";

@@ -1,4 +1,4 @@
-export default class VideoClip {
+export default class VideoClipDto {
     _id = ""
     videoUrl = ""
     videoName = ""

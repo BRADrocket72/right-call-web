@@ -1,39 +1,29 @@
-const Activity = require('../models/Activity');
+const VideoClipSchema = require('../../data/mongo/schemas/VideoClipSchema.ts');
+const { s3Upload } = require('../services/Storage/AmazonS3Service');
 
-exports.activities_create_activity = async (req, res) => {
-    const data = new Activity({
-        timestamp: req.body.timestamp,
-        questionType: req.body.questionType,
-        questionText: req.body.questionText,
-        answers: req.body.answers,
-        correctAnswer: req.body.correctAnswer,
-        videoclipId: req.body.videoclipId
-    })
 
+exports.create_clip = async (req, res) => {
     try {
+        const fileUploadURL = await s3Upload(req.file)
+        const data = new VideoClipSchema({
+            videoURL: fileUploadURL,
+            videoName: req.body.name
+        })
         res.header('Access-Control-Allow-Origin', '*')
         const dataToSave = await data.save();
+        res.header('Content-Type', 'multipart/form-data')
         res.status(200).json(dataToSave)
     }
     catch (error) {
         res.status(400).json({ message: error.message })
     }
 }
-exports.activities_get_all = async (req, res) => {
-    try {
-        res.header('Access-Control-Allow-Origin', '*')
-        const data = await Activity.find();
-        res.json(data)
-    }
-    catch (error) {
-        res.status(500).json({ message: error.message })
-    }
-}
 
-exports.activities_get_by_videoId = async (req, res) => {
+exports.get_all = async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
-        const data = await Activity.find({"videoclipId": req.params.videoclipId});
+        const data = await VideoClipSchema.find();
+        res.header('Access-Control-Allow-Origin', '*')
         res.json(data)
     }
     catch (error) {
@@ -41,14 +31,25 @@ exports.activities_get_by_videoId = async (req, res) => {
     }
 }
 
-exports.activities_update = async (req, res) => {
+exports.get_by_id = async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*')
+    try {
+        const data = await VideoClipSchema.findById(req.params.id);
+        res.json(data)
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
+
+exports.update_clip = async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
         const id = req.params.id;
         const updatedData = req.body;
         const options = { new: true };
 
-        const result = await Activity.findByIdAndUpdate(
+        const result = await VideoClipSchema.findByIdAndUpdate(
             id, updatedData, options
         )
 
@@ -59,13 +60,12 @@ exports.activities_update = async (req, res) => {
     }
 }
 
-exports.activities_delete_activity = async (req, res) => {
+exports.delete_clip = async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
         const id = req.params.id;
-
-        const result = await Activity.findByIdAndDelete(id)
-        res.send(result)
+        const data = await VideoClipSchema.findByIdAndDelete(id)
+        res.send(`Document with ${data.videoURL} has been deleted..`)
     }
     catch (error) {
         res.status(400).json({ message: error.message })
