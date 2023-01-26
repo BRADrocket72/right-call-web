@@ -7,18 +7,23 @@ describe('UserResultsPage.vue', () => {
     let mockRouter: any;
     let mockRoute: any;
     let wrapper: any;
+    let mockCookies: any;
     beforeEach(async () => {
         mockRoute = {}
         mockRouter = {
             push: jest.fn()
         }
-        
+        mockCookies = {
+            get: jest.fn()
+        }
+        mockCookies.get.mockReturnValue({ currentUserType: "testUser" })
         setActivePinia(createPinia())
         wrapper = mount(UserResultsPage, {
              global: {
                  mocks: {
                     $router: mockRouter,
-                    $route: mockRoute
+                    $route: mockRoute,
+                    $cookies: mockCookies
                 }
              },
              data() {
