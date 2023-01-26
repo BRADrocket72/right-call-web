@@ -7,8 +7,8 @@
           </header>
           <section class="modal-body" id="modalDescription">
             <slot name="body">
-              <p>Calibration Screen</p>
-              <p>While looking at the cursor, Click on each button 5 times until each button is Red</p>
+              <p class="title_1">Calibration Screen</p>
+              <p class="title_2">While looking at the cursor, Click on each button 5 times until each button is Red</p>
               <button type="button" v-if="leftButton == 5 && rightButton == 5 && topLeftButton == 5 && topRightButton == 5 && centerButton == 5" class="btn-green" @click="close()"> Back to Lesson Selection Page </button> 
               <button type="button" id="btn-calibrate-left" class="btn-calibrate-left" @click="checkButtons('btn-calibrate-left')"></button>
               <button type="button" id="btn-calibrate-right" class="btn-calibrate-right" @click="checkButtons('btn-calibrate-right')"></button>
@@ -127,6 +127,7 @@
     justify-content: space-between;
     border-radius: 2px 2px 0px 0px;
     height: 40px;
+    padding: 10px;
   }
   
   .modal-body {
@@ -198,4 +199,12 @@
     left: 48.5%;
     top: 50%;
   } 
+  .title_1 {
+    font-weight: bold;
+    font-size:large;
+  }
+  .title_2 {
+    font-weight: bold;
+    font-size: medium;
+  }
   </style>

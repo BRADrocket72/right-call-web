@@ -36,7 +36,6 @@ import VideoClip from '@/models/VideoClipDto';
 import WebgazerCalibrationPage from './modals/WebgazerCalibrationPage.vue';
 import { formatTimeForVideo } from "@/util/FormatVideosTime.js"
 import { useVideoClipStore } from "@/stores/VideoClipStore";
-import { useUsersStore } from '@/stores/UserStore';
 import { useActivityStore } from '@/stores/ActivityStore';
 import { useUserResultsStore } from "@/stores/UserResultsStore"
 import LoggedInNavBar from './LoggedInNavBar.vue';
@@ -72,31 +71,28 @@ export default {
   },
   async mounted() {
     var videoClipStore = useVideoClipStore();
-    var userStore = useUsersStore();
-    if (userStore.usersEyeTrackingCalibration.length < 1) {
+    // var userStore = useUsersStore();
+    let cookiesCalibration = this.$cookies.get("user_session").currentEyeTrackingCalibration
+    if (cookiesCalibration == "false") {
       this.calibrationReady = true
+      this.replaceCookie()
+      webgazer.setGazeListener(function(data, elapsedTime) {
+        if (data == null) {
+            return;
+        }
+        var xprediction = data.x; //these x coordinates are relative to the viewport
+        var yprediction = data.y; //these y coordinates are relative to the viewport
+        console.log(xprediction, yprediction); //elapsed time is based on time since begin was called
+        console.log(elapsedTime)
+      })
+      webgazer.begin()
     }
-    //Starts webgazer on application
-    webgazer.setGazeListener(function(data, elapsedTime) {
-      if (data == null) {
-          return;
-      }
-      var xprediction = data.x; //these x coordinates are relative to the viewport
-      var yprediction = data.y; //these y coordinates are relative to the viewport
-      console.log(xprediction, yprediction); //elapsed time is based on time since begin was called
-      console.log(elapsedTime)
-    })
+    else {
+      webgazer.resume()
+    }
     //turn off red dot:
     // webgazer.showPredictionPoints(false)
 
-    //Starts webgazer on application
-    if (webgazer.isReady() == true) {
-      webgazer.resume()
-    }
-    else {
-      userStore.usersEyeTrackingCalibration = "set"
-      webgazer.begin()
-    }
 
     this.currentVideoClip = await videoClipStore.fetchVideoClipById(this.videoId);
     this.videoName = this.currentVideoClip.videoName
@@ -126,7 +122,6 @@ export default {
     stopVideoAtTimestamp(video, timestamps) {
       var currentTime = video.currentTime;
       if (currentTime >= timestamps[this.questionCounter]) {
-        webgazer.pause()
         video.pause();
         this.questionCounter++
         this.showModal();
@@ -168,13 +163,21 @@ export default {
       var userResults = useUserResultsStore()
       // var userStore = useUsersStore()
       await userResults.postUserResults(this.$cookies.get("user_session").currentUserName,percentageCorrect,this.videoId,this.videoName)
-      webgazer.pause()
       this.$router.push({
         name: "LessonSelection"
       })
     },
     closeCalibrationPage() {
       this.calibrationReady = false
+    },
+    replaceCookie() {
+      var currentCookie = this.$cookies.get("user_session")
+      var userName = currentCookie.currentUserName
+      var userType = currentCookie.currentUserType
+      var accessToken = currentCookie.currentUserToken
+      this.$cookies.remove("user_session")
+      var user = { currentUserName: userName, currentUserType: userType, currentUserToken: accessToken, currentEyeTrackingCalibration: "true"}
+      this.$cookies.set("user_session",user, "3d")
     }
   }
 }

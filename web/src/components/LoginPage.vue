@@ -54,7 +54,7 @@ export default {
       var password = document.getElementById("password").value
       
       var loginStatus = await userStore.loginUser(userName, password)
-      var user = { currentUserName: userName, currentUserType: loginStatus.userType, currentUserToken: loginStatus.accessToken}
+      var user = { currentUserName: userName, currentUserType: loginStatus.userType, currentUserToken: loginStatus.accessToken, currentEyeTrackingCalibration: "false"}
       this.$cookies.set("user_session",user, "3d")
       if (!loginStatus.success){
           this.error = true
