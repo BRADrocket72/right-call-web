@@ -6,7 +6,8 @@ import {createPinia, setActivePinia} from 'pinia'
 jest.mock('webgazer', () => ({
   setGazeListener: () => Promise.resolve(),
   begin: () => Promise.resolve(),
-  isReady: jest.fn()
+  isReady: jest.fn(),
+  resume: jest.fn()
 }))
 
 describe('VideoEditor.vue', () => {
@@ -20,7 +21,7 @@ describe('VideoEditor.vue', () => {
             push: jest.fn()
         }, 
         mockGet = {
-          get: jest.fn()
+          get: jest.fn(),
         }
         mockGet.get.mockReturnValue({currentUserType: "testUser"})
         setActivePinia(createPinia())
