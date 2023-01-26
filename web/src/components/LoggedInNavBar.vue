@@ -33,7 +33,7 @@
 </template>
 
 <script>
-// import { useUsersStore } from '@/stores/UserStore';
+import { useUsersStore } from '@/stores/UserStore';
 
 export default {
   name: 'LoggedInNavBar',
@@ -56,6 +56,8 @@ export default {
   },
   methods: {
     logout() {
+        var store = useUsersStore();
+        store.usersEyeTrackingCalibration == ""
         this.$cookies.remove("user_session")
         this.$router.push({
           name: "LoginPage"

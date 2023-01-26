@@ -23,6 +23,7 @@
     </results-page>
     <activity-pop-up v-if="questionsLoaded && isModalVisible" :answersArray="answers"
       :question="currentVideoQuestions[questionIndex]" :questionNumber="questionIndex + 1" @close="closeModal" />
+    <webgazer-calibration-page v-if="calibrationReady" @close="closeCalibrationPage"/>
   </div>
 </div>
 </template>
@@ -32,6 +33,7 @@
 import ActivityPopUp from '@/components/modals/ActivityPopUp.vue';
 import ResultsPage from "@/components/modals/ResultsPage.vue"
 import VideoClip from '@/models/VideoClipDto';
+import WebgazerCalibrationPage from './modals/WebgazerCalibrationPage.vue';
 import { formatTimeForVideo } from "@/util/FormatVideosTime.js"
 import { useVideoClipStore } from "@/stores/VideoClipStore";
 import { useUsersStore } from '@/stores/UserStore';
@@ -45,7 +47,8 @@ export default {
   components: {
     ActivityPopUp,
     ResultsPage,
-    LoggedInNavBar
+    LoggedInNavBar,
+    WebgazerCalibrationPage
   },
   props: {
     videoId: {
@@ -63,10 +66,16 @@ export default {
       questionCounter: 0,
       currentVideoClip: VideoClip,
       percentageCorrect: "",
-      videoName: ""
+      videoName: "",
+      calibrationReady: false
     };
   },
   async mounted() {
+    var videoClipStore = useVideoClipStore();
+    var userStore = useUsersStore();
+    if (userStore.usersEyeTrackingCalibration.length < 1) {
+      this.calibrationReady = true
+    }
     //Starts webgazer on application
     webgazer.setGazeListener(function(data, elapsedTime) {
       if (data == null) {
@@ -77,15 +86,18 @@ export default {
       console.log(xprediction, yprediction); //elapsed time is based on time since begin was called
       console.log(elapsedTime)
     })
-    webgazer.begin()
+    //turn off red dot:
+    // webgazer.showPredictionPoints(false)
 
-    var videoClipStore = useVideoClipStore();
-    var userStore = useUsersStore();
-    if (userStore.currentUserToken.length < 1) {
-      this.$router.push({
-        name: "LoginPage"
-      })
+    //Starts webgazer on application
+    if (webgazer.isReady() == true) {
+      webgazer.resume()
     }
+    else {
+      userStore.usersEyeTrackingCalibration = "set"
+      webgazer.begin()
+    }
+
     this.currentVideoClip = await videoClipStore.fetchVideoClipById(this.videoId);
     this.videoName = this.currentVideoClip.videoName
     const videoElement = document.getElementById(this.videoId)
@@ -114,6 +126,7 @@ export default {
     stopVideoAtTimestamp(video, timestamps) {
       var currentTime = video.currentTime;
       if (currentTime >= timestamps[this.questionCounter]) {
+        webgazer.pause()
         video.pause();
         this.questionCounter++
         this.showModal();
@@ -148,15 +161,20 @@ export default {
           const playOrPauseButton = document.getElementById("playOrPause")
           playOrPauseButton.innerHTML = "Pause"
           videoElement.play();
+          webgazer.resume()
       }
     },
     async closeResultsPage(percentageCorrect) {
       var userResults = useUserResultsStore()
-      var userStore = useUsersStore()
-      await userResults.postUserResults(userStore.currentUserName,percentageCorrect,this.videoId,this.videoName)
+      // var userStore = useUsersStore()
+      await userResults.postUserResults(this.$cookies.get("user_session").currentUserName,percentageCorrect,this.videoId,this.videoName)
+      webgazer.pause()
       this.$router.push({
         name: "LessonSelection"
       })
+    },
+    closeCalibrationPage() {
+      this.calibrationReady = false
     }
   }
 }
