@@ -8,12 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <div class="video">
       <video :id="videoId" :src="currentVideoClip.videoURL"></video>
-      <div class="quadrants">
-        <div class="quadrant-one quadrant "></div>
-        <div class="quadrant-two quadrant"></div>
-        <div class="quadrant-three quadrant"></div>
-        <div class="quadrant-four quadrant"></div>
-      </div>
+      <EyeTrackingPopUp v-if="containsEyeTrackingActivity && isEyeTrackingVisible"/>
     </div>
     <div id="videoControls">
       <button id="playOrPause" @click="playOrPauseVideo">Play</button>
@@ -21,7 +16,7 @@
     </div>
     <results-page v-if="isResultsPageModalVisible" :answersArray="answers" @close="closeResultsPage">
     </results-page>
-    <activity-pop-up v-if="questionsLoaded && isModalVisible" :answersArray="answers"
+    <activity-pop-up v-if="questionsLoaded && isModalVisible && !isEyeTrackingVisible" :answersArray="answers"
       :question="currentVideoQuestions[questionIndex]" :questionNumber="questionIndex + 1" @close="closeModal" />
   </div>
 </div>
@@ -30,6 +25,7 @@
 
 <script>
 import ActivityPopUp from '@/components/modals/ActivityPopUp.vue';
+import EyeTrackingPopUp from '@/components/modals/EyeTrackingPopUp.vue'
 import ResultsPage from "@/components/modals/ResultsPage.vue"
 import VideoClip from '@/models/VideoClipDto';
 import { formatTimeForVideo } from "@/util/FormatVideosTime.js"
@@ -45,7 +41,8 @@ export default {
   components: {
     ActivityPopUp,
     ResultsPage,
-    LoggedInNavBar
+    LoggedInNavBar,
+    EyeTrackingPopUp
   },
   props: {
     videoId: {
@@ -63,7 +60,10 @@ export default {
       questionCounter: 0,
       currentVideoClip: VideoClip,
       percentageCorrect: "",
-      videoName: ""
+      videoName: "",
+      containsEyeTrackingActivity: false,
+      isEyeTrackingVisible: false,
+      isPlayButtonDisabled: false
     };
   },
   async mounted() {
@@ -109,14 +109,19 @@ export default {
         }
       })
     }
+    this.checkForEyeTrackingActivity()
   },
   methods: {
     stopVideoAtTimestamp(video, timestamps) {
       var currentTime = video.currentTime;
       if (currentTime >= timestamps[this.questionCounter]) {
-        video.pause();
-        this.questionCounter++
-        this.showModal();
+        if(this.currentVideoQuestions[this.questionCounter].questionType != 'eye-tracking') {
+          this.showModal();
+        } else {
+          this.toggleEyeTracking()
+        }
+          video.pause();
+          this.questionCounter++
       }
     },
     playOrPauseVideo() {
@@ -150,6 +155,33 @@ export default {
           videoElement.play();
       }
     },
+    toggleEyeTracking(answer) {
+      this.isEyeTrackingVisible = !this.isEyeTrackingVisible
+      this.playOrPauseVideo()
+      this.togglePlayButton()
+      if(!this.isEyeTrackingVisible) {
+        this.checkEyeTrackingAnswer(answer)
+      }
+    },
+    togglePlayButton() {
+      this.isPlayButtonDisabled = !this.isPlayButtonDisabled
+      const button = document.getElementById('playOrPause')
+      if(this.isPlayButtonDisabled) {
+        button.disabled = true
+      } else {
+        button.disabled = false
+      }
+      
+    },
+    checkEyeTrackingAnswer(answer) {
+      const correct = this.currentVideoQuestions[this.questionIndex].correctAnswer
+      if(answer == correct) {
+        this.answers.push('Correct')
+      } else {
+        this.answers.push('Incorrect')
+      }
+      this.questionIndex+=1
+    },
     async closeResultsPage(percentageCorrect) {
       var userResults = useUserResultsStore()
       var userStore = useUsersStore()
@@ -157,6 +189,13 @@ export default {
       this.$router.push({
         name: "LessonSelection"
       })
+    },
+    checkForEyeTrackingActivity() {
+      for(const activity of this.currentVideoQuestions) {
+        if(activity.questionType == 'eye-tracking') {
+          this.containsEyeTrackingActivity = true
+        }
+      }
     }
   }
 }
@@ -183,25 +222,5 @@ export default {
   min-width: 972px;
   margin: 0 auto;
   background-color: #4AAE9B;
-}
-
-.quadrants {
-  position: absolute;
-  max-width: 972px;
-  min-width: 972px;
-  height: 60%;
-  margin-left: auto;
-  margin-right: auto;
-  left: 0;
-  right: 0;
-  text-align: center;
-}
-.quadrant {
-  max-width: 486px;
-  min-width: 486px;
-  max-height: 275px;
-  min-height: 275px;
-  border: 1px solid black;
-  float: left;
 }
 </style>
