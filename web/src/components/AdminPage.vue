@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { useUsersStore } from '@/stores/UserStore';
+// import { useUsersStore } from '@/stores/UserStore';
 import LoggedInNavBar from './LoggedInNavBar.vue';
 
     
@@ -21,12 +21,12 @@ export default {
     name: "AdminPage",
     components: { LoggedInNavBar },
     mounted() {
-        var store = useUsersStore();
-        if (store.currentUserToken.length < 1) {
-            this.$router.push({
-                name: "LoginPage"
-            });
-        }
+        // var store = useUsersStore();
+        // if (store.currentUserToken.length < 1) {
+        //     this.$router.push({
+        //         name: "LoginPage"
+        //     });
+        // }
     }
 }
 </script>
