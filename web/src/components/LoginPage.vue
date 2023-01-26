@@ -42,6 +42,11 @@ export default {
       password: ""
     }
   },
+  mounted() {
+    if (this.$cookies.isKey("user_session")){
+      this.$cookies.remove("user_session")
+    }
+  },
   methods: {
     async login(){
       var userStore = useUsersStore();
@@ -49,17 +54,19 @@ export default {
       var password = document.getElementById("password").value
       
       var loginStatus = await userStore.loginUser(userName, password)
+      var user = { currentUserName: userName, currentUserType: loginStatus.userType, currentUserToken: loginStatus.accessToken}
+      this.$cookies.set("user_session",user, "3d")
       if (!loginStatus.success){
           this.error = true
       }else{
-        userStore.currentUserToken = loginStatus.accessToken
-        userStore.currentUserType = loginStatus.userType
-        userStore.currentUserName = userName
-         if (userStore.currentUserType == "Student") {
+        // userStore.currentUserToken = loginStatus.accessToken
+        // userStore.currentUserType = loginStatus.userType
+        // userStore.currentUserName = userName
+        if (loginStatus.userType == "Student") {
           this.$router.push({
             name: "LessonSelection"
           })
-        } else if(userStore.currentUserType == "Instructor") {
+        } else if(loginStatus.userType == "Instructor") {
           this.$router.push({
             name: "AssignTimestamps"
           })
