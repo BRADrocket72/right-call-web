@@ -71,7 +71,6 @@ export default {
   },
   async mounted() {
     var videoClipStore = useVideoClipStore();
-    // var userStore = useUsersStore();
     let cookiesCalibration = this.$cookies.get("user_session").currentEyeTrackingCalibration
     if (cookiesCalibration == "false") {
       this.calibrationReady = true
@@ -90,8 +89,6 @@ export default {
     else {
       webgazer.resume()
     }
-    //turn off red dot:
-    // webgazer.showPredictionPoints(false)
 
 
     this.currentVideoClip = await videoClipStore.fetchVideoClipById(this.videoId);
@@ -161,7 +158,6 @@ export default {
     },
     async closeResultsPage(percentageCorrect) {
       var userResults = useUserResultsStore()
-      // var userStore = useUsersStore()
       await userResults.postUserResults(this.$cookies.get("user_session").currentUserName,percentageCorrect,this.videoId,this.videoName)
       this.$router.push({
         name: "LessonSelection"

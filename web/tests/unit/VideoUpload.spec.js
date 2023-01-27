@@ -39,11 +39,6 @@ describe('VideoUpload.vue', () => {
         expect(wrapper.exists()).toBe(true)
     })
 
-    // it('router.push is called successfully when no user token is set', async () => {
-    //     expect(mockRouter.push).toHaveBeenCalledWith({'name': 'LoginPage'})
-    //     expect(mockRouter.push).toHaveBeenCalledTimes(1)
-    // })
-
     it('allows the user to upload a file', async () => {
         const button = wrapper.find('.upload-video-div').find('input#videoUpload')
         expect(button.exists()).toBe(true)

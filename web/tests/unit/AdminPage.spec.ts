@@ -45,8 +45,4 @@ describe('ResultsPage.vue', () => {
         expect(wrapper.find('router-link').exists()).toBe(true)
         expect(wrapper.findAll('router-link').length).toEqual(5)
     })
-    // it('router.push is called successfully when no user token is set', async () => {
-    //     expect(mockRouter.push).toHaveBeenCalledWith({'name': 'LoginPage'})
-    //     expect(mockRouter.push).toHaveBeenCalledTimes(1)
-    // })
 })

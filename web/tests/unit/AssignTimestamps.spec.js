@@ -44,11 +44,6 @@ describe('AssignTimestamps.vue', () => {
         expect(wrapper.exists()).toBe(true)
     })
 
-    // it('router.push is called successfully when no user token is set', async () => {
-    //     expect(mockRouter.push).toHaveBeenCalledWith({'name': 'LoginPage'})
-    //     expect(mockRouter.push).toHaveBeenCalledTimes(1)
-    // })
-
     it('renders the selectable videos', () => {
         const parentDiv = wrapper.find('div.video-list-div')
         const childDivs = parentDiv.findAll('div.lesson')

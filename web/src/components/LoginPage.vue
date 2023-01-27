@@ -59,9 +59,6 @@ export default {
       if (!loginStatus.success){
           this.error = true
       }else{
-        // userStore.currentUserToken = loginStatus.accessToken
-        // userStore.currentUserType = loginStatus.userType
-        // userStore.currentUserName = userName
         if (loginStatus.userType == "Student") {
           this.$router.push({
             name: "LessonSelection"

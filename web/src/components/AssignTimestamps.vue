@@ -46,7 +46,6 @@ import AssignActivityDto from '@/models/AssignActivityDto.js'
 import AssignActivityModal from '@/components/modals/AssignActivityModal.vue'
 import { useVideoClipStore } from "@/stores/VideoClipStore"
 import {formatTimeForVideo} from '@/util/FormatVideosTime.js'
-// import { useUsersStore } from '@/stores/UserStore'
 import { useActivityStore } from '@/stores/ActivityStore'
 
 export default {
@@ -231,12 +230,6 @@ export default {
     },
     async mounted() {
         var videoClip = useVideoClipStore();
-        // var store = useUsersStore();
-        // if (store.currentUserToken.length < 1) {
-        //     this.$router.push({
-        //         name: "LoginPage"
-        //     })
-        // }
         this.videoClips =  await videoClip.fetchVideoClips();
         this.ready = true;
     }

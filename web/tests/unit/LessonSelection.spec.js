@@ -58,8 +58,4 @@ describe('LessonSelection.vue', () => {
         expect(lessons.length).toBe(2)
     })
 
-    // it('router.push is called successfully when no user token is set', async () => {
-    //     expect(mockRouter.push).toHaveBeenCalledWith({'name': 'LoginPage'})
-    //     expect(mockRouter.push).toHaveBeenCalledTimes(1)
-    // })
 })

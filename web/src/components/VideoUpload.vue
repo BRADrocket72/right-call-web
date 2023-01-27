@@ -17,7 +17,6 @@
 
 <script>
 import { useVideoClipStore } from "@/stores/VideoClipStore";
-// import { useUsersStore } from "@/stores/UserStore";
 import LoggedInNavBarVue from "./LoggedInNavBar.vue";
 
 export default {
@@ -32,12 +31,6 @@ export default {
     }
   },
   mounted() {
-    // var userStore = useUsersStore();
-    // if (userStore.currentUserToken.length < 1) {
-    //   this.$router.push({
-    //     name: "LoginPage",
-    //   });
-    // }
   },
   methods: {
     fileChange() {
