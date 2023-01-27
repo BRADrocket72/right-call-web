@@ -21,7 +21,6 @@
 <script>
 import LoggedInNavBarVue from "./LoggedInNavBar.vue";
 import { useUserResultsStore } from "@/stores/UserResultsStore"
-import { useUsersStore } from '@/stores/UserStore'
 
 export default {
     name: 'UserResultsPage',
@@ -39,13 +38,7 @@ export default {
     },
     async mounted() {
         var userResults = useUserResultsStore()
-        var store = useUsersStore();
-        if (store.currentUserToken.length < 1) {
-            this.$router.push({
-                name: "LoginPage"
-            })
-        }
-        this.results = await userResults.fetchByUserName(store.currentUserName);
+        this.results = await userResults.fetchByUserName(this.$cookies.get("user_session").currentUserName);
         this.ready = true;
     }
 }

@@ -7,10 +7,15 @@ describe('LessonDeletion.vue', () => {
     let wrapper;
     let mockRouter;
     let mockRoute;
+    let mockCookies;
     beforeEach(() => {
         mockRouter = {
             push: jest.fn()
         }, 
+        mockCookies = {
+            get: jest.fn()
+        }
+        mockCookies.get.mockReturnValue({ currentUserType: "test" })
         setActivePinia(createPinia())
 
         wrapper = mount(LessonDeletion, {
@@ -24,7 +29,8 @@ describe('LessonDeletion.vue', () => {
             global: {
                 mocks: {
                     $router: mockRouter,
-                    $route: mockRoute
+                    $route: mockRoute,
+                    $cookies: mockCookies
                 }
             }
         })

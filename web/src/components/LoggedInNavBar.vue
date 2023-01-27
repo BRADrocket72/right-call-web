@@ -45,10 +45,10 @@ export default {
     }
   },
   mounted() {
-    var userStore = useUsersStore();
-    if (userStore.currentUserType== "Admin") {
+    let userType = this.$cookies.get("user_session").currentUserType
+    if (userType == "Admin") {
         this.isUserAdmin = true
-    } else if(userStore.currentUserType== "Instructor" ) {
+    } else if(userType == "Instructor" ) {
         this.isUserInstructor = true
     } else {
         this.isUserStudent = true
@@ -57,8 +57,8 @@ export default {
   methods: {
     logout() {
         var store = useUsersStore();
-        store.currentUserToken = ""
-        store.currentUserType = ""
+        store.usersEyeTrackingCalibration == ""
+        this.$cookies.remove("user_session")
         this.$router.push({
           name: "LoginPage"
         })

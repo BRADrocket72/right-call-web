@@ -23,6 +23,7 @@
     </results-page>
     <activity-pop-up v-if="questionsLoaded && isModalVisible" :answersArray="answers"
       :question="currentVideoQuestions[questionIndex]" :questionNumber="questionIndex + 1" @close="closeModal" />
+    <webgazer-calibration-page v-if="calibrationReady" @close="closeCalibrationPage"/>
   </div>
 </div>
 </template>
@@ -32,9 +33,9 @@
 import ActivityPopUp from '@/components/modals/ActivityPopUp.vue';
 import ResultsPage from "@/components/modals/ResultsPage.vue"
 import VideoClip from '@/models/VideoClipDto';
+import WebgazerCalibrationPage from './modals/WebgazerCalibrationPage.vue';
 import { formatTimeForVideo } from "@/util/FormatVideosTime.js"
 import { useVideoClipStore } from "@/stores/VideoClipStore";
-import { useUsersStore } from '@/stores/UserStore';
 import { useActivityStore } from '@/stores/ActivityStore';
 import { useUserResultsStore } from "@/stores/UserResultsStore"
 import LoggedInNavBar from './LoggedInNavBar.vue';
@@ -45,7 +46,8 @@ export default {
   components: {
     ActivityPopUp,
     ResultsPage,
-    LoggedInNavBar
+    LoggedInNavBar,
+    WebgazerCalibrationPage
   },
   props: {
     videoId: {
@@ -63,29 +65,32 @@ export default {
       questionCounter: 0,
       currentVideoClip: VideoClip,
       percentageCorrect: "",
-      videoName: ""
+      videoName: "",
+      calibrationReady: false
     };
   },
   async mounted() {
-    //Starts webgazer on application
-    webgazer.setGazeListener(function(data, elapsedTime) {
-      if (data == null) {
-          return;
-      }
-      var xprediction = data.x; //these x coordinates are relative to the viewport
-      var yprediction = data.y; //these y coordinates are relative to the viewport
-      console.log(xprediction, yprediction); //elapsed time is based on time since begin was called
-      console.log(elapsedTime)
-    })
-    webgazer.begin()
-
     var videoClipStore = useVideoClipStore();
-    var userStore = useUsersStore();
-    if (userStore.currentUserToken.length < 1) {
-      this.$router.push({
-        name: "LoginPage"
+    let cookiesCalibration = this.$cookies.get("user_session").currentEyeTrackingCalibration
+    if (cookiesCalibration == "false") {
+      this.calibrationReady = true
+      this.replaceCookie()
+      webgazer.setGazeListener(function(data, elapsedTime) {
+        if (data == null) {
+            return;
+        }
+        var xprediction = data.x; //these x coordinates are relative to the viewport
+        var yprediction = data.y; //these y coordinates are relative to the viewport
+        console.log(xprediction, yprediction); //elapsed time is based on time since begin was called
+        console.log(elapsedTime)
       })
+      webgazer.begin()
     }
+    else {
+      webgazer.resume()
+    }
+
+
     this.currentVideoClip = await videoClipStore.fetchVideoClipById(this.videoId);
     this.videoName = this.currentVideoClip.videoName
     const videoElement = document.getElementById(this.videoId)
@@ -148,15 +153,27 @@ export default {
           const playOrPauseButton = document.getElementById("playOrPause")
           playOrPauseButton.innerHTML = "Pause"
           videoElement.play();
+          webgazer.resume()
       }
     },
     async closeResultsPage(percentageCorrect) {
       var userResults = useUserResultsStore()
-      var userStore = useUsersStore()
-      await userResults.postUserResults(userStore.currentUserName,percentageCorrect,this.videoId,this.videoName)
+      await userResults.postUserResults(this.$cookies.get("user_session").currentUserName,percentageCorrect,this.videoId,this.videoName)
       this.$router.push({
         name: "LessonSelection"
       })
+    },
+    closeCalibrationPage() {
+      this.calibrationReady = false
+    },
+    replaceCookie() {
+      var currentCookie = this.$cookies.get("user_session")
+      var userName = currentCookie.currentUserName
+      var userType = currentCookie.currentUserType
+      var accessToken = currentCookie.currentUserToken
+      this.$cookies.remove("user_session")
+      var user = { currentUserName: userName, currentUserType: userType, currentUserToken: accessToken, currentEyeTrackingCalibration: "true"}
+      this.$cookies.set("user_session",user, "3d")
     }
   }
 }

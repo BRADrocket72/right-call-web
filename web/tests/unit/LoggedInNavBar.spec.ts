@@ -7,19 +7,25 @@ describe('Navbar.vue', () => {
      let wrapper: any
      let mockRouter: any;
      let mockRoute: any;
-     
+     let mockCookies: any;
+
      beforeEach(() => {
         mockRoute = {}
         mockRouter = {
             push: jest.fn()
         }
+        mockCookies = {
+            get: jest.fn()
+        }
+        mockCookies.get.mockReturnValue({ currentUserType: "test" })
         setActivePinia(createPinia())
         wrapper = mount(LoggedInNavBar,
         {
             global: {
                 mocks: {
                     $router: mockRouter,
-                    $route: mockRoute
+                    $route: mockRoute,
+                    $cookies: mockCookies
                 }
             }
         })
