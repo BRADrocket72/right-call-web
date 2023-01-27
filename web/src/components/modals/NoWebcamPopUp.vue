@@ -11,7 +11,7 @@
 
 
 export default {
-    name: 'EyeTrackingPopUp',
+    name: 'NoWebcamPopUp',
     data() {
         return {
 
@@ -28,17 +28,14 @@ export default {
 
 .quadrants {
     position: absolute;
-    z-index: 1;
     max-width: 972px;
     min-width: 972px;
     height: 550px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 34px;
+    margin: auto;
     left: 0;
     right: 0;
+    top: 0;
     text-align: center;
-    
 }   
 
 .quadrant {
@@ -46,12 +43,23 @@ export default {
     min-width: 486px;
     max-height: 275px;
     min-height: 275px;
-    border: 1px solid black;
     float: left;
 }
 
 .quadrant:hover {
     backdrop-filter: brightness(150%);
     cursor: pointer;
+}
+
+@media only screen and (min-width: 1200px) {
+    .quadrants {
+        margin-left: 100px;
+    }   
+}
+
+@media only screen and (max-width: 1199px) {
+    .quadrants {
+        margin-left: 28px;
+    }   
 }
 </style>

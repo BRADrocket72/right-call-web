@@ -8,7 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <div class="video">
       <video :id="videoId" :src="currentVideoClip.videoURL"></video>
-      <EyeTrackingPopUp v-if="containsEyeTrackingActivity && isEyeTrackingVisible"/>
+      <div class="quadrants-container">
+        <NoWebcamPopUp v-if="containsEyeTrackingActivity && isEyeTrackingVisible"/>
+      </div>
     </div>
     <div id="videoControls">
       <button id="playOrPause" @click="playOrPauseVideo">Play</button>
@@ -25,7 +27,7 @@
 
 <script>
 import ActivityPopUp from '@/components/modals/ActivityPopUp.vue';
-import EyeTrackingPopUp from '@/components/modals/EyeTrackingPopUp.vue'
+import NoWebcamPopUp from '@/components/modals/NoWebcamPopUp.vue'
 import ResultsPage from "@/components/modals/ResultsPage.vue"
 import VideoClip from '@/models/VideoClipDto';
 import { formatTimeForVideo } from "@/util/FormatVideosTime.js"
@@ -42,7 +44,7 @@ export default {
     ActivityPopUp,
     ResultsPage,
     LoggedInNavBar,
-    EyeTrackingPopUp
+    NoWebcamPopUp
   },
   props: {
     videoId: {
@@ -222,5 +224,27 @@ export default {
   min-width: 972px;
   margin: 0 auto;
   background-color: #4AAE9B;
+}
+
+.quadrants-container {
+  position: absolute;
+  max-width: 972px;
+  min-width: 972px;
+  max-height: 550px;
+  min-height: 550px;
+  margin: 0 auto;
+  margin-left: 100px;
+}
+
+@media only screen and (min-width: 1400px){
+  .quadrants-container {
+    margin-left: 62px;
+  }
+}
+
+@media only screen and (max-width: 1399px){
+  .quadrants-container {
+    margin-left: -28px;
+  }
 }
 </style>
