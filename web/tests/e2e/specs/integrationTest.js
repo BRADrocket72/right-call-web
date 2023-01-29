@@ -13,11 +13,23 @@ describe('Integration Test', () => {
   })
   it('User is directed to lesson selection page', () => {
     cy.contains('h1', 'Lesson Selection Page')
-    let videos = cy.get('.nav-link:last')
-    videos.click()
+    let video = cy.get('.nav-link:last')
+    video.click()
   })
   it('Video Player Displays', () => {
     cy.contains('h1', 'Basketball Lesson 5')
+  })
+  it('Calibration Page Shows up and runs Successfully', () => {
+    cy.contains('p', 'Calibration Screen')
+
+    for (let i=0; i< 5; i++) {
+      cy.get('.btn-calibrate-left').click()
+      cy.get('.btn-calibrate-right').click()
+      cy.get('.btn-calibrate-topLeft').click()
+      cy.get('.btn-calibrate-topRight').click()
+      cy.get('.btn-calibrate-center').click()
+    }
+    cy.get(".btn-green").click()
   })
   
 })
