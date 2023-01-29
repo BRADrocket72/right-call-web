@@ -4,12 +4,13 @@ const activityDb = new Activity();
 
   module.exports.activities_create_activity =async (req, res)=>  {
     try {
+        console.log("in cont")
         res.header('Access-Control-Allow-Origin', '*')
         const dataToSave = await activityDb.createActivity(req.body)
-        res.status(200).json(dataToSave)
+        res.status(200).json(dataToSave.toJSON())
     }
     catch (error) {
-        res.status(400).json({ message: error.message })
+        return res.status(400).json({ message: error.message })
     }
 }
 module.exports.activities_get_all = async(req, res) => {

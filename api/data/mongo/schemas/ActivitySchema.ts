@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { ActivityDto } from '../../model/ActivityDto';
 
 const activitySchema = new mongoose.Schema({
     timestamp: {
@@ -26,5 +27,6 @@ const activitySchema = new mongoose.Schema({
         type: String
     }
 })
+interface IActivityModel extends ActivityDto, mongoose.Document { }
 
-export default  mongoose.model('Activity', activitySchema)
+export default  mongoose.model<IActivityModel>('Activity', activitySchema)

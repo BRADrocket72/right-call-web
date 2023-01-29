@@ -10,12 +10,12 @@ import ActivitySchema from "../mongo/schemas/ActivitySchema"
             timestamp:1232,
             questionText: activity.questionText,
             questionType: activity.questionType,
-            answers: activity.answerOptions,
+            answers: activity.answers,
             correctAnswer: activity.correctAnswer,
             videoclipId: activity.videoclipId
         })
         const dataToSave = await data.save()
-        return Activity.toDto(dataToSave);
+        return dataToSave
 }
     async getAll(){
         const data =await ActivitySchema.find()
@@ -44,10 +44,11 @@ import ActivitySchema from "../mongo/schemas/ActivitySchema"
     }
 
     private static toDto = (
-        res: Document
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        res: any
       ): ActivityDto =>
         {
-            const result: ActivityDto = {questionText:res.questionText,questionType:res.questionType,answerOptions:res.answers ,videoclipId:res.videoclipId,id:res._id,correctAnswer:res.correctAnswer}
+            const result: ActivityDto = {questionText:res.questionText,timestamp:res.timestamp,questionType:res.questionType,answers:res.answers ,videoclipId:res.videoclipId,correctAnswer:res.correctAnswer}
             return result;
         }
 }
