@@ -174,13 +174,13 @@ export default {
                 this.activities[this.currentIndex].timestamp = this.currentActivityTimestamp
                 this.activities[this.currentIndex].questionType = this.activityModalData[0]
                 this.activities[this.currentIndex].questionText = this.activityModalData[1]
-                this.activities[this.currentIndex].answers = answers
+                this.activities[this.currentIndex].answers = this.activityModalData[2]
                 this.activities[this.currentIndex].correctAnswer = this.activityModalData[3]
                 if(this.updatedActivities.indexOf(this.activities[this.currentIndex]._id) == -1) {
-                    this.updatedActivities.push(this.activities[this.currentIndex]._id)
+                    this.updatedActivities.push(this.activities[this.currentIndex]._id   )
                 }
             } else {
-                this.activities[this.currentIndex] = new AssignActivityDto(this.currentActivityTimestamp,this.activityModalData[0],this.activityModalData[1],answers,this.activityModalData[3],this.selectedVideo._id)
+                this.activities[this.currentIndex] = new AssignActivityDto(this.currentActivityTimestamp,this.activityModalData[0],this.activityModalData[1],this.activityModalData[2],this.activityModalData[3],this.selectedVideo._id)
             }
             this.toggleSaveButton()
         },

@@ -1,5 +1,5 @@
-export  type AnswerDto {
-    activityId :String,
-    isCorrect :Boolean,
-    answerText :String
+export  type AnswerDto = {
+    activityId :string,
+    isCorrect :boolean,
+    answerText :string
 }
