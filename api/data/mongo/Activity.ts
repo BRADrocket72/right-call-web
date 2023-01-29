@@ -7,7 +7,7 @@ import ActivitySchema from "../mongo/schemas/ActivitySchema"
     async createActivity(activity:ActivityDto) {
 
         const data = new ActivitySchema({
-            timestamp:1232,
+            timestamp: activity.timestamp,
             questionText: activity.questionText,
             questionType: activity.questionType,
             answers: activity.answers,
