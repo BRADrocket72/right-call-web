@@ -7,10 +7,14 @@ describe('LessonSelection.vue', () => {
     let mockRouter: any;
     let mockRoute: any;
     let wrapper: any;
+    let mockCookies: any;
     beforeEach(async () => {
         mockRoute = {}
         mockRouter = {
             push: jest.fn()
+        }
+        mockCookies = {
+            isKey: jest.fn()
         }
         
         setActivePinia(createPinia())
@@ -18,7 +22,8 @@ describe('LessonSelection.vue', () => {
              global: {
                  mocks: {
                     $router: mockRouter,
-                    $route: mockRoute
+                    $route: mockRoute,
+                    $cookies: mockCookies
                 }
              }
         })

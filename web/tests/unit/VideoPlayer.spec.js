@@ -5,7 +5,9 @@ import {createPinia, setActivePinia} from 'pinia'
 
 jest.mock('webgazer', () => ({
   setGazeListener: () => Promise.resolve(),
-  begin: () => Promise.resolve()
+  begin: () => Promise.resolve(),
+  isReady: jest.fn(),
+  resume: jest.fn()
 }))
 
 describe('VideoEditor.vue', () => {
@@ -13,10 +15,15 @@ describe('VideoEditor.vue', () => {
     let wrapper;
     let mockRouter;
     let mockRoute;
+    let mockGet;
     beforeEach(() => {
         mockRouter = {
             push: jest.fn()
         }, 
+        mockGet = {
+          get: jest.fn(),
+        }
+        mockGet.get.mockReturnValue({currentUserType: "testUser"})
         setActivePinia(createPinia())
         wrapper = mount(VideoEditor, {
             props: {
@@ -33,7 +40,8 @@ describe('VideoEditor.vue', () => {
             global: {
                 mocks: {
                     $router: mockRouter,
-                    $route: mockRoute
+                    $route: mockRoute,
+                    $cookies: mockGet
                 }
             }
         })

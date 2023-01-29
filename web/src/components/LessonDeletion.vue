@@ -21,7 +21,6 @@
   
 <script>
   import { useVideoClipStore } from "@/stores/VideoClipStore";
-  import { useUsersStore } from "@/stores/UserStore";
   import LoggedInNavBarVue from "./LoggedInNavBar.vue";
   import LessonDeletionModal from "@/components/modals/LessonDeletionModal.vue"
   
@@ -40,12 +39,6 @@
         }
     },
     async mounted() {
-      var store = useUsersStore();
-      if (store.currentUserToken.length < 1) {
-        this.$router.push({
-          name: "LoginPage",
-        });
-      }
       var videoClipLessons = useVideoClipStore()
       this.lessons = await videoClipLessons.fetchVideoClips();
     },
