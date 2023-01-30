@@ -53,7 +53,6 @@ module.exports.activities_delete_activity = async(req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
         const id = req.params.id;
-
         const result = await activityDb.findByIdAndDelete(id)
         res.send(result)
     }
