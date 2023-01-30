@@ -30,7 +30,7 @@
       <label> Admin: </label>
       <input type="radio" name="userType"  id="userType" value="Admin"/>
       <br/><br/>
-      <button type="submit" @click="uploadUsers">Log in</button>
+      <button type="submit" @click="uploadUsers">Register</button>
     </form>
     <nav></nav>
   </div>
@@ -54,15 +54,15 @@ export default {
       var email = document.getElementById("email").value
       var password = document.getElementById("password").value
       var userTypes = document.getElementsByName("userType")
+      var userType = ""
       for (let i=0; i< userTypes.length; i++) {
         if (userTypes[i].checked) {
-          var userType = userTypes[i].value
+          userType = userTypes[i].value
         }
       }
-      
       await userStore.postUser(userName,email, password, userType)
       this.$router.push({
-        name: "LessonSelection"
+        name: "LoginPage"
       });
       
     }
