@@ -4,11 +4,9 @@ import { UserResultsDto } from "../model/UserResultsDto";
 import UserResultsSchema from "./schemas/UserResultsSchema";
 
 class UserResults implements UserResultsDb {
-    constructor(){
-
-    }
 
    async createUserResult(userResult:UserResultsDto) {
+        // eslint-disable-next-line no-useless-catch
         try{
         const data = new UserResultsSchema({
             username:userResult.username,
@@ -16,7 +14,7 @@ class UserResults implements UserResultsDb {
             lessonId: userResult.lessonId,
             lessonName: userResult.lessonName
         })
-        var dataToSave = await data.save()
+        const dataToSave = await data.save()
         return UserResults.toDto(dataToSave);
     }catch(e){
         throw e;
@@ -24,23 +22,23 @@ class UserResults implements UserResultsDb {
 }
     
 async getAllUserResults(){
-        var data = await  UserResultsSchema.find()
-        var result = data.map((x:any)=>{
+        const data = await  UserResultsSchema.find()
+        const result = data.map((x:any)=>{
             return UserResults.toDto(x)
         })
         return result;
-    };
+    }
     
     async getResultsByUsername(username:string){
-        var data = await UserResultsSchema.find({"username": username})
-        var result = data.map((x)=>{
+        const data = await UserResultsSchema.find({"username": username})
+        const result = data.map((x)=>{
             return UserResults.toDto(x)
         })
         return result;
     }
     
     private static toDto = (res: any): UserResultsDto =>{
-        var result: UserResultsDto = {id:res._id,lessonId:res.lessonId,username:res.userName,score:res.score,lessonName:res.lessonName}
+        const result: UserResultsDto = {id:res._id,lessonId:res.lessonId,username:res.userName,score:res.score,lessonName:res.lessonName}
         return result
     }
 }
