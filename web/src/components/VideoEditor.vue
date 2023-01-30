@@ -9,7 +9,8 @@
     <div class="video">
       <video :id="videoId" :src="currentVideoClip.videoURL"></video>
       <div class="quadrants-container">
-        <NoWebcamPopUp v-if="containsEyeTrackingActivity && isEyeTrackingVisible"/>
+        <NoWebcamPopUp v-if="containsEyeTrackingActivity && isEyeTrackingVisible" :answersArray="answers"
+        :question="currentVideoQuestions[questionIndex]" @close="toggleEyeTracking"/>
       </div>
     </div>
     <div id="videoControls">
@@ -18,7 +19,7 @@
     </div>
     <results-page v-if="isResultsPageModalVisible" :answersArray="answers" @close="closeResultsPage">
     </results-page>
-    <activity-pop-up v-if="questionsLoaded && isModalVisible && !isEyeTrackingVisible" :answersArray="answers"
+    <activity-pop-up v-if="questionsLoaded && isModalVisible" :answersArray="answers"
       :question="currentVideoQuestions[questionIndex]" :questionNumber="questionIndex + 1" @close="closeModal" />
     <webgazer-calibration-page v-if="calibrationReady" @close="closeCalibrationPage"/>
   </div>
@@ -163,12 +164,13 @@ export default {
           webgazer.resume()
       }
     },
-    toggleEyeTracking(answer) {
+    toggleEyeTracking(updatedAnswers) {
       this.isEyeTrackingVisible = !this.isEyeTrackingVisible
       this.playOrPauseVideo()
       this.togglePlayButton()
       if(!this.isEyeTrackingVisible) {
-        this.checkEyeTrackingAnswer(answer)
+        this.answers = updatedAnswers
+        this.questionIndex++;
       }
     },
     togglePlayButton() {
@@ -180,15 +182,6 @@ export default {
         button.disabled = false
       }
       
-    },
-    checkEyeTrackingAnswer(answer) {
-      const correct = this.currentVideoQuestions[this.questionIndex].correctAnswer
-      if(answer == correct) {
-        this.answers.push('Correct')
-      } else {
-        this.answers.push('Incorrect')
-      }
-      this.questionIndex+=1
     },
     async closeResultsPage(percentageCorrect) {
       var userResults = useUserResultsStore()
