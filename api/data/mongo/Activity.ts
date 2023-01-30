@@ -7,7 +7,7 @@ import ActivitySchema from "../mongo/schemas/ActivitySchema"
     async createActivity(activity:ActivityDto) {
 
         const data = new ActivitySchema({
-            timestamp: activity.timestamp,
+            timestamp:activity.timestamp,
             questionText: activity.questionText,
             questionType: activity.questionType,
             answers: activity.answers,
@@ -19,28 +19,23 @@ import ActivitySchema from "../mongo/schemas/ActivitySchema"
 }
     async getAll(){
         const data =await ActivitySchema.find()
-        const result = data.map((x:any)=>{
-            return Activity.toDto(x)
-        })
-        return result;
+
+        return data;
 
     }
     async findAllByVideoId(videoclipId:string){
         const data = await ActivitySchema.find({"videoclipId": videoclipId})
-        const  result = data.map((x)=>{
-            return Activity.toDto(x)
-        })
-        return result;
+        return data;
 
     }
     async update(activity: ActivityDto){
-        const data =await  ActivitySchema.update(activity)
-        return Activity.toDto(data);
+        const data =await  ActivitySchema.findOneAndUpdate(activity)
+        return data
 
     }
     async findByIdAndDelete(id:string){
         const data =  await ActivitySchema.findByIdAndDelete(id); 
-        return Activity.toDto(data);
+        return data;
     }
 
     private static toDto = (
