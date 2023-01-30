@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { UserResultsDto } from '../../model/UserResultsDto';
 
 
 const userResultsSchema = new mongoose.Schema({
@@ -20,5 +21,6 @@ const userResultsSchema = new mongoose.Schema({
         type: String
     }
 })
+interface IUserResults extends UserResultsDto, mongoose.Document {}
 
-export default  mongoose.model('UserResults', userResultsSchema)
+export default  mongoose.model<IUserResults>('UserResults', userResultsSchema)
