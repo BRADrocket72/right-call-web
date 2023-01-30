@@ -33,7 +33,7 @@ export const useActivityStore = defineStore("Activity", {
                 })
                 return data.data
             } catch(error) {
-                console.log(error)
+                console.error(error)
             }
         },
         async updateActivities(id,timestamp,questionType,questionText,answers,correctAnswer) {
