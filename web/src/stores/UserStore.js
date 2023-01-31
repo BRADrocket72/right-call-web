@@ -38,6 +38,14 @@ export const useUsersStore = defineStore("Users", {
             } catch(error) {
                 console.log(error)
             }
+        },
+        async getAllUsers(){
+            try{
+                const data = await axios.get('http://localhost:3000/api/users/getAll')
+                return data.data
+            } catch(error) {
+                console.log(error)
+            }
         }
     }
 })
