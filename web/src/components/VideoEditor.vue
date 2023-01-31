@@ -78,6 +78,9 @@ export default {
     if (cookiesCalibration == "false") {
       this.calibrationReady = true
       this.replaceCookie()
+      webgazer.showVideo(false)
+      webgazer.showFaceOverlay(false)
+      webgazer.showFaceFeedbackBox(false)
       webgazer.setGazeListener(function(data, elapsedTime) {
         if (data == null) {
             return;
@@ -128,6 +131,7 @@ export default {
         } else {
           this.toggleEyeTracking()
         }
+          webgazer.pause()
           video.pause();
           this.questionCounter++
       }
