@@ -8,6 +8,7 @@ import VideoUpload from "@/components/VideoUpload.vue"
 import AssignTimestamps from "@/components/AssignTimestamps.vue"
 import UserResultsPage from "@/components/UserResultsPage.vue"
 import LessonDeletion from "@/components/LessonDeletion.vue"
+import CreateClassRoomPage from "@/components/CreateClassroomPage.vue"
 import { createRouter, createWebHistory } from 'vue-router'
 
 
@@ -62,6 +63,11 @@ const routesArray = [
         path: "/LessonDeletion",
         name: "LessonDeletion",
         component: LessonDeletion
+    },
+    {
+        path: "/CreateClassroomPage",
+        name: "CreateClassroomPage",
+        component: CreateClassRoomPage
     }
 ]
 
