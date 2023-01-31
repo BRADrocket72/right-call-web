@@ -8,11 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <div class="video">
       <video :id="videoId" :src="currentVideoClip.videoURL"></video>
-      <div class="quadrants">
-        <div class="quadrant-one quadrant "></div>
-        <div class="quadrant-two quadrant"></div>
-        <div class="quadrant-three quadrant"></div>
-        <div class="quadrant-four quadrant"></div>
+      <div class="quadrants-container">
+        <NoWebcamPopUp v-if="containsEyeTrackingActivity && isEyeTrackingVisible" :answersArray="answers"
+        :question="currentVideoQuestions[questionIndex]" @close="toggleEyeTracking"/>
       </div>
     </div>
     <div id="videoControls">
@@ -31,6 +29,7 @@
 
 <script>
 import ActivityPopUp from '@/components/modals/ActivityPopUp.vue';
+import NoWebcamPopUp from '@/components/modals/NoWebcamPopUp.vue'
 import ResultsPage from "@/components/modals/ResultsPage.vue"
 import VideoClip from '@/models/VideoClipDto';
 import WebgazerCalibrationPage from './modals/WebgazerCalibrationPage.vue';
@@ -47,6 +46,7 @@ export default {
     ActivityPopUp,
     ResultsPage,
     LoggedInNavBar,
+    NoWebcamPopUp,
     WebgazerCalibrationPage
   },
   props: {
@@ -66,6 +66,9 @@ export default {
       currentVideoClip: VideoClip,
       percentageCorrect: "",
       videoName: "",
+      containsEyeTrackingActivity: false,
+      isEyeTrackingVisible: false,
+      isPlayButtonDisabled: false,
       calibrationReady: false
     };
   },
@@ -114,14 +117,19 @@ export default {
         }
       })
     }
+    this.checkForEyeTrackingActivity()
   },
   methods: {
     stopVideoAtTimestamp(video, timestamps) {
       var currentTime = video.currentTime;
       if (currentTime >= timestamps[this.questionCounter]) {
-        video.pause();
-        this.questionCounter++
-        this.showModal();
+        if(this.currentVideoQuestions[this.questionCounter].questionType != 'eye-tracking') {
+          this.showModal();
+        } else {
+          this.toggleEyeTracking()
+        }
+          video.pause();
+          this.questionCounter++
       }
     },
     playOrPauseVideo() {
@@ -156,12 +164,38 @@ export default {
           webgazer.resume()
       }
     },
+    toggleEyeTracking(updatedAnswers) {
+      this.isEyeTrackingVisible = !this.isEyeTrackingVisible
+      this.playOrPauseVideo()
+      this.togglePlayButton()
+      if(!this.isEyeTrackingVisible) {
+        this.answers = updatedAnswers
+        this.questionIndex++;
+      }
+    },
+    togglePlayButton() {
+      this.isPlayButtonDisabled = !this.isPlayButtonDisabled
+      const button = document.getElementById('playOrPause')
+      if(this.isPlayButtonDisabled) {
+        button.disabled = true
+      } else {
+        button.disabled = false
+      }
+      
+    },
     async closeResultsPage(percentageCorrect) {
       var userResults = useUserResultsStore()
       await userResults.postUserResults(this.$cookies.get("user_session").currentUserName,percentageCorrect,this.videoId,this.videoName)
       this.$router.push({
         name: "LessonSelection"
       })
+    },
+    checkForEyeTrackingActivity() {
+      for(const activity of this.currentVideoQuestions) {
+        if(activity.questionType == 'eye-tracking') {
+          this.containsEyeTrackingActivity = true
+        }
+      }
     },
     closeCalibrationPage() {
       this.calibrationReady = false
@@ -202,23 +236,25 @@ export default {
   background-color: #4AAE9B;
 }
 
-.quadrants {
+.quadrants-container {
   position: absolute;
   max-width: 972px;
   min-width: 972px;
-  height: 60%;
-  margin-left: auto;
-  margin-right: auto;
-  left: 0;
-  right: 0;
-  text-align: center;
+  max-height: 550px;
+  min-height: 550px;
+  margin: 0 auto;
+  margin-left: 100px;
 }
-.quadrant {
-  max-width: 486px;
-  min-width: 486px;
-  max-height: 275px;
-  min-height: 275px;
-  border: 1px solid black;
-  float: left;
+
+@media only screen and (min-width: 1400px){
+  .quadrants-container {
+    margin-left: 62px;
+  }
+}
+
+@media only screen and (max-width: 1399px){
+  .quadrants-container {
+    margin-left: -28px;
+  }
 }
 </style>
