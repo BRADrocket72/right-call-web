@@ -1,7 +1,8 @@
 <template>
     <div class="CreateClassroomPage">
-        Hello World
+        This is the classroom creation page 
         <table>
+            All Students
             <tr v-for="student in students" :key="student">
                 <a class="nav-link" @click="addStudentToClass(student._id)">
                     {{student.userName}}
@@ -49,3 +50,12 @@ export default {
     }
 }
 </script>
+
+<style>
+
+.CreateClassroomPage {
+  font-weight: bold;
+  color: #4AAE9B;
+}
+
+</style>
