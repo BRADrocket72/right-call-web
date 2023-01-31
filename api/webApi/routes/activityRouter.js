@@ -13,7 +13,7 @@ router.get('/activity/getAll', activitiesController.activities_get_all)
 router.get('/activity/get/:videoclipId', activitiesController.activities_get_by_videoId)
 
 //Update by ID Method
-router.patch('/activity/update/:id', activitiesController.activities_update)
+router.put('/activity/update/:id', activitiesController.activities_update)
 
 router.delete('/activity/delete/:id', activitiesController.activities_delete_activity)
 module.exports = router;

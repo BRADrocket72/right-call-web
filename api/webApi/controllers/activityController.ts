@@ -37,9 +37,10 @@ module.exports.activities_get_by_videoId =async(req, res) => {
 
 module.exports.activities_update= async(req, res)=> {
     res.header('Access-Control-Allow-Origin', '*')
+    const id = req?.params?.id;
     try {
 
-        const result = await activityDb.update(req.body)
+        const result = await activityDb.update(id,req.body)
 
         res.send(result)
     }

@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import  {ActivityDb} from "../db/ActivityDb";
 import {ActivityDto} from "../model/ActivityDto";
 import ActivitySchema from "../mongo/schemas/ActivitySchema"
@@ -28,8 +29,9 @@ import ActivitySchema from "../mongo/schemas/ActivitySchema"
         return data;
 
     }
-    async update(activity: ActivityDto){
-        const data =await  ActivitySchema.findOneAndUpdate(activity)
+    async update(id:string, activity: ActivityDto){
+        const query = {_id: new mongoose.Types.ObjectId(id)}
+        const data =await  ActivitySchema.findOneAndUpdate(query,{$set:activity})
         return data
 
     }
