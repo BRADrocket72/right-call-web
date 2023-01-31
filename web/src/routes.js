@@ -2,6 +2,7 @@ import LessonSelection from "@/components/LessonSelection.vue";
 import VideoEditor from "@/components/VideoEditor.vue";
 import LoginPage from "@/components/LoginPage.vue"
 import RegistrationPage from "@/components/RegistrationPage.vue";
+import InstructorPage from "@/components/InstructorPage.vue"
 import AdminPage from "@/components/AdminPage.vue"
 import VideoUpload from "@/components/VideoUpload.vue"
 import AssignTimestamps from "@/components/AssignTimestamps.vue"
@@ -41,6 +42,11 @@ const routesArray = [
         path: "/VideoUpload",
         name: "VideoUpload",
         component: VideoUpload
+    },
+    {
+        path: "/InstructorPage",
+        name: "InstructorPage",
+        component: InstructorPage
     },
     {
         path: "/AssignTimestamps",

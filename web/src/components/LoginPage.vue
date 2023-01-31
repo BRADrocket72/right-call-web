@@ -65,7 +65,7 @@ export default {
           })
         } else if(loginStatus.userType == "Instructor") {
           this.$router.push({
-            name: "AssignTimestamps"
+            name: "InstructorPage"
           })
         }else {
           this.$router.push({
