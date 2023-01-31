@@ -142,10 +142,12 @@ export default {
       if (videoElement.paused) {
         playOrPauseButton.innerHTML = "Pause"
         videoElement.play()
+        webgazer.resume()
       }
       else {
         playOrPauseButton.innerHTML = "Play"
         videoElement.pause()
+        webgazer.pause()
       }
     },
     showModal() {
@@ -165,7 +167,6 @@ export default {
           const playOrPauseButton = document.getElementById("playOrPause")
           playOrPauseButton.innerHTML = "Pause"
           videoElement.play();
-          webgazer.resume()
       }
     },
     toggleEyeTracking(updatedAnswers) {
