@@ -6,7 +6,7 @@ const UserController = require('../controllers/userController.js')
 router.post('/users/post', UserController.create_user)
 
 //Get user Method
-router.get('/users/get/:username', UserController.get_by_username)
+router.get('/users/getOne/:username', UserController.get_by_username)
 
 //Get all Method
 router.get('/users/getAll', UserController.get_all)

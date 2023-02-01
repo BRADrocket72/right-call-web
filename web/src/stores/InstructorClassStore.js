@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
-export const useInstuctorClassStore = defineStore("InstructorClass", {
+export const useInstructorClassStore = defineStore("InstructorClass", {
     state: () => ({
         instructorClasses: []
     }),
@@ -11,7 +11,7 @@ export const useInstuctorClassStore = defineStore("InstructorClass", {
         }
     },
     actions: {
-    async postInstructorClass(instructorId , videoclipIds , studentIds,) {
+        async postInstructorClass(instructorId , videoclipIds , studentIds,) {
             try {
                 const data = await axios.post(`http://localhost:3000/api/instructorClass/post`, 
                 { 
@@ -19,6 +19,14 @@ export const useInstuctorClassStore = defineStore("InstructorClass", {
                     videoclipIds: videoclipIds,
                     studentIds: studentIds
                 })
+                return data.data
+            } catch(error) {
+                console.error(error)
+            }
+        },
+        async getClassesByInstructorId(instructorId) {
+            try {
+                const data = await axios.get('http://localhost:3000/api/instructorClass/getById/' + instructorId)
                 return data.data
             } catch(error) {
                 console.error(error)
