@@ -32,6 +32,17 @@ exports.create_user = async (req, res) => {
     }
 }
 
+exports.get_by_username = async (req, res) => {
+    try {
+        res.header('Access-Control-Allow-Origin', '*')
+        const data = await User.find({"username":req.body.userName});
+        res.json(data)
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
+
 exports.get_all = async (req, res) => {
     try {
         res.header('Access-Control-Allow-Origin', '*')
