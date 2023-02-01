@@ -17,7 +17,7 @@
                         <router-link class="user-button" type="submit" to="/AdminPage">Admin</router-link>
                     </div>
                     <div v-if="isUserInstructor">
-                        <router-link class="user-button-multiline-text" type="submit" to="/AssignTimestamps">Timestamp Videos</router-link>
+                        <router-link class="user-button-multiline-text" type="submit" to="/InstructorPage">Instructor Page</router-link>
                     </div>
                     <div v-if="isUserStudent"> 
                         <router-link class="user-button-multiline-text" type="submit" to="/UserResultsPage">View My Results</router-link>
