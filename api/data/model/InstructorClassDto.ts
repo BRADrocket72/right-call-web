@@ -1,6 +1,5 @@
-export type InstructorClass = {
+export type InstructorClassDto = {
     instructorId:string,
     videoclipIds:Array<string>,
     studentIds:Array<string>
-
 }
