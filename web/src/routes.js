@@ -9,6 +9,7 @@ import AssignTimestamps from "@/components/AssignTimestamps.vue"
 import UserResultsPage from "@/components/UserResultsPage.vue"
 import LessonDeletion from "@/components/LessonDeletion.vue"
 import CreateClassRoomPage from "@/components/CreateClassroomPage.vue"
+import AddStudentsToClass from "@/components/AddStudentsToClass.vue"
 import { createRouter, createWebHistory } from 'vue-router'
 
 
@@ -68,7 +69,12 @@ const routesArray = [
         path: "/CreateClassroomPage",
         name: "CreateClassroomPage",
         component: CreateClassRoomPage
-    }
+    },
+    {
+        path: "/AddStudentsToClass",
+        name: "AddStudentsToClass",
+        component: AddStudentsToClass
+    },
 ]
 
 const router = createRouter({

@@ -17,6 +17,6 @@ const instructorClassSchema = new mongoose.Schema({
     }
 })
 
-interface IInstructorClass extends InstructorClassDto, mongoose.Document {}
+interface IInstructorClass extends InstructorClassDto, mongoose.Document { }
 
 export default  mongoose.model<IInstructorClass>('InstructorClass', instructorClassSchema)
