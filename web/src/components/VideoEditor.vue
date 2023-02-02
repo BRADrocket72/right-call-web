@@ -253,28 +253,55 @@ export default {
   max-height: 550px;
   min-height: 550px;
   margin: 0 auto;
-  margin-left: 100px;
 }
 
 .eye-tracking-container {
   position: absolute;
-  max-width: 1400px;
-  min-width: 1400px;
-  max-height: 700px;
-  min-height: 700px;
+  max-width: 1350px;
+  min-width: 1350px;
+  max-height: 650px;
+  min-height: 650px;
   margin: -100px auto auto auto;
   border: 1px solid black;
 }
 
-@media only screen and (min-width: 1400px){
+@media only screen and (min-width: 1600px){
   .quadrants-container {
     margin-left: 62px;
   }
 }
 
-@media only screen and (max-width: 1399px){
+@media only screen and (min-width: 1400px) and (max-width: 1599px){
   .quadrants-container {
     margin-left: -28px;
+  }
+  .eye-tracking-container {
+    max-width: 1300px;
+    min-width: 1300px;
+  }
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1399px){
+  .quadrants-container {
+    margin-left: -28px;
+  }
+  .eye-tracking-container {
+    margin-left: -30px;
+    max-width: 1170px;
+    min-width: 1170px;
+  }
+}
+
+@media only screen and (max-width: 1200px){
+  .quadrants-container {
+    margin-left: -28px;
+  }
+  .eye-tracking-container {
+    max-height: 550px;
+    min-height: 550px;
+    max-width: 972px;
+    min-width: 972px;
+    margin-top: 0;
   }
 }
 </style>

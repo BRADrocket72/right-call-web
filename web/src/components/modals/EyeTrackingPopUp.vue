@@ -68,10 +68,10 @@ export default {
 
 .quadrants {
     position: absolute;
-    max-width: 1400px;
-    min-width: 1400px;
-    max-height: 700px;
-    min-height: 700px;
+    max-width: 1350px;
+    min-width: 1350px;
+    max-height: 650px;
+    min-height: 650px;
     margin-left: 0px;
     left: 0;
     right: 0;
@@ -80,10 +80,10 @@ export default {
 }   
 
 .quadrant {
-    max-width: 700px;
-    min-width: 700px;
-    max-height: 350px;
-    min-height: 350px;
+    max-width: 675px;
+    min-width: 675px;
+    max-height: 325px;
+    min-height: 325px;
     float: left;
     border: none;
 }
@@ -95,9 +95,9 @@ export default {
 
 .question {
     text-align: center;
-    width: 80%;
+    width: 972px;
     background: #928787;
-    margin: 30px auto;
+    margin: 30px auto auto 20px;
 }
 
 .question h2 {
@@ -111,18 +111,58 @@ export default {
 
 @media only screen and (min-width: 1600px) {  
     .question {
-        margin-left: 100px;
+        margin-left: 161px;
     }
 }
 
-@media only screen and (max-width: 1599px) and (min-width: 1400px) {
+@media only screen and (min-width: 1400px) and (max-width: 1599px) {
     .quadrants {
         max-width: 1300px;
         min-width: 1300px;
-        margin-left: 28px;
+    }
+    .quadrant {
+        max-width: 650px;
+        min-width: 650px;
     }
     .question {
-        margin-left: 28px;
+        margin-left: 161px;
+    }
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1399px) {
+    .quadrants {
+        max-width: 1200px;
+        min-width: 1200px;
+    }
+    .quadrant {
+        max-width: 585px;
+        min-width: 585px;
+    }
+    .question {
+        margin-left: 101px;
+    }
+}
+
+@media only screen and (max-width: 1200px){
+    .quadrants {
+        position: absolute;
+        max-width: 972px;
+        min-width: 972px;
+        max-height: 550px;
+        min-height: 550px;
+    }   
+
+    .quadrant {
+        max-width: 486px;
+        min-width: 486px;
+        max-height: 275px;
+        min-height: 275px;
+        float: left;
+        border: none;
+    }
+
+    .question {
+        margin: -72px auto auto -1px;
     }
 }
 </style>
