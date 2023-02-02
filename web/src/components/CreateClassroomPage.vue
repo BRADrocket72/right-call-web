@@ -20,6 +20,7 @@
 
 <script>
 import LoggedInNavBarVue from './LoggedInNavBar.vue'
+import {retrieveOnlyStudents} from '@/util/RetrieveOnlyStudents'
 import { useUsersStore } from '@/stores/UserStore'
 import { useInstructorClassStore } from '@/stores/InstructorClassStore'
 
@@ -40,18 +41,9 @@ export default {
     async mounted(){
         var users = useUsersStore();
         this.allUsers = await users.getAllUsers();
-        this.students = this.retrieveOnlyStudents(this.allUsers);
+        this.students = retrieveOnlyStudents(this.allUsers);
     },
     methods:{
-        retrieveOnlyStudents(users){
-            var studentArray = [];
-            for (var user of users){
-                if (user.userType == "Student"){
-                    studentArray.push(user);
-                }
-            }
-            return studentArray;
-        },
         addStudentToClass(type){
             let table = document.getElementById("addedStudents")
             table.innerHTML += "student:" + type + "<br/>"
