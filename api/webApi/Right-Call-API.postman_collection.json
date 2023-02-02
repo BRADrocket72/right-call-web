@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4fc09d40-03cd-4a8e-8e6d-f0a9832b0ad6",
+		"_postman_id": "acc4d9b2-99aa-418f-a3a4-4033a177b2f7",
 		"name": "Right-Call-API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -63,7 +63,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/videoclip/getOne/6372b3cc4d8dfa7ff6590623",
+							"raw": "localhost:3000/api/videoclip/getOne/:id",
 							"host": [
 								"localhost"
 							],
@@ -73,6 +73,11 @@
 								"videoclip",
 								"getOne",
 								":id"
+							],
+							"variable": [
+								{
+									"key": "id"
+								}
 							]
 						}
 					},
@@ -103,6 +108,11 @@
 								"videoclip",
 								"update",
 								":id"
+							],
+							"variable": [
+								{
+									"key": "id"
+								}
 							]
 						}
 					},
@@ -114,7 +124,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/videoclip/delete/6372b3cc4d8dfa7ff6590623",
+							"raw": "localhost:3000/api//videoclip/delete/6372b3cc4d8dfa7ff6590623",
 							"host": [
 								"localhost"
 							],
@@ -190,7 +200,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/user/delete/6372b3cc4d8dfa7ff6590623",
+							"raw": "localhost:3000/api//user/delete/6372b3cc4d8dfa7ff6590623",
 							"host": [
 								"localhost"
 							],
@@ -221,7 +231,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/api/users/login",
+							"raw": "localhost:3000/api/users/post",
 							"host": [
 								"localhost"
 							],
@@ -235,7 +245,6 @@
 					},
 					"response": []
 				}
-
 			]
 		},
 		{
@@ -347,11 +356,11 @@
 				{
 					"name": "update",
 					"request": {
-						"method": "PATCH",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"_id\":\"6372b3cc4d8dfa7ff6590623\",\r\n    \"videoURL\":\"gmail.com\",\r\n    \"timeStamps\":[23]\r\n}",
+							"raw": "    {\r\n        \"_id\": \"63d6d2a38756c1fcec77378a\",\r\n        \"timestamp\": 1232,\r\n        \"questionType\": \"multiple-choice\",\r\n        \"questionText\": \"say yes\",\r\n        \"answers\": [\r\n            \"yes1\",\r\n            \"no1\"\r\n        ],\r\n        \"correctAnswer\": \"yes1\",\r\n        \"videoclipId\": \"63914182e6992768ea184cc8\",\r\n        \"__v\": 0\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -369,10 +378,15 @@
 								"activity",
 								"update",
 								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "63d6d2a38756c1fcec77378a"
+								}
 							]
 						}
 					},
-					
 					"response": []
 				},
 				{
@@ -391,6 +405,11 @@
 								"activity",
 								"delete",
 								":id"
+							],
+							"variable": [
+								{
+									"key": "id"
+								}
 							]
 						}
 					},
@@ -412,8 +431,22 @@
 								"activity",
 								"get",
 								":videoclipId"
+							],
+							"variable": [
+								{
+									"key": "videoclipId"
+								}
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
 					},
 					"response": []
 				}
@@ -487,6 +520,11 @@
 								"userResults",
 								"get",
 								":username"
+							],
+							"variable": [
+								{
+									"key": "username"
+								}
 							]
 						}
 					},
@@ -495,7 +533,6 @@
 			]
 		}
 	],
-	
 	"event": [
 		{
 			"listen": "prerequest",

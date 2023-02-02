@@ -4,7 +4,6 @@ const activityDb = new Activity();
 
   module.exports.activities_create_activity =async (req, res)=>  {
     try {
-        console.log("in cont")
         res.header('Access-Control-Allow-Origin', '*')
         const dataToSave = await activityDb.createActivity(req.body)
         res.status(200).json(dataToSave.toJSON())
@@ -38,9 +37,10 @@ module.exports.activities_get_by_videoId =async(req, res) => {
 
 module.exports.activities_update= async(req, res)=> {
     res.header('Access-Control-Allow-Origin', '*')
+    const id = req?.params?.id;
     try {
 
-        const result = await activityDb.update(req.body)
+        const result = await activityDb.update(id,req.body)
 
         res.send(result)
     }

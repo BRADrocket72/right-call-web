@@ -10,12 +10,16 @@
             </tr>
         </table>
     </div>
+        <div id="addedStudents">
+
+        </div>
 </template>
 
 
 <script>
 
 import { useUsersStore } from '@/stores/UserStore'
+//import { useInstuctorClassStore } from '@/stores/InstructorClassStore'
 
 export default {
     name: 'CreateClassroomPage',
@@ -23,8 +27,9 @@ export default {
         msg: String
     },
     data(){
-        return{students:[], 
-        allUsers:[]
+        return{students:[],
+        allUsers:[],
+        classes:[]
         }
     },
     async mounted(){
@@ -44,8 +49,9 @@ export default {
             return studentArray;
         },
         addStudentToClass(type){
-            
-            return type
+            let table = document.getElementById("addedStudents")
+            table.innerHTML += "student:" + type + "<br/>"
+            this.classes.push(type)
         }
     }
 }
