@@ -31,9 +31,8 @@ import ActivitySchema from "../mongo/schemas/ActivitySchema"
     }
     async update(id:string, activity: ActivityDto){
         const query = {_id: new mongoose.Types.ObjectId(id)}
-        const data =await  ActivitySchema.findOneAndUpdate(query,{$set:activity})
+        const data = await  ActivitySchema.findOneAndUpdate(query,{$set:activity},{new:true})
         return data
-
     }
     async findByIdAndDelete(id:string){
         const data =  await ActivitySchema.findByIdAndDelete(id); 

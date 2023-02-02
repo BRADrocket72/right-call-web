@@ -3,7 +3,7 @@ import Activity from "../../../mongo/Activity"
 import ActivitySchema from "../../../mongo/schemas/ActivitySchema"
 
 
-const testMongoDb = require('./testMongoDb')
+const testMongoDb = require('../testMongoDb')
 const activityCollection :Activity =  new Activity()
 
 beforeAll(async () => await testMongoDb.connect())
