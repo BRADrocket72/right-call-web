@@ -25,6 +25,10 @@ export default {
             quadrantTwoCoords: [],
             quadrantThreeCoords: [],
             quadrantFourCoords: [],
+            xMin: 0,
+            xMax: 0,
+            yMin: 0,
+            yMax: 0
         }
     },
     props:{
@@ -47,6 +51,15 @@ export default {
             this.quadrantTwoCoords = [twoCoords.top, twoCoords.right, twoCoords.bottom, twoCoords.left]
             this.quadrantThreeCoords = [threeCoords.top, threeCoords.right, threeCoords.bottom, threeCoords.left]
             this.quadrantFourCoords = [fourCoords.top, fourCoords.right, fourCoords.bottom, fourCoords.left]
+
+            //left-most coordinate of quadrant one
+            this.xMin = this.quadrantOneCoords[3]
+            //right-most coordinate of quadrant two
+            this.xMax = this.quadrantTwoCoords[1]
+            //top-most coordinate of quadrant one
+            this.yMin = this.quadrantOneCoords[0]
+            //bottom-most coordinate of quadrant three
+            this.yMax = this.quadrantThreeCoords[2]
         },
         quadrantSelection(quadrant) {
             console.log(quadrant)
@@ -56,10 +69,10 @@ export default {
     },
     mounted() {
         this.getCoordinates()
-        console.log(this.quadrantOneCoords)
-        console.log(this.quadrantTwoCoords)
-        console.log(this.quadrantThreeCoords)
-        console.log(this.quadrantFourCoords)
+        console.log(this.xMin)
+        console.log(this.xMax)
+        console.log(this.yMin)
+        console.log(this.yMax)
     }
 }
 </script>
