@@ -17,7 +17,7 @@ import ActivitySchema from "../mongo/schemas/ActivitySchema"
         })
         const dataToSave = await data.save()
         return dataToSave
-}
+    }
     async getAll(){
         const data =await ActivitySchema.find()
 

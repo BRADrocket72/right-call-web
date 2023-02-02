@@ -195,6 +195,32 @@
 					"response": []
 				},
 				{
+					"name": "GetByUsername",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/Users/getOne/:userName",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"Users",
+								"get",
+								":userName"
+							],
+							"variable": [
+								{
+									"key": "userName"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "delete",
 					"request": {
 						"method": "DELETE",
@@ -525,6 +551,81 @@
 								{
 									"key": "username"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "InstructorClass",
+			"item": [
+				{
+					"name": "post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/instructorClass/post",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"instructorClass",
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/instructorClass/getAll",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"instructorClass",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllByInstructorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/instructorClass/getById/:instructorId",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"instructorClass",
+								"getById",
+								":instructorId"
 							]
 						}
 					},

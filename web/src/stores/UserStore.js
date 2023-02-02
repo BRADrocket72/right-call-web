@@ -41,8 +41,7 @@ export const useUsersStore = defineStore("Users", {
         },
         async getUserByName(userName){
             try {
-                const data = await axios.get(`http://localhost:3000/api/uesrs/get/${userName}`)
-                this.results = data.data
+                const data = await axios.get('http://localhost:3000/api/users/getOne/' + userName)
                 return data.data
             } catch (error) {
                 console.log(error);

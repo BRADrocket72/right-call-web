@@ -1,5 +1,6 @@
 <template>
     <div class="CreateClassroomPage">
+        <LoggedInNavBarVue />
         This is the classroom creation page 
         <table>
             All Students
@@ -10,48 +11,54 @@
             </tr>
         </table>
     </div>
-        <div id="addedStudents">
+    <div id="addedStudents">
 
-        </div>
+    </div>
+    <button @click="createClass" >Create Class</button>
 </template>
 
 
 <script>
-
+import LoggedInNavBarVue from './LoggedInNavBar.vue'
+import {retrieveOnlyStudents} from '@/util/RetrieveOnlyStudents'
 import { useUsersStore } from '@/stores/UserStore'
-//import { useInstuctorClassStore } from '@/stores/InstructorClassStore'
+import { useInstructorClassStore } from '@/stores/InstructorClassStore'
 
 export default {
     name: 'CreateClassroomPage',
     props: {
         msg: String
     },
+    components: {
+        LoggedInNavBarVue
+    },
     data(){
         return{students:[],
         allUsers:[],
-        classes:[]
+        classroom:[]
         }
     },
     async mounted(){
         var users = useUsersStore();
         this.allUsers = await users.getAllUsers();
-        this.students = this.retrieveOnlyStudents(this.allUsers);
-        console.log("students"+this.students);
+        this.students = retrieveOnlyStudents(this.allUsers);
     },
     methods:{
-        retrieveOnlyStudents(users){
-            var studentArray = [];
-            for (var user of users){
-                if (user.userType == "Student"){
-                    studentArray.push(user);
-                }
-            }
-            return studentArray;
-        },
         addStudentToClass(type){
             let table = document.getElementById("addedStudents")
             table.innerHTML += "student:" + type + "<br/>"
-            this.classes.push(type)
+            this.classroom.push(type)
+        },
+        async createClass() {
+            var userStore = useUsersStore();
+            let instructorUsername = this.$cookies.get("user_session").currentUserName
+            let instructor =  await userStore.getUserByName(instructorUsername)
+            this.instructorId = instructor[0]._id
+            var instructorClassStore = useInstructorClassStore()
+            await instructorClassStore.postInstructorClass(this.instructorId, [1], this.classroom)
+            this.$router.push({
+                name: "InstructorPage"
+            })
         }
     }
 }
