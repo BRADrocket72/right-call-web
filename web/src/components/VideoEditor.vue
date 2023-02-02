@@ -86,14 +86,14 @@ export default {
       webgazer.showVideo(false)
       webgazer.showFaceOverlay(false)
       webgazer.showFaceFeedbackBox(false)
-      webgazer.setGazeListener(function(data, elapsedTime) {
+      webgazer.setGazeListener(function(data) {
         if (data == null) {
             return;
         }
-        var xprediction = data.x; //these x coordinates are relative to the viewport
-        var yprediction = data.y; //these y coordinates are relative to the viewport
-        console.log(xprediction, yprediction); //elapsed time is based on time since begin was called
-        console.log(elapsedTime)
+        //var xprediction = data.x; //these x coordinates are relative to the viewport
+        //var yprediction = data.y; //these y coordinates are relative to the viewport
+        //console.log(xprediction, yprediction); //elapsed time is based on time since begin was called
+        //console.log(elapsedTime)
       })
       webgazer.begin()
     }
@@ -258,11 +258,11 @@ export default {
 
 .eye-tracking-container {
   position: absolute;
-  max-width: 1300px;
-  min-width: 1300px;
-  max-height: 800px;
-  min-height: 800px;
-  margin: -100px auto auto -30px;
+  max-width: 1400px;
+  min-width: 1400px;
+  max-height: 700px;
+  min-height: 700px;
+  margin: -100px auto auto auto;
   border: 1px solid black;
 }
 

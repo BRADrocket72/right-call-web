@@ -68,10 +68,11 @@ export default {
 
 .quadrants {
     position: absolute;
-    max-width: 1200px;
-    min-width: 1200px;
-    height: 650px;
-    margin: auto;
+    max-width: 1400px;
+    min-width: 1400px;
+    max-height: 700px;
+    min-height: 700px;
+    margin-left: 0px;
     left: 0;
     right: 0;
     top: 0;
@@ -79,10 +80,10 @@ export default {
 }   
 
 .quadrant {
-    max-width: 600px;
-    min-width: 600px;
-    max-height: 325px;
-    min-height: 325px;
+    max-width: 700px;
+    min-width: 700px;
+    max-height: 350px;
+    min-height: 350px;
     float: left;
     border: none;
 }
@@ -94,9 +95,9 @@ export default {
 
 .question {
     text-align: center;
-    width: 100%;
+    width: 80%;
     background: #928787;
-    margin: -70px auto;
+    margin: 30px auto;
 }
 
 .question h2 {
@@ -108,17 +109,16 @@ export default {
     color: #000000;
 }
 
-@media only screen and (min-width: 1200px) {
-    .quadrants {
-        margin-left: 100px;
-    }   
+@media only screen and (min-width: 1600px) {  
     .question {
         margin-left: 100px;
     }
 }
 
-@media only screen and (max-width: 1199px) {
+@media only screen and (max-width: 1599px) and (min-width: 1400px) {
     .quadrants {
+        max-width: 1300px;
+        min-width: 1300px;
         margin-left: 28px;
     }
     .question {
