@@ -8,9 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <div class="video">
       <video :id="videoId" :src="currentVideoClip.videoURL"></video>
-      <div class="quadrants-container">
-        <NoWebcamPopUp v-if="containsEyeTrackingActivity && isEyeTrackingVisible" :answersArray="answers"
-        :question="currentVideoQuestions[questionIndex]" @close="toggleEyeTracking"/>
+      <div v-if="containsEyeTrackingActivity && isEyeTrackingVisible && !webcamPermissionEnabled" class="quadrants-container">
+        <NoWebcamPopUp :answersArray="answers" :question="currentVideoQuestions[questionIndex]" @close="toggleEyeTracking" />
+      </div>
+      <div v-if="containsEyeTrackingActivity && isEyeTrackingVisible && webcamPermissionEnabled" class="eye-tracking-container">
+        <EyeTrackingPopUp :answersArray="answers" :question="currentVideoQuestions[questionIndex]" @close="toggleEyeTracking" />
       </div>
     </div>
     <div id="videoControls">
@@ -30,6 +32,7 @@
 <script>
 import ActivityPopUp from '@/components/modals/ActivityPopUp.vue';
 import NoWebcamPopUp from '@/components/modals/NoWebcamPopUp.vue'
+import EyeTrackingPopUp from '@/components/modals/EyeTrackingPopUp.vue'
 import ResultsPage from "@/components/modals/ResultsPage.vue"
 import VideoClip from '@/models/VideoClipDto';
 import WebgazerCalibrationPage from './modals/WebgazerCalibrationPage.vue';
@@ -47,6 +50,7 @@ export default {
     ResultsPage,
     LoggedInNavBar,
     NoWebcamPopUp,
+    EyeTrackingPopUp,
     WebgazerCalibrationPage
   },
   props: {
@@ -67,6 +71,7 @@ export default {
       percentageCorrect: "",
       videoName: "",
       containsEyeTrackingActivity: false,
+      webcamPermissionEnabled: true,
       isEyeTrackingVisible: false,
       isPlayButtonDisabled: false,
       calibrationReady: false
@@ -249,6 +254,16 @@ export default {
   min-height: 550px;
   margin: 0 auto;
   margin-left: 100px;
+}
+
+.eye-tracking-container {
+  position: absolute;
+  max-width: 1300px;
+  min-width: 1300px;
+  max-height: 800px;
+  min-height: 800px;
+  margin: -100px auto auto -30px;
+  border: 1px solid black;
 }
 
 @media only screen and (min-width: 1400px){
