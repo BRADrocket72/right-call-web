@@ -40,13 +40,5 @@ import ActivitySchema from "../mongo/schemas/ActivitySchema"
         return data;
     }
 
-    private static toDto = (
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        res: any
-      ): ActivityDto =>
-        {
-            const result: ActivityDto = {questionText:res.questionText,timestamp:res.timestamp,questionType:res.questionType,answers:res.answers ,videoclipId:res.videoclipId,correctAnswer:res.correctAnswer}
-            return result;
-        }
 }
 export default  Activity
