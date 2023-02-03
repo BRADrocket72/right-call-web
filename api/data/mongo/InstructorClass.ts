@@ -21,6 +21,14 @@ class InstructorClass implements InstructorClassDb {
         const data = await InstructorClassSchema.find({"instructorId": instructorId})
         return data;
     }
+    async addVideoClip(classId: string, videoClipIds: Array<string>) {
+        const data = await InstructorClassSchema.findByIdAndUpdate(classId, videoClipIds)
+        return data;
+    }
+    async deleteVideoClip(classId: string, videoClipIds: Array<string>) {
+        const data = await InstructorClassSchema.findByIdAndUpdate(classId, videoClipIds)
+        return data;
+    }
 }
     
 export default InstructorClass
