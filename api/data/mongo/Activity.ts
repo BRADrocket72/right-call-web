@@ -31,22 +31,13 @@ import ActivitySchema from "../mongo/schemas/ActivitySchema"
     }
     async update(id:string, activity: ActivityDto){
         const query = {_id: new mongoose.Types.ObjectId(id)}
-        const data =await  ActivitySchema.findOneAndUpdate(query,{$set:activity})
+        const data = await  ActivitySchema.findOneAndUpdate(query,{$set:activity},{new:true})
         return data
-
     }
     async findByIdAndDelete(id:string){
         const data =  await ActivitySchema.findByIdAndDelete(id); 
         return data;
     }
 
-    private static toDto = (
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        res: any
-      ): ActivityDto =>
-        {
-            const result: ActivityDto = {questionText:res.questionText,timestamp:res.timestamp,questionType:res.questionType,answers:res.answers ,videoclipId:res.videoclipId,correctAnswer:res.correctAnswer}
-            return result;
-        }
 }
 export default  Activity

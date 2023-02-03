@@ -1,6 +1,6 @@
 
 export type ActivityDto = {
-    timestamp:string,
+    timestamp:number,
     questionText :string,
     questionType:string,
     videoclipId :string,
