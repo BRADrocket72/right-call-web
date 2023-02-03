@@ -2,7 +2,7 @@
     <LoggedInNavBar />
     <br/><br/>
     <div>
-      <h1>Add Students To Class</h1>
+      <h1>Update Your Classes</h1>
       <br><br>
       <p>Your Classes: <br/></p>
       <div class="lesson-div">
@@ -11,35 +11,40 @@
             <p>Class <br/></p>
           </div>
           <p id="studentCount">{{ instructorClass.studentIds.length }} Students</p>
+          <p id="videoClipCount">{{ instructorClass.videoclipIds.length }} Video Lessons</p>
           <br/><br/>
-          <button class="button" type="submit" @click="selectClass(instructorClass)">Select</button>
+          <button class="updateButton" type="submit" @click="addRemoveStudents(instructorClass)">Add/Remove Students</button>
+          <button class="updateButton" type="submit" @click="addVideos(instructorClass)">Add/Remove Lessons</button>
         </div>
       </div>
-      <AddStudentsModal v-if="isReadyToAddStudents" :selectedClass="currentClass" @close="closeModal"></AddStudentsModal>
-
+      <AddStudentsModal v-if="isReadyToAddStudents" :selectedClass="currentClass" @close="closeAddStudentsModal"></AddStudentsModal>
+      <AddVideosToClassModal v-if="isReadyToAddVideos" :selectedClass="currentClass" @close="closeAddVideosModal"></AddVideosToClassModal>
     </div>
   </template>
   
   <script>
   import LoggedInNavBar from './LoggedInNavBar.vue';
   import AddStudentsModal from '@/components/modals/AddStudentsModal.vue'
-  import InstructorClass from '@/models/InstructorClassDto'
+  import AddVideosToClassModal from '@/components/modals/AddVideosToClassModal.vue'
+  import InstructorClassDto from '@/models/InstructorClassDto'
   import { useInstructorClassStore } from '@/stores/InstructorClassStore'
   import { useUsersStore } from '@/stores/UserStore'
 
       
   export default {
-      name: "AddStudentsToClass",
+      name: "UpdateClassPage",
       components: { 
         LoggedInNavBar,
-        AddStudentsModal
+        AddStudentsModal,
+        AddVideosToClassModal
       },
       data() {
         return {
           instructorId: "",
           instructorsClasses: [],
           isReadyToAddStudents: false,
-          currentClass: InstructorClass
+          isReadyToAddVideos: false,
+          currentClass: InstructorClassDto
         }
       },
       async mounted() {
@@ -51,12 +56,21 @@
         this.instructorsClasses = await instructorClassStore.getClassesByInstructorId(this.instructorId)
       },
       methods: {
-        selectClass(selectedInstructorClass) {
+        addRemoveStudents(selectedInstructorClass) {
           this.currentClass = selectedInstructorClass
           this.isReadyToAddStudents = true
         },
-        closeModal() {
+        addVideos(selectedInstructorClass){
+          this.currentClass = selectedInstructorClass
+          this.isReadyToAddVideos = true
+        },
+        closeAddStudentsModal() {
           this.isReadyToAddStudents = false
+        },
+        async closeAddVideosModal() {
+          this.isReadyToAddVideos = false
+          let instructorClassStore = useInstructorClassStore()
+          this.instructorsClasses = await instructorClassStore.getClassesByInstructorId(this.instructorId)
         }
       }
   }
@@ -100,7 +114,20 @@
     background: #FFFFFF;
     text-decoration: none;
     font-weight: normal;
-
+}
+.updateButton {
+    margin: 10px;
+    width: 105px;
+    height: 55px;
+    border: 1px solid #0e333c;
+    background: #FFFFFF;
+    text-decoration: none;
+    font-weight: normal;
+}
+.updateButton:hover {
+    background: #0e333c;
+    color: #FFFFFF;
+    animation: fadeInFromNone 0.5s ease-out;
 }
 .title {
   /* border-radius: 6px; */

@@ -7,7 +7,7 @@
     <nav>
         <router-link to="/CreateClassroomPage">Create Classroom Page</router-link> |
         <router-link to="/AssignTimestamps">Assign Timestamps and Questions to a Video</router-link> |
-        <router-link to="/AddStudentsToClass">Add Students to Class</router-link>
+        <router-link to="/UpdateClassPage">Update Class</router-link>
     </nav>
   </div>
 </template>
