@@ -12,7 +12,8 @@
         <NoWebcamPopUp :answersArray="answers" :question="currentVideoQuestions[questionIndex]" @close="toggleEyeTracking" />
       </div>
       <div v-if="containsEyeTrackingActivity && isEyeTrackingVisible && webcamPermissionEnabled" class="eye-tracking-container">
-        <EyeTrackingPopUp :answersArray="answers" :question="currentVideoQuestions[questionIndex]" @close="toggleEyeTracking" />
+        <EyeTrackingPopUp :answersArray="answers" :question="currentVideoQuestions[questionIndex]" :xPrediction="xPrediction" 
+        :yPrediction="yPrediction" @close="toggleEyeTracking" />
       </div>
     </div>
     <div id="videoControls">
@@ -74,7 +75,9 @@ export default {
       webcamPermissionEnabled: true,
       isEyeTrackingVisible: false,
       isPlayButtonDisabled: false,
-      calibrationReady: false
+      calibrationReady: false,
+      xPrediction: Number,
+      yPrediction: Number
     };
   },
   async mounted() {
@@ -86,15 +89,6 @@ export default {
       webgazer.showVideo(false)
       webgazer.showFaceOverlay(false)
       webgazer.showFaceFeedbackBox(false)
-      webgazer.setGazeListener(function(data) {
-        if (data == null) {
-            return;
-        }
-        //var xprediction = data.x; //these x coordinates are relative to the viewport
-        //var yprediction = data.y; //these y coordinates are relative to the viewport
-        //console.log(xprediction, yprediction); //elapsed time is based on time since begin was called
-        //console.log(elapsedTime)
-      })
       webgazer.begin()
     }
     else {
@@ -174,10 +168,12 @@ export default {
           videoElement.play();
       }
     },
-    toggleEyeTracking(updatedAnswers) {
-      this.isEyeTrackingVisible = !this.isEyeTrackingVisible
+    async toggleEyeTracking(updatedAnswers) {
       this.playOrPauseVideo()
       this.togglePlayButton()
+      await this.getCoordinatePrediction()
+      webgazer.pause()
+      this.isEyeTrackingVisible = !this.isEyeTrackingVisible
       if(!this.isEyeTrackingVisible) {
         this.answers = updatedAnswers
         this.questionIndex++;
@@ -218,6 +214,16 @@ export default {
       this.$cookies.remove("user_session")
       var user = { currentUserName: userName, currentUserType: userType, currentUserToken: accessToken, currentEyeTrackingCalibration: "true"}
       this.$cookies.set("user_session",user, "3d")
+    },
+    async getCoordinatePrediction() {
+      let prediction = await webgazer.getCurrentPrediction()
+      if (prediction) {
+        this.xPrediction = prediction.x
+        this.yPrediction = prediction.y
+      } else {
+        this.xPrediction = 0
+        this.yPrediction = 0
+      }
     }
   }
 }
@@ -259,10 +265,8 @@ export default {
   position: absolute;
   max-width: 1350px;
   min-width: 1350px;
-  max-height: 650px;
-  min-height: 650px;
-  margin: -100px auto auto auto;
-  border: 1px solid black;
+  max-height: 550px;
+  min-height: 550px;
 }
 
 @media only screen and (min-width: 1600px){
@@ -297,8 +301,6 @@ export default {
     margin-left: -28px;
   }
   .eye-tracking-container {
-    max-height: 550px;
-    min-height: 550px;
     max-width: 972px;
     min-width: 972px;
     margin-top: 0;

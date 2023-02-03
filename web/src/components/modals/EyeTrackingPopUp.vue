@@ -2,7 +2,6 @@
 <div>
     <div class="question">
         <h2>{{question.questionText}}</h2>
-        <p>Hover and click on an area in the video to answer this question.</p>
     </div>
     <div class="quadrants">
         <div class="quadrant" id="quadrant-one"></div>
@@ -14,6 +13,7 @@
 </template>
 
 <script>
+import {checkAnswer} from "../../util/GetResults"
 
 export default {
     name: 'EyeTrackingPopUp',
@@ -21,19 +21,22 @@ export default {
         return {
             updatedAnswers: [],
             //coordinates: Top(Y Min), Right(X Max), Bottom(Y Max), Left(X Min)
-            quadrantOneCoords: [],
-            quadrantTwoCoords: [],
-            quadrantThreeCoords: [],
-            quadrantFourCoords: [],
             xMin: 0,
             xMax: 0,
+            xHalf: 0,
             yMin: 0,
-            yMax: 0
+            yMax: 0,
+            yHalf: 0,
+            xCoordinate: 0,
+            yCoordinate: 0,
+            guessQuadrant: ''
         }
     },
     props:{
         question: Object,
-        answersArray: [Object]
+        answersArray: [Object],
+        xPrediction: Number,
+        yPrediction: Number
     },
     methods: {
         getCoordinates() {
@@ -47,32 +50,61 @@ export default {
             const threeCoords = quadrantThree.getBoundingClientRect()
             const fourCoords = quadrantFour.getBoundingClientRect()
 
-            this.quadrantOneCoords = [oneCoords.top, oneCoords.right, oneCoords.bottom, oneCoords.left]
-            this.quadrantTwoCoords = [twoCoords.top, twoCoords.right, twoCoords.bottom, twoCoords.left]
-            this.quadrantThreeCoords = [threeCoords.top, threeCoords.right, threeCoords.bottom, threeCoords.left]
-            this.quadrantFourCoords = [fourCoords.top, fourCoords.right, fourCoords.bottom, fourCoords.left]
-
             //left-most coordinate of quadrant one
-            this.xMin = this.quadrantOneCoords[3]
+            this.xMin = oneCoords.left
             //right-most coordinate of quadrant two
-            this.xMax = this.quadrantTwoCoords[1]
+            this.xMax = twoCoords.right
+            //meeting point of q1/q2 & q3/q4 left to right
+            this.xHalf = oneCoords.right-1
             //top-most coordinate of quadrant one
-            this.yMin = this.quadrantOneCoords[0]
+            this.yMin = oneCoords.top
             //bottom-most coordinate of quadrant three
-            this.yMax = this.quadrantThreeCoords[2]
+            this.yMax = threeCoords.bottom
+            //meeting point of q1/q2 & q3/q4 up and down
+            this.yHalf = fourCoords.top-1
         },
-        quadrantSelection(quadrant) {
-            console.log(quadrant)
-            //this.updatedAnswers = checkAnswer(this.question, this.answersArray, quadrant)
+        checkPredictionInBounds() {
+            if(this.xPrediction < this.xMin) {
+                this.xCoordinate = this.xMin
+            } else if(this.xPrediction > this.xMax) {
+                this.xCoordinate = this.xMax
+            } else {
+                this.xCoordinate = this.xPrediction
+            }
+
+            if(this.yPrediction < this.yMin) {
+                this.yCoordinate = this.yMin
+            } else if(this.yPrediction > this.yMax) {
+                this.yCoordinate = this.yMax
+            } else {
+                this.yCoordinate = this.yPrediction
+            }
+        },
+        getQuadrant() {
+            if(this.xPrediction <= this.xHalf) {
+                if(this.yPrediction <= this.yHalf) {
+                    this.guessQuadrant = 'quadrant-one'
+                } else {
+                    this.guessQuadrant = 'quadrant-three'
+                }
+            } else {
+                if(this.yPrediction <= this.yHalf) {
+                    this.guessQuadrant = 'quadrant-two'
+                } else {
+                    this.guessQuadrant = 'quadrant-four'
+                }
+            }
+            console.log(this.guessQuadrant)
+        },
+        submitQuadrant() {
+            this.updatedAnswers = checkAnswer(this.question, this.answersArray, this.guessQuadrant)
             this.$emit('close', this.updatedAnswers)
         }
     },
     mounted() {
         this.getCoordinates()
-        console.log(this.xMin)
-        console.log(this.xMax)
-        console.log(this.yMin)
-        console.log(this.yMax)
+        this.checkPredictionInBounds()
+        this.getQuadrant()
     }
 }
 </script>
@@ -83,8 +115,7 @@ export default {
     position: absolute;
     max-width: 1350px;
     min-width: 1350px;
-    max-height: 650px;
-    min-height: 650px;
+    height: 550px;
     margin-left: 0px;
     left: 0;
     right: 0;
@@ -95,8 +126,8 @@ export default {
 .quadrant {
     max-width: 675px;
     min-width: 675px;
-    max-height: 325px;
-    min-height: 325px;
+    max-height: 275px;
+    min-height: 275px;
     float: left;
     border: none;
 }
