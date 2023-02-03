@@ -20,7 +20,6 @@ export default {
     data() {
         return {
             updatedAnswers: [],
-            //coordinates: Top(Y Min), Right(X Max), Bottom(Y Max), Left(X Min)
             xMin: 0,
             xMax: 0,
             xHalf: 0,

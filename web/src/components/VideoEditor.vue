@@ -72,7 +72,7 @@ export default {
       percentageCorrect: "",
       videoName: "",
       containsEyeTrackingActivity: false,
-      webcamPermissionEnabled: true,
+      webcamPermissionEnabled: false,
       isEyeTrackingVisible: false,
       isPlayButtonDisabled: false,
       calibrationReady: false,
@@ -171,7 +171,9 @@ export default {
     async toggleEyeTracking(updatedAnswers) {
       this.playOrPauseVideo()
       this.togglePlayButton()
-      await this.getCoordinatePrediction()
+      if(this.webcamPermissionEnabled) {
+        await this.getCoordinatePrediction()
+      }
       webgazer.pause()
       this.isEyeTrackingVisible = !this.isEyeTrackingVisible
       if(!this.isEyeTrackingVisible) {
