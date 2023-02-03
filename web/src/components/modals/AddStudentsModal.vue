@@ -25,9 +25,9 @@
   <script>
 // import { useActivityStore } from '@/stores/ActivityStore';
 // import { useVideoClipStore } from '@/stores/VideoClipStore';
-import {useUsersStore} from '@/stores/UserStore'
-import {retrieveOnlyStudents} from '@/util/RetrieveOnlyStudents'
-import InstructorClass from '@/models/InstructorClassDto'
+// import {useUsersStore} from '@/stores/UserStore'
+// import {retrieveOnlyStudents} from '@/util/RetrieveOnlyStudents'
+import InstructorClassDto from '@/models/InstructorClassDto'
   
   export default {
     name: 'AddStudentsModal',
@@ -37,13 +37,13 @@ import InstructorClass from '@/models/InstructorClassDto'
       }
     },
     props: {
-        selectedClass: InstructorClass
+        selectedClass: InstructorClassDto
     },
     async mounted() {
-        var users = useUsersStore();
-        var allUsers = await users.getAllUsers();
-        var allStudents = retrieveOnlyStudents(allUsers)
-        console.log(allStudents)
+        // var users = useUsersStore();
+        // var allUsers = await users.getAllUsers();
+        // var allStudents = retrieveOnlyStudents(allUsers)
+        // console.log(allStudents)
         // need to display currently enrolled students and students not enrolled that instructor can add
     },
     methods: {

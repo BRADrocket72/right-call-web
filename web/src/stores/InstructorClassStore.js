@@ -31,6 +31,22 @@ export const useInstructorClassStore = defineStore("InstructorClass", {
             } catch(error) {
                 console.error(error)
             }
+        },
+        async addVideoClipToClass(classId, videoClipIds) {
+            try {
+                const data = await axios.patch(`http://localhost:3000/api/instructorClass/addVideoClip/${classId}`,  {videoclipIds: videoClipIds})
+                return data.data
+            } catch(error) {
+                console.error(error)
+            }
+        },
+        async deleteVideoClipFromClass(classId, videoClipIds) {
+            try {
+                const data = await axios.patch(`http://localhost:3000/api/instructorClass/addVideoClip/${classId}`,  {videoclipIds: videoClipIds})
+                return data.data
+            } catch(error) {
+                console.error(error)
+            }
         }
     }
 })

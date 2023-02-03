@@ -32,3 +32,23 @@ const instructorClassDb = new InstructorClass();
             res.status(500).json({ message: error.message })
         }
     }
+    module.exports.delete_video_clip = async(req, res) => {
+        try {
+            res.header('Access-Control-Allow-Origin', '*')
+            const data = await instructorClassDb.deleteVideoClip(req.params.classId, req.body);
+            res.json(data)
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message })
+        }
+    }
+    module.exports.add_video_clip = async(req, res) => {
+        try {
+            res.header('Access-Control-Allow-Origin', '*')
+            const data = await instructorClassDb.addVideoClip(req.params.classId, req.body);
+            res.json(data)
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message })
+        }
+    }
