@@ -17,4 +17,7 @@ router.patch('/instructorClass/deleteVideoClip/:classId', instructorClassControl
 
 router.patch('/instructorClass/addVideoClip/:classId', instructorClassController.add_video_clip)
 
+//Update Student Ids List Method
+router.patch('/instructorClass/updateStudentIds/:classId', instructorClassController.update_student_ids)
+
 module.exports = router;
