@@ -47,6 +47,14 @@ export const useInstructorClassStore = defineStore("InstructorClass", {
             } catch(error) {
                 console.error(error)
             }
+        },
+        async fetchAllInstructorClasses() {
+            try {
+                const data = await axios.get('http://localhost:3000/api/instructorClass/getall')
+                return data.data
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 })
