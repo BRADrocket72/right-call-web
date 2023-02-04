@@ -90,6 +90,7 @@ export default {
       webgazer.showVideo(false)
       webgazer.showFaceOverlay(false)
       webgazer.showFaceFeedbackBox(false)
+      webgazer.showPredictionPoints(true)
       webgazer.begin()
     }
     else {
@@ -200,6 +201,7 @@ export default {
         name: "LessonSelection"
       })
       webgazer.pause()
+      webgazer.showPredictionPoints(false)
     },
     checkForEyeTrackingActivity() {
       for(const activity of this.currentVideoQuestions) {
