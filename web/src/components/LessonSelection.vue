@@ -20,6 +20,8 @@
 
 <script>
 import { useVideoClipStore } from "@/stores/VideoClipStore";
+import { useInstructorClassStore } from "@/stores/InstructorClassStore";
+import { useUsersStore } from "@/stores/UserStore";
 import LoggedInNavBar from "./LoggedInNavBar.vue";
 
 export default {
@@ -28,7 +30,10 @@ export default {
     data() {
         return {
             ready: false,
-            videoClips: []
+            videoClips: [],
+            allClasses: [],
+            currentStudentId: "",
+            currentStudentsClasses: []
         };
     },
     props:{},
@@ -40,11 +45,37 @@ export default {
                     videoId: videoID
                 }
             });
+        },
+        async retrieveStudentsClasses(){
+          let instructorStore = useInstructorClassStore();
+          let userStore = useUsersStore();
+          this.allClasses = await instructorStore.fetchAllInstructorClasses()
+          let currentUser = await userStore.getUserByName(this.$cookies.get("user_session").currentUserName)
+          this.currentStudentId = currentUser[0]._id
+          for (let i=0; i<this.allClasses.length; i++) {
+            for(let j=0; j<this.allClasses[i].studentIds.length; j++){
+              if (this.allClasses[i].studentIds[j] == this.currentStudentId) {
+                this.currentStudentsClasses.push(this.allClasses[i])
+              }
+            }
+          }
         }
     },
     async mounted() {
+        let studentsVideoClipIds = []
+        await this.retrieveStudentsClasses()
+        for (let i=0; i<this.currentStudentsClasses.length; i++) {
+          for(let j=0; j<this.currentStudentsClasses[i].videoclipIds.length; j++){
+            if (!studentsVideoClipIds.includes(this.currentStudentsClasses[i].videoclipIds[j])) {
+              studentsVideoClipIds.push(this.currentStudentsClasses[i].videoclipIds[j])
+            }
+          }
+        }
         var videoClip = useVideoClipStore();
-        this.videoClips = await videoClip.fetchVideoClips();
+        for (let i=0; i<studentsVideoClipIds.length; i++) {
+          let videoClipCurrent = await videoClip.fetchVideoClipById(studentsVideoClipIds[i])
+          this.videoClips.push(videoClipCurrent)
+        }
         this.ready = true;
     }
 };
