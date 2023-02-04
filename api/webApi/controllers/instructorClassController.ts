@@ -54,7 +54,6 @@ const instructorClassDb = new InstructorClass();
     }
     module.exports.update_student_ids = async(req, res) => {
         try {
-            console.log("hello")
             res.header('Access-Control-Allow-Origin', '*')
             const data = await instructorClassDb.updateStudentIdList(req.params.classId, req.body);
             res.json(data)

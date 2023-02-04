@@ -1,7 +1,7 @@
 <template>
     <div class="CreateClassroomPage">
         <LoggedInNavBarVue />
-        This is the classroom creation page 
+        Classroom Creation 
         <table>
             All Students
             <tr v-for="student in students" :key="student">
@@ -16,7 +16,6 @@
     </div>
     <button @click="createClass" >Create Class</button>
 </template>
-
 
 <script>
 import LoggedInNavBarVue from './LoggedInNavBar.vue'
