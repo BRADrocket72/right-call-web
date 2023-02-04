@@ -67,17 +67,16 @@ export default {
       questionIndex: 0,
       questionsLoaded: false,
       answers: [],
-      questionCounter: 0,
       currentVideoClip: VideoClip,
       percentageCorrect: "",
       videoName: "",
       containsEyeTrackingActivity: false,
-      webcamPermissionEnabled: false,
+      webcamPermissionEnabled: true,
       isEyeTrackingVisible: false,
       isPlayButtonDisabled: false,
       calibrationReady: false,
-      xPrediction: Number,
-      yPrediction: Number
+      xPrediction: 0,
+      yPrediction: 0
     };
   },
   async mounted() {
@@ -89,6 +88,7 @@ export default {
       webgazer.showVideo(false)
       webgazer.showFaceOverlay(false)
       webgazer.showFaceFeedbackBox(false)
+      webgazer.showPredictions(true)
       webgazer.begin()
     }
     else {
@@ -124,15 +124,13 @@ export default {
   methods: {
     stopVideoAtTimestamp(video, timestamps) {
       var currentTime = video.currentTime;
-      if (currentTime >= timestamps[this.questionCounter]) {
-        if(this.currentVideoQuestions[this.questionCounter].questionType != 'eye-tracking') {
+      if (currentTime >= timestamps[this.questionIndex]) {
+        if(this.currentVideoQuestions[this.questionIndex].questionType != 'eye-tracking') {
           this.showModal();
         } else {
           this.toggleEyeTracking()
         }
-          webgazer.pause()
-          video.pause();
-          this.questionCounter++
+          video.pause()
       }
     },
     playOrPauseVideo() {
@@ -157,7 +155,6 @@ export default {
     closeModal(updatedAnswers) {
       this.isModalVisible = false;
       this.answers = updatedAnswers
-      this.questionIndex++;
       const videoElement = document.getElementById(this.videoId)
       if (videoElement.duration == videoElement.currentTime) {
           this.isResultsPageModalVisible = true;
@@ -167,18 +164,20 @@ export default {
           playOrPauseButton.innerHTML = "Pause"
           videoElement.play();
       }
+      this.questionIndex++
     },
     async toggleEyeTracking(updatedAnswers) {
+      console.log(this.answers)
       this.playOrPauseVideo()
       this.togglePlayButton()
-      if(this.webcamPermissionEnabled) {
-        await this.getCoordinatePrediction()
-      }
-      webgazer.pause()
       this.isEyeTrackingVisible = !this.isEyeTrackingVisible
-      if(!this.isEyeTrackingVisible) {
+      if(this.isEyeTrackingVisible) {
+        if(this.webcamPermissionEnabled) {
+          await this.getCoordinatePrediction()
+        }
+      } else {
         this.answers = updatedAnswers
-        this.questionIndex++;
+        this.questionIndex++
       }
     },
     togglePlayButton() {
@@ -197,6 +196,8 @@ export default {
       this.$router.push({
         name: "LessonSelection"
       })
+      webgazer.showPredictions(false)
+      webgazer.pause()
     },
     checkForEyeTrackingActivity() {
       for(const activity of this.currentVideoQuestions) {

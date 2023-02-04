@@ -1,8 +1,5 @@
 <template>
 <div>
-    <div class="question">
-        <h2>{{question.questionText}}</h2>
-    </div>
     <div class="quadrants">
         <div class="quadrant" id="quadrant-one"></div>
         <div class="quadrant" id="quadrant-two"></div>
@@ -13,7 +10,6 @@
 </template>
 
 <script>
-import {checkAnswer} from "../../util/GetResults"
 
 export default {
     name: 'EyeTrackingPopUp',
@@ -28,7 +24,8 @@ export default {
             yHalf: 0,
             xCoordinate: 0,
             yCoordinate: 0,
-            guessQuadrant: ''
+            guessQuadrant: '',
+            answer: ''
         }
     },
     props:{
@@ -93,10 +90,16 @@ export default {
                     this.guessQuadrant = 'quadrant-four'
                 }
             }
-            console.log(this.guessQuadrant)
         },
-        submitQuadrant() {
-            this.updatedAnswers = checkAnswer(this.question, this.answersArray, this.guessQuadrant)
+        checkAndReturnQuadrant() {
+            console.log(this.question)
+            if(this.guessQuadrant == this.question.correctAnswer) {
+                this.answer = 'Correct'
+            } else {
+                this.answer = 'Incorrect'
+            }
+            this.updatedAnswers = this.answersArray
+            this.updatedAnswers.push(this.answer)
             this.$emit('close', this.updatedAnswers)
         }
     },
@@ -104,6 +107,7 @@ export default {
         this.getCoordinates()
         this.checkPredictionInBounds()
         this.getQuadrant()
+        this.checkAndReturnQuadrant()
     }
 }
 </script>

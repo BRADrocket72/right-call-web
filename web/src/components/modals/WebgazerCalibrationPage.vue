@@ -9,7 +9,7 @@
             <slot name="body">
               <p class="title_1">Calibration Screen</p>
               <p class="title_2">While looking at the cursor, Click on each button 5 times until each button is Red</p>
-              <button type="button" v-if="leftButton == 5 && rightButton == 5 && topLeftButton == 5 && topRightButton == 5 && centerButton == 5" class="btn-green" @click="close()"> Back to Lesson Selection Page </button> 
+              <button type="button"  class="btn-green" @click="close()"> Back to Lesson Selection Page </button> 
               <button type="button" id="btn-calibrate-left" class="btn-calibrate-left" @click="checkButtons('btn-calibrate-left')"></button>
               <button type="button" id="btn-calibrate-right" class="btn-calibrate-right" @click="checkButtons('btn-calibrate-right')"></button>
               <button type="button" id="btn-calibrate-topLeft" class="btn-calibrate-topLeft" @click="checkButtons('btn-calibrate-topLeft')"></button>
