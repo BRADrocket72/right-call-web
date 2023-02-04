@@ -8,9 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <div class="video">
       <video :id="videoId" :src="currentVideoClip.videoURL"></video>
-      <div class="quadrants-container">
-        <NoWebcamPopUp v-if="containsEyeTrackingActivity && isEyeTrackingVisible" :answersArray="answers"
-        :question="currentVideoQuestions[questionIndex]" @close="toggleEyeTracking"/>
+      <div v-if="containsEyeTrackingActivity && isEyeTrackingVisible && !webcamPermissionEnabled" class="quadrants-container">
+        <NoWebcamPopUp :answersArray="answers" :question="currentVideoQuestions[questionIndex]" @close="toggleEyeTracking" />
+      </div>
+      <div v-if="containsEyeTrackingActivity && isEyeTrackingVisible && webcamPermissionEnabled && predictionReady" class="eye-tracking-container">
+        <EyeTrackingPopUp :answersArray="answers" :question="currentVideoQuestions[questionIndex]" :xPrediction="xPrediction" 
+        :yPrediction="yPrediction" @close="toggleEyeTracking" />
       </div>
     </div>
     <div id="videoControls">
@@ -30,6 +33,7 @@
 <script>
 import ActivityPopUp from '@/components/modals/ActivityPopUp.vue';
 import NoWebcamPopUp from '@/components/modals/NoWebcamPopUp.vue'
+import EyeTrackingPopUp from '@/components/modals/EyeTrackingPopUp.vue'
 import ResultsPage from "@/components/modals/ResultsPage.vue"
 import VideoClip from '@/models/VideoClipDto';
 import WebgazerCalibrationPage from './modals/WebgazerCalibrationPage.vue';
@@ -47,6 +51,7 @@ export default {
     ResultsPage,
     LoggedInNavBar,
     NoWebcamPopUp,
+    EyeTrackingPopUp,
     WebgazerCalibrationPage
   },
   props: {
@@ -60,16 +65,20 @@ export default {
       isResultsPageModalVisible: false,
       currentVideoQuestions: [],
       questionIndex: 0,
+      questionCounter: 0,
       questionsLoaded: false,
       answers: [],
-      questionCounter: 0,
       currentVideoClip: VideoClip,
       percentageCorrect: "",
       videoName: "",
       containsEyeTrackingActivity: false,
+      webcamPermissionEnabled: true,
       isEyeTrackingVisible: false,
       isPlayButtonDisabled: false,
-      calibrationReady: false
+      calibrationReady: false,
+      xPrediction: 0,
+      yPrediction: 0,
+      predictionReady: false
     };
   },
   async mounted() {
@@ -81,15 +90,7 @@ export default {
       webgazer.showVideo(false)
       webgazer.showFaceOverlay(false)
       webgazer.showFaceFeedbackBox(false)
-      webgazer.setGazeListener(function(data, elapsedTime) {
-        if (data == null) {
-            return;
-        }
-        var xprediction = data.x; //these x coordinates are relative to the viewport
-        var yprediction = data.y; //these y coordinates are relative to the viewport
-        console.log(xprediction, yprediction); //elapsed time is based on time since begin was called
-        console.log(elapsedTime)
-      })
+      webgazer.showPredictionPoints(true)
       webgazer.begin()
     }
     else {
@@ -127,13 +128,12 @@ export default {
       var currentTime = video.currentTime;
       if (currentTime >= timestamps[this.questionCounter]) {
         if(this.currentVideoQuestions[this.questionCounter].questionType != 'eye-tracking') {
-          this.showModal();
+          this.showModal()
         } else {
           this.toggleEyeTracking()
         }
-          webgazer.pause()
-          video.pause();
           this.questionCounter++
+          this.playOrPauseVideo()
       }
     },
     playOrPauseVideo() {
@@ -158,7 +158,6 @@ export default {
     closeModal(updatedAnswers) {
       this.isModalVisible = false;
       this.answers = updatedAnswers
-      this.questionIndex++;
       const videoElement = document.getElementById(this.videoId)
       if (videoElement.duration == videoElement.currentTime) {
           this.isResultsPageModalVisible = true;
@@ -168,14 +167,21 @@ export default {
           playOrPauseButton.innerHTML = "Pause"
           videoElement.play();
       }
+      this.questionIndex++
     },
-    toggleEyeTracking(updatedAnswers) {
-      this.isEyeTrackingVisible = !this.isEyeTrackingVisible
-      this.playOrPauseVideo()
+    async toggleEyeTracking(updatedAnswers) {
       this.togglePlayButton()
-      if(!this.isEyeTrackingVisible) {
+      this.isEyeTrackingVisible = !this.isEyeTrackingVisible
+      if(this.isEyeTrackingVisible) {
+        if(this.webcamPermissionEnabled) {
+          await this.getCoordinatePrediction()
+          this.predictionReady = true
+        }
+      } else {
         this.answers = updatedAnswers
-        this.questionIndex++;
+        this.questionIndex++
+        this.playOrPauseVideo()
+        this.predictionReady = false
       }
     },
     togglePlayButton() {
@@ -194,6 +200,8 @@ export default {
       this.$router.push({
         name: "LessonSelection"
       })
+      webgazer.pause()
+      webgazer.showPredictionPoints(false)
     },
     checkForEyeTrackingActivity() {
       for(const activity of this.currentVideoQuestions) {
@@ -213,6 +221,16 @@ export default {
       this.$cookies.remove("user_session")
       var user = { currentUserName: userName, currentUserType: userType, currentUserToken: accessToken, currentEyeTrackingCalibration: "true"}
       this.$cookies.set("user_session",user, "3d")
+    },
+    async getCoordinatePrediction() {
+      let prediction = await webgazer.getCurrentPrediction()
+      if (prediction) {
+        this.xPrediction = prediction.x
+        this.yPrediction = prediction.y
+      } else {
+        this.xPrediction = 0
+        this.yPrediction = 0
+      }
     }
   }
 }
@@ -220,6 +238,7 @@ export default {
 </script>
 
 <style scoped>
+
 .video {
   display: flex;
   width: 100%;
@@ -248,18 +267,51 @@ export default {
   max-height: 550px;
   min-height: 550px;
   margin: 0 auto;
-  margin-left: 100px;
 }
 
-@media only screen and (min-width: 1400px){
+.eye-tracking-container {
+  position: absolute;
+  max-width: 1350px;
+  min-width: 1350px;
+  max-height: 550px;
+  min-height: 550px;
+}
+
+@media only screen and (min-width: 1600px){
   .quadrants-container {
     margin-left: 62px;
   }
 }
 
-@media only screen and (max-width: 1399px){
+@media only screen and (min-width: 1400px) and (max-width: 1599px){
   .quadrants-container {
     margin-left: -28px;
+  }
+  .eye-tracking-container {
+    max-width: 1300px;
+    min-width: 1300px;
+  }
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1399px){
+  .quadrants-container {
+    margin-left: -28px;
+  }
+  .eye-tracking-container {
+    margin-left: -30px;
+    max-width: 1170px;
+    min-width: 1170px;
+  }
+}
+
+@media only screen and (max-width: 1200px){
+  .quadrants-container {
+    margin-left: -28px;
+  }
+  .eye-tracking-container {
+    max-width: 972px;
+    min-width: 972px;
+    margin-top: 0;
   }
 }
 </style>
