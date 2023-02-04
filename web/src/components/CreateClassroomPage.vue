@@ -5,7 +5,7 @@
         <table>
             All Students
             <tr v-for="student in students" :key="student">
-                <a class="nav-link" @click="addStudentToClass(student._id)">
+                <a class="nav-link" id="studentLink" @click="addStudentToClass(student._id)">
                     {{student.userName}}
                 </a>
             </tr>
@@ -14,7 +14,7 @@
     <div id="addedStudents">
 
     </div>
-    <button @click="createClass" >Create Class</button>
+    <button class="createClass" @click="createClass" >Create Class</button>
 </template>
 
 <script>
