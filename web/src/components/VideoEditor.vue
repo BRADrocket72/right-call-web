@@ -65,6 +65,7 @@ export default {
       isResultsPageModalVisible: false,
       currentVideoQuestions: [],
       questionIndex: 0,
+      questionCounter: 0,
       questionsLoaded: false,
       answers: [],
       currentVideoClip: VideoClip,
@@ -88,7 +89,6 @@ export default {
       webgazer.showVideo(false)
       webgazer.showFaceOverlay(false)
       webgazer.showFaceFeedbackBox(false)
-      webgazer.showPredictions(true)
       webgazer.begin()
     }
     else {
@@ -124,13 +124,14 @@ export default {
   methods: {
     stopVideoAtTimestamp(video, timestamps) {
       var currentTime = video.currentTime;
-      if (currentTime >= timestamps[this.questionIndex]) {
-        if(this.currentVideoQuestions[this.questionIndex].questionType != 'eye-tracking') {
+      if (currentTime >= timestamps[this.questionCounter]) {
+        if(this.currentVideoQuestions[this.questionCounter].questionType != 'eye-tracking') {
           this.showModal();
         } else {
           this.toggleEyeTracking()
         }
           video.pause()
+          this.questionCounter++
       }
     },
     playOrPauseVideo() {
@@ -196,7 +197,6 @@ export default {
       this.$router.push({
         name: "LessonSelection"
       })
-      webgazer.showPredictions(false)
       webgazer.pause()
     },
     checkForEyeTrackingActivity() {
