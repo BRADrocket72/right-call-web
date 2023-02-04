@@ -11,7 +11,7 @@
       <div v-if="containsEyeTrackingActivity && isEyeTrackingVisible && !webcamPermissionEnabled" class="quadrants-container">
         <NoWebcamPopUp :answersArray="answers" :question="currentVideoQuestions[questionIndex]" @close="toggleEyeTracking" />
       </div>
-      <div v-if="containsEyeTrackingActivity && isEyeTrackingVisible && webcamPermissionEnabled" class="eye-tracking-container">
+      <div v-if="containsEyeTrackingActivity && isEyeTrackingVisible && webcamPermissionEnabled && predictionReady" class="eye-tracking-container">
         <EyeTrackingPopUp :answersArray="answers" :question="currentVideoQuestions[questionIndex]" :xPrediction="xPrediction" 
         :yPrediction="yPrediction" @close="toggleEyeTracking" />
       </div>
@@ -77,7 +77,8 @@ export default {
       isPlayButtonDisabled: false,
       calibrationReady: false,
       xPrediction: 0,
-      yPrediction: 0
+      yPrediction: 0,
+      predictionReady: false
     };
   },
   async mounted() {
@@ -126,12 +127,12 @@ export default {
       var currentTime = video.currentTime;
       if (currentTime >= timestamps[this.questionCounter]) {
         if(this.currentVideoQuestions[this.questionCounter].questionType != 'eye-tracking') {
-          this.showModal();
+          this.showModal()
         } else {
           this.toggleEyeTracking()
         }
-          video.pause()
           this.questionCounter++
+          this.playOrPauseVideo()
       }
     },
     playOrPauseVideo() {
@@ -168,17 +169,18 @@ export default {
       this.questionIndex++
     },
     async toggleEyeTracking(updatedAnswers) {
-      console.log(this.answers)
-      this.playOrPauseVideo()
       this.togglePlayButton()
       this.isEyeTrackingVisible = !this.isEyeTrackingVisible
       if(this.isEyeTrackingVisible) {
         if(this.webcamPermissionEnabled) {
           await this.getCoordinatePrediction()
+          this.predictionReady = true
         }
       } else {
         this.answers = updatedAnswers
         this.questionIndex++
+        this.playOrPauseVideo()
+        this.predictionReady = false
       }
     },
     togglePlayButton() {
@@ -234,6 +236,7 @@ export default {
 </script>
 
 <style scoped>
+
 .video {
   display: flex;
   width: 100%;
