@@ -11,6 +11,10 @@
       <div v-if="containsEyeTrackingActivity && isEyeTrackingVisible && !webcamPermissionEnabled" class="quadrants-container">
         <NoWebcamPopUp :answersArray="answers" :question="currentVideoQuestions[questionIndex]" @close="toggleEyeTracking" />
       </div>
+      <div v-if="currentQuestion.questionType == 'eye-tracking' && webcamPermissionEnabled" class="question">
+          <h2>{{currentQuestion.questionText}}</h2>
+          <p>Use your eyes to answer this question.</p>
+      </div>
       <div v-if="containsEyeTrackingActivity && isEyeTrackingVisible && webcamPermissionEnabled && predictionReady" class="eye-tracking-container">
         <EyeTrackingPopUp :answersArray="answers" :question="currentVideoQuestions[questionIndex]" :xPrediction="xPrediction" 
         :yPrediction="yPrediction" @close="toggleEyeTracking" />
@@ -78,7 +82,8 @@ export default {
       calibrationReady: false,
       xPrediction: 0,
       yPrediction: 0,
-      predictionReady: false
+      predictionReady: false,
+      currentQuestion: Object
     };
   },
   async mounted() {
@@ -122,6 +127,7 @@ export default {
       })
     }
     this.checkForEyeTrackingActivity()
+    this.currentQuestion = this.currentVideoQuestions[this.questionCounter]
   },
   methods: {
     stopVideoAtTimestamp(video, timestamps) {
@@ -134,6 +140,7 @@ export default {
         }
           this.questionCounter++
           this.playOrPauseVideo()
+          this.currentQuestion = this.currentVideoQuestions[this.questionCounter]
       }
     },
     playOrPauseVideo() {
@@ -277,6 +284,26 @@ export default {
   min-height: 550px;
 }
 
+.question {
+  position: absolute;
+  text-align: center;
+  min-width: 972px;
+  max-width: 972px;
+  min-height: 60px;
+  background: #928787;
+  margin: -95px auto auto 162px;
+}
+
+.question h2 {
+  padding-top: 10px;
+  color: #ffffff;
+  text-shadow: 1px 1px 3px #000000;
+}
+
+.question p {
+    color: #000000;
+}
+
 @media only screen and (min-width: 1600px){
   .quadrants-container {
     margin-left: 62px;
@@ -291,6 +318,9 @@ export default {
     max-width: 1300px;
     min-width: 1300px;
   }
+  .question {
+    margin: -95px auto auto 162px;
+  }
 }
 
 @media only screen and (min-width: 1200px) and (max-width: 1399px){
@@ -302,6 +332,9 @@ export default {
     max-width: 1170px;
     min-width: 1170px;
   }
+  .question {
+    margin: -95px auto auto 72px;
+  }
 }
 
 @media only screen and (max-width: 1200px){
@@ -312,6 +345,9 @@ export default {
     max-width: 972px;
     min-width: 972px;
     margin-top: 0;
+  }
+  .question {
+    margin: -95px auto auto auto;
   }
 }
 </style>
