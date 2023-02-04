@@ -13,21 +13,20 @@
             <br/><br/><br/>
             <div class="video-list-div" >
               <p>Remove Student From Class: </p>
-              <div class="lesson" v-for="student in currentlyAddedStudents" :key="student">
-                  <a class="nav-link" @click="deleteStudent(video)">
+              <div class="lesson" v-for="student in currentlyAddedStudents" :key="student._id">
+                  <a class="nav-link" @click="deleteStudent(student)">
                       <h1><h5>Username: {{student.userName}}</h5><h5>Student id: {{student._id}}</h5></h1>
-
                   </a>   
               </div>
             </div>
-            <!-- <div class="video-list-div" >
+            <div class="video-list-div" >
               <p>Add Student to Class: </p>
-              <div class="lesson" v-for="video in videosNotAdded" :key="video.id">
-                  <a class="nav-link" @click="addStudent(video)">
-                      <h1>{{video.videoName}}</h1>
+              <div class="lesson" v-for="student in studentsNotAdded" :key="student._id">
+                  <a class="nav-link" @click="addStudent(student)">
+                      <h1>{{student.userName}}</h1>
                   </a>   
               </div>
-            </div> -->
+            </div>
 
             <button type="button" class="btn-green" @click="close()">Exit</button>
             <br/>
@@ -39,7 +38,6 @@
 </template>
 
 <script>
-// import { useVideoClipStore } from '@/stores/VideoClipStore';
 import { useUsersStore } from '@/stores/UserStore'
 import {useInstructorClassStore} from '@/stores/InstructorClassStore'
 import {retrieveOnlyStudents} from '@/util/RetrieveOnlyStudents'
@@ -49,10 +47,7 @@ export default {
   name: 'AddStudentsModal',
   data() {
     return {
-      // lessons: [],
       studentIds: [],
-      // alreadyAdded: false,
-      // currentlyAddedVideos: []
       allUsers: [],
       allStudents: [],
       currentlyAddedStudents: []
@@ -73,58 +68,45 @@ export default {
           }
         }
       }
-
-      // var videoClipLessons = useVideoClipStore();
-      // this.lessons = await videoClipLessons.fetchVideoClips();
-      // this.videoIds = this.selectedClass.videoclipIds
-      // for (let j=0; j<this.lessons.length; j++) {
-      //   for (let i=0; i<this.videoIds.length; i++) {
-      //     if (this.lessons[j]._id == this.videoIds[i]) {
-      //       this.currentlyAddedVideos.push(this.lessons[j])
-      //     }
-      //   }
-      // }
   },
   methods: {
     close() {
       this.$emit('close');
     },
-    async addStudent(video) {
+    async addStudent(student) {
       var classes = useInstructorClassStore();
-      for (let i=0; i<this.videoIds.length; i++) {
-        if (this.videoIds[i] == video._id){
+      for (let i=0; i<this.studentIds.length; i++) {
+        if (this.studentIds[i] == student._id){
           this.alreadyAdded = true
         }
       }
       if (!this.alreadyAdded) {
-        this.videoIds.push(video._id)
+        this.studentIds.push(student._id)
       }
-      await classes.addVideoClipToClass(this.selectedClass._id, this.videoIds)
+      await classes.updateStudentIdsList(this.selectedClass._id, this.studentIds)
       this.close()
     },
-    async deleteStudent(video) {
+    async deleteStudent(student) {
       var classes = useInstructorClassStore();
-      let updatedVideoIds = []
-      for (let i=0; i<this.videoIds.length; i++) {
-        if (this.videoIds[i] != video._id){
-          updatedVideoIds.push(this.videoIds[i])
+      let updatedStudentIds = []
+      for (let i=0; i<this.studentIds.length; i++) {
+        if (this.studentIds[i] != student._id){
+          updatedStudentIds.push(this.studentIds[i])
         }
       }
-      await classes.deleteVideoClipFromClass(this.selectedClass._id, updatedVideoIds)
+      await classes.updateStudentIdsList(this.selectedClass._id, updatedStudentIds)
       this.close()
     }
   },
-  // computed: {
-  //   videosNotAdded() {
-  //     // var currentlyAddedVideoIds = create array of every id in the curretnly selected videos
-  //     // then return this.lessons.filter(x => !currentAddedVideoIds.contains(x._id));
-  //     var currentAddedVideoIds = []
-  //     for (let i=0; i<this.currentlyAddedVideos.length; i++) {
-  //       currentAddedVideoIds.push(this.currentlyAddedVideos[i]._id)
-  //     }
-  //     return this.lessons.filter(x => !currentAddedVideoIds.includes(x._id))
-  //   }
-  // }
+  computed: {
+    studentsNotAdded() {
+      var currentlyAddedStudentIds = []
+      for (let i=0; i<this.currentlyAddedStudents.length; i++) {
+        currentlyAddedStudentIds.push(this.currentlyAddedStudents[i]._id)
+      }
+      return this.allStudents.filter(x => !currentlyAddedStudentIds.includes(x._id))
+    }
+  }
 };
 </script>
 

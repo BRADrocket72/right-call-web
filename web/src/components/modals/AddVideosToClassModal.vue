@@ -100,8 +100,6 @@ import InstructorClassDto from '@/models/InstructorClassDto'
     },
     computed: {
       videosNotAdded() {
-        // var currentlyAddedVideoIds = create array of every id in the curretnly selected videos
-        // then return this.lessons.filter(x => !currentAddedVideoIds.contains(x._id));
         var currentAddedVideoIds = []
         for (let i=0; i<this.currentlyAddedVideos.length; i++) {
           currentAddedVideoIds.push(this.currentlyAddedVideos[i]._id)
