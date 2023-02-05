@@ -1,7 +1,7 @@
 <template>
     <div class="CreateClassroomPage">
         <LoggedInNavBarVue />
-        This is the classroom creation page 
+        Classroom Creation 
         <table>
             All Students
             <tr v-for="student in students" :key="student">
@@ -16,7 +16,6 @@
     </div>
     <button @click="createClass" >Create Class</button>
 </template>
-
 
 <script>
 import LoggedInNavBarVue from './LoggedInNavBar.vue'
@@ -44,10 +43,10 @@ export default {
         this.students = retrieveOnlyStudents(this.allUsers);
     },
     methods:{
-        addStudentToClass(type){
+        addStudentToClass(student){
             let table = document.getElementById("addedStudents")
-            table.innerHTML += "student:" + type + "<br/>"
-            this.classroom.push(type)
+            table.innerHTML += "student:" + student + "<br/>"
+            this.classroom.push(student)
         },
         async createClass() {
             var userStore = useUsersStore();
@@ -55,7 +54,7 @@ export default {
             let instructor =  await userStore.getUserByName(instructorUsername)
             this.instructorId = instructor[0]._id
             var instructorClassStore = useInstructorClassStore()
-            await instructorClassStore.postInstructorClass(this.instructorId, [1], this.classroom)
+            await instructorClassStore.postInstructorClass(this.instructorId, [], this.classroom)
             this.$router.push({
                 name: "InstructorPage"
             })
@@ -69,6 +68,19 @@ export default {
 .CreateClassroomPage {
   font-weight: bold;
   color: #4AAE9B;
+}
+table {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 300px;
+  height: 350px;
+}
+tr {
+  height: 5%;
 }
 
 </style>

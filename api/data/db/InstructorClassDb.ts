@@ -6,4 +6,5 @@ export interface InstructorClassDb {
     getAll():Promise<InstructorClassDto[]>;
     addVideoClip(classId: string, videoClipIds: Array<string>) : Promise<InstructorClassDto>;
     deleteVideoClip(classId: string, videoClipIds: Array<string>) : Promise<InstructorClassDto>;
+    updateStudentIdList(classId: string, studentIds: Array<string>) : Promise<InstructorClassDto>;
 }

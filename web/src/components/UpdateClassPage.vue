@@ -64,8 +64,10 @@
           this.currentClass = selectedInstructorClass
           this.isReadyToAddVideos = true
         },
-        closeAddStudentsModal() {
+        async closeAddStudentsModal() {
           this.isReadyToAddStudents = false
+          let instructorClassStore = useInstructorClassStore()
+          this.instructorsClasses = await instructorClassStore.getClassesByInstructorId(this.instructorId)
         },
         async closeAddVideosModal() {
           this.isReadyToAddVideos = false
