@@ -11,7 +11,7 @@
         <br/><br/><br/>
         <div class="grid-container">
             <div id="notAddedStudents">
-                <table>
+                <table class="studentsTable">
                     <br/>
                     Select Student to Add to Class
                     <br/>
@@ -23,7 +23,7 @@
                 </table>
             </div>
             <div id="addedStudents">
-                <table>
+                <table class="studentsTable">
                     <br/>
                     Selected Students
                     <br/>
@@ -101,7 +101,7 @@ export default {
   font-weight: bold;
   color: #4AAE9B;
 }
-table {
+.studentsTable {
   list-style: none;
   padding: 0;
   margin: 0;

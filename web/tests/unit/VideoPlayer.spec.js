@@ -6,8 +6,11 @@ import {createPinia, setActivePinia} from 'pinia'
 jest.mock('webgazer', () => ({
   setGazeListener: () => Promise.resolve(),
   begin: () => Promise.resolve(),
-  isReady: jest.fn(),
-  resume: jest.fn()
+  isReady: () => Promise.resolve(),
+  resume: () => Promise.resolve(),
+  pause: () => Promise.resolve(),
+  end: () => Promise.resolve(),
+  showPredictionPoints: () => Promise.resolve()
 }))
 
 describe('VideoEditor.vue', () => {

@@ -23,6 +23,7 @@ import { useVideoClipStore } from "@/stores/VideoClipStore";
 import { useInstructorClassStore } from "@/stores/InstructorClassStore";
 import { useUsersStore } from "@/stores/UserStore";
 import LoggedInNavBar from "./LoggedInNavBar.vue";
+import webgazer from 'webgazer';
 
 export default {
     name: "LessonSelection",
@@ -62,6 +63,11 @@ export default {
         }
     },
     async mounted() {
+        let cookiesCalibration = this.$cookies.get("user_session").currentEyeTrackingCalibration
+        if (cookiesCalibration == "true") {
+          webgazer.showPredictionPoints(false)
+          webgazer.pause()
+        }
         let studentsVideoClipIds = []
         await this.retrieveStudentsClasses()
         for (let i=0; i<this.currentStudentsClasses.length; i++) {

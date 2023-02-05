@@ -3,6 +3,10 @@ import LessonSelection from '@/components/LessonSelection.vue'
 import 'jest'
 import {createPinia, setActivePinia} from 'pinia'
 
+jest.mock('webgazer', () => ({
+    pause: jest.fn(),
+    showPredictionPoints: jest.fn()
+}))
 describe('LessonSelection.vue', () => {
     let wrapper;
     let mockRouter;
