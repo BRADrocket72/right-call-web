@@ -11,11 +11,12 @@ export const useInstructorClassStore = defineStore("InstructorClass", {
         }
     },
     actions: {
-        async postInstructorClass(instructorId , videoclipIds , studentIds,) {
+        async postInstructorClass(instructorId, className, videoclipIds , studentIds) {
             try {
                 const data = await axios.post(`http://localhost:3000/api/instructorClass/post`, 
                 { 
                     instructorId: instructorId,
+                    className: className,
                     videoclipIds: videoclipIds,
                     studentIds: studentIds
                 })
@@ -46,6 +47,22 @@ export const useInstructorClassStore = defineStore("InstructorClass", {
                 return data.data
             } catch(error) {
                 console.error(error)
+            }
+        },
+        async fetchAllInstructorClasses() {
+            try {
+                const data = await axios.get('http://localhost:3000/api/instructorClass/getall')
+                return data.data
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async updateStudentIdsList(classId, student_Ids) {
+            try {
+                const data = await axios.patch(`http://localhost:3000/api/instructorClass/updateStudentIds/${classId}`, {studentIds: student_Ids})
+                return data.data
+            } catch (error) {
+                console.log(error);
             }
         }
     }

@@ -7,6 +7,7 @@ class InstructorClass implements InstructorClassDb {
    async createClass(instructorClass:InstructorClassDto) {
         const data = new InstructorClassSchema({
             instructorId:instructorClass.instructorId,
+            className:instructorClass.className,
             videoclipIds:instructorClass.videoclipIds,
             studentIds:instructorClass.studentIds
         })
@@ -27,6 +28,10 @@ class InstructorClass implements InstructorClassDb {
     }
     async deleteVideoClip(classId: string, videoClipIds: Array<string>) {
         const data = await InstructorClassSchema.findByIdAndUpdate(classId, videoClipIds)
+        return data;
+    }
+    async updateStudentIdList(classId: string, studentIds: Array<string>) {
+        const data = await InstructorClassSchema.findByIdAndUpdate(classId, studentIds)
         return data;
     }
 }

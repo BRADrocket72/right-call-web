@@ -1,22 +1,45 @@
 <template>
     <div class="CreateClassroomPage">
         <LoggedInNavBarVue />
-        This is the classroom creation page 
-        <table>
-            All Students
-            <tr v-for="student in students" :key="student">
-                <a class="nav-link" @click="addStudentToClass(student._id)">
-                    {{student.userName}}
-                </a>
-            </tr>
-        </table>
+        <br/>
+        <h3>Classroom Creation </h3>
+        <br/>
+        <label>
+            Class Name: 
+            <input type="text" id="className" v-model="className"/>
+        </label>
+        <br/><br/><br/>
+        <div class="grid-container">
+            <div id="notAddedStudents">
+                <table>
+                    <br/>
+                    Select Student to Add to Class
+                    <br/>
+                    <tr v-for="student in students" :key="student">
+                        <a class="nav-link" id="studentLink" @click="addStudentToClass(student.userName, student._id)">
+                            {{student.userName}}
+                        </a>
+                    </tr>
+                </table>
+            </div>
+            <div id="addedStudents">
+                <table>
+                    <br/>
+                    Selected Students
+                    <br/>
+                    <tr v-for="studentName in addedStudents" :key="studentName">
+                        <p class="studentName">{{studentName}}</p>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
-    <div id="addedStudents">
-
+    <br/>
+    <button class="createClass" @click="createClass" >Create Class</button>
+    <div class="error" v-if = "error">
+      Class Name field is required
     </div>
-    <button @click="createClass" >Create Class</button>
 </template>
-
 
 <script>
 import LoggedInNavBarVue from './LoggedInNavBar.vue'
@@ -35,8 +58,11 @@ export default {
     data(){
         return{students:[],
         allUsers:[],
-        classroom:[]
-        }
+        classroom:[],
+        error: false,
+        className: "",
+        addedStudents: []
+    }
     },
     async mounted(){
         var users = useUsersStore();
@@ -44,21 +70,26 @@ export default {
         this.students = retrieveOnlyStudents(this.allUsers);
     },
     methods:{
-        addStudentToClass(type){
-            let table = document.getElementById("addedStudents")
-            table.innerHTML += "student:" + type + "<br/>"
-            this.classroom.push(type)
+        addStudentToClass(userName, id){
+            this.addedStudents.push(userName)
+
+            this.classroom.push(id)
         },
         async createClass() {
-            var userStore = useUsersStore();
-            let instructorUsername = this.$cookies.get("user_session").currentUserName
-            let instructor =  await userStore.getUserByName(instructorUsername)
-            this.instructorId = instructor[0]._id
-            var instructorClassStore = useInstructorClassStore()
-            await instructorClassStore.postInstructorClass(this.instructorId, [1], this.classroom)
-            this.$router.push({
-                name: "InstructorPage"
-            })
+            if (this.className.length == 0) {
+                this.error = true
+            }
+            else {
+                var userStore = useUsersStore();
+                let instructorUsername = this.$cookies.get("user_session").currentUserName
+                let instructor =  await userStore.getUserByName(instructorUsername)
+                this.instructorId = instructor[0]._id
+                var instructorClassStore = useInstructorClassStore()
+                await instructorClassStore.postInstructorClass(this.instructorId, this.className, [], this.classroom)
+                this.$router.push({
+                    name: "InstructorPage"
+                })
+            }
         }
     }
 }
@@ -70,5 +101,41 @@ export default {
   font-weight: bold;
   color: #4AAE9B;
 }
+table {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 300px;
+  height: 400px;
+  border: 2px solid #4AAE9B;
+  background-color: white;
+}
+tr {
+  height: 5%;
+}
+a{
+    cursor: pointer;
+}
+
+.studentName {
+    color: black;
+}
+#addedStudents {
+    grid-column-start: 2;
+}
+#notAddedStudents {
+    grid-column-start: 1;
+}
+.grid-container {
+  display:inline-grid;
+  gap: 75px;
+}
+.error {
+    color: red;
+}
+
 
 </style>
