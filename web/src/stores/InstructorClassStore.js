@@ -11,11 +11,12 @@ export const useInstructorClassStore = defineStore("InstructorClass", {
         }
     },
     actions: {
-        async postInstructorClass(instructorId , videoclipIds , studentIds,) {
+        async postInstructorClass(instructorId, className, videoclipIds , studentIds) {
             try {
                 const data = await axios.post(`http://localhost:3000/api/instructorClass/post`, 
                 { 
                     instructorId: instructorId,
+                    className: className,
                     videoclipIds: videoclipIds,
                     studentIds: studentIds
                 })

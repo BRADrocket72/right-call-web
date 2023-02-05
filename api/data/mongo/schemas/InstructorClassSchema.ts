@@ -7,6 +7,10 @@ const instructorClassSchema = new mongoose.Schema({
         required: true,
         type: String
     },
+    className: {
+        required: true,
+        type: String
+    },
     videoclipIds: {
         required: true,
         type: Array
