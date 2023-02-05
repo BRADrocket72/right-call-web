@@ -4,10 +4,10 @@ import CreateClassroomPage from '@/components/CreateClassroomPage.vue';
 import {createPinia, setActivePinia} from 'pinia'
 
 describe('CreateClassroomPage.vue', () => {
-     let wrapper: any;
-     let mockRouter: any;
-     let mockRoute: any;
-     let mockCookies: any;
+     let wrapper;
+     let mockRouter;
+     let mockRoute;
+     let mockCookies;
 
      beforeEach(async () => {
         mockRoute = {}
