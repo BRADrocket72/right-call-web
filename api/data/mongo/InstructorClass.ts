@@ -7,6 +7,7 @@ class InstructorClass implements InstructorClassDb {
    async createClass(instructorClass:InstructorClassDto) {
         const data = new InstructorClassSchema({
             instructorId:instructorClass.instructorId,
+            className:instructorClass.className,
             videoclipIds:instructorClass.videoclipIds,
             studentIds:instructorClass.studentIds
         })

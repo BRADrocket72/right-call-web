@@ -16,9 +16,14 @@ describe('Get Results functions', () => {
         expect(getPercentageResults(results3,2)).toEqual("100.00%")
     })
 
-    test('checkAnswer returns the correct result to users answer', () => {
+    test('checkAnswer returns the correct result to users correct answer', () => {
         const questionObject = new ActivityDto(5, "What was the call ?","multiple-choice", ["Travel", "No Foul Call"], "Travel", "123")
         const rightResultsList = checkAnswer(questionObject, [], "Travel")
         expect(rightResultsList[0]).toEqual("Correct")
+    })
+    test('checkAnswer returns the correct result to users incorrect answer', () => {
+        const questionObject = new ActivityDto(5, "What was the call ?","multiple-choice", ["Travel", "No Foul Call"], "No Foul Call", "123")
+        const rightResultsList = checkAnswer(questionObject, [], "Travel")
+        expect(rightResultsList[0]).toEqual("Incorrect")
     })
 })
