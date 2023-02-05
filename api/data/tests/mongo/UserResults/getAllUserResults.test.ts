@@ -19,6 +19,8 @@ beforeAll(async () => {await testMongoDb.connect()})
 
 afterEach(async () => await testMongoDb.clearDatabase())
 
+afterAll(async () => await testMongoDb.closeDatabase())
+
 describe('Get all User Results',()=>{
     it('First Activity', async () => {
         const AllUserResults = await userResultsCollection.getAllUserResults();
