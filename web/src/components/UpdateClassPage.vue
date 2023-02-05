@@ -4,11 +4,11 @@
     <div>
       <h1>Update Your Classes</h1>
       <br><br>
-      <p>Your Classes: <br/></p>
+      <h5>Your Classes: <br/></h5>
       <div class="lesson-div">
         <div class="instructorClasses" v-for="instructorClass in this.instructorsClasses" :key="instructorClass._id">
           <div class="title">
-            <p>Class <br/></p>
+            <p>{{ instructorClass.className }} <br/></p>
           </div>
           <p id="studentCount">{{ instructorClass.studentIds.length }} Students</p>
           <p id="videoClipCount">{{ instructorClass.videoclipIds.length }} Video Lessons</p>
@@ -122,9 +122,11 @@
     width: 105px;
     height: 55px;
     border: 1px solid #0e333c;
-    background: #FFFFFF;
+    background: #4AAE9B;
     text-decoration: none;
     font-weight: normal;
+    color: #FFFFFF;
+    /* font-weight: bold; */
 }
 .updateButton:hover {
     background: #0e333c;
@@ -135,6 +137,9 @@
   /* border-radius: 6px; */
   text-align: center;
   box-shadow: 0 0px 5px #0e333c;
+  background-color: #4AAE9B;
+  color: #FFFFFF;
+  font-weight: bold;
 }
 #studentCount {
   text-align: center;
