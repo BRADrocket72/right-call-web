@@ -3,6 +3,12 @@ import LoggedInNavBar from '@/components/LoggedInNavBar.vue'
 import { createPinia, setActivePinia } from 'pinia';
 import 'jest'
 
+jest.mock('webgazer', () => ({
+    isReady: () => Promise.resolve(),
+    end: () => Promise.resolve(),
+    showPredictionPoints: () => Promise.resolve()
+  }))
+
 describe('Navbar.vue', () => {
      let wrapper: any
      let mockRouter: any;

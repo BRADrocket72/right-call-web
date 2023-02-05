@@ -89,7 +89,7 @@
     async mounted() {
       var videoClipStore = useVideoClipStore();
       let cookiesCalibration = this.$cookies.get("user_session").currentEyeTrackingCalibration
-      if (cookiesCalibration == "false") {
+      if (cookiesCalibration == "false" || !webgazer.isReady()) {
         this.calibrationReady = true
         this.replaceCookie()
         webgazer.showVideo(false)
@@ -99,6 +99,7 @@
         webgazer.begin()
       }
       else {
+        webgazer.showPredictionPoints(true)
         webgazer.resume()
       }
   
@@ -121,6 +122,7 @@
           if (videoElement.duration == videoElement.currentTime) {
             if (videoElement.duration != this.currentVideoClip.timeStamps[this.currentVideoClip.timeStamps.length-1]){
               this.isResultsPageModalVisible = true;
+              webgazer.pause()
               videoElement.pause()
             }
           }
@@ -208,7 +210,6 @@
         this.$router.push({
           name: "LessonSelection"
         })
-        webgazer.pause()
         webgazer.showPredictionPoints(false)
       },
       checkForEyeTrackingActivity() {

@@ -34,6 +34,7 @@
 
 <script>
 import { useUsersStore } from '@/stores/UserStore';
+import webgazer from 'webgazer';
 
 export default {
   name: 'LoggedInNavBar',
@@ -56,6 +57,10 @@ export default {
   },
   methods: {
     logout() {
+        if (webgazer.isReady()) {
+            webgazer.showPredictionPoints(false)
+            webgazer.end()
+        }
         var store = useUsersStore();
         store.usersEyeTrackingCalibration == ""
         this.$cookies.remove("user_session")

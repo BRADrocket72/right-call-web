@@ -21,6 +21,7 @@
 <script>
 import LoggedInNavBarVue from "./LoggedInNavBar.vue";
 import { useUserResultsStore } from "@/stores/UserResultsStore"
+import webgazer from 'webgazer';
 
 export default {
     name: 'UserResultsPage',
@@ -37,6 +38,8 @@ export default {
 
     },
     async mounted() {
+        webgazer.showPredictionPoints(false)
+        webgazer.pause()
         var userResults = useUserResultsStore()
         this.results = await userResults.fetchByUserName(this.$cookies.get("user_session").currentUserName);
         this.ready = true;
@@ -61,16 +64,16 @@ export default {
     padding: 10px;
 }
 
-table {
+.results-table {
     padding: 20px;
 }
 
-th {
+.results-table th {
     font-size: 40px;
     padding: 0 25px 0 25px;
 }
 
-td {
+.results-table td {
     text-align: left;
     font-size: 20px;
     padding: 0 25px 0 25px;

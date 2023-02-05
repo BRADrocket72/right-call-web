@@ -3,6 +3,11 @@ import UserResultsPage from '@/components/UserResultsPage.vue'
 import 'jest'
 import {createPinia, setActivePinia} from 'pinia'
 
+jest.mock('webgazer', () => ({
+    pause: jest.fn(),
+    showPredictionPoints: jest.fn()
+}))
+
 describe('UserResultsPage.vue', () => {
     let mockRouter: any;
     let mockRoute: any;
