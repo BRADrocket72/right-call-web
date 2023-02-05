@@ -5,9 +5,21 @@
     <h1>Admin Page</h1>
     <br><br>
     <nav>
-      <button type="button"> <router-link to="/VideoUpload">Upload Lesson Video</router-link></button>  |
-      <button type="button"> <router-link to="/LessonDeletion">Delete Lesson</router-link> </button> |
-      <button type="button"> <router-link to="/AssignTimestamps">Assign Timestamps and Questions to a Video</router-link> </button>
+      <router-link to= "/VideoUpload">
+        <button type="button" class="buttonLink">
+          Upload Lesson Video
+        </button>
+      </router-link>  |
+      <router-link to="/LessonDeletion">
+        <button type="button" class="buttonLink">
+          Delete Lesson
+        </button>
+      </router-link>  |
+      <router-link to="/AssignTimestamps">
+        <button type="button" class="buttonLink">
+          Assign Timestamps and Questions to a Video
+        </button>
+      </router-link>
     </nav>
   </div>
 </template>
@@ -34,11 +46,15 @@ nav a {
   color: #4AAE9B;
 }
 
-.button {
-    width: 86px;
-    height: 40px;
+.buttonLink {
     border: 1px solid #0e333c;
     background: #FFFFFF;
+    color: #4AAE9B;
+
+}
+
+.buttonLink:hover {
+    box-shadow: 0 15px 15px #D1D1D1;
 }
 
 </style>
