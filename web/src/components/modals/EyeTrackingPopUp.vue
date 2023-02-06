@@ -50,17 +50,11 @@ export default {
             const threeCoords = quadrantThree.getBoundingClientRect()
             const fourCoords = quadrantFour.getBoundingClientRect()
 
-            //left-most coordinate of quadrant one
             this.xMin = oneCoords.left
-            //right-most coordinate of quadrant two
             this.xMax = twoCoords.right
-            //meeting point of q1/q2 & q3/q4 left to right
             this.xHalf = oneCoords.right-1
-            //top-most coordinate of quadrant one
             this.yMin = oneCoords.top
-            //bottom-most coordinate of quadrant three
             this.yMax = threeCoords.bottom
-            //meeting point of q1/q2 & q3/q4 up and down
             this.yHalf = fourCoords.top-1
         },
         checkPredictionInBounds() {
