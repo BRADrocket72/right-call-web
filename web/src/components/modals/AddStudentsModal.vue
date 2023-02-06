@@ -51,7 +51,6 @@
 import { useUsersStore } from '@/stores/UserStore'
 import { useInstructorClassStore } from '@/stores/InstructorClassStore'
 import { retrieveOnlyStudents } from '@/util/RetrieveOnlyStudents'
-import InstructorClassDto from '@/models/InstructorClassDto'
 
 export default {
   name: 'AddStudentsModal',
@@ -64,7 +63,7 @@ export default {
     }
   },
   props: {
-    selectedClass: InstructorClassDto
+    selectedClass: Object
   },
   async mounted() {
     var users = useUsersStore();

@@ -16,23 +16,14 @@ describe('Student Integration Testing', () => {
         let video = cy.get('.nav-link:last')
         video.click()
     })
-    it('Video Player Displays', () => {
-        cy.contains('h1', 'Basketball Video')
-    })
-    it('Student can complete the Calibration Page Successfully and can click play video', () => {
-        cy.contains('p', 'Calibration Screen')
+    it('Webcam Permission modal displays and Student clicks decline to not use eye-tracking', () => {
+        cy.contains('div', 'Webcam Permission')
+        cy.contains('p', 'This lesson includes eye-tracking questions that need to use your webcam. A webcam is not required to take this lesson.')
+        cy.get('.btn-green:last').click()
 
-        for (let i=0; i< 5; i++) {
-            cy.get('.btn-calibrate-left').click()
-            cy.get('.btn-calibrate-right').click()
-            cy.get('.btn-calibrate-topLeft').click()
-            cy.get('.btn-calibrate-topRight').click()
-            cy.get('.btn-calibrate-center').click()
-        }
-        cy.get(".btn-green").click()
-        cy.contains('div', 'Play')
-        cy.get('#playOrPause').click()
-        cy.get('#playOrPause').click()
+    })
+    it('Video Player Displays and Student can click play', () => {
+        cy.contains('h1', 'Basketball Video')
         cy.get(".button").click()
     })
     it('Student can view results', () => {
