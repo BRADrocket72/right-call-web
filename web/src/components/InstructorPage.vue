@@ -11,7 +11,7 @@
         </button>
       </router-link>  |
       <router-link to="/AssignTimestamps">
-        <button type="button" class="buttonLinks">
+        <button type="button" class="buttonLinksSecond">
           Assign Timestamps and Questions to a Video
         </button>
       </router-link>  |
@@ -54,6 +54,17 @@ nav a {
 }
 
 .buttonLinks:hover {
+    box-shadow: 0 15px 15px #D1D1D1;
+}
+
+.buttonLinksSecond {
+    border: 1px solid #0e333c;
+    background: #FFFFFF;
+    color:  #4AAE9B;
+
+}
+
+.buttonLinksSecond:hover {
     box-shadow: 0 15px 15px #D1D1D1;
 }
 

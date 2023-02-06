@@ -15,7 +15,7 @@
                 <p class="bold-header">Remove Videos: </p>
                 <div class="flex-container">
                   <div class="student-card" v-for="video in currentlyAddedVideos" :key="video.id">
-                      <a @click="deleteVideo(video)">
+                      <a class="removeVideo" @click="deleteVideo(video)">
                           <h1>{{video.videoName}}</h1>
                       </a>   
                   </div>
@@ -25,7 +25,7 @@
                 <p class="bold-header">Available Videos to Add: </p>
                 <div class="flex-container">
                   <div class="student-card" v-for="video in videosNotAdded" :key="video.id">
-                      <a @click="addVideo(video)">
+                      <a class="addVideo" @click="addVideo(video)">
                           <h1>{{video.videoName}}</h1>
                       </a>   
                   </div>
