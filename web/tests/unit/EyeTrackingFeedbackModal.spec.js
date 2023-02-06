@@ -3,7 +3,7 @@ import EyeTrackingFeedbackModal from '@/components/modals/EyeTrackingFeedbackMod
 import 'jest'
 
 describe('EyeTrackingFeedbackModal.vue', () => {
-    let wrapper: any;
+    let wrapper
     beforeEach(() => {
         wrapper = mount(EyeTrackingFeedbackModal, {
             props:{
