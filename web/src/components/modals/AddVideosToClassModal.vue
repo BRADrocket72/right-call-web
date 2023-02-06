@@ -42,11 +42,8 @@
   </template>
   
   <script>
-// import { useActivityStore } from '@/stores/ActivityStore';
 import { useVideoClipStore } from '@/stores/VideoClipStore';
 import {useInstructorClassStore} from '@/stores/InstructorClassStore'
-// import {retrieveOnlyStudents} from '@/util/RetrieveOnlyStudents'
-import InstructorClassDto from '@/models/InstructorClassDto'
   
   export default {
     name: 'AddStudentsModal',
@@ -59,7 +56,7 @@ import InstructorClassDto from '@/models/InstructorClassDto'
       }
     },
     props: {
-        selectedClass: InstructorClassDto
+        selectedClass: Object
     },
     async mounted() {
         var videoClipLessons = useVideoClipStore();
