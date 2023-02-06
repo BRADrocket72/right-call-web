@@ -44,7 +44,12 @@ export default {
       var videoClipStore = useVideoClipStore();
       await videoClipStore.postVideo(this.videoURL,this.videoName);
       this.$router.push({name: "AdminPage"})
+      this.disableButton()
     },
+    disableButton() {
+      const button = document.getElementById('upload-button')
+      button.disabled = true
+    }
   },
 };
 </script>
@@ -84,6 +89,6 @@ export default {
 .upload-in-progress {
   font-size: 30px;
   font-weight: bold;
-  margin: 20px 0 0 0;
+  margin: 20px 0 0 500px;
 }
 </style>

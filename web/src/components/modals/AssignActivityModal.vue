@@ -90,6 +90,7 @@ export default {
 .modal {
   background: white;
   min-width: 600px;
+  max-width: 600px;
   min-height: 550px;
   border-radius: 2px;
   position: fixed;
@@ -151,16 +152,16 @@ export default {
 .activity-info {
   display: flex;
   flex-direction: column;
-  height: 200px;
+  height: 250px;
 }
 
 .activity-info select {
-  width: 200px;
+  width: 250px;
   margin: 10px 0 10px 0;
 }
 
 .assign-activity-div input {
-  width: 400px;
+  width: 500px;
   background: #e8dede;
   border-radius: 4px;
 }

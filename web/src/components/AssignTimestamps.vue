@@ -289,7 +289,7 @@ export default {
 }
 
 .lesson p {
-    margin: 20px 0 0 0;
+    margin: 20px 0 0 15px;
 }
 
 .video-list-div a {
@@ -329,7 +329,7 @@ video {
     border: none;
     font-size: 30px;
     color: white;
-    text-shadow: 2px 1px 1px black;
+    text-shadow: 1px 1px 1px black;
     box-shadow: 0 6px 6px #d1d1d1;
     background: #4AAE9B;
     min-width: 100px;
