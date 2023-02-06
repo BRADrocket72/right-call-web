@@ -8,14 +8,14 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <div class="video">
         <video :id="videoId" :src="currentVideoClip.videoURL"></video>
-        <div v-if="containsEyeTrackingActivity && isEyeTrackingVisible && !webcamPermissionEnabled" class="quadrants-container">
+        <div v-if="containsEyeTrackingActivity && isEyeTrackingVisible && !webcamPermission" class="quadrants-container">
           <NoWebcamPopUp :answersArray="answers" :question="currentVideoQuestions[questionIndex]" @close="toggleEyeTracking" />
         </div>
-        <div v-if="currentQuestion && currentQuestion.questionType == 'eye-tracking' && webcamPermissionEnabled" class="question">
+        <div v-if="currentQuestion && currentQuestion.questionType == 'eye-tracking' && webcamPermission" class="question">
             <h2>{{currentQuestion.questionText}}</h2>
             <p>Use your eyes to answer this question.</p>
         </div>
-        <div v-if="containsEyeTrackingActivity && isEyeTrackingVisible && webcamPermissionEnabled && predictionReady" class="eye-tracking-container">
+        <div v-if="containsEyeTrackingActivity && isEyeTrackingVisible && webcamPermission && predictionReady" class="eye-tracking-container">
           <EyeTrackingPopUp :answersArray="answers" :question="currentVideoQuestions[questionIndex]" :xPrediction="xPrediction" 
           :yPrediction="yPrediction" @close="toggleEyeTracking" />
         </div>
@@ -28,16 +28,18 @@
       </results-page>
       <activity-pop-up v-if="questionsLoaded && isModalVisible" :answersArray="answers"
         :question="currentVideoQuestions[questionIndex]" :questionNumber="questionIndex + 1" @close="closeModal" />
-      <webgazer-calibration-page v-if="calibrationReady" @close="closeCalibrationPage"/>
+      <webgazer-calibration-page v-if="calibrationReady && webcamPermission" @close="closeCalibrationPage"/>
+      <WebcamPermissionModal v-if="permissionModalVisible" @close="togglePermissionModal"/>
     </div>
   </div>
-  </template>
+</template>
   
   
   <script>
   import ActivityPopUp from '@/components/modals/ActivityPopUp.vue';
   import NoWebcamPopUp from '@/components/modals/NoWebcamPopUp.vue'
   import EyeTrackingPopUp from '@/components/modals/EyeTrackingPopUp.vue'
+  import WebcamPermissionModal from '@/components/modals/WebcamPermissionModal.vue'
   import ResultsPage from "@/components/modals/ResultsPage.vue"
   import VideoClip from '@/models/VideoClipDto';
   import WebgazerCalibrationPage from './modals/WebgazerCalibrationPage.vue';
@@ -56,7 +58,8 @@
       LoggedInNavBar,
       NoWebcamPopUp,
       EyeTrackingPopUp,
-      WebgazerCalibrationPage
+      WebgazerCalibrationPage,
+      WebcamPermissionModal
     },
     props: {
       videoId: {
@@ -76,42 +79,20 @@
         percentageCorrect: "",
         videoName: "",
         containsEyeTrackingActivity: false,
-        webcamPermissionEnabled: true,
+        webcamPermission: false,
         isEyeTrackingVisible: false,
         isPlayButtonDisabled: false,
         calibrationReady: false,
         xPrediction: 0,
         yPrediction: 0,
         predictionReady: false,
-        currentQuestion: Object
+        currentQuestion: Object,
+        permissionModalVisible: true
       };
     },
     async mounted() {
-      var videoClipStore = useVideoClipStore();
-      let cookiesCalibration = this.$cookies.get("user_session").currentEyeTrackingCalibration
-      if (cookiesCalibration == "false" || !webgazer.isReady()) {
-        this.calibrationReady = true
-        this.replaceCookie()
-        webgazer.showVideo(false)
-        webgazer.showFaceOverlay(false)
-        webgazer.showFaceFeedbackBox(false)
-        webgazer.showPredictionPoints(true)
-        webgazer.begin()
-      }
-      else {
-        webgazer.showPredictionPoints(true)
-        webgazer.resume()
-      }
-  
-  
-      this.currentVideoClip = await videoClipStore.fetchVideoClipById(this.videoId);
-      this.videoName = this.currentVideoClip.videoName
+      this.videoAndQuestionDataSetup()
       const videoElement = document.getElementById(this.videoId)
-      var activityStore = useActivityStore();
-      this.currentVideoQuestions = await activityStore.fetchActivitiesByVideoclipId(this.videoId)
-      this.currentVideoQuestions.sort((a,b) => a.timestamp - b.timestamp)
-      this.questionsLoaded = true;
-  
       if (videoElement) {
         videoElement.addEventListener('timeupdate', () => {
           const videoCurrentTime = document.getElementById("videoCurrentTime")
@@ -128,10 +109,42 @@
           }
         })
       }
-      this.checkForEyeTrackingActivity()
       this.currentQuestion = this.currentVideoQuestions[this.questionCounter]
     },
     methods: {
+      togglePermissionModal(permission) {
+        if(permission) {
+            this.webcamPermission = true
+            this.webgazerSetup()
+        }
+        this.permissionModalVisible = false
+      },
+      webgazerSetup() {
+        let cookiesCalibration = this.$cookies.get("user_session").currentEyeTrackingCalibration
+        if (cookiesCalibration == "false" || !webgazer.isReady()) {
+          this.calibrationReady = true
+          this.replaceCookie()
+          webgazer.showVideo(false)
+          webgazer.showFaceOverlay(false)
+          webgazer.showFaceFeedbackBox(false)
+          webgazer.showPredictionPoints(true)
+          webgazer.begin()
+        }
+        else {
+          webgazer.showPredictionPoints(true)
+          webgazer.resume()
+        }
+      },
+      async videoAndQuestionDataSetup() {
+        var videoClipStore = useVideoClipStore()
+        var activityStore = useActivityStore()
+        this.currentVideoClip = await videoClipStore.fetchVideoClipById(this.videoId);
+        this.videoName = this.currentVideoClip.videoName
+        this.currentVideoQuestions = await activityStore.fetchActivitiesByVideoclipId(this.videoId)
+        this.currentVideoQuestions.sort((a,b) => a.timestamp - b.timestamp)
+        this.questionsLoaded = true
+        this.checkForEyeTrackingActivity()
+      },
       stopVideoAtTimestamp(video, timestamps) {
         var currentTime = video.currentTime;
         if (currentTime >= timestamps[this.questionCounter]) {
@@ -151,12 +164,16 @@
         if (videoElement.paused) {
           playOrPauseButton.innerHTML = "Pause"
           videoElement.play()
-          webgazer.resume()
+          if(this.webcamPermission) {
+            webgazer.resume() 
+          }
         }
         else {
           playOrPauseButton.innerHTML = "Play"
           videoElement.pause()
-          webgazer.pause()
+          if(this.webcamPermission) {
+            webgazer.pause()  
+          }
         }
       },
       showModal() {
@@ -177,13 +194,15 @@
             videoElement.play();
         }
         this.questionIndex++
-        webgazer.resume()
+        if(this.webcamPermission) {
+          webgazer.resume()    
+        }
       },
       async toggleEyeTracking(updatedAnswers) {
         this.togglePlayButton()
         this.isEyeTrackingVisible = !this.isEyeTrackingVisible
         if(this.isEyeTrackingVisible) {
-          if(this.webcamPermissionEnabled) {
+          if(this.webcamPermission) {
             await this.getCoordinatePrediction()
             this.predictionReady = true
           }
@@ -210,7 +229,9 @@
         this.$router.push({
           name: "LessonSelection"
         })
-        webgazer.showPredictionPoints(false)
+        if(this.webcamPermission) {
+          webgazer.showPredictionPoints(false)    
+        }
       },
       checkForEyeTrackingActivity() {
         for(const activity of this.currentVideoQuestions) {
