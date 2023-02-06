@@ -38,7 +38,7 @@ export const useActivityStore = defineStore("Activity", {
         },
         async updateActivities(id,timestamp,questionType,questionText,answers,correctAnswer) {
             try {
-                const data = await axios.patch(`http://localhost:3000/api/activity/update/${id}`, 
+                const data = await axios.put(`http://localhost:3000/api/activity/update/${id}`, 
                 { 
                     timestamp: timestamp,
                     questionType: questionType,
