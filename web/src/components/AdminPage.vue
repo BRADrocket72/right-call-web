@@ -11,7 +11,7 @@
         </button>
       </router-link>  |
       <router-link to="/LessonDeletion">
-        <button type="button" class="buttonLink">
+        <button type="button" class="buttonDeleteLink">
           Delete Lesson
         </button>
       </router-link>  |
@@ -54,6 +54,17 @@ nav a {
 }
 
 .buttonLink:hover {
+    box-shadow: 0 15px 15px #D1D1D1;
+}
+
+.buttonDeleteLink {
+    border: 1px solid #0e333c;
+    background: #FFFFFF;
+    color: #4AAE9B;
+
+}
+
+.buttonDeleteLink:hover {
     box-shadow: 0 15px 15px #D1D1D1;
 }
 

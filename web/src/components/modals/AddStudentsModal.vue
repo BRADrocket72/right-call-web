@@ -15,7 +15,7 @@
               <p class="bold-header">Remove Student From Class: </p>
               <div class="flex-container">
                 <div v-for="student in currentlyAddedStudents" :key="student._id" class="student-card">
-                  <a @click="deleteStudent(student)">
+                  <a class="removeStudent" @click="deleteStudent(student)">
                     <h3>
                       <h5>Username: {{ student.userName }}</h5>
                       <h5>Student id: {{ student._id }}</h5>
@@ -28,7 +28,7 @@
               <p class="bold-header">Add Student to Class: </p>
               <div class="flex-container">
                 <div v-for="student in studentsNotAdded" :key="student._id" class="student-card">
-                  <a @click="addStudent(student)">
+                  <a class="addStudent" @click="addStudent(student)">
                     <h3>
                       <h5>Username: {{ student.userName }}</h5>
                       <h5>Student id: {{ student._id }}</h5>

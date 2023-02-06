@@ -1,6 +1,6 @@
 <template>
+    <LoggedInNavBarVue />
     <div class="CreateClassroomPage">
-        <LoggedInNavBarVue />
         <br/>
         <h3>Classroom Creation </h3>
         <br/>
