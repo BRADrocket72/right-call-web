@@ -9,11 +9,11 @@
                 <slot name="body">
                     <div v-if="answer == 'Correct'" class="feedback-div">
                         <h2>Nice Job!</h2>
-                        <p>test</p>
+                        <p>You were looking in the right spot.</p>
                     </div>
                     <div v-else class="feedback-div">
                         <h2>Almost</h2>
-                        <p>You should have been looking at {{ correctAnswer }}</p>
+                        <p>You should have been looking at {{ correctAnswer }}.</p>
                     </div>
                     <button type="button" class="btn-green" @click="close()">Close</button>
                 </slot>
