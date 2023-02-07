@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="register-container">
   <LoginNavBar />
   <div class="register-div">
     <h1>Registration</h1>
@@ -81,6 +81,9 @@ export default {
 </script>
 
 <style scoped>
+.register-container {
+  min-height: 110vh;
+}
 
 .register-div {
   min-height: 600px;
@@ -89,7 +92,7 @@ export default {
   max-width: 600px;
   border: 1px solid #0e333c;
   border-radius: 10px;
-  margin: 100px auto;
+  margin: 20px auto;
   box-shadow: 0 10px 10px #d1d1d1;
 }
 
