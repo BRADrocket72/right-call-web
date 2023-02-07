@@ -35,11 +35,11 @@ describe('LessonSelection.vue', () => {
         expect(password.exists).toBeTruthy()
     })
     it('renders usertype radio buttons', () => {
-        const userType = wrapper.findAll('#userType')
+        const userType = wrapper.findAll('.input-radio')
         expect(userType.length).toEqual(3)
     })
     it('renders register button', () => {
-        const registerButton = wrapper.findAll('button')
+        const registerButton = wrapper.findAll('.submit')
         expect(registerButton.length).toEqual(1)
     })
     it('calls login function when submit button is clicked', async () => {
