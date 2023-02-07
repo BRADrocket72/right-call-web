@@ -1,10 +1,7 @@
 describe('Instructor Integration Testing', () => {
     it('Visits the app root url', () => {
         cy.visit('http://localhost:8080')
-        cy.contains('h1', 'Login Page')
-    })
-    it('Instructor sees login page', () => {
-        cy.contains('div', 'Email or username')
+        cy.get('.login-div h1').contains('Sign in to your account')
     })  
     it('Instructor logs in and can add timestamps and questions similar to the admin', () => {
         cy.get('#userName').type('testInstructor123')

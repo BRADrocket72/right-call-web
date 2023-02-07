@@ -3,7 +3,7 @@
 describe('Student Integration Testing', () => {
     it('Visits the app root url', () => {
         cy.visit('http://localhost:8080')
-        cy.contains('h1', 'Login Page')
+        cy.get('.login-div h1').contains('Sign in to your account')
     })
     it('Student logs in', () => {
         cy.contains('div', 'Email or username')

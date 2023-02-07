@@ -1,10 +1,9 @@
 describe('Admin Integration Testing', () => {
     it('Visits the app root url', () => {
         cy.visit('http://localhost:8080')
-        cy.contains('h1', 'Login Page')
+        cy.get('.login-div h1').contains('Sign in to your account')
     })
     it('Admin logs in', () => {
-        cy.contains('div', 'Email or username')
         cy.get('#userName').type('jeremiahAdmin')
         cy.get('#password').type('jeremiahAdmin')
         cy.get('button').click()
