@@ -1,26 +1,24 @@
 <template>
 <div>
-    <LoginNavBar />
-    <br/><br/>
-    <div id="app">
-    <h1>Login  Page</h1>
-    <br><br>
+  <LoginNavBar />
+  <div class="login-div">
+    <h1>Login</h1>
     <form @submit.prevent="loginWithPassword">
-      <label>
-        Email or username
+      <div class="input">
+        <label for="userName">Email or Username</label>
         <input type="text" id="userName" v-model="username" />
-      </label>
-      <label>
-        Password
+      </div>
+      <div class="input">
+        <label for="password">Password</label>
         <input type="password" id="password" v-model="password" />
-      </label>
-      <br/><br/>
-      <button type="submit" @click="login">Log in</button>
-    <div v-if = "error">
-      Invalid Username or Password
-    </div>
+      </div>
+      <div class="input">
+        <button type="submit" class="submit" @click="login">Log in</button>
+      </div>
     </form>
-    <nav></nav>
+    <div v-if="error" class="error">
+      <p>Invalid Username or Password</p>
+    </div>
   </div>
 </div>
 </template>
@@ -87,21 +85,68 @@ export default {
 }
 </script>
 
-<style>
-nav {
-  padding: 30px;
+<style scoped>
+
+.login-div {
+  min-height: 400px;
+  max-height: 400px;
+  min-width: 600px;
+  max-width: 600px;
+  border: 1px solid #0e333c;
+  border-radius: 10px;
+  margin: 100px auto;
+  box-shadow: 0 10px 10px #d1d1d1;
 }
 
-nav a {
+.login-div h1 {
+  margin-top: 10px;
   font-weight: bold;
-  color: #4AAE9B;
 }
 
-.button {
-    width: 86px;
-    height: 40px;
-    border: 1px solid #0e333c;
-    background: #FFFFFF;
+.input {
+  width: 100%;
+  text-align: left;
+  margin: auto auto 15px 120px;
 }
 
+.input input {
+  min-width: 350px;
+  max-width: 350px;
+  min-height: 40px;
+  min-height: 40px;
+  background: #e9e9e9;
+  border: 1px solid #0e333c;
+  border-radius: 6px;
+  font-size: 22px;
+}
+
+.input label {
+  width: 100%;
+  font-size: 20px;
+}
+
+.submit {
+  width: 90%;
+  height: 60px;
+  margin: 60px 0 0 -90px;
+  font-size: 25px;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 1px 1px 1px black;
+  border: none;
+  border-radius: 10px;
+  background: #0e333c;
+}
+
+.submit:hover {
+  box-shadow: 0 5px 5px #d5d5d5;
+  text-shadow: 0 3px 3px #000000;
+}
+
+.error {
+  margin-top: -7px;
+  color: #ed3419;
+  font-size: 20px;
+  font-weight: bold;
+}
 </style>

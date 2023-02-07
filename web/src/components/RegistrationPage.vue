@@ -80,7 +80,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 .register-div {
   min-height: 600px;
