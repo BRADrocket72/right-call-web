@@ -2,7 +2,7 @@
 <div>
   <LoginNavBar />
   <div class="login-div">
-    <h1>Login</h1>
+    <h1>Sign in to your account</h1>
     <form @submit.prevent="loginWithPassword">
       <div class="input">
         <label for="userName">Email or Username</label>
@@ -13,7 +13,7 @@
         <input type="password" id="password" v-model="password" />
       </div>
       <div class="input">
-        <button type="submit" class="submit" @click="login">Log in</button>
+        <button type="submit" class="submit" @click="login">Sign In</button>
       </div>
     </form>
     <div v-if="error" class="error">
@@ -100,6 +100,7 @@ export default {
 
 .login-div h1 {
   margin-top: 10px;
+  margin-bottom: 20px;
   font-weight: bold;
 }
 
@@ -128,7 +129,7 @@ export default {
 .submit {
   width: 90%;
   height: 60px;
-  margin: 60px 0 0 -90px;
+  margin: 50px 0 0 -90px;
   font-size: 25px;
   font-weight: bold;
   color: #ffffff;
