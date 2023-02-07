@@ -1,7 +1,7 @@
 <template>
 <div>
   <LoginNavBar />
-  <div class="login-div">
+  <div class="register-div">
     <h1>Registration</h1>
     <form @submit.prevent="loginWithPassword">
       <div class="input">
@@ -82,7 +82,7 @@ export default {
 
 <style>
 
-.login-div {
+.register-div {
   min-height: 600px;
   max-height: 600px;
   min-width: 600px;
@@ -93,12 +93,12 @@ export default {
   box-shadow: 0 10px 10px #d1d1d1;
 }
 
-.login-div h1 {
+.register-div h1 {
   margin-top: 10px;
   font-weight: bold;
 }
 
-.login-div h3 {
+.register-div h3 {
   margin-top: 20px;
   font-weight: bold;
 }
