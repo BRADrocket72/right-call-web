@@ -16,11 +16,11 @@ describe('Instructor Classroom created when',()=>{
     it('Test Class', async () => {
         const instructorClassRoomOne: InstructorClassDto = {instructorId:"RefRepCoach",className:"Testing ClassRoom",videoclipIds:["Lesson1", "Lesson2"],studentIds:["StudentA","StudentB"]}
         const CreateClassRoom = await instructorClassRooms.createClass(instructorClassRoomOne);
-        const foundUserResults = await InstructorClassSchema.findById(CreateClassRoom._id);
+        const foundClassroom = await InstructorClassSchema.findById(CreateClassRoom._id);
               
-        expect(foundUserResults.instructorId).toEqual("RefRepCoach");
-        expect(foundUserResults.className).toEqual("Testing ClassRoom");
-        expect(foundUserResults.videoclipIds).toEqual(["Lesson1", "Lesson2"]);
-        expect(foundUserResults.studentIds).toEqual(["StudentA","StudentB"]);
+        expect(foundClassroom.instructorId).toEqual("RefRepCoach");
+        expect(foundClassroom.className).toEqual("Testing ClassRoom");
+        expect(foundClassroom.videoclipIds).toEqual(["Lesson1", "Lesson2"]);
+        expect(foundClassroom.studentIds).toEqual(["StudentA","StudentB"]);
     })
 })
