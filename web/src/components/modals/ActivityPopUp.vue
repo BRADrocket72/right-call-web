@@ -134,7 +134,7 @@ import {checkAnswer} from "../../util/GetResults"
     color: white;
     text-shadow: 1px 1px 5px #000000;
     background:#4AAE9B;
-    border: 1px solid #eeeeee;
+    border: none;
     border-radius: 6px;
     padding: 15px;
     margin: 20px 25px 20px 45px;
@@ -142,7 +142,7 @@ import {checkAnswer} from "../../util/GetResults"
 
   .quiz-answer:hover {
     border: 1px solid #0e333c;
-    box-shadow: 2px 2px 5px #4AAE9B;
+    box-shadow: 2px 2px 6px #4AAE9B;
   }
 
   .quiz-answer p {
