@@ -109,7 +109,6 @@
           }
         })
       }
-      this.currentQuestion = this.currentVideoQuestions[this.questionCounter]
     },
     methods: {
       togglePermissionModal(permission) {
@@ -144,6 +143,7 @@
         this.currentVideoQuestions.sort((a,b) => a.timestamp - b.timestamp)
         this.questionsLoaded = true
         this.checkForEyeTrackingActivity()
+        this.currentQuestion = this.currentVideoQuestions[this.questionCounter]
       },
       stopVideoAtTimestamp(video, timestamps) {
         var currentTime = video.currentTime;
