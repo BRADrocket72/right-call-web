@@ -24,11 +24,11 @@ describe('ActivityPopUp.vue', () => {
     })
 
     it('displays 2 answer buttons', () => {
-        expect(wrapper.findAll('button.btn-green').length).toBe(2)
+        expect(wrapper.findAll('.quiz-answer').length).toBe(2)
     })
 
     it('calls the close modal and handle selected answers functions on button click', async () => {
-        const button = wrapper.find('button.btn-green')
+        const button = wrapper.find('.quiz-answer')
         wrapper.vm.close = jest.fn()
         const closeFunction = jest.spyOn(wrapper.vm, 'close')
         wrapper.vm.handleAnswerSelected = jest.fn()
