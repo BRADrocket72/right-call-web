@@ -7,17 +7,17 @@
       <div class="invalid" id="invalid-user">!</div>
       <div class="input">
         <label>Username</label>
-        <input type="text" id="userName" class="input-text"/>
+        <input type="text" id="userName" class="input-text" autocomplete="off" />
       </div>
       <div class="invalid" id="invalid-email">!</div>
       <div class="input">
         <label>Email</label>
-        <input type="text" id="email" class="input-text"/>
+        <input type="text" id="email" class="input-text" autocomplete="off" />
       </div>
       <div class="invalid" id="invalid-password">!</div>
       <div class="input">
         <label>Password</label>
-        <input type="password" id="password" class="input-text"/>
+        <input type="password" id="password" class="input-text" />
       </div>
 
       <p id="invalid"></p>
@@ -156,6 +156,11 @@ export default {
   border: 1px solid #0e333c;
   border-radius: 6px;
   font-size: 22px;
+}
+
+.input input:focus {
+  background-color: #ffffff;
+  border: 2px solid #0e333c;
 }
 
 .input-text {

@@ -6,7 +6,7 @@
     <form @submit.prevent="loginWithPassword">
       <div class="input">
         <label for="userName">Email or Username</label>
-        <input type="text" id="userName" v-model="username" />
+        <input type="text" id="userName" autocomplete="off" v-model="username" />
       </div>
       <div class="input">
         <label for="password">Password</label>
@@ -119,6 +119,11 @@ export default {
   border: 1px solid #0e333c;
   border-radius: 6px;
   font-size: 22px;
+}
+
+.input input:focus {
+  background-color: #ffffff;
+  border: 2px solid #0e333c;
 }
 
 .input label {
