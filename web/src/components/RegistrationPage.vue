@@ -4,18 +4,23 @@
   <div class="register-div">
     <h1>Registration</h1>
     <form @submit.prevent="loginWithPassword">
+      <div class="invalid" id="invalid-user">!</div>
       <div class="input">
         <label>Username</label>
-        <input type="text" id="userName" class="input-text"/>
+        <input type="text" id="userName" class="input-text" autocomplete="off" />
       </div>
+      <div class="invalid" id="invalid-email">!</div>
       <div class="input">
         <label>Email</label>
-        <input type="text" id="email" class="input-text"/>
+        <input type="text" id="email" class="input-text" autocomplete="off" />
       </div>
+      <div class="invalid" id="invalid-password">!</div>
       <div class="input">
         <label>Password</label>
-        <input type="password" id="password" class="input-text"/>
+        <input type="password" id="password" class="input-text" />
       </div>
+
+      <p id="invalid"></p>
 
       <h3>Account Type</h3>
       <div class="account-type">
@@ -33,7 +38,7 @@
         </div>
       </div>
       <div>
-        <button type="submit" class="submit" @click="uploadUsers">Register</button>
+        <button type="submit" class="submit" @click="checkInputs">Register</button>
       </div>
       <div class="redirect-login">
         <p>Already have an account? <a class="to-login" @click="redirectToLogin" >Login Here</a></p>
@@ -54,11 +59,41 @@ export default {
     LoginNavBar
   },
   methods: {
-    async uploadUsers(){
+    checkInputs() {
+      const username = document.getElementById('userName').value
+      const email = document.getElementById('email').value
+      const password = document.getElementById('password').value
+
+      let invalidUser = document.getElementById('invalid-user')
+      let invalidEmail = document.getElementById('invalid-email')
+      let invalidPassword = document.getElementById('invalid-password')
+
+      if(username == "" || email == "" || password == "") {
+        if(username == "") {
+          invalidUser.style.display = "block"
+        } else {
+          invalidUser.style.display = "none"
+        }
+        if(email == "") {
+          invalidEmail.style.display = "block"
+        } else {
+          invalidEmail.style.display = "none"
+        }
+        if(password == "") {
+          invalidPassword.style.display = "block"
+        } else {
+          invalidPassword.style.display = "none"
+        }
+        alert("Please fill in all inputs.")
+      } else {
+        invalidUser.style.display = "none"
+        invalidEmail.style.display = "none"
+        invalidPassword.style.display = "none"
+        this.uploadUsers(username, email, password)
+      }
+    },
+    async uploadUsers(userName, email, password){
       var userStore = useUsersStore()
-      var userName = document.getElementById("userName").value
-      var email = document.getElementById("email").value
-      var password = document.getElementById("password").value
       var userTypes = document.getElementsByName("userType")
       var userType = ""
       for (let i=0; i< userTypes.length; i++) {
@@ -90,7 +125,7 @@ export default {
   max-height: 600px;
   min-width: 600px;
   max-width: 600px;
-  border: 1px solid #0e333c;
+  border: 8px solid #0e333c;
   border-radius: 10px;
   margin: 20px auto;
   box-shadow: 0 10px 10px #d1d1d1;
@@ -121,6 +156,11 @@ export default {
   border: 1px solid #0e333c;
   border-radius: 6px;
   font-size: 22px;
+}
+
+.input input:focus {
+  background-color: #ffffff;
+  border: 2px solid #0e333c;
 }
 
 .input-text {
@@ -194,5 +234,14 @@ nav a {
 
 .to-login {
   font-weight: bold;
+}
+
+.invalid {
+  display: none;
+  position: absolute;
+  margin: 28px 0 0 100px;
+  color: #ed3419;
+  font-weight: bold;
+  font-size: 30px;
 }
 </style>

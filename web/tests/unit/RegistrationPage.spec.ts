@@ -22,6 +22,7 @@ describe('LessonSelection.vue', () => {
                 }
              }
         })
+        wrapper.vm.checkInputs = jest.fn()
     })
     it('renders RegistrationPage', () => {
         expect(wrapper.exists()).toBe(true)
@@ -42,11 +43,9 @@ describe('LessonSelection.vue', () => {
         const registerButton = wrapper.findAll('.submit')
         expect(registerButton.length).toEqual(1)
     })
-    it('calls login function when submit button is clicked', async () => {
-        const registerMock = jest.fn()
-        wrapper.vm.uploadUsers = registerMock
+    it('checks user input when submit button is clicked', async () => {
         const registerButton = wrapper.find('button')
         await registerButton.trigger('click')
-        expect(registerMock).toHaveBeenCalledTimes(1)
+        expect(wrapper.vm.checkInputs).toHaveBeenCalledTimes(1)
     })
 })

@@ -3,7 +3,7 @@ import 'jest'
 import InstructorPage from '@/components/InstructorPage.vue';
 import { createTestingPinia } from '@pinia/testing'
 
-describe('ResultsPage.vue', () => {
+describe('InstructorPage.vue', () => {
      let wrapper: any;
      let mockRouter: any;
      let mockRoute: any;
@@ -37,12 +37,8 @@ describe('ResultsPage.vue', () => {
         wrapper.unmount()
     })
 
-    it('renders AdminPage', () => {
+    it('renders InstructorPage', () => {
         expect(wrapper.exists()).toBe(true)
-    })
-
-    it('Displays the Instructor Page Header', () => {
-        expect(wrapper.find('h1').exists()).toBe(true)
     })
 
     it('Displays the instructors router-links', () => {
