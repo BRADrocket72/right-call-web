@@ -257,6 +257,10 @@ export default {
     background: #0e333c;
 }
 
+.nav-link p {
+    padding-left: 10px;
+}
+
 .video-list-div {
     display: flex;
     flex-direction: row;
