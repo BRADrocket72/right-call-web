@@ -110,7 +110,7 @@ export default {
   flex-wrap: wrap;
   width: 300px;
   height: 400px;
-  border: 2px solid #4AAE9B;
+  border: 3px solid #4AAE9B;
   background-color: white;
 }
 tr {
