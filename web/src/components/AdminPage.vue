@@ -2,11 +2,10 @@
 <div>
   <LoggedInNavBar />
   <div class="admin-container">
-    <br><br>
     <div class="admin-buttons">
       <router-link to= "/VideoUpload">
         <button type="button" class="button-selection buttonLink"><span>Upload Lesson Video</span></button>
-        <p class="upload-description">Upload new Lesson videos to the database.</p>
+        <p class="upload-description">Upload new lesson videos to the database.</p>
       </router-link>
       <router-link to="/LessonDeletion">
         <button type="button" class="button-selection buttonDeleteLink"><span>Delete Lesson</span></button>
@@ -123,7 +122,7 @@ export default {
 
 .admin-buttons {
   display: flex;
-  margin-top: 30px;
+  margin-top: 60px;
 }
 
 .admin-buttons a {
@@ -132,25 +131,21 @@ export default {
   text-decoration: none;
 }
 
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
-
 @media only screen and (min-width: 1400px) {
   .admin-buttons {
     margin-left: 175px;
   }
 }
 
-@media only screen and (max-width: 1399px){
+@media only screen and (min-width: 1200px) and (max-width: 1399px){
   .admin-buttons {
     margin-left: 100px;
+  }
+}
+
+@media only screen and (max-width: 1199px){
+  .admin-buttons {
+    margin-left: 0;
   }
 }
 </style>

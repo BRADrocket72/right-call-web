@@ -3,14 +3,18 @@ describe('Instructor Integration Testing', () => {
         cy.visit('http://localhost:8080')
         cy.get('.login-div h1').contains('Sign in to your account')
     })  
-    it('Instructor logs in and can add timestamps and questions similar to the admin', () => {
+    it('Instructor logs in', () => {
         cy.get('#userName').type('testInstructor123')
         cy.get('#password').type('testInstructor123')
         cy.get('button').click()
-        cy.contains('button', 'Create Classroom Page')
-        cy.contains('button', 'Assign Timestamps and Questions to a Video')
-        cy.contains('button', 'Update Class')
+    })
+    it('Instructor is directed to instructor page', () => {
+        cy.get('.buttonLinks:first').contains('Create a Classroom')
+        cy.get('.buttonLinksSecond').contains('Create Video Timestamps and Questions')
+        cy.get('.buttonLinks:last').contains('Update Class')
         cy.get('.buttonLinksSecond').click()
+    })
+    it('Instructor can access and use assignTimestamps page', () => {
         cy.get('.nav-link').its('length').should('be.gte', 1)
         cy.get('.lesson-img:last').click()
         cy.contains('div', 'Add Timestamp Here')
@@ -25,7 +29,7 @@ describe('Instructor Integration Testing', () => {
         cy.contains('div', '00:00')
         cy.get('#delete-timestamp-button:first').click()
         cy.get(".button").click()
-    })  
+    })
     it('Instructor can add students to class and create a class', () => {
         cy.get('#userName').type('testInstructor123')
         cy.get('#password').type('testInstructor123')
