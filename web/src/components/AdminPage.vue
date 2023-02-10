@@ -10,7 +10,7 @@
       </router-link>
       <router-link to="/LessonDeletion">
         <button type="button" class="button-selection buttonDeleteLink"><span>Delete Lesson</span></button>
-        <p class="delete-description">Delete lesson videos from the database. <br><b>Note:</b> This cannot be undone.</p>
+        <p class="delete-description">Delete lesson videos from the database.<br><b>Note:</b> This cannot be undone.</p>
       </router-link>
       <router-link to="/AssignTimestamps">
         <button type="button" class="button-selection buttonLink"><span>Create Video Timestamps and Questions</span></button>
@@ -46,6 +46,7 @@ export default {
   color: #0e333c;
   background: #e9e9e9;
   border-radius: 10px;
+  box-shadow: 5px 5px 10px #d3d3d3;
 }
 
 .button-selection span {
@@ -55,57 +56,69 @@ export default {
 }
 
 .upload-description {
-  display: none;
+  visibility: hidden;
+  opacity: 0;
   position: absolute;
   max-width: 250px;
   margin: -150px 0 0 42px;
   font-size: 19px;
   font-weight: normal;
   color: #0e333c;
+  transition: visibility 0s, opacity 0.3s linear;
 }
 
 .upload-description:hover {
-  display: block;
+  visibility: visible;
+  opacity: 1;
 }
 
 .button-selection:hover + .upload-description {
-  display: block;
+  visibility: visible;
+  opacity: 1;
 }
 
 .delete-description {
-  display: none;
+  visibility: hidden;
+  opacity: 0;
   position: absolute;
   max-width: 250px;
   margin: -150px 0 0 42px;
   font-size: 19px;
   font-weight: normal;
   color: #0e333c;
+  transition: visibility 0s, opacity 0.3s linear;
 }
 
 .delete-description:hover {
-  display: block;
+  visibility: visible;
+  opacity: 1;
 }
 
 .button-selection:hover + .delete-description {
-  display: block;
+  visibility: visible;
+  opacity: 1;
 }
 
 .assign-description {
-  display: none;
+  visibility: hidden;
+  opacity: 0;
   position: absolute;
   max-width: 250px;
   margin: -150px 0 0 42px;
   font-size: 19px;
   font-weight: normal;
   color: #0e333c;
+  transition: visibility 0s, opacity 0.3s linear;
 }
 
 .assign-description:hover {
-  display: block;
+  visibility: visible;
+  opacity: 1;
 }
 
 .button-selection:hover + .assign-description {
-  display: block;
+  visibility: visible;
+  opacity: 1;
 }
 
 .admin-buttons {
@@ -117,6 +130,16 @@ export default {
   font-weight: bold;
   color: #4AAE9B;
   text-decoration: none;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 
 @media only screen and (min-width: 1400px) {
