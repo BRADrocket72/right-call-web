@@ -12,8 +12,8 @@
             <h4>Click the student to either add or remove the student</h4>
             <br /><br /><br />
             <div class="video-list">
-              <p class="bold-header">Remove Student From Class: </p>
-              <div class="flex-container">
+              <div class="flex-container-1">
+                <p class="bold-header">Remove Student From Class: </p>
                 <div v-for="student in currentlyAddedStudents" :key="student._id" class="student-card">
                   <a class="removeStudent" @click="deleteStudent(student)">
                     <h3>
@@ -22,11 +22,9 @@
                   </a>
                 </div>
               </div>
-            <!-- </div> -->
             <br/>
-            <!-- <div class="video-list"> -->
-              <p class="bold-header">Add Student to Class: </p>
-              <div class="flex-container">
+              <div class="flex-container-2">
+                <p class="bold-header">Add Student to Class: </p>
                 <div v-for="student in studentsNotAdded" :key="student._id" class="student-card">
                   <a class="addStudent" @click="addStudent(student)">
                     <h3>
@@ -214,7 +212,8 @@ export default {
 }
 
 
-.flex-container {
+.flex-container-1 {
+  grid-row-start: 1;
   grid-column-start: 1;
   display: flex;
   flex-direction: row;
@@ -226,7 +225,21 @@ export default {
   margin-right:  50px;
   /* background-color: #white; */
   border-radius: 6px;
-  /* align-content: center; */
+}
+
+.flex-container-2 {
+  grid-row-start: 1;
+  grid-column-start: 3;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border: 3px solid #4AAE9B;
+  height: 450px;
+  width: 250px;
+  overflow: auto;
+  margin-right:  50px;
+  /* background-color: #white; */
+  border-radius: 6px;
 }
 
 .student-card {
@@ -251,7 +264,11 @@ export default {
 .student-card:hover {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
-.flex-container div {
+.flex-container-1 div {
+  background-color:#4AAE9B;
+}
+
+.flex-container-2 div {
   background-color:#4AAE9B;
 }
 
