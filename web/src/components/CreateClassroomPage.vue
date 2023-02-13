@@ -13,7 +13,7 @@
             <div id="notAddedStudents">
                 <div class="studentsTable">
                     <br/>
-                    Select Student to Add to Class
+                    <p>Select Student to Add to Class</p>
                     <br/>
                     <div v-for="student in students" :key="student">
                         <a class="nav-link" id="studentLink" @click="addStudentToClass(student.userName, student._id)">
@@ -25,7 +25,7 @@
             <div id="addedStudents">
                 <div class="studentsTable">
                     <br/>
-                    Students Selected for this Class
+                    <p>Students Selected for this Class</p>
                     <br/>
                     <div v-for="studentName in addedStudents" :key="studentName">
                         <p class="studentName">{{studentName}}</p>
@@ -109,7 +109,7 @@ export default {
   flex-wrap: wrap;
   border: 3px solid #4AAE9B;
   height: 450px;
-  width: 240px;
+  width: 440px;
   overflow: auto;
   margin-right:  50px;
   border-radius: 6px;
@@ -123,7 +123,7 @@ export default {
   flex-wrap: wrap;
   border: 3px solid #4AAE9B;
   height: 450px;
-  width: 240px;
+  width: 440px;
   overflow: auto;
   margin-right:  50px;
   border-radius: 6px;
@@ -155,7 +155,19 @@ a{
 
 #addedStudents a {
     width: 205px;
-    height: 10px;
+    height: 5px;
+}
+
+.studentsTable {
+    width: 440px;
+}
+.studentsTable div {
+    display: flex;
+    justify-content: center;
+    max-height: 200px;
+}
+.studentsTable p {
+    margin: 2px auto 2px auto;
 }
 
 
