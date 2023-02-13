@@ -11,26 +11,26 @@
         <br/><br/><br/>
         <div class="grid-container">
             <div id="notAddedStudents">
-                <table class="studentsTable">
+                <div class="studentsTable">
                     <br/>
                     Select Student to Add to Class
                     <br/>
-                    <tr v-for="student in students" :key="student">
+                    <div v-for="student in students" :key="student">
                         <a class="nav-link" id="studentLink" @click="addStudentToClass(student.userName, student._id)">
                             {{student.userName}}
                         </a>
-                    </tr>
-                </table>
+                    </div>
+                </div>
             </div>
             <div id="addedStudents">
-                <table class="studentsTable">
+                <div class="studentsTable">
                     <br/>
-                    Selected Students
+                    Students Selected for this Class
                     <br/>
-                    <tr v-for="studentName in addedStudents" :key="studentName">
+                    <div v-for="studentName in addedStudents" :key="studentName">
                         <p class="studentName">{{studentName}}</p>
-                    </tr>
-                </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -101,20 +101,32 @@ export default {
   font-weight: bold;
   color: #4AAE9B;
 }
-.studentsTable {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+#notAddedStudents {
+  grid-row-start: 1;
+  grid-column-start: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: wrap;
-  width: 300px;
-  height: 400px;
   border: 3px solid #4AAE9B;
-  background-color: white;
+  height: 450px;
+  width: 240px;
+  overflow: auto;
+  margin-right:  50px;
+  border-radius: 6px;
 }
-tr {
-  height: 5%;
+
+#addedStudents {
+  grid-row-start: 1;
+  grid-column-start: 2;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border: 3px solid #4AAE9B;
+  height: 450px;
+  width: 240px;
+  overflow: auto;
+  margin-right:  50px;
+  border-radius: 6px;
 }
 a{
     cursor: pointer;
@@ -135,6 +147,15 @@ a{
 }
 .error {
     color: red;
+}
+#notAddedStudents a {
+    width: 205px;
+    height: 10px;
+}
+
+#addedStudents a {
+    width: 205px;
+    height: 10px;
 }
 
 
