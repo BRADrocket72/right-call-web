@@ -47,7 +47,7 @@ describe('CreateClassroomPage.vue', () => {
         expect(wrapper.exists()).toBe(true)
     })
     it('Displays the table of students', () => {
-        expect(wrapper.find('table').exists()).toBe(true)
+        expect(wrapper.find('.studentsTable').exists()).toBe(true)
         expect(wrapper.findAll('a').length).toEqual(4) //One <a> for the student being displayed, and the other three are from the navbar's links
     })
     it('students variable is set successfully', () => {

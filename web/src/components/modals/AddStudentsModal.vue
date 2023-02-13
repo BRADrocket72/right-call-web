@@ -12,32 +12,29 @@
             <h4>Click the student to either add or remove the student</h4>
             <br /><br /><br />
             <div class="video-list">
-              <p class="bold-header">Remove Student From Class: </p>
-              <div class="flex-container">
+              <div class="flex-container-1">
+                <p class="bold-header">Remove Student From Class: </p>
                 <div v-for="student in currentlyAddedStudents" :key="student._id" class="student-card">
                   <a class="removeStudent" @click="deleteStudent(student)">
                     <h3>
-                      <h5>Username: {{ student.userName }}</h5>
-                      <h5>Student id: {{ student._id }}</h5>
+                      <h5>{{ student.userName }}</h5>
                     </h3>
                   </a>
                 </div>
               </div>
-            </div>
-            <div class="video-list">
-              <p class="bold-header">Add Student to Class: </p>
-              <div class="flex-container">
+            <br/>
+              <div class="flex-container-2">
+                <p class="bold-header">Add Student to Class: </p>
                 <div v-for="student in studentsNotAdded" :key="student._id" class="student-card">
                   <a class="addStudent" @click="addStudent(student)">
                     <h3>
-                      <h5>Username: {{ student.userName }}</h5>
-                      <h5>Student id: {{ student._id }}</h5>
+                      <h5>{{ student.userName }}</h5>
                     </h3>
                   </a>
                 </div>
               </div>
             </div>
-
+            <br /><br /><br />
             <button type="button" class="btn-green" @click="close()">Exit</button>
             <br />
           </slot>
@@ -194,10 +191,12 @@ export default {
 }
 
 .video-list {
-  display: contents;
+  /* display: inline-grid;
   flex-direction: row;
   width: 100%;
-  margin: 0 auto;
+  margin: 0 auto; */
+  display:inline-grid;
+  gap: 75px;
 }
 
 .nav-link h1 {
@@ -213,24 +212,71 @@ export default {
 }
 
 
-.flex-container {
+.flex-container-1 {
+  grid-row-start: 1;
+  grid-column-start: 1;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  border: 3px solid #4AAE9B;
+  height: 450px;
+  width: 250px;
+  overflow: auto;
+  margin-right:  50px;
+  /* background-color: #white; */
+  border-radius: 6px;
+}
+
+.flex-container-2 {
+  grid-row-start: 1;
+  grid-column-start: 3;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border: 3px solid #4AAE9B;
+  height: 450px;
+  width: 250px;
+  overflow: auto;
+  margin-right:  50px;
+  /* background-color: #white; */
+  border-radius: 6px;
 }
 
 .student-card {
   border: 1px solid #4AAE9B;
   border-radius: 5px;
-  margin: 10px;
-  background-color:lightblue;
+  margin: 0px;
+  /* background-color:#4AAE9B; */
+  height: 35px;
+  width: 200px;
+  /* color: white; */
+  background-color: white;
+}
+
+.student-card a{
+  color: white;
+  font-weight: bold;
+  font-size: large;
+  /* background-color: ; */
+  /* font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; */
 }
 
 .student-card:hover {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
+.flex-container-1 div {
+  background-color:#4AAE9B;
+}
+
+.flex-container-2 div {
+  background-color:#4AAE9B;
+}
 
 .bold-header {
+  font-weight: bold;
+}
+
+h4 {
   font-weight: bold;
 }
 </style>
