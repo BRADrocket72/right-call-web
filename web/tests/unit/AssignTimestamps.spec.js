@@ -27,7 +27,8 @@ describe('AssignTimestamps.vue', () => {
                     timestamps: [5,6],
                     formattedTimestamps: [5,6],
                     isVideoSelected: false,
-                    selectedVideo: {_id: "123test", videoUrl: "youtube.com", videoName: "Football Lesson One", timeStamps: [1,5,25], currentTime: 0}
+                    selectedVideo: {_id: "123test", videoUrl: "youtube.com", videoName: "Football Lesson One", timeStamps: [1,5,25], currentTime: 0},
+                    activities: [{_id: "321test", timestamp: 5, questionType: "short-answer", questionText: "What is the call?", answers: ['Traveling'], correctAnswer: "Traveling", videoclipId: "123test"} , '']
                 }
             },
             global: {

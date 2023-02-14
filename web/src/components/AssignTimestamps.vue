@@ -23,7 +23,7 @@
                                     <button id="delete-timestamp-button" @click="deleteTimestamp(index)">X</button>
                                     {{timestamp}}
                                     <button v-if="activities[index] == ''" class="incomplete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">Activity</button>
-                                    <button v-else-if="!activities[index]._id && activities[index] != ''" class="complete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">Activity</button>
+                                    <button v-else-if="activities[index] && activities[index] != '' && !checkForId(activities[index])" class="complete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">Activity</button>
                                     <button v-else class="pulled-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">Activity</button>
                                 </li>
                             </ul>
@@ -185,6 +185,13 @@ export default {
                 this.activities[this.currentIndex] = new AssignActivityDto(this.currentActivityTimestamp,this.activityModalData[0],this.activityModalData[1],this.activityModalData[2],this.activityModalData[3],this.selectedVideo._id)
             }
             this.toggleSaveButton()
+        },
+        checkForId(activity) {
+            if(activity._id) {
+                return true
+            } else {
+                return false
+            }
         },
         deleteTimestamp(deletedTimestampIndex) {
             this.timestamps.splice(deletedTimestampIndex,1)
