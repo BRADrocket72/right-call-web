@@ -93,15 +93,6 @@ export default {
             })
             
         },
-        pauseVideo() {
-            const video = document.getElementById(this.selectedVideo._id)
-            if (video.paused) {
-              video.play()
-            }
-            else {
-              video.pause()
-            }
-        },
         moveVideoToTimestampFrame() {
             const video = document.getElementById(this.selectedVideo._id)
             video.currentTime = this.currentActivityTimestamp
@@ -173,7 +164,8 @@ export default {
             if(this.isAssignActivityModalVisible) {
                 this.currentIndex = activityIndex
                 this.currentActivityTimestamp = this.timestamps[activityIndex]
-                this.pauseVideo()
+                const video = document.getElementById(this.selectedVideo._id)
+                video.pause()
                 this.moveVideoToTimestampFrame()
             } 
             this.toggleSaveButton()

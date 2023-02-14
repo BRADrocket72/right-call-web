@@ -84,26 +84,22 @@ export default {
         },
         dragAndDropSetup() {
           const modal = document.getElementById("modal")
-          modal.style.height = "550px"
+          modal.style.height = "540px"
           modal.style.width = "1200px"
-          this.videoFrameToImage()
-        },
-        videoFrameToImage() {
-          const video = document.querySelector("video")
-          video.pause()
-          video.currentTime = this.timestamp
-          setTimeout(() => {
-            const canvas = document.createElement('canvas')
-            canvas.width = video.videoWidth
-            canvas.height = video.videoHeight
-            const ctx = canvas.getContext('2d')
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
-            this.dragAndDropImage = canvas
-            this.imageReady = true
-          },"2 seconds")
+
+          const modalBody = document.querySelector("section")
+          modalBody.style.padding = "0"
+          this.getFrameImage()
         },
         getFrameImage() {
-          
+          const video = document.querySelector("video")
+          const canvas = document.createElement("canvas")
+          canvas.width = video.videoWidth
+          canvas.height = video.videoHeight
+          const ctx = canvas.getContext('2d')
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+          this.dragAndDropImage = canvas
+          this.imageReady = true
         }
 
     },
