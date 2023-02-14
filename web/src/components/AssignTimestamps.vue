@@ -22,7 +22,9 @@
                                 <li v-for="(timestamp,index) in formattedTimestamps" :key="timestamp">
                                     <button id="delete-timestamp-button" @click="deleteTimestamp(index)">X</button>
                                     {{timestamp}}
-                                    <button id="assign-activity-button" @click="toggleAssignActivityModal(index)">Activity</button>
+                                    <button v-if="activities[index] == ''" class="incomplete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">Activity</button>
+                                    <button v-else-if="!activities[index]._id && activities[index] != ''" class="complete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">Activity</button>
+                                    <button v-else class="pulled-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">Activity</button>
                                 </li>
                             </ul>
                         </div>
@@ -419,14 +421,12 @@ ul.timestamp-ul {
     font-weight: bold;
     text-shadow: 1px 1px 1px black;
     box-shadow: 0 6px 6px #000000;
-    background: #4AAE9B;
     min-width: 85px;
     min-height: 55px;
     border-radius: 15px;
 }
 
 #assign-activity-button:hover {
-    background: #349b88;
     box-shadow: 0 8px 8px #000000;
 }
 
@@ -455,5 +455,29 @@ ul.timestamp-ul {
 #save-timestamps-button:disabled {
     background: #52746d;
     color: #cfcccc
+}
+
+.pulled-timestamp {
+    background-color: #4AAE9B;
+}
+
+.pulled-timestamp:hover {
+    background-color: #349b88;
+}
+
+.incomplete-timestamp {
+    background-color: #ff0000;
+}
+
+.incomplete-timestamp:hover {
+    background-color: #e20000;
+}
+
+.complete-timestamp {
+    background-color: #0fb842;
+}
+
+.complete-timestamp:hover {
+    background-color: #0ea83d;
 }
 </style>
