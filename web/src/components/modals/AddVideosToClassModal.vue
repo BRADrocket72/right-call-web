@@ -12,8 +12,8 @@
               <h4>What videos do you want to add/remove?</h4>
               <br/><br/><br/>
               <div class="video-list" >
-                <p class="bold-header">Remove Videos: </p>
-                <div class="flex-container">
+                <div class="flex-container-1">
+                  <p class="bold-header">Remove Videos: </p>
                   <div class="student-card" v-for="video in currentlyAddedVideos" :key="video.id">
                       <a class="removeVideo" @click="deleteVideo(video)">
                           <h1>{{video.videoName}}</h1>
@@ -22,8 +22,8 @@
                 </div>
               </div>
               <div class="video-list" >
-                <p class="bold-header">Available Videos to Add: </p>
-                <div class="flex-container">
+                <div class="flex-container-2">
+                  <p class="bold-header">Available Videos to Add: </p>
                   <div class="student-card" v-for="video in videosNotAdded" :key="video.id">
                       <a class="addVideo" @click="addVideo(video)">
                           <h1>{{video.videoName}}</h1>
@@ -31,7 +31,7 @@
                   </div>
                 </div>
               </div>
-
+              <br/><br/><br/>
               <button type="button" class="btn-green" @click="close()">Exit</button>
               <br/>
             </slot>
@@ -185,10 +185,9 @@ import {useInstructorClassStore} from '@/stores/InstructorClassStore'
     transition: opacity .5s ease;
   }
   .video-list {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    margin: 0 auto;
+    display:inline-grid;
+  gap: 75px;
+    
   }
 
 .video-list a {
@@ -199,10 +198,32 @@ import {useInstructorClassStore} from '@/stores/InstructorClassStore'
 .bold-header {
   font-weight: bold;
 }
-.flex-container {
+.flex-container-1 {
+  grid-row-start: 1;
+  grid-column-start: 1;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  border: 3px solid #4AAE9B;
+  height: 450px;
+  width: 250px;
+  overflow: auto;
+  margin-right:  50px;
+  border-radius: 6px;
+}
+
+.flex-container-2 {
+  grid-row-start: 1;
+  grid-column-start: 3;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border: 3px solid #4AAE9B;
+  height: 450px;
+  width: 250px;
+  overflow: auto;
+  margin-right:  50px;
+  border-radius: 6px;
 }
 
 .student-card {
@@ -210,9 +231,22 @@ import {useInstructorClassStore} from '@/stores/InstructorClassStore'
   border-radius: 5px;
   margin: 10px;
   background-color:lightblue;
+  height:fit-content;
+}
+
+.student-card h1{
+  font-size:larger;
 }
 
 .student-card:hover {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.flex-container-1 div {
+  background-color:#4AAE9B;
+}
+
+.flex-container-2 div {
+  background-color:#4AAE9B;
 }
   </style>

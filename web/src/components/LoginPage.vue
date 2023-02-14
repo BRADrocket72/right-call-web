@@ -6,19 +6,19 @@
     <form @submit.prevent="loginWithPassword">
       <div class="input">
         <label for="userName">Email or Username</label>
-        <input type="text" id="userName" v-model="username" />
+        <input type="text" id="userName" autocomplete="off" v-model="username" />
       </div>
       <div class="input">
         <label for="password">Password</label>
         <input type="password" id="password" v-model="password" />
       </div>
+      <div v-if="error" class="error">
+        <p>Invalid Username or Password</p>
+      </div>
       <div class="input">
         <button type="submit" class="submit" @click="login">Sign In</button>
       </div>
     </form>
-    <div v-if="error" class="error">
-      <p>Invalid Username or Password</p>
-    </div>
   </div>
 </div>
 </template>
@@ -92,8 +92,8 @@ export default {
   max-height: 400px;
   min-width: 600px;
   max-width: 600px;
-  border: 1px solid #0e333c;
-  border-radius: 10px;
+  border: 8px solid #0e333c;
+  border-radius: 12px;
   margin: 100px auto;
   box-shadow: 0 10px 10px #d1d1d1;
 }
@@ -121,6 +121,11 @@ export default {
   font-size: 22px;
 }
 
+.input input:focus {
+  background-color: #ffffff;
+  border: 2px solid #0e333c;
+}
+
 .input label {
   width: 100%;
   font-size: 20px;
@@ -145,7 +150,8 @@ export default {
 }
 
 .error {
-  margin-top: -7px;
+  position: absolute;
+  margin-left: 140px;
   color: #ed3419;
   font-size: 20px;
   font-weight: bold;

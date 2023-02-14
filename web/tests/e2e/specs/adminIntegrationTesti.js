@@ -9,10 +9,9 @@ describe('Admin Integration Testing', () => {
         cy.get('button').click()
     })
     it('Admin is directed to Admin Page and displays correct buttons', () => {
-        cy.contains('h1', 'Admin Page')
-        cy.contains('button', 'Upload Lesson Video')
-        cy.contains('button', 'Delete Lesson')
-        cy.contains('button', 'Assign Timestamps and Questions to a Video')
+        cy.get('.buttonLink:first').contains('Upload Lesson Video')
+        cy.get('.buttonDeleteLink').contains('Delete Lesson')
+        cy.get('.buttonLink:last').contains('Create Video Timestamps and Questions')
         cy.get('.buttonLink:first').click()
     })
     it('Admin has the option to upload a video', () => {

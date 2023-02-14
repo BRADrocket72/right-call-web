@@ -9,13 +9,13 @@
         </header>
         <section class="modal-body" id="modalDescription">
           <slot name="body">
-            <p>{{question.questionText}}</p>
+            <p class="question-text">{{question.questionText}}</p>
           </slot>
-          <div v-if="question.questionType == 'multiple-choice'">
-            <button v-for="answer in question.answers" :key="answer" type="button" class="btn-green" @click="handleAnswerSelected(question, answersArray, answer); close()"> {{answer}} </button>
+          <div v-if="question.questionType == 'multiple-choice'" class="quiz-buttons">
+            <button v-for="answer in question.answers" :key="answer" type="button" class="quiz-answer" @click="handleAnswerSelected(question, answersArray, answer); close()"> <p>{{answer}}</p> </button>
           </div>
           <div v-if="question.questionType == 'short-answer'">
-            <input type="text" id="answer" name="answer">
+            <input type="text" id="answer" name="answer" class="short-answer-input" autocomplete="off">
             <button type="button" class="btn-green" @click="handleTextAnswer(); close()">Submit</button>
           </div>
         </section>
@@ -112,6 +112,61 @@ import {checkAnswer} from "../../util/GetResults"
     padding: 15px;
     margin: 10px;
   }
+
+  .question-text {
+    font-size: 22px;
+  }
+
+  .quiz-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto auto auto 30px;
+  }
+
+  .quiz-answer {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 25%;
+    min-height: 100px;
+    max-height: 130px;
+    min-width: 150px;
+    max-width: 180px;
+    color: white;
+    text-shadow: 1px 1px 5px #000000;
+    background:#4AAE9B;
+    border: none;
+    border-radius: 6px;
+    padding: 15px;
+    margin: 20px 25px 20px 45px;
+  }
+
+  .quiz-answer:hover {
+    border: 1px solid #0e333c;
+    box-shadow: 2px 2px 6px #4AAE9B;
+  }
+
+  .quiz-answer p {
+    width: 100%;
+    word-wrap: break-word;
+    font-size: 18px;
+    margin: auto;
+  }
+
+  .short-answer-input {
+    width: 100%;
+    height: 40px;
+    background: #e9e9e9;
+    border: 1px solid #0e333c;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 22px;
+  }
+
+  .short-answer-input:focus {
+  background-color: #ffffff;
+  border: 2px solid #0e333c;
+}
+
   .modal-fade-enter,
   .modal-fade-leave-to {
     opacity: 0;
