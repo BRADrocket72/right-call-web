@@ -93,6 +93,19 @@ export default {
             })
             
         },
+        pauseVideo() {
+            const video = document.getElementById(this.selectedVideo._id)
+            if (video.paused) {
+              video.play()
+            }
+            else {
+              video.pause()
+            }
+        },
+        moveVideoToTimestampFrame() {
+            const video = document.getElementById(this.selectedVideo._id)
+            video.currentTime = this.currentActivityTimestamp
+        },
         getVideoTimestampsAndActivities() {
             if(this.selectedVideo.timeStamps) {
                 this.timestamps = this.selectedVideo.timeStamps
@@ -160,6 +173,8 @@ export default {
             if(this.isAssignActivityModalVisible) {
                 this.currentIndex = activityIndex
                 this.currentActivityTimestamp = this.timestamps[activityIndex]
+                this.pauseVideo()
+                this.moveVideoToTimestampFrame()
             } 
             this.toggleSaveButton()
         },
