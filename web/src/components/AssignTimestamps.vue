@@ -33,7 +33,7 @@
                     </div>
                 </div>
             </div>
-            <AssignActivityModal v-if="isAssignActivityModalVisible" :activity="activities[currentIndex]" :questionTypeExists="activities[currentIndex].questionType" @close="toggleAssignActivityModal" @save="assignActivityModalSave"/>
+            <AssignActivityModal v-if="isAssignActivityModalVisible" :activity="activities[currentIndex]" :questionTypeExists="activities[currentIndex].questionType" :timestamp="currentActivityTimestamp" @close="toggleAssignActivityModal" @save="assignActivityModalSave"/>
         </div>
     </div>
 </div>
