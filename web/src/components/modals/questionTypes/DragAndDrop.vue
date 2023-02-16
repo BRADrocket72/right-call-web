@@ -78,21 +78,8 @@ export default {
                     const dropX = event.layerX
                     const dropY = event.layerY
                     const sourceElementClass = this.currentEvent.srcElement.classList[0]
-                    if(sourceElementClass === 'text-option') {
-                        const data = event.dataTransfer.getData('text')
-                        const source = document.getElementById(data)
-                        console.log(source)
-                        const existingOption = this.checkIfOptionAlreadyMoved(source)
-                        if(existingOption) {
-                            const styledSource = this.setupOptionCoordinates(source, dropX, dropY)
-                            event.target.appendChild(styledSource)
-                        } else {
-                            this.positionedEventIDs.push(source.id)
-                            const styledSource = this.setupOptionCoordinates(source, dropX, dropY)
-                            event.target.appendChild(styledSource)
-                            this.createNewInputOption('text-option')
-                            this.textOptionDragSetup()
-                        }
+                    if(sourceElementClass === 'text-option' || sourceElementClass === 'text-answer') {
+                        this.textOptionEvent(event,dropX,dropY)
                     } else {
                         alert('alerting')
                     }
@@ -101,10 +88,33 @@ export default {
                 }
             })
         },
+        textOptionEvent(event,dropX,dropY) {
+            const data = event.dataTransfer.getData('text')
+            const source = document.getElementById(data)
+            const existingOption = this.checkIfOptionAlreadyMoved(source)
+            if(existingOption) {
+                const styledSource = this.setupOptionCoordinates(source, dropX, dropY)
+                event.target.appendChild(styledSource)
+            } else {
+                this.positionedEventIDs.push(source.id)
+                const styledSource = this.setupOptionCoordinates(source, dropX, dropY)
+                event.target.appendChild(styledSource)
+                this.createNewInputOption('text-option')
+                this.textOptionDragSetup()
+            }
+        },
         setupOptionCoordinates(option, dropX, dropY) {
             option.style.cssText = 'position:absolute;'
-            option.style.left = dropX + 'px';
-            option.style.top = dropY + 'px';
+            option.style.left = dropX + 'px'
+            option.style.top = dropY + 'px'
+            option.classList.remove('text-option')
+            option.classList.add('text-answer')
+            option.addEventListener('focusin', (event) => {
+                event.target.removeAttribute('readonly')
+            })
+            option.addEventListener('focusout', (event) => {
+                event.target.readOnly = 'readonly'
+            })
             return option
         },
         createNewInputOption(optionType) {
@@ -225,8 +235,7 @@ export default {
 }
 
 .text-option {
-    min-width: 70px;
-    max-width: 70px;
+    width: 70px;
     cursor: move;
     border-radius: 6px;
 }
@@ -247,9 +256,9 @@ export default {
     max-height: 500px;
 }
 
-.text-option-2 {
-    position: fixed;
-    left: 500px;
-    top: 500px;
+.text-answer {
+    width: 100px;
+    cursor: move;
 }
+
 </style>
