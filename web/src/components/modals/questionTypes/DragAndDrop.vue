@@ -52,8 +52,8 @@ export default {
                 event.dataTransfer.setData('application/x-moz-node', event.target.id)
                 event.dataTransfer.setData('text', event.target.id)
             })
-            textOption.addEventListener('dragend', (ev) =>
-                ev.target.classList.remove('dragging')
+            textOption.addEventListener('dragend', (event) =>
+                event.target.classList.remove('dragging')
             )
         },
         numberOptionDragSetup() {
