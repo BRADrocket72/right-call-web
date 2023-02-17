@@ -84,8 +84,8 @@ export default {
         },
         dragAndDropSetup() {
           const modal = document.getElementById("modal")
-          modal.style.height = "540px"
-          modal.style.width = "1200px"
+          modal.style.height = "590px"
+          modal.style.width = "1272px"
 
           const modalBody = document.querySelector("section")
           modalBody.style.padding = "0"

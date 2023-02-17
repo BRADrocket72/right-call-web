@@ -326,8 +326,8 @@ export default {
 }
 
 video {
-  width: 900px;
-  height: 500px;
+  width: 972px;
+  height: 550px;
   display: block;
   margin: 0;
 }
