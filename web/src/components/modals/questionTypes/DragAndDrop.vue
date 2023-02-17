@@ -1,6 +1,6 @@
 <template>
     <div class="drag-container" id="drag-container">
-        <div class="drag-editor">
+        <div v-if="activity === ''" class="drag-editor">
             <div class="question-text-input" ondrop="return false">
                 <label for="question-text">Question Text: </label><input type="text" id="question-text" name="question-text">
             </div>
@@ -12,6 +12,9 @@
                 <h2 id="number-option" draggable="true">{{orderedNumbersIndex}}</h2>
                 <p>Ordered Numbers</p>
             </div>
+        </div>
+        <div v-else class="drag-editor">
+
         </div>
         <div class="drop-zone" id="drop-zone"></div>
     </div>
@@ -115,6 +118,10 @@ export default {
             option.addEventListener('focusout', (event) => {
                 event.target.readOnly = 'readonly'
             })
+            if(option.querySelector('.delete-button') === null) {
+                const newButton = this.createDeleteInputButton
+                option.insertBefore(newButton, option.firstChild)
+            }
             return option
         },
         createNewInputOption(optionType) {
@@ -130,6 +137,17 @@ export default {
                 const textContainer = document.querySelector('#text-container')
                 textContainer.insertBefore(newInput, textContainer.firstChild)
             }
+        },
+        createDeleteInputButton() {
+            const index = this.textInputIndex
+            const button = document.createElement('button')
+            button.type == 'button'
+            button.classList.add('delete-button')
+            button.onclick = this.deleteInput(index)
+            return button
+        },
+        deleteInput(index) {
+            console.log(index)
         },
         checkIfOptionAlreadyMoved(source) {
             let count = 0
@@ -261,4 +279,13 @@ export default {
     cursor: move;
 }
 
+.delete-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 10px;
+    border-radius: 100%;
+    background: #ff0000;
+    color: #ffffff;
+}
 </style>
