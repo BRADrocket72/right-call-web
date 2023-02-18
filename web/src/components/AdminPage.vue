@@ -3,9 +3,9 @@
   <LoggedInNavBar />
   <div class="admin-container">
     <div class="admin-buttons">
-      <router-link to= "/VideoUpload">
-        <button type="button" class="button-selection buttonLink"><span>Upload Lesson Video</span></button>
-        <p class="upload-description">Upload new lesson videos to the database.</p>
+      <router-link to= "/CreateLessonPage">
+        <button type="button" class="button-selection buttonLink"><span>Create Lesson</span></button>
+        <p class="upload-description">Upload new lessons to the database.</p>
       </router-link>
       <router-link to="/LessonDeletion">
         <button type="button" class="button-selection buttonDeleteLink"><span>Delete Lesson</span></button>
