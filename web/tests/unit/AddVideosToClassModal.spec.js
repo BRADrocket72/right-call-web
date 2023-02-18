@@ -30,8 +30,10 @@ describe('AssignActivityModal.vue', () => {
     })
 
     it('Contains the two containers of Students', () => {
-        const studentTables = wrapper.findAll('.flex-container')
-        expect(studentTables.length).toEqual(2)
+        const studentTable1 = wrapper.findAll('.flex-container-1')
+        expect(studentTable1.length).toEqual(1)
+        const studentTable2 = wrapper.findAll('.flex-container-2')
+        expect(studentTable2.length).toEqual(1)
     })
     it('Displays the correct amount of currently added videos to remove and add', () => {
         const notAddedVideos = wrapper.findAll('.addVideo')
