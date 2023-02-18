@@ -10,6 +10,7 @@ import UserResultsPage from "@/components/UserResultsPage.vue"
 import LessonDeletion from "@/components/LessonDeletion.vue"
 import CreateClassRoomPage from "@/components/CreateClassroomPage.vue"
 import UpdateClassPage from "@/components/UpdateClassPage.vue"
+import CreateLessonPage from "@/components/CreateLessonPage.vue"
 import { createRouter, createWebHistory } from 'vue-router'
 
 
@@ -75,6 +76,11 @@ const routesArray = [
         name: "UpdateClassPage",
         component: UpdateClassPage
     },
+    {
+        path: "/CreateLessonPage",
+        name: "CreateLessonPage",
+        component: CreateLessonPage
+    }
 ]
 
 const router = createRouter({
