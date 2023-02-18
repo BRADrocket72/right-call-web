@@ -23,14 +23,14 @@ afterAll(async () => await testMongoDb.closeDatabase())
 
 describe('Get all InstructorClasses',()=>
 {
-    it('get Two Ids',()=>{
+    it('get Two Ids',async ()=>{
     const instructorClassResult = await instructorClassCollection.getAllByInstructorId("instructor1")
     expect(instructorClassResult.length).toEqual(2);
     expect(instructorClassResult[0].instructorId).toEqual("instructor1")
     expect(instructorClassResult[1].instructorId).toEqual("instructor1")
     })
 
-    it('get One Id',()=>{
+    it('get One Id',async()=>{
         const instructorClassResult = await instructorClassCollection.getAllByInstructorId("instructor3")
         expect(instructorClassResult.length).toEqual(1);
         expect(instructorClassResult[0].instructorId).toEqual("instructor3")
