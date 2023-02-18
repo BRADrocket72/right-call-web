@@ -81,6 +81,7 @@ export default {
             numberOption.addEventListener('dragstart', (event) => {
                 this.currentEvent = event
                 event.currentTarget.classList.add('dragging')
+                event.dataTransfer.setData('application/x-moz-node', event.target.id)
                 event.dataTransfer.setData('text', event.target.id)
             })
             numberOption.addEventListener('dragend', (event) =>
@@ -119,11 +120,15 @@ export default {
         newDropEvent(event,dropX,dropY,type) {
             const data = event.dataTransfer.getData('text')
             const source = document.getElementById(data)
+            console.log(source)
             const existingOption = this.checkIfOptionAlreadyMoved(source)
             let styledSource = ''
             if(existingOption) {
                 const parentID = source.parentNode.id
-                const deleteButtonID = source.parentElement.querySelector('button').id
+                let deleteButtonID = ''
+                if(type === 'text') {
+                    deleteButtonID = source.parentElement.querySelector('button').id
+                }
                 source.parentNode.remove()
                 styledSource = this.setupOptionAndCoordinates(source, dropX, dropY, type, parentID, deleteButtonID)
                 this.updateCoordinates(this.currentEventID, dropX, dropY)
@@ -142,7 +147,6 @@ export default {
                 }
             }
             event.target.appendChild(styledSource)
-            console.log(this.numberIDs)
         },
         setupOptionAndCoordinates(option, dropX, dropY, type, parentID, buttonID) {
             const newDiv = document.createElement('div')
@@ -222,7 +226,6 @@ export default {
             return button
         },
         deleteOption(id, type) {
-            console.log(id)
             const node = document.getElementById(id).parentElement
             node.remove()
             if(type === 'text') {
@@ -297,26 +300,32 @@ export default {
             this.modalReturnArray = [this.questionType, this.questionText, this.answers, '']
         },
         resetTextInputs() {
-            console.log(this.textInputIDs)
-            for(const id of this.textInputIDs) {
-                console.log(id)
+            const copyIDs = this.textInputIDs
+            for(const id of copyIDs) {
+                const element = document.getElementById(id)
+                element.cloneNode(false)
                 this.deleteOption(id, 'text')
             }
             this.textInputIDs = []
             this.textInputIndex = 1
         },
         resetNumbers() {
-            let idCount =  1
+            let idCount = 0
             for(const id of this.numberIDs) {
-                const element = document.getElementById(id)
-                element.cloneNode(false)
-                this.deleteOption(element.id, 'number')
+                let element = document.getElementById(id)
+                element.cloneNode(true)
                 idCount +=1
+            }
+            for(let i = 0; i < idCount; i++) {
+                this.deleteOption(this.numberIDs[0], 'number')
             }
             this.numberIDs = []
             this.numbersIndex = 1
-            document.querySelector('#number-option-' + (idCount + 1)).remove()
-            this.createNewNumberOption()
+            
+            const lastID = '#number-option-' + (idCount + 1)
+            document.querySelector(lastID).remove()
+            this.createNewNumberOption(true)
+            this.numberOptionDragSetup()
         }
     },
     mounted() {
