@@ -120,7 +120,6 @@ export default {
         newDropEvent(event,dropX,dropY,type) {
             const data = event.dataTransfer.getData('text')
             const source = document.getElementById(data)
-            console.log(source)
             const existingOption = this.checkIfOptionAlreadyMoved(source)
             let styledSource = ''
             if(existingOption) {
@@ -182,8 +181,10 @@ export default {
             newDiv.insertBefore(option, newDiv.firstChild)
             return newDiv
         },
-        createNewTextOption() {
-            this.textInputIndex +=1
+        createNewTextOption(reset) {
+            if(!reset) {
+                this.textInputIndex +=1
+            }
             const newInput = document.createElement('input')
             newInput.type = 'text'
             newInput.classList.add('text-option')
@@ -300,14 +301,22 @@ export default {
             this.modalReturnArray = [this.questionType, this.questionText, this.answers, '']
         },
         resetTextInputs() {
-            const copyIDs = this.textInputIDs
-            for(const id of copyIDs) {
-                const element = document.getElementById(id)
-                element.cloneNode(false)
-                this.deleteOption(id, 'text')
+            let idCount = 0
+            for(const id of this.textInputIDs) {
+                let element = document.getElementById(id)
+                element.cloneNode(true)
+                idCount +=1
+            }
+            for(let i = 0; i < idCount; i++) {
+                this.deleteOption(this.textInputIDs[0], 'text')
             }
             this.textInputIDs = []
             this.textInputIndex = 1
+            
+            const lastID = '#text-option-' + (idCount + 1)
+            document.querySelector(lastID).remove()
+            this.createNewTextOption(true)
+            this.textOptionDragSetup()
         },
         resetNumbers() {
             let idCount = 0
