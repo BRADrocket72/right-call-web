@@ -1,7 +1,7 @@
 require('dotenv').config();
 const multer = require('multer')
 const express = require('express');
-const VideoClipController = require('../controllers/videoClipController.js')
+const VideoClipController = require('../controllers/videoClipController')
 
 
 const router = express.Router()
