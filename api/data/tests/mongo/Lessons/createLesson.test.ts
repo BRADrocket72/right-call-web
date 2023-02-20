@@ -1,6 +1,5 @@
 import { LessonDto } from "../../../model/LessonDto"
 import Lesson from "../../../mongo/Lesson"
-import LessonSchema from "../../../mongo/schemas/LessonSchema"
 
 
 const testMongoDb = require('../testMongoDb')
