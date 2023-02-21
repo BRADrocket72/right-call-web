@@ -79,6 +79,8 @@ export default {
           this.questionType = option
           if(this.questionType === "drag-and-drop") {
             this.dragAndDropSetup()
+          } else {
+            this.otherQuestionTypesSetup()
           }
           this.questionTypeSelected = true 
         },
@@ -90,6 +92,11 @@ export default {
           const modalBody = document.querySelector("section")
           modalBody.style.padding = "0"
           this.getFrameImage()
+        },
+        otherQuestionTypesSetup() {
+          const modal = document.getElementById("modal")
+          modal.style.height = "500px"
+          modal.style.width = "550px"
         },
         getFrameImage() {
           const video = document.querySelector("video")
@@ -106,6 +113,8 @@ export default {
     mounted() {
       if(this.questionTypeExists && this.activity.questionType === "drag-and-drop") {
         this.dragAndDropSetup()
+      } else {
+        this.otherQuestionTypesSetup()
       }
     }
 }

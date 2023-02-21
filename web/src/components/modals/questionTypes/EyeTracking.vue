@@ -97,11 +97,65 @@ export default {
 </script>
 
 <style>
+.button-div {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+}
+
+.btn-green {
+  margin: 0 auto;
+  color: white;
+  background: #4AAE9B;
+  border: 1px solid #eeeeee;
+  width: 100px;
+  border-radius: 2px;
+  padding: 15px;
+  margin: 10px;
+}
+
+.modal-fade-enter,
+.modal-fade-leave-to {
+  opacity: 0;
+}
+
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+  transition: opacity .5s ease;
+}
+
+.activity-info {
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+}
+
+.activity-info select {
+  width: 250px;
+  margin: 10px 0 10px 0;
+}
+
+.assign-activity-div input {
+  width: 500px;
+  background: #e8dede;
+  border-radius: 4px;
+}
+
+.activity-info select {
+  background: #e8dede;
+  border: 2px solid rgb(10, 10, 10);
+  border-radius: 4px;
+}
+
+#invalid-save {
+  font-size: 20px;
+  font-weight: bold;
+  color: #dd2a2a;
+}
+
 .activity-info label {
     width: 100%;
 }
-
-
 
 .quadrants {
     position: absolute;

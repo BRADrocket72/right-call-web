@@ -405,8 +405,8 @@ export default {
 </script>
 
 <style>
-.modal {
-    width: 100%;
+.assign-activity-div input {
+    background: #ffffff;
 }
 
 .drag-container {
@@ -490,7 +490,7 @@ export default {
 }
 
 .text-option {
-    width: 70px;
+    max-width: 70px;
     cursor: move;
     border-radius: 6px;
 }
@@ -568,7 +568,7 @@ export default {
 }
 
 .text-answer {
-    width: 100px;
+    max-width: 110px;
     cursor: move;
 }
 
