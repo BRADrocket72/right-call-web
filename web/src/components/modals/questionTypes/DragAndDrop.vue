@@ -69,7 +69,7 @@ export default {
             this.$emit('close')
         },
         save() {
-            if(this.checkInputs() && this.checkQuestionText()) {
+            if(this.checkInputs()) {
                 this.updateAnswersWithValues()
                 this.setupModalReturnArray()
                 this.$emit('save',this.activityModalData) 
@@ -258,20 +258,14 @@ export default {
             }
             return false
         },
-        checkQuestionText() {
-            const questionText = document.getElementById('question-text').value
-            if(questionText === '') {
-                return false
-            } else {
-                this.questionText = questionText
-                return true
-            }
-        },
         checkInputs() {
             let count = 0
             const questionText = document.getElementById('question-text')
             if(questionText === '') {
                 count +=1
+            } else {
+                this.questionText = questionText
+                console.log(this.questionText)
             }
             for(const id of this.positionedEventIDs) {
                 let element = document.getElementById(id)
@@ -597,7 +591,7 @@ export default {
 }
 
 .delete-button p {
-    margin: 0;
+    margin-top: -1px;
     font-size: 9px;
 }
 </style>
