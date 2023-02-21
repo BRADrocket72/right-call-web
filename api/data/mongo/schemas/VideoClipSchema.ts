@@ -1,7 +1,5 @@
 import mongoose from 'mongoose';
-
-
-
+import { VideoClipDto } from '../../model/VideoClipDto';
 
 const videoSchema = new mongoose.Schema({
     videoURL: {
@@ -17,5 +15,6 @@ const videoSchema = new mongoose.Schema({
         type: Array
     }
 })
+interface IVideoClipModel extends VideoClipDto,mongoose.Document{}
 
-module.exports =   mongoose.model('VideoClip', videoSchema)
+export default  mongoose.model<IVideoClipModel>('VideoClip', videoSchema)

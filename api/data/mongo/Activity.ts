@@ -6,7 +6,6 @@ import ActivitySchema from "../mongo/schemas/ActivitySchema"
  class Activity implements ActivityDb {
      
     async createActivity(activity:ActivityDto) {
-
         const data = new ActivitySchema({
             timestamp:activity.timestamp,
             questionText: activity.questionText,
@@ -17,6 +16,7 @@ import ActivitySchema from "../mongo/schemas/ActivitySchema"
         })
         const dataToSave = await data.save()
         return dataToSave
+
     }
     async getAll(){
         const data =await ActivitySchema.find()
