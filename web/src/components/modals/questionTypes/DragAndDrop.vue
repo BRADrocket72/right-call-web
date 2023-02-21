@@ -30,7 +30,7 @@
                 <button :id="'delete-text-' + (index + 1)" class="delete-button"><p>X</p></button>
             </div>
             <div v-for="(answer,index) in numbersFromDb" :key="answer" :id="'number-div-' + (index + 1)" :style="{ left: answer[2] + 'px', top: answer[3] + 'px'}">
-                <h2 class="number-answer" :id="'number-option-' + (index + 1)" draggable="true">{{index + 1}}</h2>
+                <h2 class="number-answer" :id="'number-option-' + (index + 1)" draggable="true" >{{index + 1}}</h2>
             </div>
         </div>
         <div v-else class="drop-zone" id="drop-zone"></div>
@@ -88,6 +88,13 @@ export default {
             textOption.addEventListener('dragend', (event) =>
                 event.target.classList.remove('dragging')
             )
+        },
+        deleteButtonClickSetup(button, currentIndex) {
+            button.addEventListener('mousedown', (event) => {
+                event.preventDefault()
+                const textID = 'text-option-' + currentIndex
+                this.deleteOption(textID)
+            })
         },
         numberOptionDragSetup() {
             const numberOption = document.querySelector('#number-option-' + this.numbersIndex)
@@ -208,13 +215,10 @@ export default {
         createDeleteTextInputButton() {
             const button = document.createElement('button')
             const currentIndex = this.textInputIndex
+            button.id = 'delete-text-' + currentIndex
             button.type == 'button'
             button.classList.add('delete-button')
-            button.addEventListener('mousedown', (event) => {
-                event.preventDefault()
-                const textID = 'text-option-' + currentIndex
-                this.deleteOption(textID)
-            })
+            this.deleteButtonClickSetup(button, currentIndex)
             const deleteSymbol = document.createElement('p')
             deleteSymbol.textContent = "X"
             button.appendChild(deleteSymbol, button.firstChild)
@@ -297,7 +301,13 @@ export default {
             }
         },
         setupModalReturnArray() {
-            this.activityModalData = [this.questionType, this.questionText, this.answers, '']
+            let longCorrectAnswerString = ''
+            for(const answer in this.answers) {
+                for(const row in answer) {
+                    longCorrectAnswerString = longCorrectAnswerString.concat(row, ', ')
+                }
+            }
+            this.activityModalData = [this.questionType, this.questionText, this.answers, longCorrectAnswerString]
         },
         resetInputs(type) {
             let idCount = 1
@@ -350,6 +360,9 @@ export default {
                 if(answer[1] === 'text') {
                     this.textOptionDragSetup()
                     let textID = 'text-option-' + this.textInputIndex
+                    let buttonID = 'delete-text-' + this.textInputIndex
+                    let button = document.getElementById(buttonID)
+                    this.deleteButtonClickSetup(button, this.textInputIndex)
                     this.answersWithIDs.push([textID,answer[1],answer[2],answer[3]])
                     this.positionedEventIDs.push(textID)
                     this.textInputIndex +=1
