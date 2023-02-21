@@ -260,12 +260,11 @@ export default {
         },
         checkInputs() {
             let count = 0
-            const questionText = document.getElementById('question-text')
+            const questionText = document.getElementById('question-text').value
             if(questionText === '') {
                 count +=1
             } else {
                 this.questionText = questionText
-                console.log(this.questionText)
             }
             for(const id of this.positionedEventIDs) {
                 let element = document.getElementById(id)
@@ -296,11 +295,12 @@ export default {
         },
         setupModalReturnArray() {
             let longCorrectAnswerString = ''
-            for(const answer in this.answers) {
-                for(const row in answer) {
+            for(const answer of this.answers) {
+                for(const row of answer) {
                     longCorrectAnswerString = longCorrectAnswerString.concat(row, ', ')
                 }
             }
+            console.log(longCorrectAnswerString)
             this.activityModalData = [this.questionType, this.questionText, this.answers, longCorrectAnswerString]
         },
         resetInputs(type) {
