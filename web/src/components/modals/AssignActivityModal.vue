@@ -91,7 +91,9 @@ export default {
 
           const modalBody = document.querySelector("section")
           modalBody.style.padding = "0"
-          this.getFrameImage()
+          setTimeout(() => {
+            this.getFrameImage()
+          }, 130)
         },
         otherQuestionTypesSetup() {
           const modal = document.getElementById("modal")

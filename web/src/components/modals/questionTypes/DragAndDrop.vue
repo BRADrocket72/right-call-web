@@ -74,7 +74,7 @@ export default {
                 this.setupModalReturnArray()
                 this.$emit('save',this.activityModalData) 
             } else {
-                alert('Please fill in all of the text fields, including the Question Text')
+                alert('Please fill in all of the text fields, including the Question Text. Also make sure there is at least one option.')
             }
         },
         textOptionDragSetup() {
@@ -266,15 +266,20 @@ export default {
             } else {
                 this.questionText = questionText
             }
-            for(const id of this.positionedEventIDs) {
-                let element = document.getElementById(id)
-                if(element.tagName === 'INPUT') {
-                    let value = element.value
-                    if(value === '') {
-                        count +=1
+            if(this.positionedEventIDs.length === 0) {
+                count +=1
+            } else {
+                for(const id of this.positionedEventIDs) {
+                    let element = document.getElementById(id)
+                    if(element.tagName === 'INPUT') {
+                        let value = element.value
+                        if(value === '') {
+                            count +=1
+                        }
                     }
                 }
             }
+            
             if(count >= 1) {
                 return false
             } else {
@@ -300,7 +305,6 @@ export default {
                     longCorrectAnswerString = longCorrectAnswerString.concat(row, ', ')
                 }
             }
-            console.log(longCorrectAnswerString)
             this.activityModalData = [this.questionType, this.questionText, this.answers, longCorrectAnswerString]
         },
         resetInputs(type) {
