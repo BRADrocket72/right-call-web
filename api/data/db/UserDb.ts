@@ -1,4 +1,5 @@
 import { UserDto } from "../model/UserDto"
+import { IUserDoc } from "../mongo/schemas/UserSchema"
 
 export interface UserDb {
     findUserById(userId: string):Promise<IUserDoc>

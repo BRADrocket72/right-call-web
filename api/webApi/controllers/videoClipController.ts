@@ -10,7 +10,7 @@ exports.create_clip = async (req, res) => {
         res.header('Content-Type', 'multipart/form-data')
 
         const fileUploadURL = await s3Service.s3Upload(req.file)
-        const data =  videoclipDb.createVideoClip(req.body, fileUploadURL);
+        const data =  await videoclipDb.createVideoClip(req.body.name, fileUploadURL);
         res.json(data)
     }
     catch (error) {

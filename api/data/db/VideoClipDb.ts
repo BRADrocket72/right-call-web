@@ -1,7 +1,7 @@
-import VideoClipDto from "../model/VideoClipDto";
+import { VideoClipDto }  from "../model/VideoClipDto";
 
 export interface VideoClipDb {
-    createVideoClip(videoClip:VideoClipDto,fileURL:string):Promise<VideoClipDto>;
+    createVideoClip(videoClip:string,fileURL:string):Promise<VideoClipDto>;
     getAllVideoClips():Promise<VideoClipDto[]>;
     getVideoClipById(id:string):Promise<VideoClipDto>;
     updateVideoClip(id:string,videoClip:VideoClipDto):Promise<VideoClipDto>;
