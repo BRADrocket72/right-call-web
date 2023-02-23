@@ -320,7 +320,6 @@ export default {
             }
         },
         updateCoordinates(id, dropX, dropY) {
-            console.log(this.currentEventID)
             let count = 0
             for(const row of this.answersWithIDs) {
                 if(row[0] === id) {
