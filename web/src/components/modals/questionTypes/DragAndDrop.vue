@@ -31,6 +31,7 @@
             </div>
             <div v-for="(answer,index) in numbersFromDb" :key="answer" :id="'number-div-' + (index + 1)" :style="{ left: answer[2] + 'px', top: answer[3] + 'px'}">
                 <h2 class="number-answer" :id="'number-option-' + (index + 1)" draggable="true" >{{index + 1}}</h2>
+                <button :id="'delete-number-' + (index + 1)" class="delete-button"><p>X</p></button>
             </div>
         </div>
         <div v-else class="drop-zone" id="drop-zone"></div>
@@ -89,11 +90,19 @@ export default {
                 event.target.classList.remove('dragging')
             )
         },
-        deleteButtonClickSetup(button, currentIndex) {
+        deleteButtonClickSetup(button, currentIndex, type) {
             button.addEventListener('mousedown', (event) => {
                 event.preventDefault()
-                const textID = 'text-option-' + currentIndex
-                this.deleteOption(textID)
+                let id = ''
+                if(type === 'text') {
+                    id = 'text-option-' + currentIndex
+                } else if(type === 'number') {
+                    id = 'number-option-' + currentIndex
+                }
+                this.deleteOption(id)
+                if(type === 'number') {
+                    this.decreaseNumberOptions(currentIndex)
+                }
             })
         },
         numberOptionDragSetup() {
@@ -130,7 +139,7 @@ export default {
                         dropY = event.layerY - 20
                         this.newDropEvent(event,dropX,dropY,'number')
                     } else {
-                        alert('Something went wrong, this activity type is currently unavailable.')
+                        alert('There was a problem setting up the drop zone.')
                     }
                 } else {
                     alert('Please do not drag the input inside itself. Make sure your cursor is outside the white area.')
@@ -157,6 +166,8 @@ export default {
                 } else if (type === 'number') {
                     this.createNewNumberOption(false)
                     this.numberOptionDragSetup()
+                } else {
+                    alert('There was a problem dropping the input.')
                 }
             }
             event.target.appendChild(styledSource)
@@ -176,12 +187,12 @@ export default {
                 option.addEventListener('focusout', (event) => {
                     event.target.readOnly = 'readonly'
                 })
-                const newButton = this.createDeleteTextInputButton()
-                newDiv.insertBefore(newButton, newDiv.firstChild)
             } else if (type === 'number'){
                 option.classList.remove('number-option')
                 option.classList.add('number-answer')
             }
+            const newButton = this.createDeleteButton(type)
+            newDiv.insertBefore(newButton, newDiv.firstChild)
             newDiv.insertBefore(option, newDiv.firstChild)
             return newDiv
         },
@@ -212,13 +223,21 @@ export default {
             const numberContainer = document.querySelector('#number-container')
             numberContainer.insertBefore(newNumber, numberContainer.firstChild)
         },
-        createDeleteTextInputButton() {
+        createDeleteButton(type) {
             const button = document.createElement('button')
-            const currentIndex = this.textInputIndex
-            button.id = 'delete-text-' + currentIndex
+            let currentIndex = 0
+            if(type === 'text') {
+                currentIndex = this.textInputIndex
+                button.id = 'delete-text-' + currentIndex
+            } else if(type === 'number') {
+                currentIndex = this.numbersIndex
+                button.id = 'delete-number-' + currentIndex
+            } else {
+                alert('There was a problem creating a delete button of type ' + type)
+            }
             button.type == 'button'
             button.classList.add('delete-button')
-            this.deleteButtonClickSetup(button, currentIndex)
+            this.deleteButtonClickSetup(button, currentIndex, type)
             const deleteSymbol = document.createElement('p')
             deleteSymbol.textContent = "X"
             button.appendChild(deleteSymbol, button.firstChild)
@@ -239,7 +258,55 @@ export default {
                     count +=1
                 }
             }
-        }, 
+        },
+        decreaseNumberOptions(currentIndex) {
+            let exists = true
+            let iterator = 1
+            let elementID = 'number-option-' + (currentIndex + iterator)
+            let numberElement = document.getElementById(elementID)
+            let buttonID = 'delete-number-' + (currentIndex + iterator)
+            let buttonElement = document.getElementById(buttonID)
+            do {
+                if(numberElement && buttonElement) {
+                    this.updateNumberOptionContent(currentIndex, iterator, numberElement, buttonElement)
+
+                    iterator +=1
+                    elementID = 'number-option-' + (currentIndex + iterator)
+                    numberElement = document.getElementById(elementID)
+                    buttonID = 'delete-number-' + (currentIndex + iterator)
+                    buttonElement = document.getElementById(buttonID)
+                } else {
+                    this.numbersIndex = (currentIndex - 1) + iterator
+                    numberElement.innerHTML = this.numbersIndex
+                    numberElement.id = 'number-option-' + this.numbersIndex
+                    exists = false
+                }
+            } while(exists === true)
+        },
+        updateNumberOptionContent(currentIndex, iterator, numberElement, buttonElement) {
+            let index = (currentIndex - 1) + iterator
+            this.updateNumberIDs(numberElement.id, index)
+            numberElement.id = 'number-option-' + index
+            numberElement.innerHTML = index
+            buttonElement.id = 'delete-number-' + index
+            let newButton = buttonElement.cloneNode(true)
+            buttonElement.parentNode.replaceChild(newButton, buttonElement)
+            this.deleteButtonClickSetup(newButton, index, 'number')
+        },
+        updateNumberIDs(id, newIndex) {
+            const positionedIndex = this.positionedEventIDs.indexOf(id)
+            this.positionedEventIDs.splice(positionedIndex, 0, 'number-option-' + newIndex)
+            this.positionedEventIDs.splice(positionedIndex+1, 1)
+
+            let count = 0
+            for(const answer of this.answersWithIDs) {
+                if(answer[0] === id) {
+                    this.answersWithIDs[count][0] = 'number-option-' + newIndex
+                } else {
+                    count +=1
+                }
+            }
+        },
         updateCoordinates(id, dropX, dropY) {
             let count = 0
             for(const row of this.answersWithIDs) {
@@ -360,13 +427,16 @@ export default {
                     let textID = 'text-option-' + this.textInputIndex
                     let buttonID = 'delete-text-' + this.textInputIndex
                     let button = document.getElementById(buttonID)
-                    this.deleteButtonClickSetup(button, this.textInputIndex)
+                    this.deleteButtonClickSetup(button, this.textInputIndex, 'text')
                     this.answersWithIDs.push([textID,answer[1],answer[2],answer[3]])
                     this.positionedEventIDs.push(textID)
                     this.textInputIndex +=1
                 } else if(answer[1] === 'number') {
                     this.numberOptionDragSetup()
                     let numberID = 'number-option-' + this.numbersIndex
+                    let buttonID = 'delete-number-' + this.numbersIndex
+                    let button = document.getElementById(buttonID)
+                    this.deleteButtonClickSetup(button, this.numbersIndex, 'number')
                     this.answersWithIDs.push([numberID,answer[1],answer[2],answer[3]])
                     this.positionedEventIDs.push(numberID)
                     this.numbersIndex +=1
