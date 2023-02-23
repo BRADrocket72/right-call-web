@@ -4,7 +4,7 @@ import 'jest'
 import AssignActivityModal from '@/components/modals/AssignActivityModal.vue';
 
 describe('AssignActivityModal.vue', () => {
-    let wrapper: any;
+    let wrapper
     beforeEach(() => {
         wrapper = mount(AssignActivityModal, {
             props:{
