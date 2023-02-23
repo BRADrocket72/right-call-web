@@ -44,7 +44,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .modal-backdrop {
   position: fixed;
   top: 0;
