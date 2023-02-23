@@ -338,32 +338,26 @@ export default {
             return false
         },
         checkInputs() {
-            let count = 0
             const questionText = document.getElementById('question-text').value
             if(questionText === '') {
-                count +=1
+                return false
             } else {
                 this.questionText = questionText
             }
             if(this.positionedEventIDs.length === 0) {
-                count +=1
+                return false
             } else {
                 for(const id of this.positionedEventIDs) {
                     let element = document.getElementById(id)
                     if(element.tagName === 'INPUT') {
                         let value = element.value
                         if(value === '') {
-                            count +=1
+                            return false
                         }
                     }
                 }
             }
-            
-            if(count >= 1) {
-                return false
-            } else {
-                return true
-            }
+            return true
         },
         updateAnswersWithValues() {
             for(const answer of this.answersWithIDs) {
