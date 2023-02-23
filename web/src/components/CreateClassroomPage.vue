@@ -83,7 +83,7 @@ export default {
                 var userStore = useUsersStore();
                 let instructorUsername = this.$cookies.get("user_session").currentUserName
                 let instructor =  await userStore.getUserByName(instructorUsername)
-                this.instructorId = instructor[0]._id
+                this.instructorId = instructor._id
                 var instructorClassStore = useInstructorClassStore()
                 await instructorClassStore.postInstructorClass(this.instructorId, this.className, [], this.classroom)
                 this.$router.push({

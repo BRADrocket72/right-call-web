@@ -4,12 +4,15 @@ import 'jest'
 import AssignActivityModal from '@/components/modals/AssignActivityModal.vue';
 
 describe('AssignActivityModal.vue', () => {
-    let wrapper: any;
+    let wrapper
     beforeEach(() => {
         wrapper = mount(AssignActivityModal, {
             props:{
                 activities: [new ActivityDto(4, "What was the call?", ["Yellow Card", "Red Card"], "Yellow Card","123testId")],
                 activityIndex: 0
+            },
+            mounted() {
+
             }
         })
     })

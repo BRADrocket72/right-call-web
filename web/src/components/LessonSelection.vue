@@ -52,7 +52,7 @@ export default {
           let userStore = useUsersStore();
           this.allClasses = await instructorStore.fetchAllInstructorClasses()
           let currentUser = await userStore.getUserByName(this.$cookies.get("user_session").currentUserName)
-          this.currentStudentId = currentUser[0]._id
+          this.currentStudentId = currentUser._id
           for (let i=0; i<this.allClasses.length; i++) {
             for(let j=0; j<this.allClasses[i].studentIds.length; j++){
               if (this.allClasses[i].studentIds[j] == this.currentStudentId) {

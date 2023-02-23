@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
-
-
+import { UserDto } from '../../model/UserDto';
 
 const userSchema = new mongoose.Schema({
     userName: {
@@ -26,4 +25,6 @@ const userSchema = new mongoose.Schema({
     }
 })
 
-module.exports =   mongoose.model('User', userSchema)
+export interface IUserDoc extends UserDto,mongoose.Document {}
+
+export default   mongoose.model<IUserDoc>('User', userSchema)
