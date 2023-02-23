@@ -93,7 +93,7 @@ export default {
           modalBody.style.padding = "0"
           setTimeout(() => {
             this.getFrameImage()
-          }, 130)
+          }, 150)
         },
         otherQuestionTypesSetup() {
           const modal = document.getElementById("modal")

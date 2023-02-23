@@ -10,6 +10,9 @@ describe('AssignActivityModal.vue', () => {
             props:{
                 activities: [new ActivityDto(4, "What was the call?", ["Yellow Card", "Red Card"], "Yellow Card","123testId")],
                 activityIndex: 0
+            },
+            mounted() {
+
             }
         })
     })
