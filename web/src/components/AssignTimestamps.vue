@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </div>
-            <AssignActivityModal v-if="isAssignActivityModalVisible" :activity="activities[currentIndex]" :questionTypeExists="activities[currentIndex].questionType" @close="toggleAssignActivityModal" @save="assignActivityModalSave"/>
+            <AssignActivityModal v-if="isAssignActivityModalVisible" :activity="activities[currentIndex]" :questionTypeExists="activities[currentIndex].questionType" :timestamp="currentActivityTimestamp" @close="toggleAssignActivityModal" @save="assignActivityModalSave"/>
         </div>
     </div>
 </div>
@@ -94,6 +94,10 @@ export default {
                 name: "AssignTimestamps"
             })
             
+        },
+        moveVideoToTimestampFrame() {
+            const video = document.getElementById(this.selectedVideo._id)
+            video.currentTime = this.currentActivityTimestamp
         },
         getVideoTimestampsAndActivities() {
             if(this.selectedVideo.timeStamps) {
@@ -162,6 +166,9 @@ export default {
             if(this.isAssignActivityModalVisible) {
                 this.currentIndex = activityIndex
                 this.currentActivityTimestamp = this.timestamps[activityIndex]
+                const video = document.getElementById(this.selectedVideo._id)
+                video.pause()
+                this.moveVideoToTimestampFrame()
             } 
             this.toggleSaveButton()
         },
@@ -319,8 +326,8 @@ export default {
 }
 
 video {
-  width: 900px;
-  height: 500px;
+  width: 972px;
+  height: 550px;
   display: block;
   margin: 0;
 }

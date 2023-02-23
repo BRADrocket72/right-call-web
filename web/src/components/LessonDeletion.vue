@@ -55,14 +55,15 @@
 </script>
 <style scoped>
 .video-list-div {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-     margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  min-width: 100%;
+  margin: 0 auto;
 }
 
 .lesson {
-  flex: 1 0 25%;
+  flex: 1 1 25%;
   margin: 0 30px 30px 0;
   text-align: left;
   height: 350px;
