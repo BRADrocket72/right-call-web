@@ -82,11 +82,25 @@ export default {
             const textOption = document.querySelector('#text-option-' + this.textInputIndex)
             textOption.addEventListener('dragstart', (event) => {
                 this.currentEvent = event
+                this.currentIndex = this.textInputIndex
                 event.currentTarget.classList.add('dragging')
                 event.dataTransfer.setData('application/x-moz-node', event.target.id)
                 event.dataTransfer.setData('text', event.target.id)
             })
             textOption.addEventListener('dragend', (event) =>
+                event.target.classList.remove('dragging')
+            )
+        },
+        numberOptionDragSetup() {
+            const numberOption = document.querySelector('#number-option-' + this.numbersIndex)
+            numberOption.addEventListener('dragstart', (event) => {
+                this.currentEvent = event
+                this.currentIndex = this.numbersIndex
+                event.currentTarget.classList.add('dragging')
+                event.dataTransfer.setData('application/x-moz-node', event.target.id)
+                event.dataTransfer.setData('text', event.target.id)
+            })
+            numberOption.addEventListener('dragend', (event) =>
                 event.target.classList.remove('dragging')
             )
         },
@@ -104,18 +118,6 @@ export default {
                     this.decreaseNumberOptions(currentIndex)
                 }
             })
-        },
-        numberOptionDragSetup() {
-            const numberOption = document.querySelector('#number-option-' + this.numbersIndex)
-            numberOption.addEventListener('dragstart', (event) => {
-                this.currentEvent = event
-                event.currentTarget.classList.add('dragging')
-                event.dataTransfer.setData('application/x-moz-node', event.target.id)
-                event.dataTransfer.setData('text', event.target.id)
-            })
-            numberOption.addEventListener('dragend', (event) =>
-                event.target.classList.remove('dragging')
-            )
         },
         dropZoneSetup() {
             const dropZone = document.querySelector('#drop-zone')
@@ -151,14 +153,21 @@ export default {
             const source = document.getElementById(data)
             this.currentEventID = source.id
             const existingOption = this.checkIfOptionAlreadyMoved(source)
-            let styledSource = ''
+            let positionedSource = ''
             if(existingOption) {
+                let children = []
+                for(const child of source.parentNode.children) {
+                    children.push(child)
+                }
                 source.parentNode.remove()
-                styledSource = this.setupOptionAndCoordinates(source, dropX, dropY, type)
+                positionedSource = this.setupOptionAndCoordinates(source, dropX, dropY, type, true)
+                for(const child of children) {
+                    positionedSource.appendChild(child)
+                }
                 this.updateCoordinates(this.currentEventID, dropX, dropY)
             } else {
                 this.positionedEventIDs.push(source.id)
-                styledSource = this.setupOptionAndCoordinates(source, dropX, dropY, type)
+                positionedSource = this.setupOptionAndCoordinates(source, dropX, dropY, type, false)
                 this.answersWithIDs.push([this.currentEventID, type, dropX, dropY])
                 if(type === 'text') {
                     this.createNewTextOption(false)
@@ -170,31 +179,35 @@ export default {
                     alert('There was a problem dropping the input.')
                 }
             }
-            event.target.appendChild(styledSource)
+            event.target.appendChild(positionedSource)
         },
-        setupOptionAndCoordinates(option, dropX, dropY, type) {
+        setupOptionAndCoordinates(source, dropX, dropY, type, existing) {
             const newDiv = document.createElement('div')
             newDiv.style.left = dropX + 'px'
             newDiv.style.top = dropY + 'px'
             
-            if(type === 'text') {
-                option.classList.remove('text-option')
-                option.classList.add('text-answer')
-                option.autocomplete= 'off'
-                option.addEventListener('focusin', (event) => {
+            if(existing) {
+                return newDiv
+            } else {
+                if(type === 'text') {
+                source.classList.remove('text-option')
+                source.classList.add('text-answer')
+                source.autocomplete= 'off'
+                source.addEventListener('focusin', (event) => {
                     event.target.removeAttribute('readonly')
                 })
-                option.addEventListener('focusout', (event) => {
+                source.addEventListener('focusout', (event) => {
                     event.target.readOnly = 'readonly'
                 })
-            } else if (type === 'number'){
-                option.classList.remove('number-option')
-                option.classList.add('number-answer')
+                } else if (type === 'number'){
+                    source.classList.remove('number-option')
+                    source.classList.add('number-answer')
+                }
+                const newButton = this.createDeleteButton(type)
+                newDiv.insertBefore(newButton, newDiv.firstChild)
+                newDiv.insertBefore(source, newDiv.firstChild)
+                return newDiv
             }
-            const newButton = this.createDeleteButton(type)
-            newDiv.insertBefore(newButton, newDiv.firstChild)
-            newDiv.insertBefore(option, newDiv.firstChild)
-            return newDiv
         },
         createNewTextOption(reset) {
             if(!reset) {
@@ -269,7 +282,6 @@ export default {
             do {
                 if(numberElement && buttonElement) {
                     this.updateNumberOptionContent(currentIndex, iterator, numberElement, buttonElement)
-
                     iterator +=1
                     elementID = 'number-option-' + (currentIndex + iterator)
                     numberElement = document.getElementById(elementID)
@@ -308,6 +320,7 @@ export default {
             }
         },
         updateCoordinates(id, dropX, dropY) {
+            console.log(this.currentEventID)
             let count = 0
             for(const row of this.answersWithIDs) {
                 if(row[0] === id) {
