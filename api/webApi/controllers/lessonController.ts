@@ -1,15 +1,11 @@
-const LessonSchema = require('../../data/mongo/schemas/LessonSchema.ts');
+import Lesson from "../../data/mongo/Lesson"
 
+const lessonDb = new Lesson();
 
 exports.lessons_create_lesson = async (req, res) => {
-    const data = new LessonSchema({
-        name: req.body.name,
-        description: req.body.description,
-        videoClipsArray: req.body.videoClipsArray
-    })
     try {
         res.header('Access-Control-Allow-Origin', '*')
-        const dataToSave = await data.save();
+        const dataToSave = await lessonDb.createLesson(req.body);
         res.status(200).json(dataToSave)
     }
     catch (error) {
@@ -20,7 +16,7 @@ exports.lessons_create_lesson = async (req, res) => {
 exports.lessons_get_all = async (req, res) => {
     try {
         res.header('Access-Control-Allow-Origin', '*')
-        const data = await LessonSchema.find();
+        const data = await lessonDb.getAll();
         res.json(data)
     }
     catch (error) {
