@@ -11,8 +11,10 @@
           <slot name="body">
             <p>This lesson includes eye-tracking questions that need to use your webcam. A webcam is not required to take this lesson.</p>
             <p>If you do plan on using your webcam, please also click "Yes" on the browser pop-up asking to access your webcam.</p>
-            <button type="button" class="btn-green" @click="selectPermission(true)">Accept</button>
-            <button type="button" class="btn-green" @click="selectPermission(false)">Decline</button>
+            <div class="button-div">
+              <button type="button" class="btn-green" @click="selectPermission(true)">Accept</button>
+              <button type="button" class="btn-green" @click="selectPermission(false)">Decline</button>
+            </div>
           </slot>
         </section>
       </div>
@@ -42,7 +44,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -57,8 +59,10 @@ export default {
 
 .modal {
   background: white;
-  width: 600px;
-  height: 300px;
+  min-width: 600px;
+  max-width: 600px;
+  min-height: 400px;
+  max-height: 400px;
   border-radius: 2px;
   position: fixed;
   left: auto;
@@ -119,5 +123,11 @@ export default {
 .modal-fade-enter-active,
 .modal-fade-leave-active {
   transition: opacity .5s ease;
+}
+
+.button-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 </style>

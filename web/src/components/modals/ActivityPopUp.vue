@@ -54,7 +54,7 @@ import {checkAnswer} from "../../util/GetResults"
   };
 </script>
 
-<style>
+<style scoped>
   .modal-backdrop {
     position: fixed;
     top: 0;
@@ -68,8 +68,10 @@ import {checkAnswer} from "../../util/GetResults"
   }
   .modal {
     background: darkgray;
-    width: 600px;
-    height: 300px;
+    min-width: 650px;
+    max-width: 650px;
+    min-height: 500px;
+    max-height: 500px;
     position: fixed;
     left: auto;
     top: auto;

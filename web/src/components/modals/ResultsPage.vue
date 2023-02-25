@@ -15,7 +15,7 @@
             <p v-for="n in this.answersArray.length" :key="n">Question {{n}}: {{this.answersArray[n-1]}}
             </p>
 
-            <button type="button" class="btn-green" @click="close()"> Back to Lesson Selection Page </button>
+            <button type="button" class="btn-green" @click="close()">Back to Lessons</button>
           </slot>
         </section>
       </div>
@@ -54,7 +54,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -70,7 +70,7 @@ export default {
 .modal {
   background: white;
   width: 600px;
-  height: 300px;
+  height: 400px;
   border-radius: 2px;
   position: fixed;
   left: auto;
