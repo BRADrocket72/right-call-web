@@ -19,6 +19,20 @@ exports.create_clip = async (req, res) => {
     }
 }
 
+exports.create_instructor_clip = async (req, res) => {
+    try {
+        res.header('Access-Control-Allow-Origin', '*')
+        res.header('Content-Type', 'multipart/form-data')
+
+        const data =  await videoclipDb.createVideoClip(req.body.videoName, req.body.videoUrl);
+        res.json(data)
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message })
+        throw error;
+    }
+}
+
 exports.get_all = async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
