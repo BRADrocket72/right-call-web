@@ -56,7 +56,7 @@ const routesArray = [
         component: InstructorPage
     },
     {
-        path: "/AssignTimestamps:videoIdsArray",
+        path: "/AssignTimestamps:lessonPack",
         name: "AssignTimestamps",
         component: AssignTimestamps,
         props: true

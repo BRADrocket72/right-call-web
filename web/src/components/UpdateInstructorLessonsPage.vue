@@ -3,24 +3,21 @@
       <LoggedInNavBar />
       <div class="admin-container">
         <br/>
-        <h1>Select Admin Lesson to Customize</h1>
+        <h1>Select Lesson to Update</h1>
+        <br/>
+        <h5>Your custom lessons:</h5>
         <div class="admin-buttons">
-            <div v-for="lesson in allLessons" :key="lesson._id">
-                <!-- <button type="button" class="button-selection buttonLink" @click="selectLessonToCustomize(lesson.name, lesson.videoClipsArray)"><span>{{lesson.name}}</span></button> -->
-                <button type="button" class="button-selection buttonLink" @click="confirmCustomization(lesson)"><span>{{lesson.name}}</span></button>
+            <div v-for="lesson in instructorLessons" :key="lesson._id">
+                <button type="button" class="button-selection buttonLink" @click="selectLessonToCustomize(lesson.name, lesson.videoClipsArray)"><span>{{lesson.name}}</span></button>
                 <p class="upload-description">{{lesson.description}}<br/><br/>Content: {{ lesson.videoClipsArray.length }} videos</p>
             </div>
         </div>
       </div>
-      <LessonCustomizationConfirmation v-if="isCustomizationConfirmed" :lesson="selectedLesson" @close="closeModal"/>
     </div>
     </template>
     
     <script>
     import LoggedInNavBar from './LoggedInNavBar.vue';
-    import { useLessonStore } from '@/stores/LessonsStore';
-    import LessonCustomizationConfirmation from '@/components/modals/LessonCustomizationConfirmation.vue';
-    import { useVideoClipStore } from "@/stores/VideoClipStore";
     import { useUsersStore } from "@/stores/UserStore";
     import { useInstructorLessonStore } from "@/stores/InstructorLessonStore";
     
@@ -28,56 +25,31 @@
     export default {
         name: "UpdateInstructorLessonsPage",
         components: { 
-          LoggedInNavBar,
-          LessonCustomizationConfirmation
+          LoggedInNavBar
         },
         data() {
             return {
-                allLessons: [],
-                isCustomizationConfirmed: false,
-                uploadedInstructorVideos: [],
-                selectedLesson: ""
+                instructorLessons: []
             }
         },
         async mounted() {
-            let lessonStore = useLessonStore()
-            this.allLessons = await lessonStore.getAllLessons()
+          var userStore = useUsersStore();
+          let instructorUsername = this.$cookies.get("user_session").currentUserName
+          let instructor =  await userStore.getUserByName(instructorUsername)
+          this.instructorId = instructor._id
+          let instructorLessonStore = useInstructorLessonStore();
+          this.instructorLessons = await instructorLessonStore.getLessonsByInstructorId(this.instructorId)
         },
         methods: {
             selectLessonToCustomize(lessonName, lessonArrayOfVideos) {
                 let lessonPack = [lessonName, lessonArrayOfVideos]
                 this.$router.push({
-                    name: "CustomizeLesson",
+                    name: "AssignTimestamps",
                     params: {
                         lessonPack: JSON.stringify(lessonPack)
                     }
                 })
             },
-            confirmCustomization(lesson) {
-              this.isCustomizationConfirmed = true
-              this.selectedLesson = lesson
-            },
-            async closeModal(isLessonConfirmed, lesson) {
-              if (isLessonConfirmed == "true") {
-                this.isCustomizationConfirmed = false
-                let videoClipStore = useVideoClipStore()
-                for (let i=0; i<lesson.videoClipsArray.length; i++) {
-                  this.uploadedInstructorVideos.push(await videoClipStore.postInstructorsCustomizedVideo(lesson.videoClipsArray[i].videoName, lesson.videoClipsArray[i].videoURL))
-                }
-                let instructorLessonStore = useInstructorLessonStore();
-                var userStore = useUsersStore();
-                let instructorUsername = this.$cookies.get("user_session").currentUserName
-                let instructor =  await userStore.getUserByName(instructorUsername)
-                this.instructorId = instructor._id
-                await instructorLessonStore.postInstructorLesson(lesson.name, this.instructorId, lesson.description, this.uploadedInstructorVideos)
-                this.$router.push({
-                    name: "InstructorPage"
-                })
-              } else {
-                this.isCustomizationConfirmed = false
-              }
-            },
-
         }
     }
     </script>

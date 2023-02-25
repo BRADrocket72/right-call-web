@@ -3,6 +3,9 @@
     <LoggedInNavBarVue />
     <br/><br/>
     <div v-if="ready" class="assign-timestamps">
+        <h2 id="lessonNameText">Edit Lesson Name: <input id="lessonNameInput" :value="lessonName"/> </h2>
+        <br/><br/>
+        <h5>Add/remove questions to videos: </h5>
         <div class="video-list-div" v-if="isVideoSelected == false">
             <div class="lesson" v-for="video in this.videoClips" :key="video._id">
                 <a class="nav-link" @click="videoSelection(video)">
@@ -77,7 +80,7 @@ export default {
         }
     },
     props: {
-        videoIdsArray: {
+        lessonPack: {
             type: String
         }
         
@@ -99,7 +102,6 @@ export default {
             this.$router.push({
                 name: "AssignTimestamps"
             })
-            
         },
         getVideoTimestampsAndActivities() {
             if(this.selectedVideo.timeStamps) {
@@ -245,7 +247,9 @@ export default {
     },
     async mounted() {
         var videoClip = useVideoClipStore();
-        let parsedVideoIdsArray = JSON.parse(this.$route.params.videoIdsArray)
+        let parsedLessonArray = JSON.parse(this.lessonPack)
+        this.lessonName = parsedLessonArray[0]
+        let parsedVideoIdsArray = parsedLessonArray[1]
         for (let i=0;i<parsedVideoIdsArray.length;i++) {
             this.videoClips.push(await videoClip.fetchVideoClipById(parsedVideoIdsArray[i]._id))
         }
@@ -495,5 +499,14 @@ ul.timestamp-ul {
 
 .complete-timestamp:hover {
     background-color: #0ea83d;
+}
+
+#lessonNameText {
+        text-align: center;
+}
+
+#lessonNameInput {
+    border: 3px solid #4AAE9B;
+    border-radius: 5px;
 }
 </style>

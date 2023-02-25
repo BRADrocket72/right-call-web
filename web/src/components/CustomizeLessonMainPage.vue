@@ -43,15 +43,6 @@
             this.allLessons = await lessonStore.getAllLessons()
         },
         methods: {
-            selectLessonToCustomize(lessonName, lessonArrayOfVideos) {
-                let lessonPack = [lessonName, lessonArrayOfVideos]
-                this.$router.push({
-                    name: "CustomizeLesson",
-                    params: {
-                        lessonPack: JSON.stringify(lessonPack)
-                    }
-                })
-            },
             confirmCustomization(lesson) {
               this.isCustomizationConfirmed = true
               this.selectedLesson = lesson
