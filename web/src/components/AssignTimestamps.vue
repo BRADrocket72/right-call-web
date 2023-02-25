@@ -4,7 +4,7 @@
     <br/><br/>
     <div v-if="ready" class="assign-timestamps">
         <div class="video-list-div" v-if="isVideoSelected == false">
-            <div class="lesson" v-for="video in this.videoClips" :key="video.id">
+            <div class="lesson" v-for="video in this.videoClips" :key="video._id">
                 <a class="nav-link" @click="videoSelection(video)">
                     <img class="lesson-img" :alt="video._id" src="../../images/american-football-referees-1476038_960_720.jpg" />
                     <p>{{ video.videoName }}</p>
@@ -75,6 +75,12 @@ export default {
             deletedActivities: [],
             updatedActivities: []
         }
+    },
+    props: {
+        videoIdsArray: {
+            type: String
+        }
+        
     },
     methods: {
         videoSelection(video) {
@@ -239,7 +245,10 @@ export default {
     },
     async mounted() {
         var videoClip = useVideoClipStore();
-        this.videoClips =  await videoClip.fetchVideoClips();
+        let parsedVideoIdsArray = JSON.parse(this.$route.params.videoIdsArray)
+        for (let i=0;i<parsedVideoIdsArray.length;i++) {
+            this.videoClips.push(await videoClip.fetchVideoClipById(parsedVideoIdsArray[i]._id))
+        }
         this.ready = true;
     }
 }

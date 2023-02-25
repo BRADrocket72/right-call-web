@@ -14,6 +14,7 @@ import CreateLessonPage from "@/components/CreateLessonPage.vue"
 import UpdateLessonsPage from "@/components/UpdateLessonsPage.vue"
 import CustomizeLessonMainPage from "@/components/CustomizeLessonMainPage.vue"
 import CustomizeLesson from "@/components/CustomizeLesson.vue"
+import UpdateInstructorLessonsPage from "@/components/UpdateInstructorLessonsPage.vue"
 import { createRouter, createWebHistory } from 'vue-router'
 
 
@@ -100,7 +101,12 @@ const routesArray = [
         name: "CustomizeLesson",
         component: CustomizeLesson,
         props: true
-    }
+    },
+    {
+        path: "/UpdateInstructorLessonsPage",
+        name: "UpdateInstructorLessonsPage",
+        component: UpdateInstructorLessonsPage
+    },
 ]
 
 const router = createRouter({
