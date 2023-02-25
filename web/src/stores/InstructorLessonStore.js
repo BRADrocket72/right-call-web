@@ -32,6 +32,14 @@ export const useInstructorLessonStore = defineStore("InstructorLessons", {
             } catch(error) {
                 console.error(error)
             }
-        }
+        },
+        async getClassesByInstructorId(instructorId) {
+            try {
+                const data = await axios.get('http://localhost:3000/api/instructorLessons/getById/' + instructorId)
+                return data.data
+            } catch(error) {
+                console.error(error)
+            }
+        },
     }
 })

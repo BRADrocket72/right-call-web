@@ -23,3 +23,14 @@ exports.instructor_lessons_get_all = async (req, res) => {
         res.status(500).json({ message: error.message })
     }
 }
+
+exports.instructor_lessons_get_by_id = async (req, res) => {
+    try {
+        res.header('Access-Control-Allow-Origin', '*')
+        const data = await instructorLessonDb.getById(req.params.instructorId);
+        res.json(data)
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}

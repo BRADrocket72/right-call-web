@@ -710,6 +710,26 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "GetById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/instructorLessons/getById/:instructorId",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"instructorLessons",
+								"getById"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}

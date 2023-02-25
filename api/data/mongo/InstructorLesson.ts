@@ -19,5 +19,9 @@ import InstructorLessonSchema from "./schemas/InstructorLessonSchema"
         const data =await InstructorLessonSchema.find()
         return data;
     }
+    async getById(instructorId: string) {
+        const data = await InstructorLessonSchema.find({"instructorId": instructorId})
+        return data;
+    }
 }
 export default  InstructorLesson
