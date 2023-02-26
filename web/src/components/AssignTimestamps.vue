@@ -4,8 +4,12 @@
     <br/><br/>
     <div v-if="ready" class="assign-timestamps">
         <h2 id="lessonNameText">Edit Lesson Name: <input id="lessonNameInput" :value="lessonName"/> </h2>
+        <br/>
+        <div id="updateLessonButton">
+            <button id="customize-lesson-button" @click="saveLessonName()">Save Updated Name</button>
+        </div>
         <br/><br/>
-        <h5>Add/remove questions to videos: </h5>
+        <h4>Add/remove questions to videos: </h4>
         <div class="video-list-div" v-if="isVideoSelected == false">
             <div class="lesson" v-for="video in this.videoClips" :key="video._id">
                 <a class="nav-link" @click="videoSelection(video)">
@@ -243,6 +247,9 @@ export default {
             this.updateActivitiesAPI()
             this.deleteActivitiesAPI()
             this.returnToVideoSelectionPage()
+        },
+        async saveLessonName() {
+
         }
     },
     async mounted() {
@@ -508,5 +515,27 @@ ul.timestamp-ul {
 #lessonNameInput {
     border: 3px solid #4AAE9B;
     border-radius: 5px;
+}
+#customize-lesson-button {
+    text-align: center;
+    margin-left: 22px;
+    border: none;
+    font-size: 25px;
+    color: white;
+    text-shadow: 1px 1px 1px black;
+    box-shadow: 0 6px 6px #d1d1d1;
+    background: #4AAE9B;
+    min-width: 100px;
+    min-height: 40px;
+    border-radius: 15px;
+}
+    
+#customize-lesson-button:hover {
+    background: #349b88;
+    box-shadow: 0 10px 10px #d1d1d1;
+}
+
+#updateLessonButton {
+    text-align: center;
 }
 </style>

@@ -22,6 +22,7 @@
     import { useVideoClipStore } from "@/stores/VideoClipStore";
     import { useUsersStore } from "@/stores/UserStore";
     import { useInstructorLessonStore } from "@/stores/InstructorLessonStore";
+    import { useActivityStore } from '@/stores/ActivityStore';
     
         
     export default {
@@ -52,7 +53,18 @@
                 this.isCustomizationConfirmed = false
                 let videoClipStore = useVideoClipStore()
                 for (let i=0; i<lesson.videoClipsArray.length; i++) {
-                  this.uploadedInstructorVideos.push(await videoClipStore.postInstructorsCustomizedVideo(lesson.videoClipsArray[i].videoName, lesson.videoClipsArray[i].videoURL))
+                  let currentVideosTimestamps = await videoClipStore.fetchVideoClipById(lesson.videoClipsArray[i]._id)
+                  this.uploadedInstructorVideos.push(await videoClipStore.postInstructorsCustomizedVideo(lesson.videoClipsArray[i].videoName, lesson.videoClipsArray[i].videoURL, currentVideosTimestamps.timeStamps))
+                  let videoId = lesson.videoClipsArray[i]._id
+                  let activityStore = useActivityStore()
+                  let videosActivities = await activityStore.fetchActivitiesByVideoclipId(videoId)
+                  for (let j=0; j<currentVideosTimestamps.timeStamps.length; j++) {
+                    for (let x=0; x<videosActivities.length; x++) {
+                      if (currentVideosTimestamps.timeStamps[j] == videosActivities[x].timestamp) {
+                        await activityStore.postActivities(videosActivities[x].timestamp, videosActivities[x].questionType, videosActivities[x].questionText, videosActivities[x].answers, videosActivities[x].correctAnswer, this.uploadedInstructorVideos[i]._id)
+                      }
+                    }
+                  } 
                 }
                 let instructorLessonStore = useInstructorLessonStore();
                 var userStore = useUsersStore();
