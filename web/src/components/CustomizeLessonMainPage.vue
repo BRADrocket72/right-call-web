@@ -26,7 +26,7 @@
     
         
     export default {
-        name: "CustomizeLessonPack",
+        name: "CustomizeLessonMainPage",
         components: { 
           LoggedInNavBar,
           LessonCustomizationConfirmation
