@@ -10,7 +10,7 @@ exports.create_clip = async (req, res) => {
         res.header('Content-Type', 'multipart/form-data')
 
         const fileUploadURL = await s3Service.s3Upload(req.file)
-        const data =  await videoclipDb.createVideoClip(req.body.name, fileUploadURL);
+        const data =  await videoclipDb.createVideoClip(req.body.name, fileUploadURL, []);
         res.json(data)
     }
     catch (error) {
@@ -24,7 +24,7 @@ exports.create_instructor_clip = async (req, res) => {
         res.header('Access-Control-Allow-Origin', '*')
         res.header('Content-Type', 'multipart/form-data')
 
-        const data =  await videoclipDb.createVideoClip(req.body.videoName, req.body.videoUrl);
+        const data =  await videoclipDb.createVideoClip(req.body.videoName, req.body.videoUrl, req.body.timeStamps);
         res.json(data)
     }
     catch (error) {

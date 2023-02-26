@@ -43,12 +43,13 @@ export const useVideoClipStore = defineStore("VideoClip", {
                 console.log(error)
             }
         },
-        async postInstructorsCustomizedVideo(videoName, videoUrl) {
+        async postInstructorsCustomizedVideo(videoName, videoUrl, timeStamps) {
             try {
                 const data = await axios.post('http://localhost:3000/api/videoClip/postInstructorVideo', 
                 { 
                     videoName: videoName,
                     videoUrl: videoUrl,
+                    timeStamps: timeStamps
                 })
                 return data.data
             } catch(error) {
