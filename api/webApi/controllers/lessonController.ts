@@ -23,3 +23,15 @@ exports.lessons_get_all = async (req, res) => {
         res.status(500).json({ message: error.message })
     }
 }
+
+exports.lessons_delete_lesson = async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*')
+    try {
+        const id = req.params.id;
+        const result = await lessonDb.findByIdAndDelete(id)
+        res.send(result)
+    }
+    catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+}

@@ -7,6 +7,11 @@
           <label for="lesson-name">Name of Lesson: </label><input type="text" id="lesson-name" name="lesson-name" />
           <label for="description">Description of Lesson: </label><textarea id="description" name="description"> </textarea> <br/>
           <label for="videoUpload">Upload Video Files To Lesson: </label><input type="file" id="videoUpload" name="file" v-on:change="fileChange" multiple="multiple"/>
+          <div v-if="isFileChanged">
+            <div v-for="videoFile in videosToUpload" :key="videoFile">
+              <label for="fileUpload">Edit Official Name of Video: </label><input type="text" id="fileUpload" name="fileUpload" v-model="videoFile.videoTitle" />
+            </div>
+          </div>
           <button id="upload-button" @click="uploadLesson">Upload Lesson</button>
         </div>
         <div class="uploading-video-div">
@@ -31,7 +36,8 @@
         videoName: "",
         uploading: false,
         uploadedVideos: [],
-        videoUrls: []
+        videosToUpload: [],
+        isFileChanged: false
       }
     },
     mounted() {
@@ -40,8 +46,12 @@
       fileChange() {
         const fileInput = document.getElementById("videoUpload");
         for (let i=0; i<fileInput.files.length; i++) {
-          this.videoUrls.push(fileInput.files[i])
+          this.videosToUpload.push({
+            file: fileInput.files[i],
+            videoTitle: fileInput.files[i].name
+          });
         }
+        this.isFileChanged = true
       },
       async uploadLesson() {
         await this.uploadVideo();
@@ -53,8 +63,8 @@
       async uploadVideo() {
         this.uploading = true
         var videoClipStore = useVideoClipStore();
-        for (let i=0; i<this.videoUrls.length; i++) {
-          this.uploadedVideos.push(await videoClipStore.postVideo(this.videoUrls[i]," "))
+        for (let i=0; i<this.videosToUpload.length; i++) {
+          this.uploadedVideos.push(await videoClipStore.postVideo(this.videosToUpload[i].file, this.videosToUpload[i].videoTitle))
         }
         this.$router.push({name: "AdminPage"})
       },

@@ -4,11 +4,11 @@ import VideoClipSchema from "./schemas/VideoClipSchema";
 
 class VideoClip implements VideoClipDb{
     
-    async createVideoClip(videoClip: VideoClipDto,fileURL:string): Promise<VideoClipDto> { 
+    async createVideoClip(videoClip: string,fileURL:string, timeStamps: Array<number>): Promise<VideoClipDto> { 
         const data = new VideoClipSchema({
             videoURL: fileURL,
-            videoName: videoClip.videoName,
-            timeStamps:[]
+            videoName: videoClip,
+            timeStamps: timeStamps
         })
         return await data.save();
     }

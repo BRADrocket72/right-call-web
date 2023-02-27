@@ -24,6 +24,22 @@ export const useLessonStore = defineStore("Lessons", {
             } catch(error) {
                 console.error(error)
             }
+        },
+        async getAllLessons() {
+            try {
+                const data = await axios.get('http://localhost:3000/api/lessons/getAll')
+                return data.data
+            } catch(error) {
+                console.error(error)
+            }
+        },
+        async deleteLesson(id) {
+            try {
+                const data = await axios.delete(`http://localhost:3000/api/delete/${id}`)
+                return data.data
+            } catch(error) {
+                console.error(error)
+            }
         }
     }
 })

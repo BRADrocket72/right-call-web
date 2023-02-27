@@ -7,13 +7,17 @@
         <button type="button" class="button-selection buttonLinks"><span>Create a Classroom</span></button>
         <p class="create-description">Create a class and assign students to the class.</p>
       </router-link>
-      <router-link to="/AssignTimestamps">
-        <button type="button" class="button-selection buttonLinksSecond"><span>Create Video Timestamps and Questions</span></button>
-        <p class="assign-description">Create new timestamps and question activities in lesson videos.</p>
-      </router-link>
       <router-link to="/UpdateClassPage">
         <button type="button" class="button-selection buttonLinks"><span>Update Class</span></button>
         <p class="create-description">Update the students and video lessons within a class.</p>
+      </router-link>
+      <router-link to="/CustomizeLessonMainPage">
+        <button type="button" class="button-selection buttonLinksSecond"><span>Create Custom Lesson Packs</span></button>
+        <p class="assign-description">Create new timestamps and question activities in lesson videos.</p>
+      </router-link>
+      <router-link to="/UpdateInstructorLessonsPage">
+        <button type="button" class="button-selection buttonLinks"><span>Update Your Lessons</span></button>
+        <p class="create-description">Add timestamps and questions to your lesson packs.</p>
       </router-link>
     </div>
   </div>
@@ -36,6 +40,7 @@ export default {
 .instructor-buttons {
   display: flex;
   margin-top: 60px;
+  justify-content:center
 }
 
 .instructor-buttons a {
@@ -43,6 +48,10 @@ export default {
   color: #4AAE9B;
   text-decoration: none;
 }
+
+/* .instructor-container {
+  justify-content: center;
+} */
 
 .button-selection {
   display: inline-flex;

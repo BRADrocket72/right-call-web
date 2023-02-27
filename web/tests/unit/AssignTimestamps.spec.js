@@ -20,6 +20,15 @@ describe('AssignTimestamps.vue', () => {
         mockCookies.get.mockReturnValue({ currentUserType: "test" })
         setActivePinia(createPinia())
         wrapper = mount(AssignTimestamps, {
+            props: {
+                lessonPack: JSON.stringify(['TestLessonName', {
+                    "videoURL": "https://right-call-videos.s3.us-east-2.amazonaws.com/uploads/e1b21b31-915e-4abc-a0b3-9ce96a8a2f82-P15_Shooting_Foul.m4v",
+                    "videoName": "Quiz #1",
+                    "timeStamps": [],
+                    "_id": "63faa3b8605ebf5bba8ede45",
+                    "__v": 0
+                }])
+            },
             data() {
                 return {
                     ready: true,

@@ -11,8 +11,8 @@
         <button type="button" class="button-selection buttonDeleteLink"><span>Delete Lesson</span></button>
         <p class="delete-description">Delete lesson videos from the database.<br><b>Note:</b> This cannot be undone.</p>
       </router-link>
-      <router-link to="/AssignTimestamps">
-        <button type="button" class="button-selection buttonLink"><span>Create Video Timestamps and Questions</span></button>
+      <router-link to="/UpdateLessonsPage">
+        <button type="button" class="button-selection buttonLink"><span>Update Lessons</span></button>
         <p class="assign-description">Create new timestamps and question activities in lesson videos.</p>
       </router-link>
     </div>
