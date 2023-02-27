@@ -15,9 +15,12 @@
             <h2>{{currentQuestion.questionText}}</h2>
             <p>Use your eyes to answer this question.</p>
         </div>
-        <div v-if="containsEyeTrackingActivity && isEyeTrackingVisible && webcamPermission && predictionReady" class="eye-tracking-container">
+        <div v-if="containsEyeTrackingActivity && isEyeTrackingVisible && webcamPermission && predictionReady" class="overlay-video-container">
           <EyeTrackingPopUp :answersArray="answers" :question="currentVideoQuestions[questionIndex]" :xPrediction="xPrediction" 
           :yPrediction="yPrediction" @close="toggleEyeTracking" />
+        </div>
+        <div v-if="currentQuestion && currentQuestion.questionType == 'drag-and-drop' && dragAndDropReady" class="drag-and-drop-container">
+          <DragAndDropPopUp :answersArray="answers" :question="currentVideoQuestions[questionIndex]" @close="toggleDragAndDrop"/>
         </div>
       </div>
       <div id="videoControls">
@@ -39,6 +42,7 @@
   import ActivityPopUp from '@/components/modals/ActivityPopUp.vue';
   import NoWebcamPopUp from '@/components/modals/NoWebcamPopUp.vue'
   import EyeTrackingPopUp from '@/components/modals/EyeTrackingPopUp.vue'
+  import DragAndDropPopUp from '@/components/modals/DragAndDropPopUp.vue'
   import WebcamPermissionModal from '@/components/modals/WebcamPermissionModal.vue'
   import ResultsPage from "@/components/modals/ResultsPage.vue"
   import VideoClip from '@/models/VideoClipDto';
@@ -59,7 +63,8 @@
       NoWebcamPopUp,
       EyeTrackingPopUp,
       WebgazerCalibrationPage,
-      WebcamPermissionModal
+      WebcamPermissionModal,
+      DragAndDropPopUp
     },
     props: {
       videoId: {
@@ -87,7 +92,8 @@
         yPrediction: 0,
         predictionReady: false,
         currentQuestion: Object,
-        permissionModalVisible: true
+        permissionModalVisible: true,
+        dragAndDropReady: false
       };
     },
     async mounted() {
@@ -148,10 +154,12 @@
       stopVideoAtTimestamp(video, timestamps) {
         var currentTime = video.currentTime;
         if (currentTime >= timestamps[this.questionCounter]) {
-          if(this.currentVideoQuestions[this.questionCounter].questionType != 'eye-tracking') {
-            this.showModal()
-          } else {
+          if(this.currentVideoQuestions[this.questionCounter].questionType === 'eye-tracking') {
             this.toggleEyeTracking()
+          } else if(this.currentVideoQuestions[this.questionCounter].questionType === 'drag-and-drop') {
+            this.toggleDragAndDrop()
+          } else {
+            this.showModal()
           }
             this.questionCounter++
             this.playOrPauseVideo()
@@ -211,6 +219,17 @@
           this.questionIndex++
           this.playOrPauseVideo()
           this.predictionReady = false
+        }
+      },
+      toggleDragAndDrop(updatedAnswers) {
+        this.dragAndDropReady = !this.dragAndDropReady
+        if(this.dragAndDropReady) {
+          this.togglePlayButton()
+          
+        } else {
+          this.answers = updatedAnswers
+          this.questionIndex++
+          this.playOrPauseVideo()
         }
       },
       togglePlayButton() {
@@ -299,10 +318,12 @@
     margin: 0 auto;
   }
   
-  .eye-tracking-container {
+  .overlay-video-container {
     position: absolute;
-    max-width: 1350px;
-    min-width: 1350px;
+    border: 1px solid black;
+    margin-left: 161px;
+    min-width: 972px;
+    max-width: 972px;
     max-height: 550px;
     min-height: 550px;
   }
@@ -326,20 +347,26 @@
   .question p {
       color: #000000;
   }
+
+  .drag-and-drop-container {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    min-width: 1272px;
+    max-width: 1272px;
+    min-height: 550px;
+    max-height: 550px;
+  }
   
   @media only screen and (min-width: 1600px){
     .quadrants-container {
-      margin-left: 62px;
+      margin-left: 162px;
     }
   }
   
   @media only screen and (min-width: 1400px) and (max-width: 1599px){
     .quadrants-container {
-      margin-left: -28px;
-    }
-    .eye-tracking-container {
-      max-width: 1300px;
-      min-width: 1300px;
+      margin-left: 162px;
     }
     .question {
       margin: -95px auto auto 162px;
@@ -348,12 +375,10 @@
   
   @media only screen and (min-width: 1200px) and (max-width: 1399px){
     .quadrants-container {
-      margin-left: -28px;
+      margin-left: 72px;
     }
-    .eye-tracking-container {
-      margin-left: -30px;
-      max-width: 1170px;
-      min-width: 1170px;
+    .overlay-video-container {
+      margin-left: 71px;
     }
     .question {
       margin: -95px auto auto 72px;
@@ -362,12 +387,10 @@
   
   @media only screen and (max-width: 1200px){
     .quadrants-container {
-      margin-left: -28px;
+      margin-left: 0;
     }
-    .eye-tracking-container {
-      max-width: 972px;
-      min-width: 972px;
-      margin-top: 0;
+    .overlay-video-container {
+      margin: 0;
     }
     .question {
       margin: -95px auto auto auto;
