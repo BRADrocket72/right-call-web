@@ -56,6 +56,10 @@ import AssignActivityModal from '@/components/modals/AssignActivityModal.vue'
 import { useVideoClipStore } from "@/stores/VideoClipStore"
 import {formatTimeForVideo} from '@/util/FormatVideosTime.js'
 import { useActivityStore } from '@/stores/ActivityStore'
+import { useUsersStore } from '@/stores/UserStore'
+
+import { useInstructorLessonStore } from '@/stores/InstructorLessonStore'
+import { useLessonStore } from '@/stores/LessonsStore'
 
 export default {
     name: 'AssignTimestamps',
@@ -80,7 +84,9 @@ export default {
             activities: [],
             currentIndex: Number,
             deletedActivities: [],
-            updatedActivities: []
+            updatedActivities: [],
+            currentUserType: [],
+            lessonId: ""
         }
     },
     props: {
@@ -249,14 +255,27 @@ export default {
             this.returnToVideoSelectionPage()
         },
         async saveLessonName() {
-
+            let lessonName = document.getElementById('lessonNameInput').value
+            let instructorLessons = useInstructorLessonStore();
+            let lessons = useLessonStore()
+            if (this.userType == "Admin") {
+                await lessons.updateLessonName(this.lessonId, lessonName)
+            } else if (this.userType == "Instructor") {
+                await instructorLessons.updateInstructorLessonName(this.lessonId, lessonName)
+            }
         }
     },
     async mounted() {
+        this.userType = this.$cookies.get("user_session").currentUserType
+        var userStore = useUsersStore();
+        let instructorUsername = this.$cookies.get("user_session").currentUserName
+        let instructor =  await userStore.getUserByName(instructorUsername)
+        this.instructorId = instructor._id
         var videoClip = useVideoClipStore();
         let parsedLessonArray = JSON.parse(this.lessonPack)
-        this.lessonName = parsedLessonArray[0]
-        let parsedVideoIdsArray = parsedLessonArray[1]
+        this.lessonName = parsedLessonArray.name
+        this.lessonId = parsedLessonArray._id
+        let parsedVideoIdsArray = parsedLessonArray.videoClipsArray
         for (let i=0;i<parsedVideoIdsArray.length;i++) {
             this.videoClips.push(await videoClip.fetchVideoClipById(parsedVideoIdsArray[i]._id))
         }
