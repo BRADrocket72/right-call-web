@@ -6,7 +6,7 @@
         <h1>Select Lesson to Edit</h1>
         <div class="admin-buttons">
             <div v-for="lesson in allLessons" :key="lesson._id">
-                <button type="button" class="button-selection buttonLink" @click="selectLesson(lesson.name,lesson.videoClipsArray)"><span>{{lesson.name}}</span></button>
+                <button type="button" class="button-selection buttonLink" @click="selectLesson(lesson)"><span>{{lesson.name}}</span></button>
                 <p class="upload-description">{{lesson.description}}</p>
             </div>
         </div>
@@ -32,12 +32,11 @@
             this.allLessons = await lessonStore.getAllLessons()
         },
         methods: {
-            selectLesson(lessonName, lessonArrayOfVideos) {
-                let lessonPack = [lessonName, lessonArrayOfVideos]
+            selectLesson(lesson) {
                 this.$router.push({
                     name: "AssignTimestamps",
                     params: {
-                        lessonPack: JSON.stringify(lessonPack)
+                        lessonPack: JSON.stringify(lesson)
                     }
                 })
             }
