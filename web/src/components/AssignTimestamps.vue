@@ -3,13 +3,10 @@
     <LoggedInNavBarVue />
     <br/><br/>
     <div v-if="ready" class="assign-timestamps">
-        <h2 id="lessonNameText">Edit Lesson Name: <input id="lessonNameInput" :value="lessonName"/> </h2>
-        <br/>
-        <div id="updateLessonButton">
-            <button id="customize-lesson-button" @click="saveLessonName()">Save Updated Name</button>
+        <div class="update-lesson-name-div">
+            <h2 id="lessonNameText">Edit Lesson Name: <input id="lessonNameInput" :value="lessonName"/> </h2>
+            <button id="customize-lesson-button" @click="saveLessonName()">Save</button>
         </div>
-        <br/><br/>
-        <h4>Add/remove questions to videos: </h4>
         <div class="video-list-div" v-if="isVideoSelected == false">
             <div class="lesson" v-for="video in this.videoClips" :key="video._id">
                 <a class="nav-link" @click="videoSelection(video)">
@@ -542,7 +539,16 @@ ul.timestamp-ul {
     box-shadow: 0 10px 10px #d1d1d1;
 }
 
-#updateLessonButton {
+.update-lesson-name-div {
+    display: flex;
+    width: 100%;
+    justify-content: center;
     text-align: center;
+    margin-bottom: 20px;
 }
+
+.update-lesson-name-div button {
+    margin-bottom: 10px;
+}
+
 </style>
