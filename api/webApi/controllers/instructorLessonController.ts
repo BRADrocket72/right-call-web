@@ -34,3 +34,16 @@ exports.instructor_lessons_get_by_id = async (req, res) => {
         res.status(500).json({ message: error.message })
     }
 }
+
+exports.update_instructor_lesson_name = async(req, res) => {
+    try {
+        res.header('Access-Control-Allow-Origin', '*')
+        console.log(req.params.id)
+        console.log(req.body.name)
+        const data = await instructorLessonDb.updateInstructorLessonName(req.params.id, req.body.name);
+        res.json(data)
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
