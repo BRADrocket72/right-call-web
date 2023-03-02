@@ -3,6 +3,9 @@
     <div class="modal-backdrop">
       <div class="modal" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription">
         <header class="modal-header" id="modalTitle">
+          <div>
+            <Timer :isClosed="isClosed" @close="closeTimer"/>
+          </div>
           <slot name="header">
             Question {{questionNumber}}
           </slot>
@@ -26,12 +29,15 @@
 
 <script>
 import {checkAnswer} from "../../util/GetResults"
+import Timer from "@/components/Timer"
 
   export default {
     name: 'ActivityPopUp',
+    components: {Timer},
     data() {
       return {
-        updatedAnswers: []
+        updatedAnswers: [],
+        isClosed: false
       }
     },
     props:{
@@ -41,6 +47,7 @@ import {checkAnswer} from "../../util/GetResults"
     },
     methods: {
       close() {
+        this.isClosed = true
         this.$emit('close', this.updatedAnswers);
       },
       handleAnswerSelected(question, answersArray, answerChoice) {
