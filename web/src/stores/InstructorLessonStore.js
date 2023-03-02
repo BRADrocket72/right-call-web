@@ -41,5 +41,13 @@ export const useInstructorLessonStore = defineStore("InstructorLessons", {
                 console.error(error)
             }
         },
+        async updateInstructorLessonName(id,name) {
+            try {
+                const data = await axios.patch(`http://localhost:3000/api/instructorLessons/updateLessonName/${id}`, { name: name })
+                return data.data
+            } catch (error) {
+                console.log(error)
+            }
+        }
     }
 })

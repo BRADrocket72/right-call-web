@@ -12,4 +12,6 @@ router.get('/instructorLessons/getAll', instructorLessonController.instructor_le
 //Get all By Id Method
 router.get('/instructorLessons/getById/:instructorId', instructorLessonController.instructor_lessons_get_by_id)
 
+router.patch('/instructorLessons/updateLessonName/:id', instructorLessonController.update_instructor_lesson_name)
+
 module.exports = router;
