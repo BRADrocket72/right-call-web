@@ -270,12 +270,12 @@ export default {
 
 .reset-button-div {
     margin: 10px auto;
-    min-width: 120px;
-    max-width: 120px;
+    min-width: 130px;
+    max-width: 130px;
 }
 
 .reset-word-bank {
-    width: 120px;
+    width: 130px;
     height: 35px;
     border: none;
     border-radius: 6px;
@@ -290,12 +290,12 @@ export default {
 
 .submit-button-div {
     margin: 10px auto;
-    min-width: 120px;
-    max-width: 120px;
+    min-width: 130px;
+    max-width: 130px;
 }
 
 .submit {
-    width: 120px;
+    width: 130px;
     height: 35px;
     border: none;
     border-radius: 6px;
