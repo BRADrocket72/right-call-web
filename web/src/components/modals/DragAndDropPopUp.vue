@@ -5,7 +5,7 @@
             <p>Drag and drop the answers into their correct spots.</p>
         </div>
         <div class="drop-area" id="drop-area">
-            <div v-for="(answer,index) in question.answers" :key="answer" class="drop-div" :id="'drop-div-' + (index + 1)" :style="{left: answer[2] + 'px', top: answer[3] + 'px'}"></div>
+            <div v-for="(answer,index) in question.answers" :key="answer" class="drop-div" :id="'drop-div-' + (index + 1)" :style="{left: answer[2] + 'px', top: answer[3] + 'px'}" ></div>
         </div>
         <div class="word-bank">
             <h2>Word Bank</h2>
@@ -18,7 +18,7 @@
                 <button type="button" class="reset-word-bank" @click="resetWordBank()">Reset</button>
             </div>
             <div class="submit-button-div">
-                <button type="button" class="submit" >Submit</button>
+                <button type="button" class="submit" id="submit-button" @click="checkAnswers" disabled>Submit</button>
             </div>
         </div>
     </div>
@@ -33,7 +33,8 @@ export default {
             wordBankAnswers: [],
             totalAnswers: Number,
             targetID: HTMLElement,
-            answerIndex: 1
+            answerIndex: 1,
+            returnAnswers: []
         }
     },
     props:{
@@ -42,7 +43,7 @@ export default {
     },
     methods: {
         close() {
-            this.$emit('close', this.updatedAnswers);
+            this.$emit('close', this.returnAnswers);
         },
         wordBankSetup(answer) {
             let wordBank = document.getElementById(answer)
@@ -74,6 +75,7 @@ export default {
                 } else {
                     this.dropDivSwapEvent(source)
                 }
+                this.checkDropDivs()
             })
         },
         wordBankDropEvent(source) {
@@ -135,7 +137,41 @@ export default {
                     this.wordBankSetup(this.originalWordBank[i-1])
                 }
             }, 10)
+            const submitButton = document.getElementById('submit-button')
+            submitButton.disabled = true
             this.answerIndex = 1
+        },
+        checkDropDivs() {
+            const submitButton = document.getElementById('submit-button')
+            for(let i = 1; i <= this.totalAnswers; i++) {
+                let id = 'drop-div-' + i
+                let element = document.getElementById(id)
+                if(element.hasChildNodes() !== true) {
+                    submitButton.disabled = true
+                    return false
+                }
+            }
+            submitButton.disabled = false
+            return true
+        },
+        checkAnswers() {
+            this.returnAnswers = this.answersArray
+            let allAnswersCorrect = true
+            for(let i = 0; i < this.totalAnswers; i++) {
+                let correctAnswer = this.question.answers[i][0]
+                let id = 'drop-div-' + (i + 1)
+                let answerElement = document.getElementById(id)
+                let answer = answerElement.firstChild.innerHTML
+                if(answer !== correctAnswer) {
+                    allAnswersCorrect = false
+                }
+            }
+            if(allAnswersCorrect) {
+                this.returnAnswers.push('Correct')
+            } else {
+                this.returnAnswers.push('Incorrect')
+            }
+            this.close()
         }
     },
     created() {
