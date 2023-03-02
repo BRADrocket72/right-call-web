@@ -10,7 +10,7 @@
 
 var seconds = 0
 var tens = 0
-// eslint-disable-next-line no-unused-vars
+
 var interval;
 
 export default {
@@ -18,20 +18,29 @@ export default {
     data() {
         return {
             seconds: Number,
-            maxSeconds: 5
+            maxSeconds: 5,
+            reset: this.needsToReset
         }
 
     },
+    props: {
+        needsToReset : Boolean,
+    },
+
     methods: {
-        close() {
-            clearInterval(this.interval)
-            this.$emit('close')
+        endTimer() {
+            clearInterval(interval)
+            this.$emit('endTimer',seconds)
         },
 
         startTimer() {
+            console.log(this.needsToReset)
 
             var appendTens = document.getElementById("tens")
             var appendSeconds = document.getElementById("seconds")
+            if(!appendTens || !appendSeconds){
+                return
+            }
 
             tens++;
 
@@ -59,8 +68,16 @@ export default {
 
     },
     mounted() {
-        this.interval = setInterval(this.startTimer, 10);
+        seconds =0;
+        tens = 0;
+        interval = setInterval(this.startTimer, 10);
 
+    },
+    watch: {
+      'needsToReset': function() {
+        clearInterval(interval)
+        this.endTimer();
+      }
     }
 }
 </script>
