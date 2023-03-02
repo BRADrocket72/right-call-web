@@ -8,7 +8,7 @@
         <h5>Your custom lessons:</h5>
         <div class="admin-buttons">
             <div v-for="lesson in instructorLessons" :key="lesson._id">
-                <button type="button" class="button-selection buttonLink" @click="selectLessonToCustomize(lesson.name, lesson.videoClipsArray)"><span>{{lesson.name}}</span></button>
+                <button type="button" class="button-selection buttonLink" @click="selectLessonToCustomize(lesson)"><span>{{lesson.name}}</span></button>
                 <p class="upload-description">{{lesson.description}}<br/><br/>Content: {{ lesson.videoClipsArray.length }} videos</p>
             </div>
         </div>
@@ -41,12 +41,11 @@
           this.instructorLessons = await instructorLessonStore.getLessonsByInstructorId(this.instructorId)
         },
         methods: {
-            selectLessonToCustomize(lessonName, lessonArrayOfVideos) {
-                let lessonPack = [lessonName, lessonArrayOfVideos]
+            selectLessonToCustomize(lesson) {
                 this.$router.push({
                     name: "AssignTimestamps",
                     params: {
-                        lessonPack: JSON.stringify(lessonPack)
+                        lessonPack: JSON.stringify(lesson)
                     }
                 })
             },
