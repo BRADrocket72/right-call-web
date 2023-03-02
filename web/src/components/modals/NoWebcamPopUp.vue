@@ -81,39 +81,5 @@ export default {
     color: #000000;
 }
 
-@media only screen and (min-width: 1600px) {
-    .quadrants {
-        margin-left: 100px;
-    }   
-    .question {
-        margin-left: 100px;
-    }
-}
 
-@media only screen and (min-width: 1400px) and (max-width: 1599px){
-    .quadrants {
-        margin-left: 190px;
-    }   
-    .question {
-        margin-left: 190px;
-    }
-}
-
-@media only screen and (min-width: 1200px) and (max-width: 1399px){
-    .quadrants {
-        margin-left: 100px;
-    }   
-    .question {
-        margin-left: 100px;
-    }
-}
-
-@media only screen and (max-width: 1199px) {
-    .quadrants {
-        margin-left: 28px;
-    }
-    .question {
-        margin-left: 28px;
-    }
-}
 </style>

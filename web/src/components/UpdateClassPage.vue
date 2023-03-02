@@ -78,7 +78,7 @@
   }
   </script>
   
-  <style>
+  <style scoped>
   nav {
     padding: 30px;
   }
