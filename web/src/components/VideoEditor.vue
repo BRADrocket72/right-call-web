@@ -149,7 +149,6 @@
         this.currentVideoQuestions.sort((a,b) => a.timestamp - b.timestamp)
         this.questionsLoaded = true
         this.checkForEyeTrackingActivity()
-        this.currentQuestion = this.currentVideoQuestions[this.questionCounter]
       },
       stopVideoAtTimestamp(video, timestamps) {
         var currentTime = video.currentTime;
@@ -161,9 +160,9 @@
           } else {
             this.showModal()
           }
+            this.currentQuestion = this.currentVideoQuestions[this.questionCounter]
             this.questionCounter++
             this.playOrPauseVideo()
-            this.currentQuestion = this.currentVideoQuestions[this.questionCounter]
         }
       },
       playOrPauseVideo() {
@@ -352,8 +351,8 @@
     position: absolute;
     margin: 0;
     padding: 0;
-    min-width: 1272px;
-    max-width: 1272px;
+    min-width: 1150px;
+    max-width: 1150px;
     min-height: 550px;
     max-height: 550px;
   }
@@ -362,10 +361,16 @@
     .quadrants-container {
       margin-left: 162px;
     }
+    .drag-and-drop-container {
+      margin-left: 162px;
+    }
   }
   
   @media only screen and (min-width: 1400px) and (max-width: 1599px){
     .quadrants-container {
+      margin-left: 162px;
+    }
+    .drag-and-drop-container {
       margin-left: 162px;
     }
     .question {
@@ -378,7 +383,10 @@
       margin-left: 72px;
     }
     .overlay-video-container {
-      margin-left: 71px;
+      margin-left: 72px;
+    }
+    .drag-and-drop-container {
+      margin-left: 72px;
     }
     .question {
       margin: -95px auto auto 72px;
