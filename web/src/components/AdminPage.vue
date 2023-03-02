@@ -3,16 +3,16 @@
   <LoggedInNavBar />
   <div class="admin-container">
     <div class="admin-buttons">
-      <router-link to= "/VideoUpload">
-        <button type="button" class="button-selection buttonLink"><span>Upload Lesson Video</span></button>
-        <p class="upload-description">Upload new lesson videos to the database.</p>
+      <router-link to= "/CreateLessonPage">
+        <button type="button" class="button-selection buttonLink"><span>Create Lesson</span></button>
+        <p class="upload-description">Upload new lessons to the database.</p>
       </router-link>
       <router-link to="/LessonDeletion">
         <button type="button" class="button-selection buttonDeleteLink"><span>Delete Lesson</span></button>
         <p class="delete-description">Delete lesson videos from the database.<br><b>Note:</b> This cannot be undone.</p>
       </router-link>
-      <router-link to="/AssignTimestamps">
-        <button type="button" class="button-selection buttonLink"><span>Create Video Timestamps and Questions</span></button>
+      <router-link to="/UpdateLessonsPage">
+        <button type="button" class="button-selection buttonLink"><span>Update Lessons</span></button>
         <p class="assign-description">Create new timestamps and question activities in lesson videos.</p>
       </router-link>
     </div>

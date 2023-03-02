@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+import { LessonDto } from '../../model/LessonDto'
 
 
 const lessonSchema = new mongoose.Schema({
@@ -7,6 +7,11 @@ const lessonSchema = new mongoose.Schema({
     name: {
         required: true,
         type: String,
+    },
+    // admin or instructor
+    userType : {
+        required: true,
+        type: String
     },
     // descriptions of the lessons 
     description: {
@@ -20,4 +25,6 @@ const lessonSchema = new mongoose.Schema({
     }
 })
 
-module.exports =  mongoose.model('Lessons', lessonSchema)
+interface ILesson extends LessonDto, mongoose.Document { }
+
+export default  mongoose.model<ILesson>('Lesson', lessonSchema)

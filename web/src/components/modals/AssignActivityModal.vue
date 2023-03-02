@@ -1,7 +1,7 @@
 <template>
   <transition name="modal-fade">
     <div class="modal-backdrop">
-      <div class="modal" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription">
+      <div class="modal" id="modal" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription">
         <header class="modal-header" id="modalTitle">
           <slot name="header">Assign New Activity</slot>
         </header>
@@ -17,6 +17,9 @@
                 <div v-if="questionType=='eye-tracking' || questionTypeExists=='eye-tracking'">
                   <EyeTracking :activity="activity" @close="close" @save="save"/>
                 </div>
+                <div v-if="(questionType=='drag-and-drop' || questionTypeExists=='drag-and-drop') && imageReady === true">
+                  <DragAndDrop :activity="activity" :image="dragAndDropImage" @close="close" @save="save"/>
+                </div>
             </div>
             <div v-else class="assign-activity-div">
               <p>Select a question type: </p>
@@ -24,6 +27,7 @@
                 <option id="multiple-choice" value="multiple-choice">Multiple Choice</option>
                 <option id="short-answer" value="short-answer">Short Answer</option>
                 <option id="eye-tracking" value="eye-tracking">Eye Tracking</option>
+                <option id="drag-and-drop" value="drag-and-drop">Drag &amp; Drop</option>
               </select>
               <div class="save"><button type="button" class="btn-green" @click="questionTypeSelection()">Select</button></div>
             </div>
@@ -38,24 +42,29 @@
 import MultipleChoice from '@/components/modals/questionTypes/MultipleChoice.vue'
 import ShortAnswer from '@/components/modals/questionTypes/ShortAnswer.vue'
 import EyeTracking from '@/components/modals/questionTypes/EyeTracking.vue'
+import DragAndDrop from '@/components/modals/questionTypes/DragAndDrop.vue'
 
 export default {
     name: 'AssignActivityModal',
     components: { 
         MultipleChoice,
         ShortAnswer,
-        EyeTracking
+        EyeTracking,
+        DragAndDrop
     },
     data() {
         return {
             questionTypeSelected: false,
             questionType: String,
-            activityModalData: []
+            activityModalData: [],
+            dragAndDropImage: Image,
+            imageReady: false
         }
     },
     props: {
         activity: {},
-        questionTypeExists: String
+        questionTypeExists: String,
+        timestamp: Number
     },
     methods: {
         close() {
@@ -68,13 +77,52 @@ export default {
         questionTypeSelection() {
           const option = document.getElementById('question-type').value
           this.questionType = option
-          this.questionTypeSelected = true
+          if(this.questionType === "drag-and-drop") {
+            this.dragAndDropSetup()
+          } else {
+            this.otherQuestionTypesSetup()
+          }
+          this.questionTypeSelected = true 
+        },
+        dragAndDropSetup() {
+          const modal = document.getElementById("modal")
+          modal.style.height = "590px"
+          modal.style.width = "1272px"
+
+          const modalBody = document.querySelector("section")
+          modalBody.style.padding = "0"
+          setTimeout(() => {
+            this.getFrameImage()
+          }, 150)
+        },
+        otherQuestionTypesSetup() {
+          const modal = document.getElementById("modal")
+          modal.style.height = "500px"
+          modal.style.width = "550px"
+        },
+        getFrameImage() {
+          const video = document.querySelector("video")
+          const canvas = document.createElement("canvas")
+          canvas.width = video.videoWidth
+          canvas.height = video.videoHeight
+          const ctx = canvas.getContext('2d')
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+          this.dragAndDropImage = canvas
+          this.imageReady = true
         }
+
+    },
+    mounted() {
+      if(this.questionTypeExists && this.activity.questionType === "drag-and-drop") {
+        this.dragAndDropSetup()
+      } else {
+        this.otherQuestionTypesSetup()
+      }
     }
 }
 </script>
 
-<style>
+<style scoped>
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -89,9 +137,8 @@ export default {
 
 .modal {
   background: white;
-  min-width: 600px;
-  max-width: 600px;
-  min-height: 550px;
+  height: 500px;
+  width: 450px;
   border-radius: 2px;
   position: fixed;
   left: auto;

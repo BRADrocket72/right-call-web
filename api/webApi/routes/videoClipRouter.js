@@ -1,7 +1,7 @@
 require('dotenv').config();
 const multer = require('multer')
 const express = require('express');
-const VideoClipController = require('../controllers/videoClipController.js')
+const VideoClipController = require('../controllers/videoClipController')
 
 
 const router = express.Router()
@@ -18,6 +18,9 @@ const upload = multer({ storage: storage, fileFilter })
 
 //Post Method
 router.post('/videoClip/post', upload.single("file"), VideoClipController.create_clip)
+
+//InstructorVideo Post Method
+router.post('/videoClip/postInstructorVideo', VideoClipController.create_instructor_clip)
 
 //Get all Method
 router.get('/videoClip/getAll', VideoClipController.get_all)

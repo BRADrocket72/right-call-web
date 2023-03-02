@@ -3,8 +3,12 @@
     <LoggedInNavBarVue />
     <br/><br/>
     <div v-if="ready" class="assign-timestamps">
+        <div class="update-lesson-name-div">
+            <h2 id="lessonNameText">Edit Lesson Name: <input id="lessonNameInput" :value="lessonName"/> </h2>
+            <button id="customize-lesson-button" @click="saveLessonName()">Save</button>
+        </div>
         <div class="video-list-div" v-if="isVideoSelected == false">
-            <div class="lesson" v-for="video in this.videoClips" :key="video.id">
+            <div class="lesson" v-for="video in this.videoClips" :key="video._id">
                 <a class="nav-link" @click="videoSelection(video)">
                     <img class="lesson-img" :alt="video._id" src="../../images/american-football-referees-1476038_960_720.jpg" />
                     <p>{{ video.videoName }}</p>
@@ -35,7 +39,7 @@
                     </div>
                 </div>
             </div>
-            <AssignActivityModal v-if="isAssignActivityModalVisible" :activity="activities[currentIndex]" :questionTypeExists="activities[currentIndex].questionType" @close="toggleAssignActivityModal" @save="assignActivityModalSave"/>
+            <AssignActivityModal v-if="isAssignActivityModalVisible" :activity="activities[currentIndex]" :questionTypeExists="activities[currentIndex].questionType" :timestamp="currentActivityTimestamp" @close="toggleAssignActivityModal" @save="assignActivityModalSave"/>
         </div>
     </div>
 </div>
@@ -49,6 +53,10 @@ import AssignActivityModal from '@/components/modals/AssignActivityModal.vue'
 import { useVideoClipStore } from "@/stores/VideoClipStore"
 import {formatTimeForVideo} from '@/util/FormatVideosTime.js'
 import { useActivityStore } from '@/stores/ActivityStore'
+import { useUsersStore } from '@/stores/UserStore'
+
+import { useInstructorLessonStore } from '@/stores/InstructorLessonStore'
+import { useLessonStore } from '@/stores/LessonsStore'
 
 export default {
     name: 'AssignTimestamps',
@@ -73,8 +81,16 @@ export default {
             activities: [],
             currentIndex: Number,
             deletedActivities: [],
-            updatedActivities: []
+            updatedActivities: [],
+            currentUserType: [],
+            lessonId: ""
         }
+    },
+    props: {
+        lessonPack: {
+            type: String
+        }
+        
     },
     methods: {
         videoSelection(video) {
@@ -93,7 +109,10 @@ export default {
             this.$router.push({
                 name: "AssignTimestamps"
             })
-            
+        },
+        moveVideoToTimestampFrame() {
+            const video = document.getElementById(this.selectedVideo._id)
+            video.currentTime = this.currentActivityTimestamp
         },
         getVideoTimestampsAndActivities() {
             if(this.selectedVideo.timeStamps) {
@@ -162,6 +181,9 @@ export default {
             if(this.isAssignActivityModalVisible) {
                 this.currentIndex = activityIndex
                 this.currentActivityTimestamp = this.timestamps[activityIndex]
+                const video = document.getElementById(this.selectedVideo._id)
+                video.pause()
+                this.moveVideoToTimestampFrame()
             } 
             this.toggleSaveButton()
         },
@@ -235,11 +257,32 @@ export default {
             this.updateActivitiesAPI()
             this.deleteActivitiesAPI()
             this.returnToVideoSelectionPage()
+        },
+        async saveLessonName() {
+            let lessonName = document.getElementById('lessonNameInput').value
+            let instructorLessons = useInstructorLessonStore();
+            let lessons = useLessonStore()
+            if (this.userType == "Admin") {
+                await lessons.updateLessonName(this.lessonId, lessonName)
+            } else if (this.userType == "Instructor") {
+                await instructorLessons.updateInstructorLessonName(this.lessonId, lessonName)
+            }
         }
     },
     async mounted() {
+        this.userType = this.$cookies.get("user_session").currentUserType
+        var userStore = useUsersStore();
+        let instructorUsername = this.$cookies.get("user_session").currentUserName
+        let instructor =  await userStore.getUserByName(instructorUsername)
+        this.instructorId = instructor._id
         var videoClip = useVideoClipStore();
-        this.videoClips =  await videoClip.fetchVideoClips();
+        let parsedLessonArray = JSON.parse(this.lessonPack)
+        this.lessonName = parsedLessonArray.name
+        this.lessonId = parsedLessonArray._id
+        let parsedVideoIdsArray = parsedLessonArray.videoClipsArray
+        for (let i=0;i<parsedVideoIdsArray.length;i++) {
+            this.videoClips.push(await videoClip.fetchVideoClipById(parsedVideoIdsArray[i]._id))
+        }
         this.ready = true;
     }
 }
@@ -319,8 +362,8 @@ export default {
 }
 
 video {
-  width: 900px;
-  height: 500px;
+  width: 972px;
+  height: 550px;
   display: block;
   margin: 0;
 }
@@ -487,4 +530,44 @@ ul.timestamp-ul {
 .complete-timestamp:hover {
     background-color: #0ea83d;
 }
+
+#lessonNameText {
+        text-align: center;
+}
+
+#lessonNameInput {
+    border: 3px solid #4AAE9B;
+    border-radius: 5px;
+}
+#customize-lesson-button {
+    text-align: center;
+    margin-left: 22px;
+    border: none;
+    font-size: 25px;
+    color: white;
+    text-shadow: 1px 1px 1px black;
+    box-shadow: 0 6px 6px #d1d1d1;
+    background: #4AAE9B;
+    min-width: 100px;
+    min-height: 40px;
+    border-radius: 15px;
+}
+    
+#customize-lesson-button:hover {
+    background: #349b88;
+    box-shadow: 0 10px 10px #d1d1d1;
+}
+
+.update-lesson-name-div {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.update-lesson-name-div button {
+    margin-bottom: 10px;
+}
+
 </style>

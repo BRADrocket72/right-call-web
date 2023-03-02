@@ -10,6 +10,10 @@ import UserResultsPage from "@/components/UserResultsPage.vue"
 import LessonDeletion from "@/components/LessonDeletion.vue"
 import CreateClassRoomPage from "@/components/CreateClassroomPage.vue"
 import UpdateClassPage from "@/components/UpdateClassPage.vue"
+import CreateLessonPage from "@/components/CreateLessonPage.vue"
+import UpdateLessonsPage from "@/components/UpdateLessonsPage.vue"
+import CustomizeLessonMainPage from "@/components/CustomizeLessonMainPage.vue"
+import UpdateInstructorLessonsPage from "@/components/UpdateInstructorLessonsPage.vue"
 import { createRouter, createWebHistory } from 'vue-router'
 
 
@@ -51,9 +55,10 @@ const routesArray = [
         component: InstructorPage
     },
     {
-        path: "/AssignTimestamps",
+        path: "/AssignTimestamps:lessonPack",
         name: "AssignTimestamps",
-        component: AssignTimestamps
+        component: AssignTimestamps,
+        props: true
     },
     {
         path: "/UserResultsPage",
@@ -74,6 +79,26 @@ const routesArray = [
         path: "/UpdateClassPage",
         name: "UpdateClassPage",
         component: UpdateClassPage
+    },
+    {
+        path: "/CreateLessonPage",
+        name: "CreateLessonPage",
+        component: CreateLessonPage
+    },
+    {
+        path: "/UpdateLessonsPage",
+        name: "UpdateLessonsPage",
+        component: UpdateLessonsPage
+    },
+    {
+        path: "/CustomizeLessonMainPage",
+        name: "CustomizeLessonMainPage",
+        component: CustomizeLessonMainPage
+    },
+    {
+        path: "/UpdateInstructorLessonsPage",
+        name: "UpdateInstructorLessonsPage",
+        component: UpdateInstructorLessonsPage
     },
 ]
 

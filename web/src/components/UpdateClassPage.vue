@@ -51,7 +51,7 @@
         var userStore = useUsersStore();
         let instructorUsername = this.$cookies.get("user_session").currentUserName
         let instructor =  await userStore.getUserByName(instructorUsername)
-        this.instructorId = instructor[0]._id
+        this.instructorId = instructor._id
         let instructorClassStore = useInstructorClassStore()
         this.instructorsClasses = await instructorClassStore.getClassesByInstructorId(this.instructorId)
       },
@@ -78,7 +78,7 @@
   }
   </script>
   
-  <style>
+  <style scoped>
   nav {
     padding: 30px;
   }

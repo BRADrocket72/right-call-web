@@ -66,7 +66,7 @@ import Timer from "@/components/Timer"
   };
 </script>
 
-<style>
+<style scoped>
   .modal-backdrop {
     position: fixed;
     top: 0;
@@ -80,8 +80,10 @@ import Timer from "@/components/Timer"
   }
   .modal {
     background: darkgray;
-    width: 600px;
-    height: 300px;
+    min-width: 650px;
+    max-width: 650px;
+    min-height: 500px;
+    max-height: 500px;
     position: fixed;
     left: auto;
     top: auto;

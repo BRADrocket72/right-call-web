@@ -52,7 +52,7 @@ export default {
           let userStore = useUsersStore();
           this.allClasses = await instructorStore.fetchAllInstructorClasses()
           let currentUser = await userStore.getUserByName(this.$cookies.get("user_session").currentUserName)
-          this.currentStudentId = currentUser[0]._id
+          this.currentStudentId = currentUser._id
           for (let i=0; i<this.allClasses.length; i++) {
             for(let j=0; j<this.allClasses[i].studentIds.length; j++){
               if (this.allClasses[i].studentIds[j] == this.currentStudentId) {
@@ -89,7 +89,6 @@ export default {
 
 <style scoped>
 .lesson-container {
-  justify-content: center;
   width: 100%;
   margin: auto;
 }
@@ -105,7 +104,6 @@ export default {
 .lesson-div {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   width: 100%;
   margin: 0 auto;
 }
@@ -115,7 +113,7 @@ export default {
 }
 
 .lesson {
-  flex: 1 0 25%;
+  flex: 1 0 23%;
   margin: 0 30px 30px 0;
   text-align: left;
   height: 350px;
