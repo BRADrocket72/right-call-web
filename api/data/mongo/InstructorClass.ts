@@ -8,7 +8,7 @@ class InstructorClass implements InstructorClassDb {
         const data = new InstructorClassSchema({
             instructorId:instructorClass.instructorId,
             className:instructorClass.className,
-            videoclipIds:instructorClass.videoclipIds,
+            lessonIds:instructorClass.lessonIds,
             studentIds:instructorClass.studentIds
         })
         const dataToSave = await data.save()
