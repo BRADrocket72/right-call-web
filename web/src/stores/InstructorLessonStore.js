@@ -48,6 +48,14 @@ export const useInstructorLessonStore = defineStore("InstructorLessons", {
             } catch (error) {
                 console.log(error)
             }
+        },
+        async fetchLessonById(lessonId) {
+            try {
+                const data = await axios.get('http://localhost:3000/api/instructorLessons/getLessonById/' + lessonId)
+                return data.data
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 })
