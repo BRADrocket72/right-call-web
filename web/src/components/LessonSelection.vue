@@ -7,10 +7,11 @@
         <h1>Lesson Selection Page</h1>
       </div>
       <div class="lesson-div" v-if="this.videoClips.length > 0">
-        <div class="lesson" v-for="video in this.videoClips" :key="video._id">
-          <a class="nav-link" @click="openVideo(video._id)">
-            <img class="lesson-img" :alt="video._id" src="../../images/richard-bagan-SmQ2Cku3alc-unsplash.jpg" />
-            <p>{{ video.videoName }}</p>
+        <div class="lesson" v-for="lesson in this.videoClips" :key="lesson._id">
+          <a class="nav-link" @click="openLesson(lesson._id)">
+            <img class="lesson-img" :alt="lesson._id" src="../../images/richard-bagan-SmQ2Cku3alc-unsplash.jpg" />
+            <p id="lessonName">{{ lesson.name }}</p>
+            <p id="lessonContent">Content: {{ lesson.videoClipsArray.length }} quizzes</p>
           </a>
         </div>
       </div>
@@ -19,9 +20,9 @@
 </template>
 
 <script>
-import { useVideoClipStore } from "@/stores/VideoClipStore";
 import { useInstructorClassStore } from "@/stores/InstructorClassStore";
 import { useUsersStore } from "@/stores/UserStore";
+import { useInstructorLessonStore } from "@/stores/InstructorLessonStore";
 import LoggedInNavBar from "./LoggedInNavBar.vue";
 import webgazer from 'webgazer';
 
@@ -39,11 +40,11 @@ export default {
     },
     props:{},
     methods: {
-        openVideo(videoID) {
+        openLesson(lessonId) {
             this.$router.push({
-                name: "VideoEditor",
+                name: "VideoSelectionPage",
                 params: {
-                    videoId: videoID
+                    lessonId: lessonId
                 }
             });
         },
@@ -71,16 +72,16 @@ export default {
         let studentsVideoClipIds = []
         await this.retrieveStudentsClasses()
         for (let i=0; i<this.currentStudentsClasses.length; i++) {
-          for(let j=0; j<this.currentStudentsClasses[i].videoclipIds.length; j++){
-            if (!studentsVideoClipIds.includes(this.currentStudentsClasses[i].videoclipIds[j])) {
-              studentsVideoClipIds.push(this.currentStudentsClasses[i].videoclipIds[j])
+          for(let j=0; j<this.currentStudentsClasses[i].lessonIds.length; j++){
+            if (!studentsVideoClipIds.includes(this.currentStudentsClasses[i].lessonIds[j])) {
+              studentsVideoClipIds.push(this.currentStudentsClasses[i].lessonIds[j])
             }
           }
         }
-        var videoClip = useVideoClipStore();
+        var instructorLessonStore = useInstructorLessonStore();
         for (let i=0; i<studentsVideoClipIds.length; i++) {
-          let videoClipCurrent = await videoClip.fetchVideoClipById(studentsVideoClipIds[i])
-          this.videoClips.push(videoClipCurrent)
+          let lessonCurrent = await instructorLessonStore.fetchLessonById(studentsVideoClipIds[i])
+          this.videoClips.push(lessonCurrent)
         }
         this.ready = true;
     }
@@ -141,8 +142,14 @@ export default {
   cursor: pointer;
 }
 
-.lesson-div p {
+#lessonName {
   padding: 15px 0 0 20px;
   font-weight: bold;
+  font-size: 20px;
+}
+
+#lessonContent {
+  padding: 15px 0 0 20px;
+
 }
 </style>
