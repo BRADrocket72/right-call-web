@@ -6,8 +6,8 @@
       <div class="div-header">
         <h1>Lesson Selection Page</h1>
       </div>
-      <div class="lesson-div" v-if="this.videoClips.length > 0">
-        <div class="lesson" v-for="lesson in this.videoClips" :key="lesson._id">
+      <div class="lesson-div" v-if="this.lessons.length > 0">
+        <div class="lesson" v-for="lesson in this.lessons" :key="lesson._id">
           <a class="nav-link" @click="openLesson(lesson._id)">
             <img class="lesson-img" :alt="lesson._id" src="../../images/richard-bagan-SmQ2Cku3alc-unsplash.jpg" />
             <p id="lessonName">{{ lesson.name }}</p>
@@ -32,7 +32,7 @@ export default {
     data() {
         return {
             ready: false,
-            videoClips: [],
+            lessons: [],
             allClasses: [],
             currentStudentId: "",
             currentStudentsClasses: []
@@ -81,7 +81,7 @@ export default {
         var instructorLessonStore = useInstructorLessonStore();
         for (let i=0; i<studentsVideoClipIds.length; i++) {
           let lessonCurrent = await instructorLessonStore.fetchLessonById(studentsVideoClipIds[i])
-          this.videoClips.push(lessonCurrent)
+          this.lessons.push(lessonCurrent)
         }
         this.ready = true;
     }

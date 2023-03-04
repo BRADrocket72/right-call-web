@@ -54,7 +54,8 @@ import {useUsersStore} from '@/stores/UserStore'
         lessons: [],
         lessonIds: [],
         alreadyAdded: false,
-        currentlyAddedLessons: []
+        currentlyAddedLessons: [],
+        instructorId: ""
       }
     },
     props: {
