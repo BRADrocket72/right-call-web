@@ -14,13 +14,13 @@ afterAll(async () => await testMongoDb.closeDatabase())
 
 describe('Instructor Classroom created when',()=>{
     it('Test Class', async () => {
-        const instructorClassRoomOne: InstructorClassDto = {instructorId:"RefRepCoach",className:"Testing ClassRoom",videoclipIds:["Lesson1", "Lesson2"],studentIds:["StudentA","StudentB"]}
+        const instructorClassRoomOne: InstructorClassDto = {instructorId:"RefRepCoach",className:"Testing ClassRoom",lessonIds:["Lesson1", "Lesson2"],studentIds:["StudentA","StudentB"]}
         const CreateClassRoom = await instructorClassRooms.createClass(instructorClassRoomOne);
         const foundClassroom = await InstructorClassSchema.findById(CreateClassRoom._id);
               
         expect(foundClassroom.instructorId).toEqual("RefRepCoach");
         expect(foundClassroom.className).toEqual("Testing ClassRoom");
-        expect(foundClassroom.videoclipIds).toEqual(["Lesson1", "Lesson2"]);
+        expect(foundClassroom.lessonIds).toEqual(["Lesson1", "Lesson2"]);
         expect(foundClassroom.studentIds).toEqual(["StudentA","StudentB"]);
     })
 })

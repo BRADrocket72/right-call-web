@@ -8,8 +8,8 @@ const instructorClassCollection :InstructorClass =  new InstructorClass()
 beforeAll(async () => await testMongoDb.connect())
 
 beforeEach(async () => {
-    const instructorClassOne =new InstructorClassSchema({instructorId:"instructor1",className:"Basketball",videoclipIds:["id1","id2"],studentIds:["student1","student2"]})
-    const instructorClassTwo =new InstructorClassSchema({instructorId:"instructor2",className:"Basketball",videoclipIds:["id3","id4"],studentIds:["student3","student4"]})
+    const instructorClassOne =new InstructorClassSchema({instructorId:"instructor1",className:"Basketball",lessonIds:["id1","id2"],studentIds:["student1","student2"]})
+    const instructorClassTwo =new InstructorClassSchema({instructorId:"instructor2",className:"Basketball",lessonIds:["id3","id4"],studentIds:["student3","student4"]})
     await instructorClassOne.save();
     await instructorClassTwo.save();
 })
