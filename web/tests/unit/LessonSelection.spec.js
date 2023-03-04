@@ -26,7 +26,7 @@ describe('LessonSelection.vue', () => {
             data() {
                 return {
                     ready: true,
-                    videoClips: [({_id: "123test", videoUrl: "youtube.com", videoName: "Football Lesson One", timeStamps: [1,5,25]}), ({_id: "123test", videoUrl: "youtube.com", videoName: "Football Lesson One", timeStamps: [1,5,25]})]
+                    lessons: [{name: "testlesson", instructorId: "testId", description:"Test", videoClipsArray: [({_id: "123test", name: "youtube.com", videoName: "Football Lesson One", timeStamps: [1,5,25]}), ({_id: "123test", videoUrl: "youtube.com", videoName: "Football Lesson One", timeStamps: [1,5,25]})]}]
                 }
             },
             global: {
@@ -49,7 +49,7 @@ describe('LessonSelection.vue', () => {
     })
     
     it('videoClips variable is set to the array of videos from data()', () => {
-        expect(wrapper.vm.videoClips.length).toEqual(2)
+        expect(wrapper.vm.lessons.length).toEqual(1)
     })
 
     it('renders lessons Div', () => {
@@ -59,7 +59,7 @@ describe('LessonSelection.vue', () => {
 
     it('displays correct number of lessons', () => {
         const lessons = wrapper.findAll('.lesson')
-        expect(lessons.length).toBe(2)
+        expect(lessons.length).toBe(1)
     })
 
 })
