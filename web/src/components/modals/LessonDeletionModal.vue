@@ -12,7 +12,12 @@
             <slot name="body">
               <p>Are you sure you wish to delete this lesson?</p>
 
-              <button type="button" class="btn-green" @click="deleteLesson(selectedVideo)">Yes</button>
+              <div v-if="deletionType == 'video'">
+                <button type="button" class="btn-green" @click="deleteVideo(selectedVideo)">Yes</button>
+              </div>
+              <div v-else>
+                <button type="button" class="btn-green" @click="deleteLesson(selectedLesson)">Yes</button>
+              </div>
               <button type="button" class="btn-green" @click="close()">No, select a different lesson to delete</button>
               <br/>
             </slot>
@@ -25,23 +30,36 @@
   <script>
 import { useActivityStore } from '@/stores/ActivityStore';
 import { useVideoClipStore } from '@/stores/VideoClipStore';
+import { useLessonStore } from '@/stores/LessonsStore';
 
   
   export default {
     name: 'ResultsPage',
     data() {
       return {
-        videosQuestions: []
+        videosQuestions: [],
+        videoClips: []
       }
     },
     props: {
-      selectedVideo: Object
+      selectedLesson: Object,
+      selectedVideo: Object,
+      deletionType: String
     },
     methods: {
       close() {
         this.$emit('close');
       },
-      async deleteLesson(video) {
+      async deleteVideo(video) {
+        let lessonStore = useLessonStore()
+        let updatedVideoClipsArray = []
+        for (let i=0;i<this.selectedLesson.videoClipsArray.length;i++) {
+          if(this.selectedLesson.videoClipsArray[i]._id != video._id) {
+            updatedVideoClipsArray.push(this.selectedLesson.videoClipsArray[i])
+          }
+        }
+        await lessonStore.updateVideoClipsArray(this.selectedLesson._id, updatedVideoClipsArray)
+
         let videoId = video._id
         const activityStore = useActivityStore()
         let videosQuestions = await activityStore.fetchActivitiesByVideoclipId(videoId)
@@ -52,6 +70,20 @@ import { useVideoClipStore } from '@/stores/VideoClipStore';
         }
         const videoClipStore = useVideoClipStore()
         await videoClipStore.deleteVideoClip(videoId)
+        this.$router.push({
+          name: "AdminPage"
+        })
+      },
+      async deleteLesson(lesson){
+        var videoClip = useVideoClipStore();
+        var lessonStore = useLessonStore()
+        for (let i=0;i<lesson.videoClipsArray.length;i++) {
+            this.videoClips.push(await videoClip.fetchVideoClipById(lesson.videoClipsArray[i]._id))
+        }
+        for (var video in this.videoClips) {
+          this.deleteVideo(this.videoClips[video])
+        }        
+        await lessonStore.deleteLesson(lesson._id)
         this.$router.push({
           name: "AdminPage"
         })

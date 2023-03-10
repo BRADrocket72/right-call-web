@@ -2,25 +2,43 @@
     <div>
       <LoggedInNavBarVue />
       <br /><br />
-      <div>
+      <div v-if="isLessonSelected == false">
         <label><h4>Select Lesson to Delete: </h4></label>
         <div class="video-list-div" >
-            <div class="lesson" v-for="video in this.lessons" :key="video.id">
-                <a class="nav-link" @click="videoSelection(video)">
-                    <h1>{{video.videoName}}</h1>
-                </a>   
-                <p>View Video Before Deletion:</p> 
-                <p class="video-link"><a :href="video.videoURL" target="_blank">{{video.videoURL}}</a></p>
+            <div class="lesson" v-for="lesson in lessons" :key="lesson._id">
+                <div class="nav-link">
+                    <h1>{{lesson.name}}</h1>
+                </div>   
+                <br/>
+                <p class="video-link">
+                  <a @click="lessonSelection(lesson)">Delete the Entire Lesson</a> 
+                  <br/><br/>
+                  <a @click="deleteSpecificVideo(lesson)">Delete Video in Lesson</a> 
+                </p>
             </div>
         </div>
         <br />
       </div>
-      <LessonDeletionModal v-if="isVideoSelected" :selectedVideo="selectedVideo" @close="closeModal"></LessonDeletionModal>
+      <div v-if="isLessonSelected">
+        <label><h4>Select Video to Delete: </h4></label>
+        <div class="video-list-div">
+          <div class="lesson" v-for="video in videoClips" :key="video._id">
+              <a class="nav-link" @click="videoSelection(video)">
+                  <h1>{{video.videoName}}</h1>
+              </a>   
+              <br/>
+              <p>View Video Before Deletion:</p> 
+              <p class="video-link"><a :href="video.videoURL" target="_blank">{{video.videoURL}}</a></p>
+          </div> 
+        </div>
+      </div>
+      <LessonDeletionModal v-if="isVideoSelected" :deletionType="isLessonOrVideo" :selectedLesson="selectedLesson" :selectedVideo="selectedVideo" @close="closeModal"></LessonDeletionModal>
     </div>
 </template>
   
 <script>
-  import { useVideoClipStore } from "@/stores/VideoClipStore";
+  import { useLessonStore } from "@/stores/LessonsStore";
+  import { useVideoClipStore } from "@/stores/VideoClipStore"
   import LoggedInNavBarVue from "./LoggedInNavBar.vue";
   import LessonDeletionModal from "@/components/modals/LessonDeletionModal.vue"
   
@@ -35,20 +53,39 @@
         return {
             lessons: [],
             selectedVideo: "",
-            isVideoSelected: false
+            isVideoSelected: false,
+            isLessonSelected:false,
+            videoClips: [],
+            selectedLesson: "",
+            isLessonOrVideo: false
         }
     },
     async mounted() {
-      var videoClipLessons = useVideoClipStore()
-      this.lessons = await videoClipLessons.fetchVideoClips();
+      var adminLessons = useLessonStore()
+      this.lessons = await adminLessons.getAllLessons()
     },
     methods: {
         closeModal(){
             this.isVideoSelected = false
         },
-        videoSelection(video) {
-            this.selectedVideo = video
+        lessonSelection(lesson) {
+            this.selectedVideo = ""
+            this.selectedLesson = lesson
+            this.isLessonOrVideo = "lesson"
             this.isVideoSelected = true
+        },
+        videoSelection(video){
+          this.selectedVideo = video
+          this.isLessonOrVideo = "video"
+          this.isVideoSelected = true
+        },
+        async deleteSpecificVideo(lesson) {
+          var videoClip = useVideoClipStore();
+          this.isLessonSelected = true
+          this.selectedLesson = lesson
+          for (let i=0;i<lesson.videoClipsArray.length;i++) {
+            this.videoClips.push(await videoClip.fetchVideoClipById(lesson.videoClipsArray[i]._id))
+          }
         }
     },
   };
@@ -119,6 +156,9 @@
   margin: none;
   width: 285px;
   height: 170px;
+  text-decoration: underline;
+  text-align: center;
+  color:#0e333c;
 }
 
 

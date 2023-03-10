@@ -15,6 +15,11 @@
           </a>
         </div>
       </div>
+      <div class="empty-lessons" v-else >
+        <br/><br/><br/>
+        <h4>You have no assigned lessons to take.</h4>
+        <br/><br/><br/>
+      </div>
   </div>
 </div>
 </template>
@@ -151,5 +156,10 @@ export default {
 #lessonContent {
   padding: 15px 0 0 20px;
 
+}
+
+.empty-lessons{
+  border-radius: 15px;
+  border: 1px solid #4AAE9B;
 }
 </style>
