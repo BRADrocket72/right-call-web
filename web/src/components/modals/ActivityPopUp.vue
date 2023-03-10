@@ -3,6 +3,9 @@
     <div class="modal-backdrop">
       <div class="modal" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription">
         <header class="modal-header" id="modalTitle">
+          <div>
+            <Timer :needsToReset="needsToReset" @update:needsToReset="needsToReset" @endTimer="addTimeToAnswer"/>
+          </div>
           <slot name="header">
             Question {{questionNumber}}
           </slot>
@@ -26,12 +29,16 @@
 
 <script>
 import {checkAnswer} from "../../util/GetResults"
+import Timer from "@/components/Timer"
 
   export default {
     name: 'ActivityPopUp',
+    components: {Timer},
     data() {
       return {
-        updatedAnswers: []
+        updatedAnswers: [],
+        needsToReset: false,
+        timesArray:[]
       }
     },
     props:{
@@ -41,6 +48,7 @@ import {checkAnswer} from "../../util/GetResults"
     },
     methods: {
       close() {
+        this.needsToReset = true
         this.$emit('close', this.updatedAnswers);
       },
       handleAnswerSelected(question, answersArray, answerChoice) {
@@ -49,8 +57,12 @@ import {checkAnswer} from "../../util/GetResults"
       handleTextAnswer() {
         const answer = document.getElementById('answer').value
         this.handleAnswerSelected(this.question,this.answersArray,answer)
+      },
+      addTimeToAnswer(seconds){
+        this.timesArray.push(seconds);
       }
     }
+
   };
 </script>
 
