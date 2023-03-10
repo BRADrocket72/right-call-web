@@ -54,6 +54,14 @@ export const useUsersStore = defineStore("Users", {
             } catch(error) {
                 console.log(error)
             }
+        },
+        async getUserById(userId) {
+            try {
+                const data = await axios.get('http://localhost:3000/api/users/getById/' + userId)
+                return data.data
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 })

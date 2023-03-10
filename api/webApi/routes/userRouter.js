@@ -16,4 +16,7 @@ router.delete('/user/delete/:id', UserController.delete_user)
 
 router.post('/users/login', UserController.user_login)
 
+//Get user by Id Method
+router.get('/users/getById/:id', UserController.get_by_id)
+
 module.exports = router;
