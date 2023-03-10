@@ -11,13 +11,13 @@ export const useInstructorClassStore = defineStore("InstructorClass", {
         }
     },
     actions: {
-        async postInstructorClass(instructorId, className, videoclipIds , studentIds) {
+        async postInstructorClass(instructorId, className, lessonIds , studentIds) {
             try {
                 const data = await axios.post(`http://localhost:3000/api/instructorClass/post`, 
                 { 
                     instructorId: instructorId,
                     className: className,
-                    videoclipIds: videoclipIds,
+                    lessonIds: lessonIds,
                     studentIds: studentIds
                 })
                 return data.data
@@ -33,17 +33,17 @@ export const useInstructorClassStore = defineStore("InstructorClass", {
                 console.error(error)
             }
         },
-        async addVideoClipToClass(classId, videoClipIds) {
+        async addVideoClipToClass(classId, lessonIds) {
             try {
-                const data = await axios.patch(`http://localhost:3000/api/instructorClass/addVideoClip/${classId}`,  {videoclipIds: videoClipIds})
+                const data = await axios.patch(`http://localhost:3000/api/instructorClass/addVideoClip/${classId}`,  {lessonIds: lessonIds})
                 return data.data
             } catch(error) {
                 console.error(error)
             }
         },
-        async deleteVideoClipFromClass(classId, videoClipIds) {
+        async deleteVideoClipFromClass(classId, lessonIds) {
             try {
-                const data = await axios.patch(`http://localhost:3000/api/instructorClass/addVideoClip/${classId}`,  {videoclipIds: videoClipIds})
+                const data = await axios.patch(`http://localhost:3000/api/instructorClass/addVideoClip/${classId}`,  {lessonIds: lessonIds})
                 return data.data
             } catch(error) {
                 console.error(error)

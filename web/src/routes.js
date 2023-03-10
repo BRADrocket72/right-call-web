@@ -14,6 +14,7 @@ import CreateLessonPage from "@/components/CreateLessonPage.vue"
 import UpdateLessonsPage from "@/components/UpdateLessonsPage.vue"
 import CustomizeLessonMainPage from "@/components/CustomizeLessonMainPage.vue"
 import UpdateInstructorLessonsPage from "@/components/UpdateInstructorLessonsPage.vue"
+import VideoSelectionPage from "@/components/VideoSelectionPage.vue"
 import { createRouter, createWebHistory } from 'vue-router'
 
 
@@ -99,6 +100,12 @@ const routesArray = [
         path: "/UpdateInstructorLessonsPage",
         name: "UpdateInstructorLessonsPage",
         component: UpdateInstructorLessonsPage
+    },
+    {
+        path: "/VideoSelectionPage:lessonId",
+        name: "VideoSelectionPage",
+        component: VideoSelectionPage,
+        props: true
     },
 ]
 

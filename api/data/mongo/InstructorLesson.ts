@@ -27,5 +27,8 @@ import InstructorLessonSchema from "./schemas/InstructorLessonSchema"
         const data = await InstructorLessonSchema.findByIdAndUpdate(id, {$set:{name: name}})
         return data;
     }
+    async getLessonById(id: string) {
+        return await InstructorLessonSchema.findById(id);
+    }
 }
 export default  InstructorLesson

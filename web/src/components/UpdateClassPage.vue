@@ -11,7 +11,7 @@
             <p>{{ instructorClass.className }} <br/></p>
           </div>
           <p id="studentCount">{{ instructorClass.studentIds.length }} Students</p>
-          <p id="videoClipCount">{{ instructorClass.videoclipIds.length }} Video Lessons</p>
+          <p id="lessonCount">{{ instructorClass.lessonIds.length }} Video Lessons</p>
           <br/><br/>
           <button class="updateButton" type="submit" @click="addRemoveStudents(instructorClass)">Add/Remove Students</button>
           <button class="updateButton" type="submit" @click="addVideos(instructorClass)">Add/Remove Lessons</button>
