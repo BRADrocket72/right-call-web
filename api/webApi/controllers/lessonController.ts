@@ -46,3 +46,14 @@ exports.update_lesson_name = async(req, res) => {
         res.status(500).json({ message: error.message })
     }
 }
+
+exports.update_video_clips_array = async(req, res) => {
+    try {
+        res.header('Access-Control-Allow-Origin', '*')
+        const data = await lessonDb.updateVideoClipsArray(req.params.id, req.body);
+        res.json(data)
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
