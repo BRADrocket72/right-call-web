@@ -11,39 +11,39 @@ export const useInstructorLessonStore = defineStore("InstructorLessons", {
         }
     },
     actions: {
-        async postInstructorLesson(name, instructorId, description , videoClipsArray) {
+        async postInstructorLesson(name, instructorId, description, videoClipsArray) {
             try {
-                const data = await axios.post(`http://localhost:3000/api/instructorLessons/post`, 
-                { 
-                    name: name,
-                    instructorId: instructorId,
-                    description: description,
-                    videoClipsArray: videoClipsArray
-                })
+                const data = await axios.post(`${process.env.VUE_APP_API_BASE_URL}/instructorLessons/post`,
+                    {
+                        name: name,
+                        instructorId: instructorId,
+                        description: description,
+                        videoClipsArray: videoClipsArray
+                    })
                 return data.data
-            } catch(error) {
+            } catch (error) {
                 console.error(error)
             }
         },
         async getAllInstructorLessons() {
             try {
-                const data = await axios.get('http://localhost:3000/api/instructorLessons/getAll')
+                const data = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/instructorLessons/getAll`)
                 return data.data
-            } catch(error) {
+            } catch (error) {
                 console.error(error)
             }
         },
         async getLessonsByInstructorId(instructorId) {
             try {
-                const data = await axios.get('http://localhost:3000/api/instructorLessons/getById/' + instructorId)
+                const data = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/instructorLessons/getById/` + instructorId)
                 return data.data
-            } catch(error) {
+            } catch (error) {
                 console.error(error)
             }
         },
-        async updateInstructorLessonName(id,name) {
+        async updateInstructorLessonName(id, name) {
             try {
-                const data = await axios.patch(`http://localhost:3000/api/instructorLessons/updateLessonName/${id}`, { name: name })
+                const data = await axios.patch(`${process.env.VUE_APP_API_BASE_URL}/instructorLessons/updateLessonName/${id}`, { name: name })
                 return data.data
             } catch (error) {
                 console.log(error)
@@ -51,7 +51,7 @@ export const useInstructorLessonStore = defineStore("InstructorLessons", {
         },
         async fetchLessonById(lessonId) {
             try {
-                const data = await axios.get('http://localhost:3000/api/instructorLessons/getLessonById/' + lessonId)
+                const data = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/instructorLessons/getLessonById/` + lessonId)
                 return data.data
             } catch (error) {
                 console.log(error);

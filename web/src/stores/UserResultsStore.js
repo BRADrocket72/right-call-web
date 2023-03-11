@@ -11,23 +11,23 @@ export const useUserResultsStore = defineStore("UserResults", {
         }
     },
     actions: {
-        async postUserResults(username,score,lessonId, lessonName) {
+        async postUserResults(username, score, lessonId, lessonName) {
             try {
-                const data = await axios.post(`http://localhost:3000/api/userResults/post`, 
-                { 
-                    username: username,
-                    score: score,
-                    lessonId: lessonId,
-                    lessonName: lessonName
-                })
+                const data = await axios.post(`${process.env.VUE_APP_API_BASE_URL}/userResults/post`,
+                    {
+                        username: username,
+                        score: score,
+                        lessonId: lessonId,
+                        lessonName: lessonName
+                    })
                 return data.data
-            } catch(error) {
+            } catch (error) {
                 console.log(error)
             }
         },
         async fetchUserResults() {
             try {
-                const data = await axios.get('http://localhost:3000/api/userResults/getall')
+                const data = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/userResults/getall`)
                 return data.data
             } catch (error) {
                 console.log(error);
@@ -35,7 +35,7 @@ export const useUserResultsStore = defineStore("UserResults", {
         },
         async fetchByUserName(username) {
             try {
-                const data = await axios.get(`http://localhost:3000/api/userResults/get/${username}`)
+                const data = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/userResults/get/${username}`)
                 this.results = data.data
                 return data.data
             } catch (error) {

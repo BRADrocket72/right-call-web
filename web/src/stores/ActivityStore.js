@@ -13,49 +13,49 @@ export const useActivityStore = defineStore("Activity", {
     actions: {
         async fetchActivitiesByVideoclipId(videoclipId) {
             try {
-                const data = await axios.get(`http://localhost:3000/api/activity/get/${videoclipId}`)
+                const data = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/activity/get/${videoclipId}`)
                 this.activityList = data.data
                 return data.data
             } catch (error) {
                 console.log(error);
             }
         },
-        async postActivities(timestamp,questionType,questionText,answers,correctAnswer,videoclipId) {
+        async postActivities(timestamp, questionType, questionText, answers, correctAnswer, videoclipId) {
             try {
-                const data = await axios.post(`http://localhost:3000/api/activity/post`, 
-                { 
-                    timestamp: timestamp,
-                    questionType: questionType,
-                    questionText: questionText,
-                    answers: answers,
-                    correctAnswer: correctAnswer,
-                    videoclipId: videoclipId
-                })
+                const data = await axios.post(`${process.env.VUE_APP_API_BASE_URL}/activity/post`,
+                    {
+                        timestamp: timestamp,
+                        questionType: questionType,
+                        questionText: questionText,
+                        answers: answers,
+                        correctAnswer: correctAnswer,
+                        videoclipId: videoclipId
+                    })
                 return data.data
-            } catch(error) {
+            } catch (error) {
                 console.error(error)
             }
         },
-        async updateActivities(id,timestamp,questionType,questionText,answers,correctAnswer) {
+        async updateActivities(id, timestamp, questionType, questionText, answers, correctAnswer) {
             try {
-                const data = await axios.put(`http://localhost:3000/api/activity/update/${id}`, 
-                { 
-                    timestamp: timestamp,
-                    questionType: questionType,
-                    questionText: questionText,
-                    answers: answers,
-                    correctAnswer: correctAnswer
-                })
+                const data = await axios.put(`${process.env.VUE_APP_API_BASE_URL}/activity/update/${id}`,
+                    {
+                        timestamp: timestamp,
+                        questionType: questionType,
+                        questionText: questionText,
+                        answers: answers,
+                        correctAnswer: correctAnswer
+                    })
                 return data.data
-            } catch(error) {
+            } catch (error) {
                 console.log(error)
             }
         },
         async deleteActivities(id) {
             try {
-                const data = await axios.delete(`http://localhost:3000/api/activity/delete/${id}`)
+                const data = await axios.delete(`${process.env.VUE_APP_API_BASE_URL}/activity/delete/${id}`)
                 return data.data
-            } catch(error) {
+            } catch (error) {
                 console.log(error)
             }
         }

@@ -11,47 +11,47 @@ export const useInstructorClassStore = defineStore("InstructorClass", {
         }
     },
     actions: {
-        async postInstructorClass(instructorId, className, lessonIds , studentIds) {
+        async postInstructorClass(instructorId, className, lessonIds, studentIds) {
             try {
-                const data = await axios.post(`http://localhost:3000/api/instructorClass/post`, 
-                { 
-                    instructorId: instructorId,
-                    className: className,
-                    lessonIds: lessonIds,
-                    studentIds: studentIds
-                })
+                const data = await axios.post(`${process.env.VUE_APP_API_BASE_URL}/instructorClass/post`,
+                    {
+                        instructorId: instructorId,
+                        className: className,
+                        lessonIds: lessonIds,
+                        studentIds: studentIds
+                    })
                 return data.data
-            } catch(error) {
+            } catch (error) {
                 console.error(error)
             }
         },
         async getClassesByInstructorId(instructorId) {
             try {
-                const data = await axios.get('http://localhost:3000/api/instructorClass/getById/' + instructorId)
+                const data = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/instructorClass/getById/` + instructorId)
                 return data.data
-            } catch(error) {
+            } catch (error) {
                 console.error(error)
             }
         },
         async addVideoClipToClass(classId, lessonIds) {
             try {
-                const data = await axios.patch(`http://localhost:3000/api/instructorClass/addVideoClip/${classId}`,  {lessonIds: lessonIds})
+                const data = await axios.patch(`${process.env.VUE_APP_API_BASE_URL}/instructorClass/addVideoClip/${classId}`, { lessonIds: lessonIds })
                 return data.data
-            } catch(error) {
+            } catch (error) {
                 console.error(error)
             }
         },
         async deleteVideoClipFromClass(classId, lessonIds) {
             try {
-                const data = await axios.patch(`http://localhost:3000/api/instructorClass/addVideoClip/${classId}`,  {lessonIds: lessonIds})
+                const data = await axios.patch(`${process.env.VUE_APP_API_BASE_URL}/instructorClass/addVideoClip/${classId}`, { lessonIds: lessonIds })
                 return data.data
-            } catch(error) {
+            } catch (error) {
                 console.error(error)
             }
         },
         async fetchAllInstructorClasses() {
             try {
-                const data = await axios.get('http://localhost:3000/api/instructorClass/getall')
+                const data = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/instructorClass/getall`)
                 return data.data
             } catch (error) {
                 console.log(error);
@@ -59,7 +59,7 @@ export const useInstructorClassStore = defineStore("InstructorClass", {
         },
         async updateStudentIdsList(classId, student_Ids) {
             try {
-                const data = await axios.patch(`http://localhost:3000/api/instructorClass/updateStudentIds/${classId}`, {studentIds: student_Ids})
+                const data = await axios.patch(`${process.env.VUE_APP_API_BASE_URL}/instructorClass/updateStudentIds/${classId}`, { studentIds: student_Ids })
                 return data.data
             } catch (error) {
                 console.log(error);
