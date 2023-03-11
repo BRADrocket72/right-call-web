@@ -47,6 +47,18 @@ exports.get_by_username = async (req, res) => {
     }
 }
 
+exports.get_by_id = async (req, res) => {
+    try {
+        res.header('Access-Control-Allow-Origin', '*')
+        const id = req.params.id
+        const data = await userDb.findUserById(id)
+        res.json(data)
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
+
 exports.get_all = async (req, res) => {
     try {
         res.header('Access-Control-Allow-Origin', '*')

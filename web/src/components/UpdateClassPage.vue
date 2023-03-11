@@ -11,11 +11,18 @@
             <p>{{ instructorClass.className }} <br/></p>
           </div>
           <p id="studentCount">{{ instructorClass.studentIds.length }} Students</p>
-          <p id="videoClipCount">{{ instructorClass.videoclipIds.length }} Video Lessons</p>
+          <p id="lessonCount">{{ instructorClass.lessonIds.length }} Video Lessons</p>
           <br/><br/>
           <button class="updateButton" type="submit" @click="addRemoveStudents(instructorClass)">Add/Remove Students</button>
           <button class="updateButton" type="submit" @click="addVideos(instructorClass)">Add/Remove Lessons</button>
         </div>
+      </div>
+      <div class="empty-classes" v-if="isLessonsEmpty" >
+        <br/><br/><br/>
+        <h4>You have not created any classes.</h4>
+        <br/><br/>
+        No Classes Created? <a class="to-class-creation-page" @click="redirectToClassCreationPage" >Create a Class Here</a>
+        <br/>
       </div>
       <AddStudentsModal v-if="isReadyToAddStudents" :selectedClass="currentClass" @close="closeAddStudentsModal"></AddStudentsModal>
       <AddVideosToClassModal v-if="isReadyToAddVideos" :selectedClass="currentClass" @close="closeAddVideosModal"></AddVideosToClassModal>
@@ -44,7 +51,8 @@
           instructorsClasses: [],
           isReadyToAddStudents: false,
           isReadyToAddVideos: false,
-          currentClass: InstructorClassDto
+          currentClass: InstructorClassDto,
+          isLessonsEmpty: false
         }
       },
       async mounted() {
@@ -54,6 +62,9 @@
         this.instructorId = instructor._id
         let instructorClassStore = useInstructorClassStore()
         this.instructorsClasses = await instructorClassStore.getClassesByInstructorId(this.instructorId)
+        if (this.instructorsClasses.length == 0 ) {
+          this.isLessonsEmpty = true
+        }
       },
       methods: {
         addRemoveStudents(selectedInstructorClass) {
@@ -73,12 +84,17 @@
           this.isReadyToAddVideos = false
           let instructorClassStore = useInstructorClassStore()
           this.instructorsClasses = await instructorClassStore.getClassesByInstructorId(this.instructorId)
+        },
+        redirectToClassCreationPage() {
+          this.$router.push({
+            name: "CreateClassroomPage"
+          })
         }
       }
   }
   </script>
   
-  <style>
+  <style scoped>
   nav {
     padding: 30px;
   }
@@ -145,4 +161,8 @@
   text-align: center;
 }
   
+.empty-classes{
+  border-radius: 15px;
+  border: 1px solid #4AAE9B;
+}
   </style>

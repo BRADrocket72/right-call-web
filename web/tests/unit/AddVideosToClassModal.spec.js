@@ -6,7 +6,12 @@ import AddVideosToClassModal from '@/components/modals/AddVideosToClassModal.vue
 
 describe('AssignActivityModal.vue', () => {
     let wrapper;
+    let mockCookies;
     beforeEach(() => {
+        mockCookies = {
+            get: jest.fn()
+        }
+        mockCookies.get.mockReturnValue({ currentUserType: "test" })
         setActivePinia(createPinia())
         wrapper = mount(AddVideosToClassModal, {
             props:{
@@ -14,7 +19,13 @@ describe('AssignActivityModal.vue', () => {
             },
             data() {
                 return{
-                    lessons: [{_id: "testVideo123", videoName: "testVideo123"}]
+                    lessons: [({_id: "testVideo123", name: "testVideo123", instructorId: "testId", description: "This is a test lesson", videoClipsArray: []})],
+                    lessonIds: ["testVideo123"]
+                }
+            },
+            global: {
+                mocks: {
+                    $cookies: mockCookies
                 }
             }
         })
@@ -35,11 +46,11 @@ describe('AssignActivityModal.vue', () => {
         const studentTable2 = wrapper.findAll('.flex-container-2')
         expect(studentTable2.length).toEqual(1)
     })
-    it('Displays the correct amount of currently added videos to remove and add', () => {
-        const notAddedVideos = wrapper.findAll('.addVideo')
-        expect(notAddedVideos.length).toEqual(1)
-        const addedVideos = wrapper.findAll('.removeVideo')
-        expect(addedVideos.length).toEqual(0)
+    it('Displays the correct amount of currently added lessons to remove and add', () => {
+        const notAddedLessons = wrapper.findAll('.addVideo')
+        expect(notAddedLessons.length).toEqual(1)
+        const addedLessons = wrapper.findAll('.removeVideo')
+        expect(addedLessons.length).toEqual(0)
     })
 
      it('Displays the close button', () => {

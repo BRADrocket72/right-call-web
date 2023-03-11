@@ -9,24 +9,24 @@
           </header>
           <section class="modal-body" id="modalDescription">
             <slot name="body">
-              <h4>What videos do you want to add/remove?</h4>
+              <h4>What lessons do you want to add/remove?</h4>
               <br/><br/><br/>
               <div class="video-list" >
                 <div class="flex-container-1">
-                  <p class="bold-header">Remove Videos: </p>
-                  <div class="student-card" v-for="video in currentlyAddedVideos" :key="video.id">
-                      <a class="removeVideo" @click="deleteVideo(video)">
-                          <h1>{{video.videoName}}</h1>
+                  <p class="bold-header">Remove Lessons: </p>
+                  <div class="student-card" v-for="video in currentlyAddedLessons" :key="video.id">
+                      <a class="removeVideo" @click="deleteLesson(video)">
+                          <h1>{{video.name}}</h1>
                       </a>   
                   </div>
                 </div>
               </div>
               <div class="video-list" >
                 <div class="flex-container-2">
-                  <p class="bold-header">Available Videos to Add: </p>
-                  <div class="student-card" v-for="video in videosNotAdded" :key="video.id">
-                      <a class="addVideo" @click="addVideo(video)">
-                          <h1>{{video.videoName}}</h1>
+                  <p class="bold-header">Available Lessons to Add: </p>
+                  <div class="student-card" v-for="video in lessonsNotAdded" :key="video.id">
+                      <a class="addVideo" @click="addLesson(video)">
+                          <h1>{{video.name}}</h1>
                       </a>   
                   </div>
                 </div>
@@ -42,30 +42,37 @@
   </template>
   
   <script>
-import { useVideoClipStore } from '@/stores/VideoClipStore';
 import {useInstructorClassStore} from '@/stores/InstructorClassStore'
+import {useInstructorLessonStore} from '@/stores/InstructorLessonStore'
+import {useUsersStore} from '@/stores/UserStore'
+
   
   export default {
     name: 'AddStudentsModal',
     data() {
       return {
         lessons: [],
-        videoIds: [],
+        lessonIds: [],
         alreadyAdded: false,
-        currentlyAddedVideos: []
+        currentlyAddedLessons: [],
+        instructorId: ""
       }
     },
     props: {
         selectedClass: Object
     },
     async mounted() {
-        var videoClipLessons = useVideoClipStore();
-        this.lessons = await videoClipLessons.fetchVideoClips();
-        this.videoIds = this.selectedClass.videoclipIds
+        var userStore = useUsersStore();
+        let instructorUsername = this.$cookies.get("user_session").currentUserName
+        let instructor =  await userStore.getUserByName(instructorUsername)
+        this.instructorId = instructor._id
+        var instructorLessonStore = useInstructorLessonStore()
+        this.lessons = await instructorLessonStore.getLessonsByInstructorId(this.instructorId);
+        this.lessonIds = this.selectedClass.lessonIds
         for (let j=0; j<this.lessons.length; j++) {
-          for (let i=0; i<this.videoIds.length; i++) {
-            if (this.lessons[j]._id == this.videoIds[i]) {
-              this.currentlyAddedVideos.push(this.lessons[j])
+          for (let i=0; i<this.lessonIds.length; i++) {
+            if (this.lessons[j]._id == this.lessonIds[i]) {
+              this.currentlyAddedLessons.push(this.lessons[j])
             }
           }
         }
@@ -74,25 +81,25 @@ import {useInstructorClassStore} from '@/stores/InstructorClassStore'
       close() {
         this.$emit('close');
       },
-      async addVideo(video) {
+      async addLesson(lesson) {
         var classes = useInstructorClassStore();
-        for (let i=0; i<this.videoIds.length; i++) {
-          if (this.videoIds[i] == video._id){
+        for (let i=0; i<this.lessonIds.length; i++) {
+          if (this.lessonIds[i] == lesson._id){
             this.alreadyAdded = true
           }
         }
         if (!this.alreadyAdded) {
-          this.videoIds.push(video._id)
+          this.lessonIds.push(lesson._id)
         }
-        await classes.addVideoClipToClass(this.selectedClass._id, this.videoIds)
+        await classes.addVideoClipToClass(this.selectedClass._id, this.lessonIds)
         this.close()
       },
-      async deleteVideo(video) {
+      async deleteLesson(lesson) {
         var classes = useInstructorClassStore();
         let updatedVideoIds = []
-        for (let i=0; i<this.videoIds.length; i++) {
-          if (this.videoIds[i] != video._id){
-            updatedVideoIds.push(this.videoIds[i])
+        for (let i=0; i<this.lessonIds.length; i++) {
+          if (this.lessonIds[i] != lesson._id){
+            updatedVideoIds.push(this.lessonIds[i])
           }
         }
         await classes.deleteVideoClipFromClass(this.selectedClass._id, updatedVideoIds)
@@ -100,12 +107,12 @@ import {useInstructorClassStore} from '@/stores/InstructorClassStore'
       }
     },
     computed: {
-      videosNotAdded() {
-        var currentAddedVideoIds = []
-        for (let i=0; i<this.currentlyAddedVideos.length; i++) {
-          currentAddedVideoIds.push(this.currentlyAddedVideos[i]._id)
+      lessonsNotAdded() {
+        var currentAddedLessonIds = []
+        for (let i=0; i<this.currentlyAddedLessons.length; i++) {
+          currentAddedLessonIds.push(this.currentlyAddedLessons[i]._id)
         }
-        return this.lessons.filter(x => !currentAddedVideoIds.includes(x._id))
+        return this.lessons.filter(x => !currentAddedLessonIds.includes(x._id))
       }
     }
   };

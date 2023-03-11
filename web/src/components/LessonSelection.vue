@@ -6,22 +6,28 @@
       <div class="div-header">
         <h1>Lesson Selection Page</h1>
       </div>
-      <div class="lesson-div" v-if="this.videoClips.length > 0">
-        <div class="lesson" v-for="video in this.videoClips" :key="video._id">
-          <a class="nav-link" @click="openVideo(video._id)">
-            <img class="lesson-img" :alt="video._id" src="../../images/richard-bagan-SmQ2Cku3alc-unsplash.jpg" />
-            <p>{{ video.videoName }}</p>
+      <div class="lesson-div" v-if="this.lessons.length > 0">
+        <div class="lesson" v-for="lesson in this.lessons" :key="lesson._id">
+          <a class="nav-link" @click="openLesson(lesson._id)">
+            <img class="lesson-img" :alt="lesson._id" src="../../images/richard-bagan-SmQ2Cku3alc-unsplash.jpg" />
+            <p id="lessonName">{{ lesson.name }}</p>
+            <p id="lessonContent">Content: {{ lesson.videoClipsArray.length }} quizzes</p>
           </a>
         </div>
+      </div>
+      <div class="empty-lessons" v-else >
+        <br/><br/><br/>
+        <h4>You have no assigned lessons to take.</h4>
+        <br/><br/><br/>
       </div>
   </div>
 </div>
 </template>
 
 <script>
-import { useVideoClipStore } from "@/stores/VideoClipStore";
 import { useInstructorClassStore } from "@/stores/InstructorClassStore";
 import { useUsersStore } from "@/stores/UserStore";
+import { useInstructorLessonStore } from "@/stores/InstructorLessonStore";
 import LoggedInNavBar from "./LoggedInNavBar.vue";
 import webgazer from 'webgazer';
 
@@ -31,7 +37,7 @@ export default {
     data() {
         return {
             ready: false,
-            videoClips: [],
+            lessons: [],
             allClasses: [],
             currentStudentId: "",
             currentStudentsClasses: []
@@ -39,11 +45,11 @@ export default {
     },
     props:{},
     methods: {
-        openVideo(videoID) {
+        openLesson(lessonId) {
             this.$router.push({
-                name: "VideoEditor",
+                name: "VideoSelectionPage",
                 params: {
-                    videoId: videoID
+                    lessonId: lessonId
                 }
             });
         },
@@ -71,16 +77,16 @@ export default {
         let studentsVideoClipIds = []
         await this.retrieveStudentsClasses()
         for (let i=0; i<this.currentStudentsClasses.length; i++) {
-          for(let j=0; j<this.currentStudentsClasses[i].videoclipIds.length; j++){
-            if (!studentsVideoClipIds.includes(this.currentStudentsClasses[i].videoclipIds[j])) {
-              studentsVideoClipIds.push(this.currentStudentsClasses[i].videoclipIds[j])
+          for(let j=0; j<this.currentStudentsClasses[i].lessonIds.length; j++){
+            if (!studentsVideoClipIds.includes(this.currentStudentsClasses[i].lessonIds[j])) {
+              studentsVideoClipIds.push(this.currentStudentsClasses[i].lessonIds[j])
             }
           }
         }
-        var videoClip = useVideoClipStore();
+        var instructorLessonStore = useInstructorLessonStore();
         for (let i=0; i<studentsVideoClipIds.length; i++) {
-          let videoClipCurrent = await videoClip.fetchVideoClipById(studentsVideoClipIds[i])
-          this.videoClips.push(videoClipCurrent)
+          let lessonCurrent = await instructorLessonStore.fetchLessonById(studentsVideoClipIds[i])
+          this.lessons.push(lessonCurrent)
         }
         this.ready = true;
     }
@@ -89,7 +95,6 @@ export default {
 
 <style scoped>
 .lesson-container {
-  justify-content: center;
   width: 100%;
   margin: auto;
 }
@@ -105,7 +110,6 @@ export default {
 .lesson-div {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   width: 100%;
   margin: 0 auto;
 }
@@ -115,7 +119,7 @@ export default {
 }
 
 .lesson {
-  flex: 1 0 25%;
+  flex: 1 0 23%;
   margin: 0 30px 30px 0;
   text-align: left;
   height: 350px;
@@ -141,8 +145,19 @@ export default {
   cursor: pointer;
 }
 
-.lesson-div p {
+#lessonName {
   padding: 15px 0 0 20px;
   font-weight: bold;
+  font-size: 20px;
+}
+
+#lessonContent {
+  padding: 15px 0 0 20px;
+
+}
+
+.empty-lessons{
+  border-radius: 15px;
+  border: 1px solid #4AAE9B;
 }
 </style>

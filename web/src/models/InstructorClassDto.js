@@ -1,13 +1,13 @@
 export default class InstructorClassDto {
     instructorId = "";
     className = "";
-    videoclipIds = []
+    lessonIds = []
     studentIds = []
 
-    constructor(instructorId, className, videoclipIds, studentIds) {
+    constructor(instructorId, className, lessonIds, studentIds) {
         this.instructorId = instructorId
         this.className = className;
-        this.videoclipIds = videoclipIds;
+        this.lessonIds = lessonIds;
         this.studentIds = studentIds;
     }
 }

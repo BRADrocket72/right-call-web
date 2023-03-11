@@ -35,11 +35,27 @@ export const useLessonStore = defineStore("Lessons", {
         },
         async deleteLesson(id) {
             try {
-                const data = await axios.delete(`http://localhost:3000/api/delete/${id}`)
+                const data = await axios.delete(`http://localhost:3000/api/lessons/delete/${id}`)
                 return data.data
             } catch(error) {
                 console.error(error)
             }
-        }
+        },
+        async updateLessonName(id, name) {
+            try {
+                const data = await axios.patch(`http://localhost:3000/api/lessons/update/${id}`, { name: name })
+                return data.data
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async updateVideoClipsArray(id, videoClipsArray) {
+            try {
+                const data = await axios.patch(`http://localhost:3000/api/lessons/updateVideoClipsArray/${id}`,  {videoClipsArray: videoClipsArray})
+                return data.data
+            } catch(error) {
+                console.error(error)
+            }
+        },
     }
 })

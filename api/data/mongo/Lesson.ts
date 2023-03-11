@@ -23,5 +23,13 @@ import LessonSchema from "./schemas/LessonSchema"
         const data =  await LessonSchema.findByIdAndDelete(id); 
         return data;
     }
+    async updateLessonName(id: string, name: string) {
+        const data = await LessonSchema.findByIdAndUpdate(id, {$set: {name: name}})
+        return data;
+    }
+    async updateVideoClipsArray(id: string, videoClipsArray: Array<string>){
+        const data = await LessonSchema.findByIdAndUpdate(id, videoClipsArray)
+        return data;
+    }
 }
 export default  Lesson

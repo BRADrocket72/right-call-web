@@ -8,10 +8,17 @@
         <h5>Your custom lessons:</h5>
         <div class="admin-buttons">
             <div v-for="lesson in instructorLessons" :key="lesson._id">
-                <button type="button" class="button-selection buttonLink" @click="selectLessonToCustomize(lesson.name, lesson.videoClipsArray)"><span>{{lesson.name}}</span></button>
+                <button type="button" class="button-selection buttonLink" @click="selectLessonToCustomize(lesson)"><span>{{lesson.name}}</span></button>
                 <p class="upload-description">{{lesson.description}}<br/><br/>Content: {{ lesson.videoClipsArray.length }} videos</p>
             </div>
         </div>
+        <div class="empty-lessons" v-if="isLessonsEmpty" >
+          <br/><br/><br/>
+          <h4>You have no custom lessons.</h4>
+          <br/><br/>
+          No Custom Lessons? <a class="to-class-creation-page" @click="redirectToLessonCustomizationPage" >Create a Custom Lesson Here</a>
+          <br/>
+      </div>
       </div>
     </div>
     </template>
@@ -29,7 +36,8 @@
         },
         data() {
             return {
-                instructorLessons: []
+                instructorLessons: [],
+                isLessonsEmpty: false
             }
         },
         async mounted() {
@@ -39,17 +47,24 @@
           this.instructorId = instructor._id
           let instructorLessonStore = useInstructorLessonStore();
           this.instructorLessons = await instructorLessonStore.getLessonsByInstructorId(this.instructorId)
+          if (this.instructorLessons.length == 0) {
+            this.isLessonsEmpty = true
+          }
         },
         methods: {
-            selectLessonToCustomize(lessonName, lessonArrayOfVideos) {
-                let lessonPack = [lessonName, lessonArrayOfVideos]
+            selectLessonToCustomize(lesson) {
                 this.$router.push({
                     name: "AssignTimestamps",
                     params: {
-                        lessonPack: JSON.stringify(lessonPack)
+                        lessonPack: JSON.stringify(lesson)
                     }
                 })
             },
+            redirectToLessonCustomizationPage() {
+              this.$router.push({
+                name: "CustomizeLessonMainPage"
+              })
+            }
         }
     }
     </script>
@@ -170,4 +185,9 @@
         margin-left: 0;
       }
     }
+
+  .empty-lessons{
+    border-radius: 15px;
+    border: 1px solid #4AAE9B;
+  }
     </style>
