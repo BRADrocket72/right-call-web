@@ -57,8 +57,11 @@ app.use((error, req, res, next) => {
     }
 });
 
-app.listen(3000, () => {
-    console.log(`Server Started at ${3000}`)
+const PORT = process.env.PORT
+const HOST = process.env.HOST
+
+app.listen(PORT, HOST, () => {
+    console.log(`Server Started at http://${HOST}:${PORT}`)
 })
 
 module.exports = app

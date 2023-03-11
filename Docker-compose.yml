@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  node-server:
+    container_name: right-call-backend-container
+    build:
+      context: ./api
+      dockerfile: ./api/Dockerfile
+    image: right-call-backend
+    restart: always
+    ports:
+      - 3000:3000
+  vue-front-end:
+    container_name: right-call-frontend-container
+    build:
+      context: ./web
+      dockerfile: ./web/Dockerfile
+    image: right-call-frontend
+    restart: always
+    ports:
+      - 8080:80
+  
+
