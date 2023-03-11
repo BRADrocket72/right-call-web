@@ -11,6 +11,7 @@
           <a class="nav-link" @click="openLesson(lesson._id)">
             <img class="lesson-img" :alt="lesson._id" src="../../images/richard-bagan-SmQ2Cku3alc-unsplash.jpg" />
             <p id="lessonName">{{ lesson.name }}</p>
+            <p id="lessonContent">Instructor: {{ lesson.instructorName }} </p>
             <p id="lessonContent">Content: {{ lesson.videoClipsArray.length }} quizzes</p>
           </a>
         </div>
@@ -53,6 +54,11 @@ export default {
                 }
             });
         },
+        async retrieveInstructorName(instructorId){
+          let userStore = useUsersStore();
+          let instructorName = userStore.getUserById(instructorId)
+          return instructorName
+        },
         async retrieveStudentsClasses(){
           let instructorStore = useInstructorClassStore();
           let userStore = useUsersStore();
@@ -86,6 +92,7 @@ export default {
         var instructorLessonStore = useInstructorLessonStore();
         for (let i=0; i<studentsVideoClipIds.length; i++) {
           let lessonCurrent = await instructorLessonStore.fetchLessonById(studentsVideoClipIds[i])
+          lessonCurrent.instructorName = await this.retrieveInstructorName(lessonCurrent.instructorId)
           this.lessons.push(lessonCurrent)
         }
         this.ready = true;
