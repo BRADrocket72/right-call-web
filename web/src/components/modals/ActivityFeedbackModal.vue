@@ -8,10 +8,14 @@
             <section class="modal-body" id="modalDescription">
                 <slot name="body">
                     <div class="correct-feedback">
-                        <label for="correct-textarea">Correct Answer Feedback: </label><textarea id="correct-textarea" class="correct-textarea" maxlength="200" rows="4"></textarea>
+                        <label for="correct-textarea">Correct Answer Feedback: </label><textarea id="correct-textarea" class="correct-textarea" maxlength="250" rows="4"></textarea>
                     </div>
                     <div class="incorrect-feedback">
-                        <label for="incorrect-textarea">Incorrect Answer Feedback: </label><textarea id="incorrect-textarea" class="incorrect-textarea" maxlength="200" rows="4"></textarea>
+                        <label for="incorrect-textarea">Incorrect Answer Feedback: </label><textarea id="incorrect-textarea" class="incorrect-textarea" maxlength="250" rows="4"></textarea>
+                    </div>
+                    <div class="button-div">
+                        <button type="button" class="btn-green" @click="save()">Save</button>
+                        <button type="button" class="btn-green" @click="close()">Close</button>
                     </div>
                 </slot>
             </section>
@@ -24,6 +28,22 @@
 
 export default {
     name: 'ActivityFeedbackModal',
+    data() {
+            return {
+
+        }
+    },
+    props: {
+
+    },
+    methods: {
+        close() {
+            this.$emit('close')
+        },
+        save() {
+            this.$emit('save')
+        },
+    }
 }
 </script>
 
@@ -50,7 +70,7 @@ export default {
 .correct-feedback {
     display: flex;
     flex-direction: column;
-    margin-bottom: 35px;
+    margin: 0 0 35px 10px;
 }
 
 #correct-textarea {
@@ -64,6 +84,7 @@ export default {
 .incorrect-feedback {
     display: flex;
     flex-direction: column;
+    margin: 0 0 0 10px;
 }
 
 #incorrect-textarea {
@@ -74,4 +95,7 @@ export default {
     width: 500px;
 }
 
+.button-div {
+    margin: 10px 0;
+}
 </style>

@@ -41,7 +41,7 @@
                 </div>
             </div>
             <AssignActivityModal v-if="isAssignActivityModalVisible" :activity="activities[currentIndex]" :questionTypeExists="activities[currentIndex].questionType" :timestamp="currentActivityTimestamp" @close="toggleAssignActivityModal" @save="assignActivityModalSave"/>
-            <ActivityFeedbackModal v-if="isFeedbackModalVisible" />
+            <ActivityFeedbackModal v-if="isFeedbackModalVisible" @close="toggleFeedbackModal" @save="toggleFeedbackModal"/>
         </div>
     </div>
 </div>
@@ -416,7 +416,7 @@ video {
 }
 .display-timestamps-div {
     position: relative;
-    width: 310px;
+    width: 320px;
     height: 400px;
     margin-left: 10px;
     background: #0e333c;
@@ -432,8 +432,9 @@ video {
 }
 
 .timestamps {
+    overflow-x: none;
     overflow-y: auto;
-    width: 310px;
+    width: 320px;
     height: 300px;
     font-size: 0;
 }
