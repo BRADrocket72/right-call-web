@@ -26,9 +26,10 @@
                                 <li v-for="(timestamp,index) in formattedTimestamps" :key="timestamp">
                                     <button id="delete-timestamp-button" @click="deleteTimestamp(index)">X</button>
                                     {{timestamp}}
-                                    <button v-if="activities[index] == ''" class="incomplete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">Activity</button>
-                                    <button v-else-if="activities[index] && activities[index] != '' && !checkForId(activities[index])" class="complete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">Activity</button>
-                                    <button v-else class="pulled-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">Activity</button>
+                                    <button v-if="activities[index] == ''" class="incomplete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)"><img src="../../images/activity.png"></button>
+                                    <button v-else-if="activities[index] && activities[index] != '' && !checkForId(activities[index])" class="complete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)"><img src="../../images/activity.png"></button>
+                                    <button v-else class="pulled-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)"><img src="../../images/activity.png"></button>
+                                    <button class="incomplete-feedback" id="feedback-button" @click="toggleFeedbackModal()"><img src="../../images/feedback.png"></button>
                                 </li>
                             </ul>
                         </div>
@@ -40,6 +41,7 @@
                 </div>
             </div>
             <AssignActivityModal v-if="isAssignActivityModalVisible" :activity="activities[currentIndex]" :questionTypeExists="activities[currentIndex].questionType" :timestamp="currentActivityTimestamp" @close="toggleAssignActivityModal" @save="assignActivityModalSave"/>
+            <ActivityFeedbackModal v-if="isFeedbackModalVisible" />
         </div>
     </div>
 </div>
@@ -54,7 +56,7 @@ import { useVideoClipStore } from "@/stores/VideoClipStore"
 import {formatTimeForVideo} from '@/util/FormatVideosTime.js'
 import { useActivityStore } from '@/stores/ActivityStore'
 import { useUsersStore } from '@/stores/UserStore'
-
+import ActivityFeedbackModal from '@/components/modals/ActivityFeedbackModal.vue'
 import { useInstructorLessonStore } from '@/stores/InstructorLessonStore'
 import { useLessonStore } from '@/stores/LessonsStore'
 
@@ -62,7 +64,8 @@ export default {
     name: 'AssignTimestamps',
     components: { 
         AssignActivityModal,
-        LoggedInNavBarVue
+        LoggedInNavBarVue,
+        ActivityFeedbackModal
     },
     data() {
         return {
@@ -72,6 +75,7 @@ export default {
             isTimestampModalVisible: false,
             isSaveTimestampsModalVisible: false,
             isAssignActivityModalVisible: false,
+            isFeedbackModalVisible: false,
             newTimestamp: Number,
             currentActivityTimestamp: Number,
             timestamps: [],
@@ -175,6 +179,9 @@ export default {
             } else {
                 document.getElementById('save-timestamps-button').disabled = false
             }
+        },
+        toggleFeedbackModal() {
+            this.isFeedbackModalVisible = !this.isFeedbackModalVisible
         },
         toggleAssignActivityModal(activityIndex) {
             this.isAssignActivityModalVisible = !this.isAssignActivityModalVisible
@@ -443,6 +450,10 @@ ul.timestamp-ul {
     font-size: 35px;
 }
 
+.timestamp-ul img {
+    max-height: 35px;
+}
+
 #delete-timestamp-button {
     margin: 0 6px 0 6px;
     text-align: center;
@@ -463,7 +474,7 @@ ul.timestamp-ul {
 }
 
 #assign-activity-button {
-    margin: 0 15px 0 25px;
+    margin: 0 5px 0 15px;
     text-align: center;
     border: none;
     color: white;
@@ -471,13 +482,27 @@ ul.timestamp-ul {
     font-weight: bold;
     text-shadow: 1px 1px 1px black;
     box-shadow: 0 6px 6px #000000;
-    min-width: 85px;
+    min-width: 55px;
     min-height: 55px;
     border-radius: 15px;
 }
 
 #assign-activity-button:hover {
     box-shadow: 0 8px 8px #000000;
+}
+
+#feedback-button {
+    margin: 0 0 0 5px;
+    text-align: center;
+    border: none;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px black;
+    box-shadow: 0 6px 6px #000000;
+    min-width: 55px;
+    min-height: 55px;
+    border-radius: 15px;
 }
 
 #save-timestamps-button {
@@ -531,6 +556,30 @@ ul.timestamp-ul {
     background-color: #0ea83d;
 }
 
+.pulled-feedback {
+    background-color: #4AAE9B;
+}
+
+.pulled-feedback:hover {
+    background-color: #349b88;
+}
+
+.incomplete-feedback {
+    background-color: #ff0000;
+}
+
+.incomplete-feedback:hover {
+    background-color: #e20000;
+}
+
+.complete-feedback {
+    background-color: #0fb842;
+}
+
+.complete-feedback:hover {
+    background-color: #0ea83d;
+}
+
 #lessonNameText {
         text-align: center;
 }
@@ -570,4 +619,9 @@ ul.timestamp-ul {
     margin-bottom: 10px;
 }
 
+@media only screen and (max-width: 1399px){
+    .main-content-div {
+        margin-left: -75px;
+    }
+}
 </style>
