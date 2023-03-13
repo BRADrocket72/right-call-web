@@ -4,7 +4,7 @@
       <div class="modal" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription">
         <header class="modal-header" id="modalTitle">
           <div>
-            <Timer :needsToReset="needsToReset" @update:needsToReset="needsToReset" @endTimer="addTimeToAnswer"/>
+            <Timer />
           </div>
           <slot name="header">
             Question {{questionNumber}}
@@ -48,7 +48,6 @@ import Timer from "@/components/Timer"
     },
     methods: {
       close() {
-        this.needsToReset = true
         this.$emit('close', this.updatedAnswers);
       },
       handleAnswerSelected(question, answersArray, answerChoice) {
