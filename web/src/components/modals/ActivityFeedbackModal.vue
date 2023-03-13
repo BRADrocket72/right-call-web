@@ -17,6 +17,7 @@
                         <button type="button" class="btn-green" @click="save()">Save</button>
                         <button type="button" class="btn-green" @click="close()">Close</button>
                     </div>
+                    <p id="invalid-save"></p>
                 </slot>
             </section>
         </div>
@@ -29,7 +30,8 @@
 export default {
     name: 'ActivityFeedbackModal',
     data() {
-            return {
+        return {
+            allInputsValid: false,
 
         }
     },
@@ -41,8 +43,25 @@ export default {
             this.$emit('close')
         },
         save() {
-            this.$emit('save')
+            let invalid = document.getElementById('invalid-save')
+            this.checkInputs()
+            if(this.allInputsValid) {
+                invalid.innerHTML = ""
+                //this.$emit('save')
+            } else {
+                invalid.innerHTML = "Please fill out all fields."
+                this.activityModalData = []
+            }
         },
+        checkInputs() {
+            const correctTextArea = document.getElementById('correct-textarea')
+            const incorrectTextArea = document.getElementById('incorrect-textarea')
+            if(correctTextArea.value != "" && incorrectTextArea.value != "") {
+                this.allInputsValid = true
+            } else {
+                this.allInputsValid = false
+            }
+        }
     }
 }
 </script>
@@ -97,5 +116,9 @@ export default {
 
 .button-div {
     margin: 10px 0;
+}
+
+#invalid-save {
+    margin-left: 10px;
 }
 </style>
