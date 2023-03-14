@@ -7,32 +7,16 @@
 <script>
 
 
-
-var seconds = 0
-var tens = 0
-
-var interval;
-
 export default {
     name: 'TimerCountdown',
     data() {
         return {
-            seconds: Number,
-            maxSeconds: 5,
-            reset: this.needsToReset
+            seconds: 0,
+            tens:0,
+            interval: ""
         }
-
     },
-    props: {
-        needsToReset : Boolean,
-    },
-
     methods: {
-        endTimer() {
-            clearInterval(interval)
-            this.$emit('endTimer',seconds)
-        },
-
         startTimer() {
             console.log(this.needsToReset)
 
@@ -42,44 +26,40 @@ export default {
                 return
             }
 
-            tens++;
+            this.tens++;
 
-            if (tens <= 9) {
-                appendTens.innerHTML = "0" + tens;
+            if (this.tens <= 9) {
+                appendTens.innerHTML = "0" + this.tens;
             }
 
-            if (tens > 9) {
-                appendTens.innerHTML = tens;
+            if (this.tens > 9) {
+                appendTens.innerHTML = this.tens;
             }
 
-            if (tens > 99) {
+            if (this.tens > 99) {
                 console.log("seconds");
-                seconds++;
-                appendSeconds.innerHTML = "0" + seconds;
-                tens = 0;
+                this.seconds++;
+                appendSeconds.innerHTML = "0" + this.seconds;
+                this.tens = 0;
                 appendTens.innerHTML = "0" + 0;
             }
 
-            if (seconds > 9) {
-                appendSeconds.innerHTML = seconds;
+            if (this.seconds > 9) {
+                appendSeconds.innerHTML = this.seconds;
             }
 
         },
 
     },
     mounted() {
-        seconds =0;
-        tens = 0;
-        interval = setInterval(this.startTimer, 10);
+        this.interval = setInterval(this.startTimer, 10);
 
     },
-    watch: {
-      'needsToReset': function() {
-        clearInterval(interval)
-        this.endTimer();
-      }
+    unmounted(){
+        clearInterval(this.interval)
     }
 }
+// }
 </script>
     
     
