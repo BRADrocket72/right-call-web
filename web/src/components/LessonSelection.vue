@@ -56,8 +56,8 @@ export default {
         },
         async retrieveInstructorName(instructorId){
           let userStore = useUsersStore();
-          let instructorName = userStore.getUserById(instructorId)
-          return instructorName
+          let instructor = await userStore.getUserById(instructorId)
+          return instructor.userName
         },
         async retrieveStudentsClasses(){
           let instructorStore = useInstructorClassStore();
