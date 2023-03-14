@@ -7,7 +7,6 @@
             <h1>Select a Quiz to Take</h1>
             <br/><br/>
             <h5>Lesson: {{ currentLesson.name }}</h5>
-            <h5>Instructor: {{  }}</h5>
           </div>
           <div class="lesson-div" v-if="this.videoClips.length > 0">
             <div class="lesson" v-for="video in this.videoClips" :key="video._id">
