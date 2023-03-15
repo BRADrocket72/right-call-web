@@ -5,4 +5,5 @@ export interface LessonDb {
     getAll():Promise<LessonDto[]>;
     updateLessonName(id:string, name:string) : Promise<LessonDto>;
     updateVideoClipsArray(id:string, videoClipsArray:Array<string>) : Promise<LessonDto>;
+    getAdminLessonById(id:string) : Promise<LessonDto>;
 }
