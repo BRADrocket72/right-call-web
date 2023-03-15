@@ -7,10 +7,16 @@
             </header>
             <section class="modal-body" id="modalDescription">
                 <slot name="body">
-                    <div class="correct-feedback">
+                    <div v-if="feedback !== ''" class="correct-feedback">
+                        <label for="correct-textarea">Correct Answer Feedback: </label><textarea id="correct-textarea" class="correct-textarea" maxlength="250" rows="4" :value="feedback.correctFeedback"></textarea>
+                    </div>
+                    <div v-else class="correct-feedback">
                         <label for="correct-textarea">Correct Answer Feedback: </label><textarea id="correct-textarea" class="correct-textarea" maxlength="250" rows="4"></textarea>
                     </div>
-                    <div class="incorrect-feedback">
+                    <div v-if="feedback !== ''" class="incorrect-feedback">
+                        <label for="incorrect-textarea">Incorrect Answer Feedback: </label><textarea id="incorrect-textarea" class="incorrect-textarea" maxlength="250" rows="4" :value="feedback.incorrectFeedback"></textarea>
+                    </div>
+                    <div v-else class="incorrect-feedback">
                         <label for="incorrect-textarea">Incorrect Answer Feedback: </label><textarea id="incorrect-textarea" class="incorrect-textarea" maxlength="250" rows="4"></textarea>
                     </div>
                     <div class="button-div">
@@ -32,11 +38,12 @@ export default {
     data() {
         return {
             allInputsValid: false,
-
+            feedbackModalData: []
         }
     },
     props: {
-
+        feedback: {},
+        activityId: String
     },
     methods: {
         close() {
@@ -47,10 +54,10 @@ export default {
             this.checkInputs()
             if(this.allInputsValid) {
                 invalid.innerHTML = ""
-                //this.$emit('save')
+                this.$emit('save', this.feedbackModalData)
             } else {
                 invalid.innerHTML = "Please fill out all fields."
-                this.activityModalData = []
+                this.feedbackModalData = []
             }
         },
         checkInputs() {
@@ -58,10 +65,15 @@ export default {
             const incorrectTextArea = document.getElementById('incorrect-textarea')
             if(correctTextArea.value != "" && incorrectTextArea.value != "") {
                 this.allInputsValid = true
+                this.feedbackModalData = [this.activityId, correctTextArea.value, incorrectTextArea.value]
             } else {
                 this.allInputsValid = false
             }
-        }
+        },
+
+    },
+    mounted() {
+        console.log(this.feedback)
     }
 }
 </script>
