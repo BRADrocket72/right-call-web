@@ -16,7 +16,7 @@ const feedbackSchema = new mongoose.Schema({
     },
     incorrectFeedback: {
         required: true,
-        type: Array
+        type: String
     }
 })
 interface IFeedbackModel extends FeedbackDto, mongoose.Document { }

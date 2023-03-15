@@ -15,5 +15,5 @@ router.get('/feedback/get/:videoclipId', feedbackController.feedback_get_by_vide
 //Update by ID Method
 router.put('/feedback/update/:id', feedbackController.feedback_update)
 
-router.delete('/feedback/delete/:id', feedbackController.feedback_delete_activity)
+router.delete('/feedback/delete/:id', feedbackController.feedback_delete_feedback)
 module.exports = router;
