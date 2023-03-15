@@ -9,6 +9,7 @@ const userResultsRoutes = require('./routes/userResultsRouter');
 const activityRoutes = require('./routes/activityRouter');
 const instructorClassRoutes = require('./routes/instructorClassRouter');
 const instructorLesson = require('./routes/instructorLessonRouter');
+const feedbackRoutes = require('./routes/feedbackRouter');
 
 const multer = require('multer')
 mongoose.connect(mongoString);
@@ -34,6 +35,7 @@ app.use('/api', lessonRoutes)
 app.use('/api', activityRoutes)
 app.use('/api', instructorClassRoutes)
 app.use('/api', instructorLesson)
+app.use('/api', feedbackRoutes)
 
 app.use((error, req, res, next) => {
     if (error instanceof multer.MulterError) {
