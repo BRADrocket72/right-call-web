@@ -33,11 +33,11 @@
         },
         methods: {
             selectLesson(lesson) {
-                this.$router.push({
-                    name: "AssignTimestamps",
-                    params: {
-                        lessonPack: JSON.stringify(lesson)
-                    }
+              this.$router.push({
+                  name: "AssignTimestamps",
+                  params: {
+                      selectedLesson: lesson._id
+                  }
                 })
             }
         }
