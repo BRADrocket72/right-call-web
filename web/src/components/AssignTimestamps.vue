@@ -83,11 +83,12 @@ export default {
             deletedActivities: [],
             updatedActivities: [],
             currentUserType: [],
-            lessonId: ""
+            lessonId: "",
+            currentLesson: Object
         }
     },
     props: {
-        lessonPack: {
+        selectedLesson: {
             type: String
         }
         
@@ -270,18 +271,24 @@ export default {
         }
     },
     async mounted() {
+        var lessonStore = useLessonStore()
+        var instructorLessonStore = useInstructorLessonStore()
         this.userType = this.$cookies.get("user_session").currentUserType
+        if (this.userType == "Admin") {
+            this.currentLesson = await lessonStore.getLessonById(this.selectedLesson)
+        } else if (this.userType == "Instructor") {
+            this.currentLesson = await instructorLessonStore.fetchLessonById(this.selectedLesson)
+        }
         var userStore = useUsersStore();
         let instructorUsername = this.$cookies.get("user_session").currentUserName
         let instructor =  await userStore.getUserByName(instructorUsername)
         this.instructorId = instructor._id
         var videoClip = useVideoClipStore();
-        let parsedLessonArray = JSON.parse(this.lessonPack)
-        this.lessonName = parsedLessonArray.name
-        this.lessonId = parsedLessonArray._id
-        let parsedVideoIdsArray = parsedLessonArray.videoClipsArray
-        for (let i=0;i<parsedVideoIdsArray.length;i++) {
-            this.videoClips.push(await videoClip.fetchVideoClipById(parsedVideoIdsArray[i]._id))
+        this.lessonName = this.currentLesson.name
+        this.lessonId = this.selectedLesson
+        let videoIdsArray = this.currentLesson.videoClipsArray
+        for (let i=0;i<videoIdsArray.length;i++) {
+            this.videoClips.push(await videoClip.fetchVideoClipById(videoIdsArray[i]._id))
         }
         this.ready = true;
     }

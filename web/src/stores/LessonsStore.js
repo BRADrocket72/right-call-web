@@ -57,5 +57,13 @@ export const useLessonStore = defineStore("Lessons", {
                 console.error(error)
             }
         },
+        async getLessonById(id) {
+            try {
+                const data = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/lessons/getAdminLessonById/` + id)
+                return data.data
+            } catch (error) {
+                console.log(error);
+            }
+        }
     }
 })

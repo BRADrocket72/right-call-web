@@ -26,8 +26,7 @@
     <script>
     import LoggedInNavBar from './LoggedInNavBar.vue';
     import { useUsersStore } from "@/stores/UserStore";
-    import { useInstructorLessonStore } from "@/stores/InstructorLessonStore";
-    
+    import { useInstructorLessonStore } from "@/stores/InstructorLessonStore";    
         
     export default {
         name: "UpdateInstructorLessonsPage",
@@ -53,12 +52,12 @@
         },
         methods: {
             selectLessonToCustomize(lesson) {
-                this.$router.push({
-                    name: "AssignTimestamps",
-                    params: {
-                        lessonPack: JSON.stringify(lesson)
-                    }
-                })
+              this.$router.push({
+                  name: "AssignTimestamps",
+                  params: {
+                      selectedLesson: lesson._id
+                  }
+              })
             },
             redirectToLessonCustomizationPage() {
               this.$router.push({
