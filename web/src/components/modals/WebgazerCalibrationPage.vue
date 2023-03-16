@@ -148,56 +148,66 @@
     color: white;
     background: #4AAE9B;
     border: 1px solid #eeeeee;
-    border-radius: 2px;
+    border-radius: 5px;
     padding: 15px;
     margin: 10px;
     position: absolute;
     left: 0;
     bottom: 0;
+    height: 70px;
+    width: 70px;
   }
   .btn-calibrate-right {
     color: white;
     background: #4AAE9B;
     border: 1px solid #eeeeee;
-    border-radius: 2px;
+    border-radius: 5px;
     padding: 15px;
     margin: 10px;
     position: absolute;
     right: 0;
     bottom: 0;
+    height: 70px;
+    width: 70px;
   }
   .btn-calibrate-topRight {
     color: white;
     background: #4AAE9B;
     border: 1px solid #eeeeee;
-    border-radius: 2px;
+    border-radius: 5px;
     padding: 15px;
     margin: 10px;
     position: absolute;
     right: 0;
     top: 0;
+    height: 70px;
+    width: 70px;
   }
   .btn-calibrate-topLeft {
     color: white;
     background: #4AAE9B;
     border: 1px solid #eeeeee;
-    border-radius: 2px;
+    border-radius: 5px;
     padding: 15px;
     margin: 10px;
     position: absolute;
     left: 0;
     top: 0;
+    height: 70px;
+    width: 70px;
   } 
   .btn-calibrate-center {
     color: white;
     background: #4AAE9B;
     border: 1px solid #eeeeee;
-    border-radius: 2px;
+    border-radius: 5px;
     padding: 15px;
     margin: 10px;
     position: absolute;
     left: 48.5%;
     top: 50%;
+    height: 70px;
+    width: 70px;
   } 
   .title_1 {
     font-weight: bold;
