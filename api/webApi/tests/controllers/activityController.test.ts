@@ -20,5 +20,6 @@ describe('ActivityController',()=>{
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         const result =await controller.activities_get_all([],{json:()=>{},status:()=>{},header:(a,b)=>{}});
         expect(mockDb.getAll).toHaveBeenCalled()
+        expect(mockDb.getAll).toHaveBeenCalledWith()
     })
 })
