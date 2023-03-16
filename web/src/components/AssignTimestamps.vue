@@ -149,13 +149,10 @@ export default {
             for(const feedback of this.feedback) {
                 let toIndex = 0
                 for(const activity of this.activities) {
-                    console.log('here')
                     if(feedback.activityId === activity._id) {
                         if(fromIndex !== toIndex) {
-                            console.log(feedbackList)
                             feedbackList.splice(fromIndex, 1)
                             feedbackList.splice(toIndex, 0, feedback)
-                            console.log(feedbackList)
                         }
                     }
                     toIndex +=1
@@ -163,7 +160,6 @@ export default {
                 fromIndex +=1
             }
             this.feedback = feedbackList
-            //console.log(this.feedback)
         },
         async getFromActivityStore() {
             var store = useActivityStore()
@@ -217,6 +213,11 @@ export default {
             let count = 0
             for(const activity of this.activities) {
                 if(activity === '') {
+                    count++
+                }
+            }
+            for(const feedback of this.feedback) {
+                if(feedback === '') {
                     count++
                 }
             }
@@ -278,6 +279,7 @@ export default {
             } else {
                 this.feedback[this.currentFeedbackIndex] = new FeedbackDto(this.selectedVideo._id, '', returnedData[1], returnedData[2])
             }
+            this.toggleSaveButton()
         },
         checkForId(object) {
             if(object._id) {
