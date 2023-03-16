@@ -8,12 +8,10 @@
             <section class="modal-body" id="modalDescription">
                 <slot name="body">
                     <div v-if="answer == 'Correct'" class="feedback-div">
-                        <h2>Nice Job!</h2>
-                        <p>You were looking in the right spot.</p>
+                        <p id="correct-feedback"></p>
                     </div>
                     <div v-else class="feedback-div">
-                        <h2>Almost</h2>
-                        <p>You should have been looking at {{ correctAnswer }}.</p>
+                        <p id="incorrect-feedback"></p>
                     </div>
                     <button type="button" class="btn-green" @click="close()">Close</button>
                 </slot>

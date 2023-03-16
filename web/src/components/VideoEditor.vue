@@ -53,6 +53,7 @@
   import { useUserResultsStore } from "@/stores/UserResultsStore"
   import LoggedInNavBar from './LoggedInNavBar.vue';
   import webgazer from 'webgazer';
+import { useFeedbackStore } from '@/stores/FeedbackStore';
   
   export default {
     name: 'VideoEditor',
@@ -93,7 +94,8 @@
         predictionReady: false,
         currentQuestion: Object,
         permissionModalVisible: true,
-        dragAndDropReady: false
+        dragAndDropReady: false,
+        feedbackList: []
       };
     },
     async mounted() {
@@ -143,9 +145,11 @@
       async videoAndQuestionDataSetup() {
         var videoClipStore = useVideoClipStore()
         var activityStore = useActivityStore()
+        let feedbackStore = useFeedbackStore()
         this.currentVideoClip = await videoClipStore.fetchVideoClipById(this.videoId);
         this.videoName = this.currentVideoClip.videoName
         this.currentVideoQuestions = await activityStore.fetchActivitiesByVideoclipId(this.videoId)
+        this.feedbackList = await feedbackStore.fetchFeedbackByVideoclipId(this.videoId)
         this.currentVideoQuestions.sort((a,b) => a.timestamp - b.timestamp)
         this.questionsLoaded = true
         this.checkForEyeTrackingActivity()
