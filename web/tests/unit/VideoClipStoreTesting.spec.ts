@@ -97,8 +97,8 @@ describe('VideoClipStore API CALLS Unit TESTING', () => {
     expect(updatedVideo.data[0]).toEqual({"_id": "1234test", "timeStamps": [3.787164, 11.369245], "videoURL": "https://right-call-videos.s3.us-east-2.amazonaws.com/uploads/5e500989-3a03-47f6-81e4-7619643a7fe9-P15_Shooting_Foul_2.m4v"})
   });
 
-  it('updateTimestamps() mock calls axios.patch (through the api) and is sending an axios.patch call successfully', async () => {
-      axios.patch = jest.fn().mockResolvedValue({
+  it('updateTimestamps() mock calls axios.put (through the api) and is sending an axios.put call successfully', async () => {
+      axios.put = jest.fn().mockResolvedValue({
         data: [{
               _id: "1234test",
               videoURL: "https://right-call-videos.s3.us-east-2.amazonaws.com/uploads/5e500989-3a03-47f6-81e4-7619643a7fe9-P15_Shooting_Foul_2.m4v",

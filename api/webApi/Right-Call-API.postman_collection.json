@@ -86,7 +86,7 @@
 				{
 					"name": "update",
 					"request": {
-						"method": "PATCH",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",

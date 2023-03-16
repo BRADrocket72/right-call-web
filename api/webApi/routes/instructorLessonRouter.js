@@ -16,6 +16,6 @@ router.get('/instructorLessons/getById/:instructorId', instructorLessonControlle
 router.get('/instructorLessons/getLessonById/:id', instructorLessonController.get_lesson_by_id)
 
 
-router.patch('/instructorLessons/updateLessonName/:id', instructorLessonController.update_instructor_lesson_name)
+router.put('/instructorLessons/updateLessonName/:id', instructorLessonController.update_instructor_lesson_name)
 
 module.exports = router;

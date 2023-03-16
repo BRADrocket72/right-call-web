@@ -59,7 +59,7 @@ export const useVideoClipStore = defineStore("VideoClip", {
         },
         async updateTimestamps(id, timestamps) {
             try {
-                const data = await axios.patch(`${process.env.VUE_APP_API_BASE_URL}/videoclip/update/${id}`, { timeStamps: timestamps })
+                const data = await axios.put(`${process.env.VUE_APP_API_BASE_URL}/videoclip/update/${id}`, { timeStamps: timestamps })
                 return data.data
             } catch (error) {
                 console.log(error)

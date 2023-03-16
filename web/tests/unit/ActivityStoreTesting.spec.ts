@@ -54,7 +54,7 @@ describe('ActivityStore API CALLS Unit TESTING', () => {
     expect(retrievedActivity[0].timestamp).toEqual(3.140473)
   });
 
-  it('updateActivities() mocks the axios.patch call (through the api) and is sending an axios.patch call successfully', async () => {
+  it('updateActivities() mocks the axios.put call (through the api) and is sending an axios.put call successfully', async () => {
     axios.put= jest.fn().mockResolvedValue({
       data: [{
             _id: "638f6362c5ea3845b73a18cd",
