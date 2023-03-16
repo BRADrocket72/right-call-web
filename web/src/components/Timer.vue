@@ -18,6 +18,8 @@ export default {
     },
     methods: {
         startTimer() {
+            var resultStore = useUserResultsStore
+            let Time = resultStore.questionTime
             console.log(this.needsToReset)
 
             var appendTens = document.getElementById("tens")
@@ -47,7 +49,7 @@ export default {
             if (this.seconds > 9) {
                 appendSeconds.innerHTML = this.seconds;
             }
-
+            resultStore.questionTime = this.seconds + ":" + this.tens
         },
 
     },
@@ -56,6 +58,8 @@ export default {
 
     },
     unmounted(){
+        var resultStore = useUserResultsStore
+        let Time = resultStore.questionTime
         clearInterval(this.interval)
     }
 }
