@@ -43,7 +43,7 @@ export const useInstructorLessonStore = defineStore("InstructorLessons", {
         },
         async updateInstructorLessonName(id, name) {
             try {
-                const data = await axios.patch(`${process.env.VUE_APP_API_BASE_URL}/instructorLessons/updateLessonName/${id}`, { name: name })
+                const data = await axios.put(`${process.env.VUE_APP_API_BASE_URL}/instructorLessons/updateLessonName/${id}`, { name: name })
                 return data.data
             } catch (error) {
                 console.log(error)

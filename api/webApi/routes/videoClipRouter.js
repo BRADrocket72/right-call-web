@@ -29,7 +29,7 @@ router.get('/videoClip/getAll', VideoClipController.get_all)
 router.get('/videoClip/getOne/:id', VideoClipController.get_by_id)
 
 //Update by ID Method
-router.patch('/videoClip/update/:id', VideoClipController.update_clip)
+router.put('/videoClip/update/:id', VideoClipController.update_clip)
 
 //Delete by ID Method
 router.delete('/videoClip/delete/:id', VideoClipController.delete_clip)
