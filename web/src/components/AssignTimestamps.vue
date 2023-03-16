@@ -87,7 +87,6 @@ export default {
             formattedTimestamps: [],
             ready: false,
             activityModalData: [],
-            feedbackModalData: [],
             activities: [],
             deletedActivities: [],
             updatedActivities: [],
@@ -123,7 +122,6 @@ export default {
             this.deletedFeedback = []
             this.updatedFeedback = []
             this.activityModalData = []
-            this.feedbackModalData = []
             this.$router.push({
                 name: "AssignTimestamps"
             })
@@ -132,17 +130,40 @@ export default {
             const video = document.getElementById(this.selectedVideo._id)
             video.currentTime = this.currentActivityTimestamp
         },
-        getLessonContent() {
+        async getLessonContent() {
             if(this.selectedVideo.timeStamps) {
                 this.timestamps = this.selectedVideo.timeStamps
                 for(var timestamp of this.timestamps) {
                     this.formattedTimestamps.push(formatTimeForVideo(timestamp))
                 }
             }
-            this.getFromActivityStore()
+            await this.getFromActivityStore()
+            await this.getFromFeedbackStore()
         },
         orderActivitiesByTimestamp() {
             this.activities.sort((a,b) => a.timestamp - b.timestamp)
+        },
+        sortFeedback() {
+            let feedbackList = this.feedback
+            let fromIndex = 0
+            for(const feedback of this.feedback) {
+                let toIndex = 0
+                for(const activity of this.activities) {
+                    console.log('here')
+                    if(feedback.activityId === activity._id) {
+                        if(fromIndex !== toIndex) {
+                            console.log(feedbackList)
+                            feedbackList.splice(fromIndex, 1)
+                            feedbackList.splice(toIndex, 0, feedback)
+                            console.log(feedbackList)
+                        }
+                    }
+                    toIndex +=1
+                }
+                fromIndex +=1
+            }
+            this.feedback = feedbackList
+            //console.log(this.feedback)
         },
         async getFromActivityStore() {
             var store = useActivityStore()
@@ -153,7 +174,10 @@ export default {
         async getFromFeedbackStore() {
             var store = useFeedbackStore()
             await store.fetchFeedbackByVideoclipId(this.selectedVideo._id)
-            this.feedback = store.activityList
+            this.feedback = store.feedbackList
+            if(this.feedback.length > 0) {
+                this.sortFeedback()
+            }
         },
         newTimestampButtonClick() {
             const video = document.getElementById(this.selectedVideo._id)
@@ -240,18 +264,19 @@ export default {
                 this.currentFeedbackIndex = feedbackIndex
                 const video = document.getElementById(this.selectedVideo._id)
                 video.pause()
-                this.moveVideoToTimestampFrame()
             } 
             this.toggleSaveButton()
         },
         feedbackModalSave(returnedData) {
-            this.feedbackModalData = returnedData
             this.toggleFeedbackModal()
             if(this.feedback[this.currentFeedbackIndex]._id) {
-                this.feedback[this.currentFeedbackIndex].correctFeedback = this.feedbackModalData[1]
-                this.feedback[this.currentFeedbackIndex].incorrectFeedback = this.feedbackModalData[2]
+                this.feedback[this.currentFeedbackIndex].correctFeedback = returnedData[1]
+                this.feedback[this.currentFeedbackIndex].incorrectFeedback = returnedData[2]
+                if(this.updatedFeedback.indexOf(this.feedback[this.currentFeedbackIndex]._id) == -1) {
+                    this.updatedFeedback.push(this.feedback[this.currentFeedbackIndex]._id)
+                }
             } else {
-                this.feedback[this.currentFeedbackIndex] = new FeedbackDto(this.selectedVideo._id, this.feedbackModalData[0], this.feedbackModalData[1], this.feedbackModalData[2])
+                this.feedback[this.currentFeedbackIndex] = new FeedbackDto(this.selectedVideo._id, '', returnedData[1], returnedData[2])
             }
         },
         checkForId(object) {
@@ -284,10 +309,15 @@ export default {
         },
         async postActivitiesAPI() {
             var store = useActivityStore()
+            let index = 0
             for(const activity of this.activities) {
                 if(!activity._id) {
                     await store.postActivities(activity.timestamp,activity.questionType,activity.questionText,activity.answers,activity.correctAnswer,activity.videoclipId)
-                } 
+                    let newActivity = store.newActivity
+                    let id = newActivity._id
+                    this.feedback[index].activityId = id
+                }
+                index +=1
             }
         },
         async updateActivitiesAPI() {
@@ -309,13 +339,13 @@ export default {
             for(const feedback of this.feedback) {
                 if(!feedback._id) {
                     await store.postFeedback(feedback.videoclipId, feedback.activityId, feedback.correctFeedback, feedback.incorrectFeedback)
-                } 
+                }
             }
         },
         async updateFeedbackAPI() {
             var store = useFeedbackStore()
             const feedbackList = this.feedback
-            for(const id of this.updatedActivities) {
+            for(const id of this.updatedFeedback) {
                 var index = feedbackList.findIndex(feedback => feedback._id == id)
                 await store.updateFeedback(feedbackList[index]._id, feedbackList[index].correctFeedback, feedbackList[index].incorrectFeedback)
             }
@@ -329,12 +359,12 @@ export default {
         async updateAPI(id, timestamps) {
             var videoClipStore = useVideoClipStore();
             await videoClipStore.updateTimestamps(id,timestamps)
-            this.postActivitiesAPI()
-            this.postFeedbackAPI()
-            this.updateActivitiesAPI()
-            this.updateFeedbackAPI()
-            this.deleteActivitiesAPI()
-            this.deleteFeedbackAPI()
+            await this.postActivitiesAPI()
+            await this.postFeedbackAPI()
+            await this.updateActivitiesAPI()
+            await this.updateFeedbackAPI()
+            await this.deleteActivitiesAPI()
+            await this.deleteFeedbackAPI()
             this.returnToVideoSelectionPage()
         },
         async saveLessonName() {
