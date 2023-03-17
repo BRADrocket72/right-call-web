@@ -20,8 +20,6 @@ export default {
     methods: {
         startTimer() {
             var resultStore = useUserResultsStore()
-            console.log(this.needsToReset)
-
             var appendTens = document.getElementById("tens")
             var appendSeconds = document.getElementById("seconds")
             if(!appendTens || !appendSeconds){
@@ -39,7 +37,6 @@ export default {
             }
 
             if (this.tens > 99) {
-                console.log("seconds");
                 this.seconds++;
                 appendSeconds.innerHTML = "0" + this.seconds;
                 this.tens = 0;
