@@ -274,8 +274,8 @@ export default {
         feedbackModalSave(returnedData) {
             this.toggleFeedbackModal()
             if(this.feedback[this.currentFeedbackIndex]._id) {
-                this.feedback[this.currentFeedbackIndex].correctFeedback = returnedData[1]
-                this.feedback[this.currentFeedbackIndex].incorrectFeedback = returnedData[2]
+                this.feedback[this.currentFeedbackIndex].correctFeedback = returnedData[2]
+                this.feedback[this.currentFeedbackIndex].incorrectFeedback = returnedData[3]
                 if(this.updatedFeedback.indexOf(this.feedback[this.currentFeedbackIndex]._id) == -1) {
                     this.updatedFeedback.push(this.feedback[this.currentFeedbackIndex]._id)
                 }
@@ -343,7 +343,6 @@ export default {
             var store = useFeedbackStore()
             for(const feedback of this.feedback) {
                 if(!feedback._id) {
-                    console.log(feedback.timestamp)
                     await store.postFeedback(feedback.videoclipId, feedback.activityId, feedback.timestamp, feedback.correctFeedback, feedback.incorrectFeedback)
                 }
             }
@@ -353,6 +352,7 @@ export default {
             const feedbackList = this.feedback
             for(const id of this.updatedFeedback) {
                 var index = feedbackList.findIndex(feedback => feedback._id == id)
+                console.log(feedbackList[index])
                 await store.updateFeedback(feedbackList[index]._id, feedbackList[index].correctFeedback, feedbackList[index].incorrectFeedback)
             }
         },

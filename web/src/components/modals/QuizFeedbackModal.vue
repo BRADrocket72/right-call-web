@@ -32,6 +32,7 @@ export default {
     },
     methods: {
         close() {
+            console.log(this.feedback)
             this.$emit('close')
         }
     },

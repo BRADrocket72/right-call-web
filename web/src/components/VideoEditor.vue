@@ -160,7 +160,8 @@
         this.checkForEyeTrackingActivity()
       },
       stopVideoAtTimestamp(video, timestamps) {
-        var currentTime = video.currentTime;
+        var currentTime = video.currentTime
+        this.currentQuestion = this.currentVideoQuestions[this.questionCounter]
         if (currentTime >= timestamps[this.questionCounter]) {
           if(this.currentVideoQuestions[this.questionCounter].questionType === 'eye-tracking') {
             this.toggleEyeTracking()
@@ -169,7 +170,6 @@
           } else {
             this.showModal()
           }
-            this.currentQuestion = this.currentVideoQuestions[this.questionCounter]
             this.questionCounter++
             this.playOrPauseVideo()
         }
@@ -233,7 +233,6 @@
       },
       toggleQuizFeedback() {
         this.isFeedbackVisible = !this.isFeedbackVisible
-        console.log(this.isFeedbackVisible)
         if(!this.isFeedbackVisible) {
           this.togglePlayButton()
           this.playOrPauseVideo()

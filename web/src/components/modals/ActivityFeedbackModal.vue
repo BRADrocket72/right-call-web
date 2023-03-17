@@ -67,6 +67,7 @@ export default {
             if(correctTextArea.value != "" && incorrectTextArea.value != "") {
                 this.allInputsValid = true
                 this.feedbackModalData = [this.activityId, this.timestamp, correctTextArea.value, incorrectTextArea.value]
+                console.log(this.feedbackModalData)
             } else {
                 this.allInputsValid = false
             }
