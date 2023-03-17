@@ -20,12 +20,13 @@ export const useFeedbackStore = defineStore("Feedback", {
                 console.log(error);
             }
         },
-        async postFeedback(videoclipId, activityId, correctFeedback, incorrectFeedback) {
+        async postFeedback(videoclipId, activityId, timestamp, correctFeedback, incorrectFeedback) {
             try {
                 const data = await axios.post(`${process.env.VUE_APP_API_BASE_URL}/feedback/post`,
                     {
                         videoclipId: videoclipId,
                         activityId: activityId,
+                        timestamp: timestamp,
                         correctFeedback: correctFeedback,
                         incorrectFeedback: incorrectFeedback
                     })

@@ -1,11 +1,11 @@
 import { mount } from '@vue/test-utils'
-import EyeTrackingFeedbackModal from '@/components/modals/EyeTrackingFeedbackModal.vue'
+import QuizFeedbackModal from '@/components/modals/QuizFeedbackModal.vue'
 import 'jest'
 
-describe('EyeTrackingFeedbackModal.vue', () => {
+describe('QuizFeedbackModal.vue', () => {
     let wrapper
     beforeEach(() => {
-        wrapper = mount(EyeTrackingFeedbackModal, {
+        wrapper = mount(QuizFeedbackModal, {
             props:{
                 answer: 'Correct',
                 correctAnswer: 'quadrant-one'
@@ -13,7 +13,7 @@ describe('EyeTrackingFeedbackModal.vue', () => {
         })
     })
 
-    it('renders EyeTrackingFeedbackModal', () => {
+    it('renders QuizFeedbackModal', () => {
         expect(wrapper.exists()).toBe(true)
     })
 
@@ -23,7 +23,7 @@ describe('EyeTrackingFeedbackModal.vue', () => {
     })
 
     it('renders the proper div for an Incorrect answer', () => {
-        wrapper = mount(EyeTrackingFeedbackModal, {
+        wrapper = mount(QuizFeedbackModal, {
             props:{
                 answer: 'Incorrect',
                 correctAnswer: 'quadrant-two'

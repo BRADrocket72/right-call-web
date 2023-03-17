@@ -33,26 +33,29 @@
         :question="currentVideoQuestions[questionIndex]" :questionNumber="questionIndex + 1" @close="closeModal" />
       <webgazer-calibration-page v-if="calibrationReady && webcamPermission" @close="closeCalibrationPage"/>
       <WebcamPermissionModal v-if="permissionModalVisible" @close="togglePermissionModal"/>
+      <QuizFeedbackModal v-if="isFeedbackVisible" :answer="answers[questionIndex]" :feedback="feedbackList[questionIndex]" @close="toggleQuizFeedback"/>
     </div>
   </div>
 </template>
   
   
   <script>
-  import ActivityPopUp from '@/components/modals/ActivityPopUp.vue';
+  import ActivityPopUp from '@/components/modals/ActivityPopUp.vue'
   import NoWebcamPopUp from '@/components/modals/NoWebcamPopUp.vue'
   import EyeTrackingPopUp from '@/components/modals/EyeTrackingPopUp.vue'
   import DragAndDropPopUp from '@/components/modals/DragAndDropPopUp.vue'
   import WebcamPermissionModal from '@/components/modals/WebcamPermissionModal.vue'
   import ResultsPage from "@/components/modals/ResultsPage.vue"
-  import VideoClip from '@/models/VideoClipDto';
-  import WebgazerCalibrationPage from './modals/WebgazerCalibrationPage.vue';
+  import VideoClip from '@/models/VideoClipDto'
+  import WebgazerCalibrationPage from './modals/WebgazerCalibrationPage.vue'
   import { formatTimeForVideo } from "@/util/FormatVideosTime.js"
-  import { useVideoClipStore } from "@/stores/VideoClipStore";
-  import { useActivityStore } from '@/stores/ActivityStore';
+  import { useVideoClipStore } from "@/stores/VideoClipStore"
+  import { useActivityStore } from '@/stores/ActivityStore'
   import { useUserResultsStore } from "@/stores/UserResultsStore"
-  import LoggedInNavBar from './LoggedInNavBar.vue';
-  import webgazer from 'webgazer';
+  import LoggedInNavBar from './LoggedInNavBar.vue'
+  import webgazer from 'webgazer'
+  import { useFeedbackStore } from '@/stores/FeedbackStore'
+  import QuizFeedbackModal from '@/components/modals/QuizFeedbackModal.vue'
   
   export default {
     name: 'VideoEditor',
@@ -64,7 +67,8 @@
       EyeTrackingPopUp,
       WebgazerCalibrationPage,
       WebcamPermissionModal,
-      DragAndDropPopUp
+      DragAndDropPopUp,
+      QuizFeedbackModal
     },
     props: {
       videoId: {
@@ -93,7 +97,9 @@
         predictionReady: false,
         currentQuestion: Object,
         permissionModalVisible: true,
-        dragAndDropReady: false
+        dragAndDropReady: false,
+        feedbackList: [],
+        isFeedbackVisible: false
       };
     },
     async mounted() {
@@ -143,15 +149,19 @@
       async videoAndQuestionDataSetup() {
         var videoClipStore = useVideoClipStore()
         var activityStore = useActivityStore()
+        let feedbackStore = useFeedbackStore()
         this.currentVideoClip = await videoClipStore.fetchVideoClipById(this.videoId);
         this.videoName = this.currentVideoClip.videoName
         this.currentVideoQuestions = await activityStore.fetchActivitiesByVideoclipId(this.videoId)
+        this.feedbackList = await feedbackStore.fetchFeedbackByVideoclipId(this.videoId)
         this.currentVideoQuestions.sort((a,b) => a.timestamp - b.timestamp)
+        this.feedbackList.sort((a,b) => a.timestamp - b.timestamp)
         this.questionsLoaded = true
         this.checkForEyeTrackingActivity()
       },
       stopVideoAtTimestamp(video, timestamps) {
-        var currentTime = video.currentTime;
+        var currentTime = video.currentTime
+        this.currentQuestion = this.currentVideoQuestions[this.questionCounter]
         if (currentTime >= timestamps[this.questionCounter]) {
           if(this.currentVideoQuestions[this.questionCounter].questionType === 'eye-tracking') {
             this.toggleEyeTracking()
@@ -160,7 +170,6 @@
           } else {
             this.showModal()
           }
-            this.currentQuestion = this.currentVideoQuestions[this.questionCounter]
             this.questionCounter++
             this.playOrPauseVideo()
         }
@@ -170,65 +179,64 @@
         const playOrPauseButton = document.getElementById("playOrPause")
         if (videoElement.paused) {
           playOrPauseButton.innerHTML = "Pause"
-          videoElement.play()
+          setTimeout(() => {
+            videoElement.play()
+          }, 10)
           if(this.webcamPermission) {
             webgazer.resume() 
           }
         }
         else {
           playOrPauseButton.innerHTML = "Play"
-          videoElement.pause()
+          setTimeout(() => {
+            videoElement.pause()
+          }, 10)
           if(this.webcamPermission) {
             webgazer.pause()  
           }
         }
       },
       showModal() {
-        this.isModalVisible = true;
-        const playOrPauseButton = document.getElementById("playOrPause")
-        playOrPauseButton.innerHTML = "Play"
+        this.isModalVisible = true
+        this.togglePlayButton()
       },
       closeModal(updatedAnswers) {
         this.isModalVisible = false;
         this.answers = updatedAnswers
-        const videoElement = document.getElementById(this.videoId)
-        if (videoElement.duration == videoElement.currentTime) {
-            this.isResultsPageModalVisible = true;
-            videoElement.pause()
-        } else{
-            const playOrPauseButton = document.getElementById("playOrPause")
-            playOrPauseButton.innerHTML = "Pause"
-            videoElement.play();
-        }
-        this.questionIndex++
+        this.toggleQuizFeedback()
         if(this.webcamPermission) {
           webgazer.resume()    
         }
       },
       async toggleEyeTracking(updatedAnswers) {
-        this.togglePlayButton()
         this.isEyeTrackingVisible = !this.isEyeTrackingVisible
         if(this.isEyeTrackingVisible) {
+          this.togglePlayButton()
           if(this.webcamPermission) {
             await this.getCoordinatePrediction()
             this.predictionReady = true
           }
         } else {
           this.answers = updatedAnswers
-          this.questionIndex++
-          this.playOrPauseVideo()
           this.predictionReady = false
+          this.toggleQuizFeedback()
         }
       },
       toggleDragAndDrop(updatedAnswers) {
         this.dragAndDropReady = !this.dragAndDropReady
         if(this.dragAndDropReady) {
           this.togglePlayButton()
-          
         } else {
           this.answers = updatedAnswers
-          this.questionIndex++
+          this.toggleQuizFeedback()
+        }
+      },
+      toggleQuizFeedback() {
+        this.isFeedbackVisible = !this.isFeedbackVisible
+        if(!this.isFeedbackVisible) {
+          this.togglePlayButton()
           this.playOrPauseVideo()
+          this.questionIndex++
         }
       },
       togglePlayButton() {
