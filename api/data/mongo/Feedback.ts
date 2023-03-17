@@ -9,6 +9,7 @@ import FeedbackSchema from "../mongo/schemas/FeedbackSchema"
         const data = new FeedbackSchema({
             videoclipId: feedback.videoclipId,
             activityId: feedback.activityId,
+            timestamp: feedback.timestamp,
             correctFeedback: feedback.correctFeedback,
             incorrectFeedback: feedback.incorrectFeedback
         })

@@ -10,6 +10,10 @@ const feedbackSchema = new mongoose.Schema({
         required: true,
         type: String
     },
+    timestamp: {
+        required: true,
+        type: Number
+    },
     correctFeedback: {
         required: true,
         type: String
