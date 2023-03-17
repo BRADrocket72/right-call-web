@@ -3,7 +3,8 @@ import axios from 'axios'
 
 export const useUserResultsStore = defineStore("UserResults", {
     state: () => ({
-        results: []
+        results: [],
+        questionTime: []
     }),
     getters: {
         getResults(state) {

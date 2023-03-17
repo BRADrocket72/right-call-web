@@ -26,9 +26,13 @@
                                 <li v-for="(timestamp,index) in formattedTimestamps" :key="timestamp">
                                     <button id="delete-timestamp-button" @click="deleteTimestamp(index)">X</button>
                                     {{timestamp}}
-                                    <button v-if="activities[index] == ''" class="incomplete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">Activity</button>
-                                    <button v-else-if="activities[index] && activities[index] != '' && !checkForId(activities[index])" class="complete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">Activity</button>
-                                    <button v-else class="pulled-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">Activity</button>
+                                    <button v-if="activities[index] == ''" class="incomplete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)"><img src="../../images/activity.png"></button>
+                                    <button v-else-if="activities[index] && activities[index] != '' && !checkForId(activities[index])" class="complete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)"><img src="../../images/activity.png"></button>
+                                    <button v-else class="pulled-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)"><img src="../../images/activity.png"></button>
+                                    
+                                    <button v-if="feedback[index] == ''" class="incomplete-feedback" id="feedback-button" @click="toggleFeedbackModal(index)"><img src="../../images/feedback.png"></button>
+                                    <button v-else-if="feedback[index] && feedback[index] != '' && !checkForId(feedback[index])" class="complete-feedback" id="feedback-button" @click="toggleFeedbackModal(index)"><img src="../../images/feedback.png"></button>
+                                    <button v-else class="pulled-feedback" id="feedback-button" @click="toggleFeedbackModal(index)"><img src="../../images/feedback.png"></button>
                                 </li>
                             </ul>
                         </div>
@@ -39,7 +43,8 @@
                     </div>
                 </div>
             </div>
-            <AssignActivityModal v-if="isAssignActivityModalVisible" :activity="activities[currentIndex]" :questionTypeExists="activities[currentIndex].questionType" :timestamp="currentActivityTimestamp" @close="toggleAssignActivityModal" @save="assignActivityModalSave"/>
+            <AssignActivityModal v-if="isAssignActivityModalVisible" :activity="activities[currentActivityIndex]" :questionTypeExists="activities[currentActivityIndex].questionType" :timestamp="currentActivityTimestamp" @close="toggleAssignActivityModal" @save="assignActivityModalSave"/>
+            <ActivityFeedbackModal v-if="isFeedbackModalVisible" :feedback="feedback[currentFeedbackIndex]" :activityId="activities[currentFeedbackIndex]._id" :timestamp="currentFeedbackTimestamp" @close="toggleFeedbackModal" @save="feedbackModalSave"/>
         </div>
     </div>
 </div>
@@ -49,12 +54,14 @@
 import LoggedInNavBarVue from './LoggedInNavBar.vue'
 import VideoClipDto from '@/models/VideoClipDto.js'
 import AssignActivityDto from '@/models/AssignActivityDto.js'
+import FeedbackDto from '@/models/FeedbackDto.js'
 import AssignActivityModal from '@/components/modals/AssignActivityModal.vue'
 import { useVideoClipStore } from "@/stores/VideoClipStore"
 import {formatTimeForVideo} from '@/util/FormatVideosTime.js'
 import { useActivityStore } from '@/stores/ActivityStore'
+import { useFeedbackStore } from '@/stores/FeedbackStore'
 import { useUsersStore } from '@/stores/UserStore'
-
+import ActivityFeedbackModal from '@/components/modals/ActivityFeedbackModal.vue'
 import { useInstructorLessonStore } from '@/stores/InstructorLessonStore'
 import { useLessonStore } from '@/stores/LessonsStore'
 
@@ -62,7 +69,8 @@ export default {
     name: 'AssignTimestamps',
     components: { 
         AssignActivityModal,
-        LoggedInNavBarVue
+        LoggedInNavBarVue,
+        ActivityFeedbackModal
     },
     data() {
         return {
@@ -72,22 +80,29 @@ export default {
             isTimestampModalVisible: false,
             isSaveTimestampsModalVisible: false,
             isAssignActivityModalVisible: false,
+            isFeedbackModalVisible: false,
             newTimestamp: Number,
             currentActivityTimestamp: Number,
+            currentFeedbackTimestamp: Number,
             timestamps: [],
             formattedTimestamps: [],
             ready: false,
             activityModalData: [],
             activities: [],
-            currentIndex: Number,
             deletedActivities: [],
             updatedActivities: [],
+            feedback: [],
+            deletedFeedback: [],
+            updatedFeedback: [],
+            currentActivityIndex: Number,
+            currentFeedbackIndex: Number,
             currentUserType: [],
-            lessonId: ""
+            lessonId: "",
+            currentLesson: Object
         }
     },
     props: {
-        lessonPack: {
+        selectedLesson: {
             type: String
         }
         
@@ -95,17 +110,20 @@ export default {
     methods: {
         videoSelection(video) {
             this.selectedVideo = video
-            this.getVideoTimestampsAndActivities()
+            this.getLessonContent()
             this.isVideoSelected = !this.isVideoSelected
         },
         returnToVideoSelectionPage(){
             this.isVideoSelected = false
             this.timestamps = []
             this.formattedTimestamps = []
+            this.activities = []
             this.deletedActivities = []
             this.updatedActivities = []
+            this.feedback = []
+            this.deletedFeedback = []
+            this.updatedFeedback = []
             this.activityModalData = []
-            this.activities = []
             this.$router.push({
                 name: "AssignTimestamps"
             })
@@ -114,17 +132,36 @@ export default {
             const video = document.getElementById(this.selectedVideo._id)
             video.currentTime = this.currentActivityTimestamp
         },
-        getVideoTimestampsAndActivities() {
+        async getLessonContent() {
             if(this.selectedVideo.timeStamps) {
                 this.timestamps = this.selectedVideo.timeStamps
                 for(var timestamp of this.timestamps) {
                     this.formattedTimestamps.push(formatTimeForVideo(timestamp))
                 }
             }
-            this.getFromActivityStore()
+            await this.getFromActivityStore()
+            await this.getFromFeedbackStore()
         },
         orderActivitiesByTimestamp() {
             this.activities.sort((a,b) => a.timestamp - b.timestamp)
+        },
+        sortFeedback() {
+            let feedbackList = this.feedback
+            let fromIndex = 0
+            for(const feedback of this.feedback) {
+                let toIndex = 0
+                for(const activity of this.activities) {
+                    if(feedback.activityId === activity._id) {
+                        if(fromIndex !== toIndex) {
+                            feedbackList.splice(fromIndex, 1)
+                            feedbackList.splice(toIndex, 0, feedback)
+                        }
+                    }
+                    toIndex +=1
+                }
+                fromIndex +=1
+            }
+            this.feedback = feedbackList
         },
         async getFromActivityStore() {
             var store = useActivityStore()
@@ -132,13 +169,21 @@ export default {
             this.activities = store.activityList
             this.orderActivitiesByTimestamp()
         },
+        async getFromFeedbackStore() {
+            var store = useFeedbackStore()
+            await store.fetchFeedbackByVideoclipId(this.selectedVideo._id)
+            this.feedback = store.feedbackList
+            if(this.feedback.length > 0) {
+                this.sortFeedback()
+            }
+        },
         newTimestampButtonClick() {
             const video = document.getElementById(this.selectedVideo._id)
             this.newTimestamp = video.currentTime
-            this.createNewTimestampAndActivity()
+            this.createNewTimestamp()
             this.toggleSaveButton()
         },
-        createNewTimestampAndActivity() {
+        createNewTimestamp() {
             if(this.timestamps.length > 0) {
                 let count = 0
                 for(const timestamp of this.timestamps) {
@@ -146,11 +191,13 @@ export default {
                         this.timestamps.splice(count,0,this.newTimestamp)
                         this.formattedTimestamps.splice(count,0,formatTimeForVideo(this.newTimestamp))
                         this.activities.splice(count,0,'')
+                        this.feedback.splice(count,0,'')
                         break
                     } else if(count == this.timestamps.length-1) {
                         this.timestamps.splice(count+1,0,this.newTimestamp)
                         this.formattedTimestamps.splice(count+1,0,formatTimeForVideo(this.newTimestamp))
                         this.activities.splice(count+1,0,'')
+                        this.feedback.splice(count+1,0,'')
                         break
                     }else {
                         count++
@@ -160,6 +207,7 @@ export default {
                 this.timestamps.splice(0,0,this.newTimestamp)
                 this.formattedTimestamps.splice(0,0,formatTimeForVideo(this.newTimestamp))
                 this.activities.splice(0,0,'')
+                this.feedback.splice(0,0,'')
             }
             this.toggleSaveButton()
         },
@@ -167,6 +215,11 @@ export default {
             let count = 0
             for(const activity of this.activities) {
                 if(activity === '') {
+                    count++
+                }
+            }
+            for(const feedback of this.feedback) {
+                if(feedback === '') {
                     count++
                 }
             }
@@ -179,7 +232,7 @@ export default {
         toggleAssignActivityModal(activityIndex) {
             this.isAssignActivityModalVisible = !this.isAssignActivityModalVisible
             if(this.isAssignActivityModalVisible) {
-                this.currentIndex = activityIndex
+                this.currentActivityIndex = activityIndex
                 this.currentActivityTimestamp = this.timestamps[activityIndex]
                 const video = document.getElementById(this.selectedVideo._id)
                 video.pause()
@@ -194,22 +247,45 @@ export default {
             for(const answer of this.activityModalData[2]) {
                 answers.push(answer)
             }
-            if(this.activities[this.currentIndex]._id){
-                this.activities[this.currentIndex].timestamp = this.currentActivityTimestamp
-                this.activities[this.currentIndex].questionType = this.activityModalData[0]
-                this.activities[this.currentIndex].questionText = this.activityModalData[1]
-                this.activities[this.currentIndex].answers = this.activityModalData[2]
-                this.activities[this.currentIndex].correctAnswer = this.activityModalData[3]
-                if(this.updatedActivities.indexOf(this.activities[this.currentIndex]._id) == -1) {
-                    this.updatedActivities.push(this.activities[this.currentIndex]._id   )
+            if(this.activities[this.currentActivityIndex]._id) {
+                this.activities[this.currentActivityIndex].timestamp = this.currentActivityTimestamp
+                this.activities[this.currentActivityIndex].questionType = this.activityModalData[0]
+                this.activities[this.currentActivityIndex].questionText = this.activityModalData[1]
+                this.activities[this.currentActivityIndex].answers = this.activityModalData[2]
+                this.activities[this.currentActivityIndex].correctAnswer = this.activityModalData[3]
+                if(this.updatedActivities.indexOf(this.activities[this.currentActivityIndex]._id) == -1) {
+                    this.updatedActivities.push(this.activities[this.currentActivityIndex]._id   )
                 }
             } else {
-                this.activities[this.currentIndex] = new AssignActivityDto(this.currentActivityTimestamp,this.activityModalData[0],this.activityModalData[1],this.activityModalData[2],this.activityModalData[3],this.selectedVideo._id)
+                this.activities[this.currentActivityIndex] = new AssignActivityDto(this.currentActivityTimestamp,this.activityModalData[0],this.activityModalData[1],this.activityModalData[2],this.activityModalData[3],this.selectedVideo._id)
             }
             this.toggleSaveButton()
         },
-        checkForId(activity) {
-            if(activity._id) {
+        toggleFeedbackModal(feedbackIndex) {
+            this.isFeedbackModalVisible = !this.isFeedbackModalVisible
+            if(this.isFeedbackModalVisible) {
+                this.currentFeedbackIndex = feedbackIndex
+                this.currentFeedbackTimestamp = this.timestamps[feedbackIndex]
+                const video = document.getElementById(this.selectedVideo._id)
+                video.pause()
+            } 
+            this.toggleSaveButton()
+        },
+        feedbackModalSave(returnedData) {
+            this.toggleFeedbackModal()
+            if(this.feedback[this.currentFeedbackIndex]._id) {
+                this.feedback[this.currentFeedbackIndex].correctFeedback = returnedData[2]
+                this.feedback[this.currentFeedbackIndex].incorrectFeedback = returnedData[3]
+                if(this.updatedFeedback.indexOf(this.feedback[this.currentFeedbackIndex]._id) == -1) {
+                    this.updatedFeedback.push(this.feedback[this.currentFeedbackIndex]._id)
+                }
+            } else {
+                this.feedback[this.currentFeedbackIndex] = new FeedbackDto(this.selectedVideo._id, '', returnedData[1], returnedData[2], returnedData[3])
+            }
+            this.toggleSaveButton()
+        },
+        checkForId(object) {
+            if(object._id) {
                 return true
             } else {
                 return false
@@ -221,19 +297,32 @@ export default {
             if((this.activities[deletedTimestampIndex]._id) && (this.deletedActivities.indexOf(this.activities[deletedTimestampIndex]._id != -1))){
                 this.deletedActivities.push(this.activities[deletedTimestampIndex]._id)
             }
+            if((this.feedback[deletedTimestampIndex]._id) && (this.deletedFeedback.indexOf(this.feedback[deletedTimestampIndex]._id != -1))){
+                this.deletedFeedback.push(this.feedback[deletedTimestampIndex]._id)
+            }
             if((this.activities[deletedTimestampIndex]._id) && (this.updatedActivities.indexOf(this.activities[deletedTimestampIndex]._id != -1))){
                 const removeFromUpdatedList = this.updatedActivities.indexOf(this.activities[deletedTimestampIndex]._id)
                 this.updatedActivities.splice(removeFromUpdatedList,1)
             }
-            this.activities.splice(deletedTimestampIndex,1)
+            if((this.feedback[deletedTimestampIndex]._id) && (this.updatedFeedback.indexOf(this.feedback[deletedTimestampIndex]._id != -1))){
+                const removeFromUpdatedList = this.updatedFeedback.indexOf(this.feedback[deletedTimestampIndex]._id)
+                this.updatedFeedback.splice(removeFromUpdatedList,1)
+            }
+            this.activities.splice(deletedTimestampIndex, 1)
+            this.feedback.splice(deletedTimestampIndex, 1)
             this.toggleSaveButton()
         },
         async postActivitiesAPI() {
             var store = useActivityStore()
+            let index = 0
             for(const activity of this.activities) {
                 if(!activity._id) {
                     await store.postActivities(activity.timestamp,activity.questionType,activity.questionText,activity.answers,activity.correctAnswer,activity.videoclipId)
-                } 
+                    let newActivity = store.newActivity
+                    let id = newActivity._id
+                    this.feedback[index].activityId = id
+                }
+                index +=1
             }
         },
         async updateActivitiesAPI() {
@@ -250,12 +339,38 @@ export default {
                 await store.deleteActivities(id)
             }
         },
+        async postFeedbackAPI() {
+            var store = useFeedbackStore()
+            for(const feedback of this.feedback) {
+                if(!feedback._id) {
+                    await store.postFeedback(feedback.videoclipId, feedback.activityId, feedback.timestamp, feedback.correctFeedback, feedback.incorrectFeedback)
+                }
+            }
+        },
+        async updateFeedbackAPI() {
+            var store = useFeedbackStore()
+            const feedbackList = this.feedback
+            for(const id of this.updatedFeedback) {
+                var index = feedbackList.findIndex(feedback => feedback._id == id)
+                console.log(feedbackList[index])
+                await store.updateFeedback(feedbackList[index]._id, feedbackList[index].correctFeedback, feedbackList[index].incorrectFeedback)
+            }
+        },
+        async deleteFeedbackAPI() {
+            var store = useFeedbackStore()
+            for(const id of this.deletedFeedback) {
+                await store.deleteFeedback(id)
+            }
+        },
         async updateAPI(id, timestamps) {
             var videoClipStore = useVideoClipStore();
             await videoClipStore.updateTimestamps(id,timestamps)
-            this.postActivitiesAPI()
-            this.updateActivitiesAPI()
-            this.deleteActivitiesAPI()
+            await this.postActivitiesAPI()
+            await this.postFeedbackAPI()
+            await this.updateActivitiesAPI()
+            await this.updateFeedbackAPI()
+            await this.deleteActivitiesAPI()
+            await this.deleteFeedbackAPI()
             this.returnToVideoSelectionPage()
         },
         async saveLessonName() {
@@ -270,18 +385,24 @@ export default {
         }
     },
     async mounted() {
+        var lessonStore = useLessonStore()
+        var instructorLessonStore = useInstructorLessonStore()
         this.userType = this.$cookies.get("user_session").currentUserType
+        if (this.userType == "Admin") {
+            this.currentLesson = await lessonStore.getLessonById(this.selectedLesson)
+        } else if (this.userType == "Instructor") {
+            this.currentLesson = await instructorLessonStore.fetchLessonById(this.selectedLesson)
+        }
         var userStore = useUsersStore();
         let instructorUsername = this.$cookies.get("user_session").currentUserName
         let instructor =  await userStore.getUserByName(instructorUsername)
         this.instructorId = instructor._id
         var videoClip = useVideoClipStore();
-        let parsedLessonArray = JSON.parse(this.lessonPack)
-        this.lessonName = parsedLessonArray.name
-        this.lessonId = parsedLessonArray._id
-        let parsedVideoIdsArray = parsedLessonArray.videoClipsArray
-        for (let i=0;i<parsedVideoIdsArray.length;i++) {
-            this.videoClips.push(await videoClip.fetchVideoClipById(parsedVideoIdsArray[i]._id))
+        this.lessonName = this.currentLesson.name
+        this.lessonId = this.selectedLesson
+        let videoIdsArray = this.currentLesson.videoClipsArray
+        for (let i=0;i<videoIdsArray.length;i++) {
+            this.videoClips.push(await videoClip.fetchVideoClipById(videoIdsArray[i]._id))
         }
         this.ready = true;
     }
@@ -409,7 +530,7 @@ video {
 }
 .display-timestamps-div {
     position: relative;
-    width: 310px;
+    width: 320px;
     height: 400px;
     margin-left: 10px;
     background: #0e333c;
@@ -425,8 +546,9 @@ video {
 }
 
 .timestamps {
+    overflow-x: none;
     overflow-y: auto;
-    width: 310px;
+    width: 320px;
     height: 300px;
     font-size: 0;
 }
@@ -441,6 +563,10 @@ ul.timestamp-ul {
     color: white;
     margin: 15px 10px 0 0;
     font-size: 35px;
+}
+
+.timestamp-ul img {
+    max-height: 35px;
 }
 
 #delete-timestamp-button {
@@ -463,7 +589,7 @@ ul.timestamp-ul {
 }
 
 #assign-activity-button {
-    margin: 0 15px 0 25px;
+    margin: 0 5px 0 15px;
     text-align: center;
     border: none;
     color: white;
@@ -471,13 +597,27 @@ ul.timestamp-ul {
     font-weight: bold;
     text-shadow: 1px 1px 1px black;
     box-shadow: 0 6px 6px #000000;
-    min-width: 85px;
+    min-width: 55px;
     min-height: 55px;
     border-radius: 15px;
 }
 
 #assign-activity-button:hover {
     box-shadow: 0 8px 8px #000000;
+}
+
+#feedback-button {
+    margin: 0 0 0 5px;
+    text-align: center;
+    border: none;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px black;
+    box-shadow: 0 6px 6px #000000;
+    min-width: 55px;
+    min-height: 55px;
+    border-radius: 15px;
 }
 
 #save-timestamps-button {
@@ -531,6 +671,30 @@ ul.timestamp-ul {
     background-color: #0ea83d;
 }
 
+.pulled-feedback {
+    background-color: #4AAE9B;
+}
+
+.pulled-feedback:hover {
+    background-color: #349b88;
+}
+
+.incomplete-feedback {
+    background-color: #ff0000;
+}
+
+.incomplete-feedback:hover {
+    background-color: #e20000;
+}
+
+.complete-feedback {
+    background-color: #0fb842;
+}
+
+.complete-feedback:hover {
+    background-color: #0ea83d;
+}
+
 #lessonNameText {
         text-align: center;
 }
@@ -570,4 +734,9 @@ ul.timestamp-ul {
     margin-bottom: 10px;
 }
 
+@media only screen and (max-width: 1399px){
+    .main-content-div {
+        margin-left: -75px;
+    }
+}
 </style>

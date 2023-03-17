@@ -6,17 +6,12 @@
         <div class="quadrant" id="quadrant-three"></div>
         <div class="quadrant" id="quadrant-four"></div>
     </div>
-    <EyeTrackingFeedbackModal :answer="answer" :correctAnswer="this.question.correctAnswer" @close="close"/>
 </div> 
 </template>
 
 <script>
-import EyeTrackingFeedbackModal from './EyeTrackingFeedbackModal.vue'
 export default {
     name: 'EyeTrackingPopUp',
-    components: {
-        EyeTrackingFeedbackModal
-    },
     data() {
         return {
             updatedAnswers: [],
@@ -107,6 +102,7 @@ export default {
         this.checkPredictionInBounds()
         this.getQuadrant()
         this.checkQuadrant()
+        this.close()
     }
 }
 </script>

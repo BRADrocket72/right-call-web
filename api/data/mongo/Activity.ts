@@ -4,7 +4,7 @@ import {ActivityDto} from "../model/ActivityDto";
 import ActivitySchema from "../mongo/schemas/ActivitySchema"
 
  class Activity implements ActivityDb {
-     
+         
     async createActivity(activity:ActivityDto) {
         const data = new ActivitySchema({
             timestamp:activity.timestamp,

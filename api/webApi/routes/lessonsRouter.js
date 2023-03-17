@@ -13,9 +13,13 @@ router.get('/lessons/getAll', lessonController.lessons_get_all)
 router.delete('/lessons/delete/:id', lessonController.lessons_delete_lesson)
 
 //Update Lesson Name method
-router.patch('/lessons/update/:id', lessonController.update_lesson_name)
+router.put('/lessons/update/:id', lessonController.update_lesson_name)
 
 //Update VideoClipsArray method
-router.patch('/lessons/updateVideoClipsArray/:id', lessonController.update_video_clips_array)
+router.put('/lessons/updateVideoClipsArray/:id', lessonController.update_video_clips_array)
+
+//Get Lesson By Id method
+router.get('/lessons/getAdminLessonById/:id', lessonController.get_admin_lesson_by_id)
+
 
 module.exports = router;

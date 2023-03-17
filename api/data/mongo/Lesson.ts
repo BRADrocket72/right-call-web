@@ -31,5 +31,8 @@ import LessonSchema from "./schemas/LessonSchema"
         const data = await LessonSchema.findByIdAndUpdate(id, videoClipsArray)
         return data;
     }
+    async getAdminLessonById(id: string) {
+        return await LessonSchema.findById(id);
+    }
 }
 export default  Lesson

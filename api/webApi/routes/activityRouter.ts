@@ -1,7 +1,10 @@
-const express = require('express');
-const activitiesController = require('../controllers/activityController.ts')
+import express from'express';
+import ActivityController from '../controllers/activityController'
+import Activity from '../../data/mongo/Activity'
 
 const router = express.Router()
+
+const activitiesController = new ActivityController(new Activity())
 
 //Post Method
 router.post('/activity/post', activitiesController.activities_create_activity)

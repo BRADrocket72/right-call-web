@@ -3,11 +3,15 @@ import axios from 'axios'
 
 export const useActivityStore = defineStore("Activity", {
     state: () => ({
-        activityList: []
+        activityList: [],
+        newActivity: {}
     }),
     getters: {
         getActivities(state) {
             return state.activityList
+        },
+        getNewActivity(state) {
+            return state.newActivity
         }
     },
     actions: {
@@ -31,6 +35,7 @@ export const useActivityStore = defineStore("Activity", {
                         correctAnswer: correctAnswer,
                         videoclipId: videoclipId
                     })
+                this.newActivity = data.data
                 return data.data
             } catch (error) {
                 console.error(error)
