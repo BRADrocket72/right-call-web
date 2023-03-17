@@ -44,7 +44,7 @@
                 </div>
             </div>
             <AssignActivityModal v-if="isAssignActivityModalVisible" :activity="activities[currentActivityIndex]" :questionTypeExists="activities[currentActivityIndex].questionType" :timestamp="currentActivityTimestamp" @close="toggleAssignActivityModal" @save="assignActivityModalSave"/>
-            <ActivityFeedbackModal v-if="isFeedbackModalVisible" :feedback="feedback[currentFeedbackIndex]" :activityId="activities[currentFeedbackIndex]._id" @close="toggleFeedbackModal" @save="feedbackModalSave"/>
+            <ActivityFeedbackModal v-if="isFeedbackModalVisible" :feedback="feedback[currentFeedbackIndex]" :activityId="activities[currentFeedbackIndex]._id" :timestamp="currentFeedbackTimestamp" @close="toggleFeedbackModal" @save="feedbackModalSave"/>
         </div>
     </div>
 </div>
@@ -83,6 +83,7 @@ export default {
             isFeedbackModalVisible: false,
             newTimestamp: Number,
             currentActivityTimestamp: Number,
+            currentFeedbackTimestamp: Number,
             timestamps: [],
             formattedTimestamps: [],
             ready: false,
@@ -264,6 +265,7 @@ export default {
             this.isFeedbackModalVisible = !this.isFeedbackModalVisible
             if(this.isFeedbackModalVisible) {
                 this.currentFeedbackIndex = feedbackIndex
+                this.currentFeedbackTimestamp = this.timestamps[feedbackIndex]
                 const video = document.getElementById(this.selectedVideo._id)
                 video.pause()
             } 
@@ -278,7 +280,7 @@ export default {
                     this.updatedFeedback.push(this.feedback[this.currentFeedbackIndex]._id)
                 }
             } else {
-                this.feedback[this.currentFeedbackIndex] = new FeedbackDto(this.selectedVideo._id, '', returnedData[1], returnedData[2])
+                this.feedback[this.currentFeedbackIndex] = new FeedbackDto(this.selectedVideo._id, '', returnedData[1], returnedData[2], returnedData[3])
             }
             this.toggleSaveButton()
         },
@@ -341,7 +343,8 @@ export default {
             var store = useFeedbackStore()
             for(const feedback of this.feedback) {
                 if(!feedback._id) {
-                    await store.postFeedback(feedback.videoclipId, feedback.activityId, feedback.correctFeedback, feedback.incorrectFeedback)
+                    console.log(feedback.timestamp)
+                    await store.postFeedback(feedback.videoclipId, feedback.activityId, feedback.timestamp, feedback.correctFeedback, feedback.incorrectFeedback)
                 }
             }
         },

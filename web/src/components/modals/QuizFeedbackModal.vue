@@ -8,10 +8,12 @@
             <section class="modal-body" id="modalDescription">
                 <slot name="body">
                     <div v-if="answer == 'Correct'" class="feedback-div">
-                        <p id="correct-feedback"></p>
+                      <h2>Nice!</h2>
+                      <p id="correct-feedback"></p>
                     </div>
                     <div v-else class="feedback-div">
-                        <p id="incorrect-feedback"></p>
+                      <h2>Almost!</h2>
+                      <p id="incorrect-feedback"></p>
                     </div>
                     <button type="button" class="btn-green" @click="close()">Close</button>
                 </slot>
@@ -23,15 +25,24 @@
 
 <script>
 export default {
-    name: 'EyeTrackingFeedbackModal',
+    name: 'QuizFeedbackModal',
     props: {
         answer: String,
-        correctAnswer: String
+        feedback: {}
     },
     methods: {
         close() {
             this.$emit('close')
         }
+    },
+    mounted() {
+      if(this.answer === 'Correct') {
+        const correctFeedback = document.getElementById('correct-feedback')
+        correctFeedback.innerText = this.feedback.correctFeedback
+      } else {
+        const incorrectFeedback = document.getElementById('incorrect-feedback')
+        incorrectFeedback.innerText = this.feedback.incorrectFeedback
+      }
     }
 }
 </script>

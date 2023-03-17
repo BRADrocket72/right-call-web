@@ -43,7 +43,8 @@ export default {
     },
     props: {
         feedback: {},
-        activityId: String
+        activityId: String,
+        timestamp: Number
     },
     methods: {
         close() {
@@ -65,12 +66,11 @@ export default {
             const incorrectTextArea = document.getElementById('incorrect-textarea')
             if(correctTextArea.value != "" && incorrectTextArea.value != "") {
                 this.allInputsValid = true
-                this.feedbackModalData = [this.activityId, correctTextArea.value, incorrectTextArea.value]
+                this.feedbackModalData = [this.activityId, this.timestamp, correctTextArea.value, incorrectTextArea.value]
             } else {
                 this.allInputsValid = false
             }
-        },
-
+        }
     }
 }
 </script>
