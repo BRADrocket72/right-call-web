@@ -13,11 +13,11 @@ router.get('/instructorClass/getAll', instructorClassController.get_all)
 //Get By Instructor Id method
 router.get('/instructorClass/getById/:instructorId', instructorClassController.get_all_by_instructorId)
 
-router.patch('/instructorClass/deleteVideoClip/:classId', instructorClassController.delete_video_clip)
+router.put('/instructorClass/deleteVideoClip/:classId', instructorClassController.delete_video_clip)
 
-router.patch('/instructorClass/addVideoClip/:classId', instructorClassController.add_video_clip)
+router.put('/instructorClass/addVideoClip/:classId', instructorClassController.add_video_clip)
 
 //Update Student Ids List Method
-router.patch('/instructorClass/updateStudentIds/:classId', instructorClassController.update_student_ids)
+router.put('/instructorClass/updateStudentIds/:classId', instructorClassController.update_student_ids)
 
 module.exports = router;

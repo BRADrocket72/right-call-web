@@ -59,8 +59,8 @@ describe('ActivityStore API CALLS Unit TESTING', () => {
     expect(retrievedClass[0]._id).toEqual("abcd123456789jfsf03u40238j")
   });
 
-  it('addVideoClipToClass() mocks the axios.patch call (through the api) and is sending an axios.patch call successfully', async () => {
-    axios.patch= jest.fn().mockResolvedValue({
+  it('addVideoClipToClass() mocks the axios.put call (through the api) and is sending an axios.put call successfully', async () => {
+    axios.put= jest.fn().mockResolvedValue({
         data: [{
             _id: "abcd123456789jfsf03u40238j",
             instructorId: "testId123",
@@ -83,8 +83,8 @@ describe('ActivityStore API CALLS Unit TESTING', () => {
     expect(updatedClass[0].videoClipIds[1]).toEqual("newId2")
   });
 
-  it('deleteVideoClipFromClass() mocks the axios.patch call (through the api) and is sending an axios.patch call successfully', async () => {
-    axios.patch= jest.fn().mockResolvedValue({
+  it('deleteVideoClipFromClass() mocks the axios.put call (through the api) and is sending an axios.put call successfully', async () => {
+    axios.put= jest.fn().mockResolvedValue({
         data: [{
             _id: "abcd123456789jfsf03u40238j",
             instructorId: "testId123",
@@ -141,8 +141,8 @@ describe('ActivityStore API CALLS Unit TESTING', () => {
     expect(allClasses[0].videoClipIds.length).toEqual(1)
     expect(allClasses[1].studentIds[2]).toEqual("student4")
   });
-  it('updateStudentIdsList() mocks the axios.patch call (through the api) and is sending an axios.patch call successfully', async () => {
-    axios.patch= jest.fn().mockResolvedValue({
+  it('updateStudentIdsList() mocks the axios.put call (through the api) and is sending an axios.put call successfully', async () => {
+    axios.put= jest.fn().mockResolvedValue({
         data: [{
             _id: "abcd123456789jfsf03u40238j",
             instructorId: "testId123",

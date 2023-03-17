@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { useUserResultsStore } from '@/stores/UserResultsStore'
 
 
 export default {
@@ -18,6 +19,7 @@ export default {
     },
     methods: {
         startTimer() {
+            var resultStore = useUserResultsStore()
             console.log(this.needsToReset)
 
             var appendTens = document.getElementById("tens")
@@ -47,7 +49,7 @@ export default {
             if (this.seconds > 9) {
                 appendSeconds.innerHTML = this.seconds;
             }
-
+            resultStore.questionTime = this.seconds + ":" + this.tens
         },
 
     },

@@ -43,7 +43,7 @@ export const useLessonStore = defineStore("Lessons", {
         },
         async updateLessonName(id, name) {
             try {
-                const data = await axios.patch(`${process.env.VUE_APP_API_BASE_URL}/lessons/update/${id}`, { name: name })
+                const data = await axios.put(`${process.env.VUE_APP_API_BASE_URL}/lessons/update/${id}`, { name: name })
                 return data.data
             } catch (error) {
                 console.log(error)
@@ -51,7 +51,7 @@ export const useLessonStore = defineStore("Lessons", {
         },
         async updateVideoClipsArray(id, videoClipsArray) {
             try {
-                const data = await axios.patch(`${process.env.VUE_APP_API_BASE_URL}/lessons/updateVideoClipsArray/${id}`, { videoClipsArray: videoClipsArray })
+                const data = await axios.put(`${process.env.VUE_APP_API_BASE_URL}/lessons/updateVideoClipsArray/${id}`, { videoClipsArray: videoClipsArray })
                 return data.data
             } catch (error) {
                 console.error(error)
