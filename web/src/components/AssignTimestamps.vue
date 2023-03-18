@@ -3,10 +3,15 @@
     <LoggedInNavBarVue />
     <br/><br/>
     <div v-if="ready" class="assign-timestamps">
-        <div class="update-lesson-name-div">
-            <h2 id="lessonNameText">Edit Lesson Name: <input id="lessonNameInput" :value="lessonName"/> </h2>
-            <button id="customize-lesson-button" @click="saveLessonName()">Save</button>
+        <div class="lessonNameDiv">
+            <div class="update-lesson-name-div">
+                <h2 id="lessonNameText">Edit Lesson Name: <input id="lessonNameInput"  v-model="lessonName"/> </h2>
+                <button id="customize-lesson-button" @click="saveLessonName()">Update Name</button>
+            </div>
+            <h5 v-if="isNameUpdated" id="lessonSavedWarning">Lesson Name Updated</h5>
         </div>
+        <br/>
+        <h5 v-if="isOnInitialAssignTimestampsPage" id="isOnInitialAssignTimestampsPage">Select Quiz to Add Questions to:</h5>
         <div class="video-list-div" v-if="isVideoSelected == false">
             <div class="lesson" v-for="video in this.videoClips" :key="video._id">
                 <a class="nav-link" @click="videoSelection(video)">
@@ -98,7 +103,10 @@ export default {
             currentFeedbackIndex: Number,
             currentUserType: [],
             lessonId: "",
-            currentLesson: Object
+            currentLesson: Object,
+            isNameUpdated: false,
+            lessonName: "",
+            isOnInitialAssignTimestampsPage: true
         }
     },
     props: {
@@ -111,9 +119,11 @@ export default {
         videoSelection(video) {
             this.selectedVideo = video
             this.getLessonContent()
+            this.isOnInitialAssignTimestampsPage = false
             this.isVideoSelected = !this.isVideoSelected
         },
         returnToVideoSelectionPage(){
+            this.isOnInitialAssignTimestampsPage = true
             this.isVideoSelected = false
             this.timestamps = []
             this.formattedTimestamps = []
@@ -352,7 +362,6 @@ export default {
             const feedbackList = this.feedback
             for(const id of this.updatedFeedback) {
                 var index = feedbackList.findIndex(feedback => feedback._id == id)
-                console.log(feedbackList[index])
                 await store.updateFeedback(feedbackList[index]._id, feedbackList[index].correctFeedback, feedbackList[index].incorrectFeedback)
             }
         },
@@ -382,6 +391,8 @@ export default {
             } else if (this.userType == "Instructor") {
                 await instructorLessons.updateInstructorLessonName(this.lessonId, lessonName)
             }
+            this.lessonName = lessonName
+            this.isNameUpdated = true
         }
     },
     async mounted() {
@@ -405,6 +416,11 @@ export default {
             this.videoClips.push(await videoClip.fetchVideoClipById(videoIdsArray[i]._id))
         }
         this.ready = true;
+    },
+    watch: {
+        lessonName() {
+            this.isNameUpdated = false;
+        }
     }
 }
 </script>
@@ -700,8 +716,12 @@ ul.timestamp-ul {
 }
 
 #lessonNameInput {
-    border: 3px solid #4AAE9B;
+    border: 2px solid #4AAE9B;
     border-radius: 5px;
+}
+
+#lessonNameInput:hover {
+    box-shadow: 0 3px 3px #d1d1d1;
 }
 #customize-lesson-button {
     text-align: center;
@@ -739,4 +759,21 @@ ul.timestamp-ul {
         margin-left: -75px;
     }
 }
+
+#lessonSavedWarning {
+    font-weight:300;
+    text-align: center;
+    color: #0e333c;
+}
+#lessonSaved {
+    left: 50%;
+}
+
+.lessonNameDiv {
+    border: 3px solid #52746d;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+
 </style>
