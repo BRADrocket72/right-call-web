@@ -43,6 +43,6 @@ describe('InstructorPage.vue', () => {
 
     it('Displays the instructors router-links', () => {
         expect(wrapper.find('router-link').exists()).toBe(true)
-        expect(wrapper.findAll('router-link').length).toEqual(6) // 6 because it also counts the router-links on the navbar
+        expect(wrapper.findAll('router-link').length).toEqual(7) // 7 because it also counts the router-links on the navbar
     })
 })
