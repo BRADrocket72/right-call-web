@@ -362,7 +362,6 @@ export default {
             const feedbackList = this.feedback
             for(const id of this.updatedFeedback) {
                 var index = feedbackList.findIndex(feedback => feedback._id == id)
-                console.log(feedbackList[index])
                 await store.updateFeedback(feedbackList[index]._id, feedbackList[index].correctFeedback, feedbackList[index].incorrectFeedback)
             }
         },
