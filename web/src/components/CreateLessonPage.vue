@@ -27,7 +27,7 @@
   import LoggedInNavBarVue from "./LoggedInNavBar.vue";
   
   export default {
-    name: "VideoUpload",
+    name: "CreateLessonPage",
     components: {
       LoggedInNavBarVue,
     },
