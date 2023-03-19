@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils'
 import 'jest'
 import VideoEditor from '@/components/VideoEditor.vue';
+import AssignActivityDto  from '@/models/AssignActivityDto' 
 import {createPinia, setActivePinia} from 'pinia'
 
 jest.mock('webgazer', () => ({
@@ -37,7 +38,8 @@ describe('VideoEditor.vue', () => {
                 currentVideoClip: {_id: "123test", videoURL: "youtube.com", videoName: "Football Lesson One", timeStamps: [5]},
                 currentVideoQuestions: [{_id: "testId", timestamp: 5, questionText: "What is the call?", answers: ["Traveling","Charge"], correctAnswer: "Traveling", videoclipId: "123test"}],
                 answers: [],
-                questionsLoaded: true
+                questionsLoaded: true,
+                currentQuestion: new AssignActivityDto("5.32323", "Multiple Choice", "What is the call?", ["Travel", "Double Dribble"], "Travel", "testVideoID")
               }
             },
             global: {
