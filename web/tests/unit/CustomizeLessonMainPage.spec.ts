@@ -29,6 +29,7 @@ describe('CustomizeLessonMainPage.vue', () => {
                     ],
                 }
               },
+              props: {},
               global: {
                 mocks: {
                     $router: mockRouter,
