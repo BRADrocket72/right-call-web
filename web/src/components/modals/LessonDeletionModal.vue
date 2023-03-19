@@ -10,7 +10,8 @@
   
           <section class="modal-body" id="modalDescription">
             <slot name="body">
-              <p>Are you sure you wish to delete this lesson?</p>
+              <p v-if="deletionType == 'video'">Are you sure you wish to delete this video?</p>
+              <p v-else>Are you sure you wish to delete this lesson?</p>
 
               <div v-if="deletionType == 'video'">
                 <button type="button" class="btn-green" @click="deleteVideo(selectedVideo)">Yes</button>
@@ -18,7 +19,13 @@
               <div v-else>
                 <button type="button" class="btn-green" @click="deleteLesson(selectedLesson)">Yes</button>
               </div>
-              <button type="button" class="btn-green" @click="close()">No, select a different lesson to delete</button>
+              
+              <div v-if="deletionType == 'video'">
+                <button type="button" class="btn-green" @click="close()">No, select a different video to delete</button>
+              </div>
+              <div v-else>
+                <button type="button" class="btn-green" @click="close()">No, select a different lesson to delete</button>
+              </div>
               <br/>
             </slot>
           </section>
