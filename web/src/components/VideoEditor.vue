@@ -153,6 +153,7 @@
         this.currentVideoClip = await videoClipStore.fetchVideoClipById(this.videoId);
         this.videoName = this.currentVideoClip.videoName
         this.currentVideoQuestions = await activityStore.fetchActivitiesByVideoclipId(this.videoId)
+        this.currentQuestion = this.currentVideoQuestions[this.questionCounter]
         this.feedbackList = await feedbackStore.fetchFeedbackByVideoclipId(this.videoId)
         this.currentVideoQuestions.sort((a,b) => a.timestamp - b.timestamp)
         this.feedbackList.sort((a,b) => a.timestamp - b.timestamp)
@@ -161,7 +162,6 @@
       },
       stopVideoAtTimestamp(video, timestamps) {
         var currentTime = video.currentTime
-        this.currentQuestion = this.currentVideoQuestions[this.questionCounter]
         if (currentTime >= timestamps[this.questionCounter]) {
           if(this.currentVideoQuestions[this.questionCounter].questionType === 'eye-tracking') {
             this.toggleEyeTracking()
@@ -234,9 +234,12 @@
       toggleQuizFeedback() {
         this.isFeedbackVisible = !this.isFeedbackVisible
         if(!this.isFeedbackVisible) {
-          this.togglePlayButton()
-          this.playOrPauseVideo()
-          this.questionIndex++
+          setTimeout(() => {
+            this.playOrPauseVideo()
+            this.togglePlayButton()
+            this.currentQuestion = this.currentVideoQuestions[this.questionCounter]
+            this.questionIndex++
+          }, 100)
         }
       },
       togglePlayButton() {
