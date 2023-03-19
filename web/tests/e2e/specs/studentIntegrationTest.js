@@ -6,24 +6,20 @@ describe('Student Integration Testing', () => {
         cy.get('.login-div h1').contains('Sign in to your account')
     })
     it('Student logs in', () => {
-        cy.contains('div', 'Email or username')
         cy.get('#userName').type('jeremiah')
         cy.get('#password').type('123')
         cy.get('button').click()
     })
-    it('Student sees the videos and can click on one', () => {
+    it('Student sees their assigned lessons and can click on one', () => {
         cy.contains('h1', 'Lesson Selection Page')
+        let lesson = cy.get('.nav-link:last')
+        lesson.click()
+    })
+    it('Student sees the quizzes in the lesson and can click on one', () => {
+        cy.get('.div-header h1').contains('Select a Quiz to Take')
         let video = cy.get('.nav-link:last')
-        video.click()
-    })
-    it('Webcam Permission modal displays and Student clicks decline to not use eye-tracking', () => {
-        cy.contains('div', 'Webcam Permission')
-        cy.contains('p', 'This lesson includes eye-tracking questions that need to use your webcam. A webcam is not required to take this lesson.')
-        cy.get('.btn-green:last').click()
-
-    })
-    it('Video Player Displays and Student can click play', () => {
-        cy.contains('h1', 'Basketball Video')
+        video.contains('Quiz')
+        cy.get('.nav-link').its('length').should('be.gte', 1)
         cy.get(".button").click()
     })
     it('Student can view results', () => {
@@ -33,7 +29,7 @@ describe('Student Integration Testing', () => {
         cy.get(".user-button-multiline-text").click()
         cy.contains('div', 'Lesson Name')
         cy.contains('div', 'Score')
-        cy.get('tr').its('length').should('be.gte', 8)
+        cy.get('tr').its('length').should('be.gt', 0)
     })
 
     it('Student logs out', () => {

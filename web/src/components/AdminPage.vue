@@ -9,7 +9,7 @@
       </router-link>
       <router-link to="/LessonDeletion">
         <button type="button" class="button-selection buttonDeleteLink"><span>Delete Lesson</span></button>
-        <p class="delete-description">Delete lesson videos from the database.<br><b>Note:</b> This cannot be undone.</p>
+        <p class="delete-description">Delete lessons or lesson videos from the database.<br><b>Note:</b> This cannot be undone.</p>
       </router-link>
       <router-link to="/UpdateLessonsPage">
         <button type="button" class="button-selection buttonLink"><span>Update Lessons</span></button>
