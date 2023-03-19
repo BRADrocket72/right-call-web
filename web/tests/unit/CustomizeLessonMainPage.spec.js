@@ -5,7 +5,7 @@ import VideoClipDto  from '@/models/VideoClipDto'
 import {createPinia, setActivePinia} from 'pinia'
 
 describe('CustomizeLessonMainPage.vue', () => {
-     let wrapper:any;
+     let wrapper;
      let mockRouter;
      let mockRoute;
      let mockCookies;
@@ -27,9 +27,11 @@ describe('CustomizeLessonMainPage.vue', () => {
                     allLessons: [
                         {name: "testLesson", userType: "Admin", description: "testDescription", videoClipsArray: [new VideoClipDto("testId", "youtube.com", "test video", [1,4,5])]}
                     ],
+                    isCustomizationConfirmed: false,
+                    uploadedInstructorVideos: [],
+                    selectedLesson: "testLesson"
                 }
               },
-              props: {},
               global: {
                 mocks: {
                     $router: mockRouter,
