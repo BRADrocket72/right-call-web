@@ -59,15 +59,13 @@ describe('VideoClipStore API CALLS Unit TESTING', () => {
           }
         ]
       })
-    const store = useVideoClipStore()
     const singleVideo = await store.fetchVideoClipById("1234test")
     expect(singleVideo[0]._id).toEqual("1234test")
   });
 
   it('postVideo() mock calls axios.post (through the api) and is sending an axios.post call successfully', async () => {
-    const store = useVideoClipStore()
-    store.postVideo = jest.fn().mockResolvedValue({
-      data: [{
+      axios.post = jest.fn().mockResolvedValue({
+        data: {
             _id: "1234test",
             videoURL: "https://right-call-videos.s3.us-east-2.amazonaws.com/uploads/5e500989-3a03-47f6-81e4-7619643a7fe9-P15_Shooting_Foul_2.m4v",
             videoName: "Test Video",
@@ -76,17 +74,26 @@ describe('VideoClipStore API CALLS Unit TESTING', () => {
               11.369245
             ]
           }
-        ]
       })
-    const updatedVideo = await store.postVideo("videoFile", "Test Video")
-    expect(updatedVideo.data[0]._id).toEqual("1234test")
-    expect(updatedVideo.data[0].videoName).toEqual("Test Video")
+      store.postVideo = jest.fn().mockResolvedValue({
+        data: {
+              _id: "1234test",
+              videoURL: "https://right-call-videos.s3.us-east-2.amazonaws.com/uploads/5e500989-3a03-47f6-81e4-7619643a7fe9-P15_Shooting_Foul_2.m4v",
+              videoName: "Test Video",
+              timeStamps: [
+                3.787164,
+                11.369245
+              ]
+            }
+        })
+    const postedVideo = await store.postVideo("videoFile", "Test Video")
+    expect(postedVideo.data._id).toEqual("1234test")
+    expect(postedVideo.data.videoName).toEqual("Test Video")
   });
 
   it('postInstructorsCustomizedVideo() mock calls axios.post (through the api) and is sending an axios.post call successfully', async () => {
-    const store = useVideoClipStore()
-    store.postInstructorsCustomizedVideo = jest.fn().mockResolvedValue({
-      data: [{
+    axios.post = jest.fn().mockResolvedValue({
+      data: {
             _id: "testVideo2",
             videoURL: "https://right-call-videos.s3.us-east-2.amazonaws.com/uploads/5e500989-3a03-47f6-81e4-7619643a7fe9-P15_Personal_Foul.m4v",
             videoName: "New Test Video",
@@ -96,12 +103,11 @@ describe('VideoClipStore API CALLS Unit TESTING', () => {
               18.349548
             ]
           }
-        ]
       })
     const postedCustomVideo = await store.postInstructorsCustomizedVideo("New Test Video", "https://right-call-videos.s3.us-east-2.amazonaws.com/uploads/5e500989-3a03-47f6-81e4-7619643a7fe9-P15_Personal_Foul.m4v", [1.692850 ,7.324242, 18.349548])
-    expect(postedCustomVideo.data[0]._id).toEqual("testVideo2")
-    expect(postedCustomVideo.data[0].timeStamps.length).toEqual(3)
-    expect(postedCustomVideo.data[0].videoName).toEqual("New Test Video")
+    expect(postedCustomVideo._id).toEqual("testVideo2")
+    expect(postedCustomVideo.timeStamps.length).toEqual(3)
+    expect(postedCustomVideo.videoName).toEqual("New Test Video")
   });
 
 
