@@ -4,10 +4,10 @@ import 'jest'
 import {createPinia, setActivePinia} from 'pinia'
 
 describe('EyeTracking.vue', () => {
-    let mockRouter:any
-    let mockRoute:any
-    let wrapper:any
-    let mockCookies:any
+    let mockRouter
+    let mockRoute
+    let wrapper
+    let mockCookies
     beforeEach(async () => {
         mockRoute = {}
         mockRouter = {

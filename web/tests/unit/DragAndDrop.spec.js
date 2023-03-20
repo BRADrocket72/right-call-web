@@ -4,10 +4,10 @@ import DragAndDrop from '@/components/modals/questionTypes/DragAndDrop.vue'
 import 'jest'
 
 describe('AssignTimestamps.vue', () => {
-    let wrapper: any
-    let mockRouter: any
-    let mockRoute: any
-    let mockCookies: any
+    let wrapper
+    let mockRouter
+    let mockRoute
+    let mockCookies
     jest.spyOn(console, 'warn').mockImplementation(() => {})
     beforeEach(async () => {
         mockRoute = {}
