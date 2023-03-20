@@ -26,8 +26,12 @@ import FeedbackSchema from "../mongo/schemas/FeedbackSchema"
     async findAllByVideoId(videoclipId:string){
         const data = await FeedbackSchema.find({"videoclipId": videoclipId})
         return data;
-
     }
+    async findAllByActivityId(activityId:string) {
+        const data = await FeedbackSchema.find({"activityId": activityId})
+        return data;
+    }
+
     async update(id:string, feedback: FeedbackDto){
         const query = {_id: new mongoose.Types.ObjectId(id)}
         const data = await FeedbackSchema.findOneAndUpdate(query,{$set:feedback},{new:true})
