@@ -4,7 +4,7 @@ import axios from 'axios'
 export const useFeedbackStore = defineStore("Feedback", {
     state: () => ({
         feedbackList: [],
-        newFeedbackList: []
+        newFeedbackList: {}
     }),
     getters: {
         getFeedback(state) {
