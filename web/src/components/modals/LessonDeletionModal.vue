@@ -38,7 +38,7 @@
 import { useActivityStore } from '@/stores/ActivityStore';
 import { useVideoClipStore } from '@/stores/VideoClipStore';
 import { useLessonStore } from '@/stores/LessonsStore';
-
+import { useFeedbackStore } from '@/stores/FeedbackStore';
   
   export default {
     name: 'ResultsPage',
@@ -75,6 +75,7 @@ import { useLessonStore } from '@/stores/LessonsStore';
             await activityStore.deleteActivities(question._id)
           }
         }
+        await this.deleteFeedback(videoId)
         const videoClipStore = useVideoClipStore()
         await videoClipStore.deleteVideoClip(videoId)
         this.$router.push({
@@ -94,6 +95,13 @@ import { useLessonStore } from '@/stores/LessonsStore';
         this.$router.push({
           name: "AdminPage"
         })
+      },
+      async deleteFeedback(id) {
+        let feedbackStore = useFeedbackStore()
+        let videoFeedback = await feedbackStore.fetchFeedbackByVideoclipId(id)
+        for(const feedback of videoFeedback) {
+          await feedbackStore.deleteFeedback(feedback._id)
+        }
       }
       
     }
