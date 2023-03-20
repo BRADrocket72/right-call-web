@@ -63,30 +63,23 @@
                   for (let j=0; j<currentVideosTimestamps.timeStamps.length; j++) {
                     for (let x=0; x<videosActivities.length; x++) {
                       if (currentVideosTimestamps.timeStamps[j] == videosActivities[x].timestamp) {
-                        await activityStore.postActivities(videosActivities[x].timestamp, videosActivities[x].questionType, videosActivities[x].questionText, videosActivities[x].answers, videosActivities[x].correctAnswer, this.uploadedInstructorVideos[i]._id)
-                        this.activityArray.push(activityStore.newActivity)
+                        this.activityArray.push(await activityStore.postActivities(videosActivities[x].timestamp, videosActivities[x].questionType, videosActivities[x].questionText, videosActivities[x].answers, videosActivities[x].correctAnswer, this.uploadedInstructorVideos[i]._id))
                       }
                     }
                   } 
+
                   let feedbackStore = useFeedbackStore()
-                  let currentVideosFeedback = await feedbackStore.fetchFeedbackByVideoclipId((lesson.videoClipsArray[i]._id))
-                  let currentAcitivities = feedbackStore.fetchFeedbackByActivityId()
-                
-                  for (const feedback of currentVideosFeedback) {
-                    await feedbackStore.postFeedback(this.uploadedInstructorVideos[i]._id, )
+                  for (const activity of videosActivities) {
+                    // await feedbackStore.fetchFeedbackByActivityId(activity._id)
+                    console.log(activity._id)
+                    let currentFeedback = await feedbackStore.fetchFeedbackByActivityId(activity._id)
+                    console.log(currentFeedback)
+                    await feedbackStore.postFeedback(currentFeedback.videoclipId, currentFeedback.activityId, currentFeedback.timestamp, currentFeedback.correctFeedback, currentFeedback.incorrectFeedback)
+
                   }
                   this.activityArray = []
                 }
 
-                // for (let y=0; y<lesson.videoClipsArray.length; y++) {
-                //   let videoClipStore = useVideoClipStore() 
-                //   let currentVideosFeedback = await feedbackStore.fetchFeedbackByVideoclipId((lesson.videoClipsArray[y]._id))
-                //   for (let z=0; z<currentVideosFeedback.length; z++) {
-                //     if (currentVideosFeedback[z]._id) {
-                //       d
-                //     }
-                //   }
-                // }
                 let instructorLessonStore = useInstructorLessonStore();
                 var userStore = useUsersStore();
                 let instructorUsername = this.$cookies.get("user_session").currentUserName

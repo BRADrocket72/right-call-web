@@ -3,11 +3,15 @@ import axios from 'axios'
 
 export const useFeedbackStore = defineStore("Feedback", {
     state: () => ({
-        feedbackList: []
+        feedbackList: [],
+        newFeedbackList: []
     }),
     getters: {
         getFeedback(state) {
             return state.feedbackList
+        },
+        getNewFeedback(state) {
+            return state.newFeedbackList
         }
     },
     actions: {
@@ -23,6 +27,7 @@ export const useFeedbackStore = defineStore("Feedback", {
         async fetchFeedbackByActivityId(activityId){
             try {
                 const data = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/feedback/getByActivity/${activityId}`)
+                this.newFeedbackList = data.data
                 return data.data
             } catch (error) {
                 console.log(error);
