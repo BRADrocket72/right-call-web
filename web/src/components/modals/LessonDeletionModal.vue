@@ -41,7 +41,7 @@ import { useLessonStore } from '@/stores/LessonsStore';
 import { useFeedbackStore } from '@/stores/FeedbackStore';
   
   export default {
-    name: 'ResultsPage',
+    name: 'LessonDeletionModal',
     data() {
       return {
         videosQuestions: [],
