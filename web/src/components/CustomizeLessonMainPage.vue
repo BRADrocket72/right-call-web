@@ -71,10 +71,7 @@
                   videosActivities.sort((a,b) => a.timestamp - b.timestamp)
                   let feedbackStore = useFeedbackStore()
                   for (let p=0; p<videosActivities.length;p++) {
-                    console.log(videosActivities[p])
                     let currentFeedback = await feedbackStore.fetchFeedbackByActivityId(videosActivities[p]._id)
-                    console.log(currentFeedback)
-                    console.log(activityStore.newActivity)
                     await feedbackStore.postFeedback(this.uploadedInstructorVideos[i]._id, this.activityArray[p]._id, currentFeedback[0].timestamp, currentFeedback[0].correctFeedback, currentFeedback[0].incorrectFeedback)
                   }
                   this.activityArray = []
