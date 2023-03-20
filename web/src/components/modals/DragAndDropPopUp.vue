@@ -59,24 +59,26 @@ export default {
         dropAreaSetup(index) {
             let id = 'drop-div-' + index
             let dropLocation = document.getElementById(id)
-            dropLocation.addEventListener('dragover', (event) => {
-                event.preventDefault()
-                event.dataTransfer.setData('text', event.target.id)
-            })
-            dropLocation.addEventListener('drop', (event) => {
-                event.preventDefault()
-                const target = event.target
-                this.targetID = target.id
-                const data = event.dataTransfer.getData('text')
-                const source = document.getElementById(data)
-                const index = this.wordBankAnswers.indexOf(data)
-                if(index !== -1) {
-                    this.wordBankDropEvent(source)
-                } else {
-                    this.dropDivSwapEvent(source)
-                }
-                this.checkDropDivs()
-            })
+            if (dropLocation) {
+                dropLocation.addEventListener('dragover', (event) => {
+                    event.preventDefault()
+                    event.dataTransfer.setData('text', event.target.id)
+                })
+                dropLocation.addEventListener('drop', (event) => {
+                    event.preventDefault()
+                    const target = event.target
+                    this.targetID = target.id
+                    const data = event.dataTransfer.getData('text')
+                    const source = document.getElementById(data)
+                    const index = this.wordBankAnswers.indexOf(data)
+                    if(index !== -1) {
+                        this.wordBankDropEvent(source)
+                    } else {
+                        this.dropDivSwapEvent(source)
+                    }
+                    this.checkDropDivs()
+                })
+            }
         },
         wordBankDropEvent(source) {
             const dropTarget = document.getElementById(this.targetID)

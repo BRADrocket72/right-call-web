@@ -94,5 +94,9 @@ describe('DragAndDropPopUp.vue', () => {
         const closeFunction = jest.spyOn(wrapper.vm,'close')
         wrapper.vm.close()
         expect(closeFunction).toHaveBeenCalled
+
+        const dropDivSwapEventFunction = jest.spyOn(wrapper.vm,'dropAreaSetup')
+        wrapper.vm.dropAreaSetup(1);
+        expect(dropDivSwapEventFunction).toHaveBeenCalled
     })
 })
