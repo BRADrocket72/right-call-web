@@ -7,8 +7,8 @@
         <br/>
         <h5>Your custom lessons:</h5>
         <div class="admin-buttons">
-            <div v-for="lesson in instructorLessons" :key="lesson._id">
-                <button type="button" class="button-selection buttonLink" @click="selectLessonToCustomize(lesson)"><span>{{lesson.name}}</span></button>
+            <div v-for="lesson in instructorLessons" :key="lesson._id" @click="selectLessonToCustomize(lesson)">
+                <button type="button" class="button-selection buttonLink"><span>{{lesson.name}}</span></button>
                 <p class="upload-description">{{lesson.description}}<br/><br/>Content: {{ lesson.videoClipsArray.length }} videos</p>
             </div>
         </div>
@@ -70,13 +70,21 @@
     
     <style>
     
+    .admin-container {
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    
+
     .button-selection {
       display: inline-flex;
       align-content: flex-start;
       flex: 1 0 0;
       height: 300px;
       width: 300px;
-      margin: auto 20px auto;
+      margin: auto 20px 30px auto;
       border: 4px solid #0e333c;
       color: #0e333c;
       background: #e9e9e9;
@@ -95,7 +103,7 @@
       opacity: 0;
       position: absolute;
       max-width: 250px;
-      margin: -150px 0 0 42px;
+      margin: -200px 0 0 30px;
       font-size: 19px;
       font-weight: normal;
       color: #0e333c;
@@ -105,6 +113,7 @@
     .upload-description:hover {
       visibility: visible;
       opacity: 1;
+      cursor: pointer;
     }
     
     .button-selection:hover + .upload-description {
@@ -158,7 +167,9 @@
     
     .admin-buttons {
       display: flex;
-      margin-top: 60px;
+      flex: 22%;
+      margin: 60px;
+      flex-wrap: wrap;
     }
     
     .admin-buttons a {

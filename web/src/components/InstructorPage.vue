@@ -86,7 +86,7 @@ export default {
   opacity: 0;
   position: absolute;
   max-width: 250px;
-  margin: 150px 0 0 42px;
+  margin: 150px 0 0 30px;
   font-size: 19px;
   font-weight: normal;
   color: #0e333c;
@@ -108,7 +108,7 @@ export default {
   opacity: 0;
   position: absolute;
   max-width: 250px;
-  margin: 0 0 0 42px;
+  margin: 0 0 0 30px;
   font-size: 19px;
   font-weight: normal;
   color: #0e333c;
