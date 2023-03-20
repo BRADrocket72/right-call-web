@@ -4,10 +4,10 @@ import DragAndDrop from '@/components/modals/questionTypes/DragAndDrop.vue'
 import 'jest'
 
 describe('AssignTimestamps.vue', () => {
-    let wrapper
-    let mockRouter
-    let mockRoute
-    let mockCookies
+    let wrapper;
+    let mockRouter;
+    let mockRoute;
+    let mockCookies;
     jest.spyOn(console, 'warn').mockImplementation(() => {})
     beforeEach(async () => {
         mockRoute = {}
@@ -17,25 +17,30 @@ describe('AssignTimestamps.vue', () => {
         mockCookies = {
             isKey: jest.fn()
         }
-        
+
         setActivePinia(createPinia())
         wrapper = mount(DragAndDrop, {
+            props: {
+                activity: {_id: "321test", timestamp: 5, questionType: "short-answer", questionText: "What is the call?", answers: ['Traveling'], correctAnswer: "Traveling", videoclipId: "123test"},
+                activityIndex: 0
+            },
+            data() {
+                return {
+                    textInputsFromDb: ['Traveling'],
+                    numbersFromDb: [27],
+                    answers: ["test", "Travel"],
+                    answersWithIDs: ["123", "456"],
+                    positionedEventIDs: ["test"],
+                    activityModalData: ["test"]
+                }
+              },
             global: {
                 mocks: {
                    $router: mockRouter,
                    $route: mockRoute,
                    $cookies: mockCookies
                }
-            },
-            props: {
-                activity: {_id: "321test", timestamp: 5, questionType: "short-answer", questionText: "What is the call?", answers: ['Traveling'], correctAnswer: "Traveling", videoclipId: "123test"}
-            },
-            created() {
-            
-            },
-            mounted() {
-
-            },
+            }
         })
     })
     it('renders Drag and Drop', () => {
@@ -60,16 +65,56 @@ describe('AssignTimestamps.vue', () => {
         expect(saveFunc).toHaveBeenCalled
     })
 
-    it('calls the reset function', async () => {
-        const resetInputs = wrapper.find('.reset-div').find('.reset-button')
-        expect(resetInputs.exists()).toBeTruthy()
+    it('calls the reset function first option', async () => {
+        const resetInputs = wrapper.find('.reset-div').findAll('.reset-button')
+        expect(resetInputs[0].exists()).toBeTruthy()
         const resetFunc = jest.spyOn(wrapper.vm,'resetInputs')
-        wrapper.vm.resetInputs = jest.fn()
-        await resetInputs.trigger('click')
+        wrapper.vm.resetInputs('')
         expect(resetFunc).toHaveBeenCalled
+    })
+
+    it('functions work properly', async () => {
+        const updateNumberIDsFunctino = jest.spyOn(wrapper.vm,'updateNumberIDs')
+        wrapper.vm.updateNumberIDs(0,1)
+        expect(updateNumberIDsFunctino).toHaveBeenCalled
+        const updateCoordinatesFunction = jest.spyOn(wrapper.vm,'updateCoordinates')
+        wrapper.vm.updateCoordinates(1,2,3)
+        expect(updateCoordinatesFunction).toHaveBeenCalled
+
+        const checkIfOptionAlreadyMovedFunction = jest.spyOn(wrapper.vm,'checkIfOptionAlreadyMoved')
+        wrapper.vm.checkIfOptionAlreadyMoved({id: 1})
+        expect(checkIfOptionAlreadyMovedFunction).toHaveBeenCalled
+
+        const checkInputsFunction = jest.spyOn(wrapper.vm,'updateAnswersWithValues')
+        wrapper.vm.updateAnswersWithValues()
+        expect(checkInputsFunction).toHaveBeenCalled
+
+        const setupModalReturnArrayFunction = jest.spyOn(wrapper.vm,'setupModalReturnArray')
+        wrapper.vm.setupModalReturnArray()
+        expect(setupModalReturnArrayFunction).toHaveBeenCalled
+
+        const dataFromActivityFunction = jest.spyOn(wrapper.vm,'dataFromActivity')
+        wrapper.vm.dataFromActivity()
+        expect(dataFromActivityFunction).toHaveBeenCalled
+        
+        const setupEventListenersFunction = jest.spyOn(wrapper.vm,'setupEventListeners')
+        wrapper.vm.setupEventListeners = jest.fn()
+        expect(setupEventListenersFunction).toHaveBeenCalled
     })
 
     it('renders question text area', () => {
         expect(wrapper.find('#question-text').exists()).toBe(true)
+        expect(wrapper.find('#text-container').exists()).toBe(true)
+        expect(wrapper.find('.text-option').exists()).toBe(true)
+        expect( wrapper.find('#text-container').find('p').text()).toEqual('Text Input')
+    })
+
+    it('renders the drop-zone and props', () => {
+        expect(wrapper.find('.drop-zone').exists()).toBe(true)
+        expect(wrapper.vm.activity._id).toEqual("321test")
+        expect(wrapper.vm.textInputsFromDb.length).toEqual(1)
+        expect(wrapper.vm.textInputsFromDb[0]).toEqual("Traveling")
+        expect(wrapper.vm.numbersFromDb.length).toEqual(1)
+        expect(wrapper.vm.numbersFromDb[0]).toEqual(27)
     })
 })

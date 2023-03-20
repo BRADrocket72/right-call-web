@@ -1,4 +1,4 @@
-import { mount,shallowMount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import MultipleChoice from '@/components/modals/questionTypes/MultipleChoice.vue'
 import 'jest'
 import {createPinia, setActivePinia} from 'pinia'
