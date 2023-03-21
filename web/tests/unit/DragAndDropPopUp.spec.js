@@ -100,9 +100,12 @@ describe('DragAndDropPopUp.vue', () => {
         expect(dropDivSwapEventFunction).toHaveBeenCalled
     })
     
-    it('does stuff', () => {
+    it('does not throw errors', () => {
         expect(wrapper.vm.close).not.toThrow()
         wrapper.vm.toggleButton = jest.fn()
         expect(wrapper.vm.resetWordBank).not.toThrow()
+        const dropDivSwapEventFunction = jest.spyOn(wrapper.vm,'dropAreaSetup')
+        wrapper.vm.dropAreaSetup(1);
+        expect(dropDivSwapEventFunction).toHaveBeenCalled
     })
 })

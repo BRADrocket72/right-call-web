@@ -117,4 +117,31 @@ describe('AssignTimestamps.vue', () => {
         expect(wrapper.vm.numbersFromDb.length).toEqual(1)
         expect(wrapper.vm.numbersFromDb[0]).toEqual(27)
     })
+
+    it('calls setup functions', () => {
+        const dropZone = jest.spyOn(wrapper.vm,'dropZoneSetup')
+        wrapper.vm.dropZoneSetup(1);
+        expect(dropZone).toHaveBeenCalled
+        const deleteButton = jest.spyOn(wrapper.vm,'deleteButtonClickSetup')
+        wrapper.vm.deleteButtonClickSetup()
+        expect(deleteButton).toHaveBeenCalled
+        const numberOption = jest.spyOn(wrapper.vm,'numberOptionDragSetup')
+        wrapper.vm.numberOptionDragSetup()
+        expect(numberOption).toHaveBeenCalled
+        const textOption = jest.spyOn(wrapper.vm,'textOptionDragSetup')
+        wrapper.vm.textOptionDragSetup()
+        expect(textOption).toHaveBeenCalled
+    })
+
+    it('uses events', () => {
+        const newDrop = jest.spyOn(wrapper.vm, 'newDropEvent')
+        wrapper.vm.newDropEvent()
+        expect(newDrop).toHaveBeenCalled
+        const newOption = jest.spyOn(wrapper.vm, 'setupOptionAndCoordinates')
+        wrapper.vm.setupOptionAndCoordinates()
+        expect(newOption).toHaveBeenCalled
+        const deleteOption = jest.spyOn(wrapper.vm, 'deleteOption')
+        wrapper.vm.deleteOption()
+        expect(deleteOption).toHaveBeenCalled
+    })
 })
