@@ -32,7 +32,7 @@ describe('DragAndDropPopUp.vue', () => {
                     wordBankAnswers: ["test"],
                     totalAnswers: 2,
                     answerIndex: 1,
-                    returnAnswers: ["test"]
+                    returnAnswers: ["test"],
                 }
             },
             global: {
@@ -94,5 +94,11 @@ describe('DragAndDropPopUp.vue', () => {
         const closeFunction = jest.spyOn(wrapper.vm,'close')
         wrapper.vm.close()
         expect(closeFunction).toHaveBeenCalled
+    })
+    
+    it('does stuff', () => {
+        expect(wrapper.vm.close).not.toThrow()
+        wrapper.vm.toggleButton = jest.fn()
+        expect(wrapper.vm.resetWordBank).not.toThrow()
     })
 })

@@ -46,6 +46,7 @@ export default {
             this.$emit('close', this.returnAnswers);
         },
         wordBankSetup(answer) {
+            console.log(answer)
             let wordBank = document.getElementById(answer)
             wordBank.addEventListener('dragstart', (event) => {
                 event.currentTarget.classList.add('dragging')
@@ -137,21 +138,23 @@ export default {
                     this.wordBankSetup(this.originalWordBank[i-1])
                 }
             }, 10)
-            const submitButton = document.getElementById('submit-button')
-            submitButton.disabled = true
+            this.toggleButton(true)
             this.answerIndex = 1
         },
-        checkDropDivs() {
+        toggleButton(toggle) {
             const submitButton = document.getElementById('submit-button')
+            submitButton.disabled = toggle
+        },
+        checkDropDivs() {
             for(let i = 1; i <= this.totalAnswers; i++) {
                 let id = 'drop-div-' + i
                 let element = document.getElementById(id)
                 if(element.hasChildNodes() !== true) {
-                    submitButton.disabled = true
+                    this.toggleButton(true)
                     return false
                 }
             }
-            submitButton.disabled = false
+            this.toggleButton(false)
             return true
         },
         checkAnswers() {
