@@ -64,8 +64,6 @@ describe('Admin Integration Testing', () => {
         cy.get('#answer-one').type('Traveling')
         cy.get('#answer-two').type('Double Dribble')
         cy.get('.btn-green:first').click()
-        cy.get('#feedback-button').click()
-        cy.get('.btn-green:last').click()
     })
     it('Admin seees the newly added activity and can choose to save or remove it', () => {
         cy.contains('div', '00:00')
