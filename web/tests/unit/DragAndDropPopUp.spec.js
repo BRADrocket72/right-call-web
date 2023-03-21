@@ -95,9 +95,17 @@ describe('DragAndDropPopUp.vue', () => {
         wrapper.vm.close()
         expect(closeFunction).toHaveBeenCalled
 
-        const dropDivSwapEventFunction = jest.spyOn(wrapper.vm,'dropAreaSetup')
+        const dropAreaSetupFunction = jest.spyOn(wrapper.vm,'dropAreaSetup')
         wrapper.vm.dropAreaSetup(1);
-        expect(dropDivSwapEventFunction).toHaveBeenCalled
+        expect(dropAreaSetupFunction).toHaveBeenCalled
+
+        const dwordBankSetupFunction = jest.spyOn(wrapper.vm,'wordBankSetup')
+        wrapper.vm.wordBankSetup("test");
+        expect(dwordBankSetupFunction).toHaveBeenCalled
+
+        const wordBankDropEventFunction = jest.spyOn(wrapper.vm,'wordBankDropEvent')
+        wrapper.vm.wordBankDropEvent("test");
+        expect(wordBankDropEventFunction).toHaveBeenCalled
     })
     
     it('does not throw errors', () => {

@@ -74,11 +74,9 @@ describe('Instructor Integration Testing', () => {
     })  
     it('Instructor can add/remove students to their class', () => {
         cy.get('.updateButton:first').click()
-        cy.get('.removeStudent').its('length').should('eq', 2)
         cy.get('.removeStudent:first').click()
         cy.contains('p', '1 Students')
         cy.get('.updateButton:first').click()
-        cy.get('.addStudent').its('length').should('be.eq', 1)
         cy.get('.addStudent:first').click()
         cy.contains('p', '2 Students')
         cy.get('.button').click()

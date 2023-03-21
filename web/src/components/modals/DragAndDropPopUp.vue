@@ -48,14 +48,16 @@ export default {
         wordBankSetup(answer) {
             console.log(answer)
             let wordBank = document.getElementById(answer)
-            wordBank.addEventListener('dragstart', (event) => {
+            if (wordBank) {
+                wordBank.addEventListener('dragstart', (event) => {
                 event.currentTarget.classList.add('dragging')
                 event.dataTransfer.setData('application/x-moz-node', event.target.id)
                 event.dataTransfer.setData('text', event.target.id)
-            })
-            wordBank.addEventListener('dragend', (event) =>
-                event.target.classList.remove('dragging')
-            )
+                })
+                wordBank.addEventListener('dragend', (event) =>
+                    event.target.classList.remove('dragging')
+                )
+            }
         },
         dropAreaSetup(index) {
             let id = 'drop-div-' + index
@@ -85,24 +87,28 @@ export default {
             const dropTarget = document.getElementById(this.targetID)
             const newElement = document.createElement('p')
             const index = this.answerIndex
-            newElement.id = 'drag-answer-' + index
-            newElement.draggable = true
-            newElement.classList.add('drop-div-text')
-            newElement.innerHTML = source.innerHTML
-            newElement.style.margin = 0
-            newElement.addEventListener('mouseenter', (event) => {
-                event.target.style.cursor = 'move'
-            })
-            newElement.addEventListener('mouseleave', (event) => {
-                event.target.style.cursor = 'cursor'
-            })
-            newElement.addEventListener('dragstart', (event) => {
-                event.dataTransfer.setData('application/x-moz-node', event.target.id)
-                event.dataTransfer.setData('text', event.target.id)
-            })
-            dropTarget.appendChild(newElement)
-            this.removeAnswerFromWordBank(source.innerHTML)
-            this.answerIndex +=1
+            if (newElement) {
+                newElement.id = 'drag-answer-' + index
+                newElement.draggable = true
+                newElement.classList.add('drop-div-text')
+                newElement.innerHTML = source.innerHTML
+                newElement.style.margin = 0
+                newElement.addEventListener('mouseenter', (event) => {
+                    event.target.style.cursor = 'move'
+                })
+                newElement.addEventListener('mouseleave', (event) => {
+                    event.target.style.cursor = 'cursor'
+                })
+                newElement.addEventListener('dragstart', (event) => {
+                    event.dataTransfer.setData('application/x-moz-node', event.target.id)
+                    event.dataTransfer.setData('text', event.target.id)
+                })
+                if (dropTarget) {
+                    dropTarget.appendChild(newElement)
+                }
+                this.removeAnswerFromWordBank(source.innerHTML)
+                this.answerIndex +=1
+            }
         },
         dropDivSwapEvent(source) {
             const sourceParent = source.parentNode
