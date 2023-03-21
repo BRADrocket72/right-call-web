@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils'
 import QuizFeedbackModal from '@/components/modals/QuizFeedbackModal.vue'
+import FeedbackDto from '@/models/FeedbackDto'
 import 'jest'
 
 describe('QuizFeedbackModal.vue', () => {
@@ -8,7 +9,7 @@ describe('QuizFeedbackModal.vue', () => {
         wrapper = mount(QuizFeedbackModal, {
             props:{
                 answer: 'Correct',
-                feedback: {_id: '123abc', activityId: '456def', timestamp: 2, correctFeedback: 'Nice Job!', incorrectFeedback: 'Almost'}
+                feedback: new FeedbackDto('123abc', '456def', 2, 'Nice Job!', 'Almost')
             },
             mounted() {
 
