@@ -82,10 +82,13 @@
                 let instructorUsername = this.$cookies.get("user_session").currentUserName
                 let instructor =  await userStore.getUserByName(instructorUsername)
                 this.instructorId = instructor._id
-                await instructorLessonStore.postInstructorLesson(lesson.name, this.instructorId, lesson.description, this.uploadedInstructorVideos)
+                let postedLesson = await instructorLessonStore.postInstructorLesson(lesson.name, this.instructorId, lesson.description, this.uploadedInstructorVideos)
                 this.$router.push({
-                    name: "InstructorPage"
-                })
+                  name: "AssignTimestamps",
+                  params: {
+                      selectedLesson: postedLesson._id
+                  }
+              })
               } else {
                 this.isCustomizationConfirmed = false
               }
