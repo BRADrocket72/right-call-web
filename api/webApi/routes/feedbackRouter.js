@@ -12,6 +12,9 @@ router.get('/feedback/getAll', feedbackController.feedback_get_all)
 //Get by VideoClip Method
 router.get('/feedback/get/:videoclipId', feedbackController.feedback_get_by_videoId)
 
+//Get by ActivityId Method
+router.get('/feedback/getByActivity/:activityId', feedbackController.feedback_get_by_activityId)
+
 //Update by ID Method
 router.put('/feedback/update/:id', feedbackController.feedback_update)
 

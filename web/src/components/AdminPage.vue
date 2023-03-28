@@ -5,15 +5,15 @@
     <div class="admin-buttons">
       <router-link to= "/CreateLessonPage">
         <button type="button" class="button-selection buttonLink"><span>Create Lesson</span></button>
-        <p class="upload-description">Upload new lessons to the database.</p>
+        <p class="upload-description-p">Upload new lessons to the database.</p>
       </router-link>
       <router-link to="/LessonDeletion">
         <button type="button" class="button-selection buttonDeleteLink"><span>Delete Lesson</span></button>
-        <p class="delete-description">Delete lesson videos from the database.<br><b>Note:</b> This cannot be undone.</p>
+        <p class="delete-description-p">Delete lessons or lesson videos from the database.<br><b>Note:</b> This cannot be undone.</p>
       </router-link>
       <router-link to="/UpdateLessonsPage">
         <button type="button" class="button-selection buttonLink"><span>Update Lessons</span></button>
-        <p class="assign-description">Create new timestamps and question activities in lesson videos.</p>
+        <p class="assign-description-p">Create new timestamps and question activities in lesson videos.</p>
       </router-link>
     </div>
   </div>
@@ -54,68 +54,68 @@ export default {
   font-weight: bold;
 }
 
-.upload-description {
+.upload-description-p {
   visibility: hidden;
   opacity: 0;
   position: absolute;
   max-width: 250px;
-  margin: -150px 0 0 42px;
+  margin: -200px 0 0 30px;
   font-size: 19px;
   font-weight: normal;
   color: #0e333c;
   transition: visibility 0s, opacity 0.3s linear;
 }
 
-.upload-description:hover {
+.upload-description-p:hover {
   visibility: visible;
   opacity: 1;
 }
 
-.button-selection:hover + .upload-description {
+.button-selection:hover + .upload-description-p {
   visibility: visible;
   opacity: 1;
 }
 
-.delete-description {
+.delete-description-p {
   visibility: hidden;
   opacity: 0;
   position: absolute;
   max-width: 250px;
-  margin: -150px 0 0 42px;
+  margin: -200px 0 0 30px;
   font-size: 19px;
   font-weight: normal;
   color: #0e333c;
   transition: visibility 0s, opacity 0.3s linear;
 }
 
-.delete-description:hover {
+.delete-description-p:hover {
   visibility: visible;
   opacity: 1;
 }
 
-.button-selection:hover + .delete-description {
+.button-selection:hover + .delete-description-p {
   visibility: visible;
   opacity: 1;
 }
 
-.assign-description {
+.assign-description-p {
   visibility: hidden;
   opacity: 0;
   position: absolute;
   max-width: 250px;
-  margin: -150px 0 0 42px;
+  margin: -200px 0 0 30px;
   font-size: 19px;
   font-weight: normal;
   color: #0e333c;
   transition: visibility 0s, opacity 0.3s linear;
 }
 
-.assign-description:hover {
+.assign-description-p:hover {
   visibility: visible;
   opacity: 1;
 }
 
-.button-selection:hover + .assign-description {
+.button-selection:hover + .assign-description-p {
   visibility: visible;
   opacity: 1;
 }

@@ -80,133 +80,145 @@ export default {
         },
         textOptionDragSetup() {
             const textOption = document.querySelector('#text-option-' + this.textInputIndex)
-            textOption.addEventListener('dragstart', (event) => {
-                this.currentEvent = event
-                this.currentIndex = this.textInputIndex
-                event.currentTarget.classList.add('dragging')
-                event.dataTransfer.setData('application/x-moz-node', event.target.id)
-                event.dataTransfer.setData('text', event.target.id)
-            })
-            textOption.addEventListener('dragend', (event) =>
-                event.target.classList.remove('dragging')
-            )
+            if(textOption) {
+                textOption.addEventListener('dragstart', (event) => {
+                    this.currentEvent = event
+                    this.currentIndex = this.textInputIndex
+                    event.currentTarget.classList.add('dragging')
+                    event.dataTransfer.setData('application/x-moz-node', event.target.id)
+                    event.dataTransfer.setData('text', event.target.id)
+                })
+                textOption.addEventListener('dragend', (event) =>
+                    event.target.classList.remove('dragging')
+                )
+            }
         },
         numberOptionDragSetup() {
             const numberOption = document.querySelector('#number-option-' + this.numbersIndex)
-            numberOption.addEventListener('dragstart', (event) => {
-                this.currentEvent = event
-                this.currentIndex = this.numbersIndex
-                event.currentTarget.classList.add('dragging')
-                event.dataTransfer.setData('application/x-moz-node', event.target.id)
-                event.dataTransfer.setData('text', event.target.id)
-            })
-            numberOption.addEventListener('dragend', (event) =>
-                event.target.classList.remove('dragging')
-            )
+            if(numberOption){
+                numberOption.addEventListener('dragstart', (event) => {
+                    this.currentEvent = event
+                    this.currentIndex = this.numbersIndex
+                    event.currentTarget.classList.add('dragging')
+                    event.dataTransfer.setData('application/x-moz-node', event.target.id)
+                    event.dataTransfer.setData('text', event.target.id)
+                })
+                numberOption.addEventListener('dragend', (event) =>
+                    event.target.classList.remove('dragging')
+                )
+            }
         },
         deleteButtonClickSetup(button, currentIndex, type) {
-            button.addEventListener('mousedown', (event) => {
-                event.preventDefault()
-                let id = ''
-                if(type === 'text') {
-                    id = 'text-option-' + currentIndex
-                } else if(type === 'number') {
-                    id = 'number-option-' + currentIndex
-                }
-                this.deleteOption(id)
-                if(type === 'number') {
-                    this.decreaseNumberOptions(currentIndex)
-                }
-            })
+            if(button) {
+                button.addEventListener('mousedown', (event) => {
+                    event.preventDefault()
+                    let id = ''
+                    if(type === 'text') {
+                        id = 'text-option-' + currentIndex
+                    } else if(type === 'number') {
+                        id = 'number-option-' + currentIndex
+                    }
+                    this.deleteOption(id)
+                    if(type === 'number') {
+                        this.decreaseNumberOptions(currentIndex)
+                    }
+                })
+            }
         },
         dropZoneSetup() {
             const dropZone = document.querySelector('#drop-zone')
-            dropZone.addEventListener('dragover', (event) => {
-                event.preventDefault()
-                event.dataTransfer.setData('text', event.target.id)
-            })
-            dropZone.addEventListener('drop', (event) => {
-                event.preventDefault()
-                const target = event.target
-                if(target.classList[0] === 'drop-zone') {
-                    let dropX = 0
-                    let dropY = 0
-                    const sourceElementClass = this.currentEvent.srcElement.classList[0]
-                    if(sourceElementClass === 'text-option' || sourceElementClass === 'text-answer') {
-                        dropX = event.layerX - 50
-                        dropY = event.layerY - 15
-                        this.newDropEvent(event,dropX,dropY,'text')
-                    } else if (sourceElementClass === 'number-option' || sourceElementClass === 'number-answer'){
-                        dropX = event.layerX - 20
-                        dropY = event.layerY - 20
-                        this.newDropEvent(event,dropX,dropY,'number')
+            if(dropZone) {
+                dropZone.addEventListener('dragover', (event) => {
+                    event.preventDefault()
+                    event.dataTransfer.setData('text', event.target.id)
+                })
+                dropZone.addEventListener('drop', (event) => {
+                    event.preventDefault()
+                    const target = event.target
+                    if(target.classList[0] === 'drop-zone') {
+                        let dropX = 0
+                        let dropY = 0
+                        const sourceElementClass = this.currentEvent.srcElement.classList[0]
+                        if(sourceElementClass === 'text-option' || sourceElementClass === 'text-answer') {
+                            dropX = event.layerX - 50
+                            dropY = event.layerY - 15
+                            this.newDropEvent(event,dropX,dropY,'text')
+                        } else if (sourceElementClass === 'number-option' || sourceElementClass === 'number-answer'){
+                            dropX = event.layerX - 20
+                            dropY = event.layerY - 20
+                            this.newDropEvent(event,dropX,dropY,'number')
+                        } else {
+                            alert('There was a problem setting up the drop zone.')
+                        }
                     } else {
-                        alert('There was a problem setting up the drop zone.')
+                        alert('Please do not drag the input inside itself. Make sure your cursor is outside the white area.')
                     }
-                } else {
-                    alert('Please do not drag the input inside itself. Make sure your cursor is outside the white area.')
-                }
-            })
+                })
+            }
         },
         newDropEvent(event,dropX,dropY,type) {
-            const data = event.dataTransfer.getData('text')
-            const source = document.getElementById(data)
-            this.currentEventID = source.id
-            const existingOption = this.checkIfOptionAlreadyMoved(source)
-            let positionedSource = ''
-            if(existingOption) {
-                let children = []
-                for(const child of source.parentNode.children) {
-                    children.push(child)
-                }
-                source.parentNode.remove()
-                positionedSource = this.setupOptionAndCoordinates(source, dropX, dropY, type, true)
-                for(const child of children) {
-                    positionedSource.appendChild(child)
-                }
-                this.updateCoordinates(this.currentEventID, dropX, dropY)
-            } else {
-                this.positionedEventIDs.push(source.id)
-                positionedSource = this.setupOptionAndCoordinates(source, dropX, dropY, type, false)
-                this.answersWithIDs.push([this.currentEventID, type, dropX, dropY])
-                if(type === 'text') {
-                    this.createNewTextOption(false)
-                    this.textOptionDragSetup()
-                } else if (type === 'number') {
-                    this.createNewNumberOption(false)
-                    this.numberOptionDragSetup()
+            if(event){
+                const data = event.dataTransfer.getData('text')
+                const source = document.getElementById(data)
+                this.currentEventID = source.id
+                const existingOption = this.checkIfOptionAlreadyMoved(source)
+                let positionedSource = ''
+                if(existingOption) {
+                    let children = []
+                    for(const child of source.parentNode.children) {
+                        children.push(child)
+                    }
+                    source.parentNode.remove()
+                    positionedSource = this.setupOptionAndCoordinates(source, dropX, dropY, type, true)
+                    for(const child of children) {
+                        positionedSource.appendChild(child)
+                    }
+                    this.updateCoordinates(this.currentEventID, dropX, dropY)
                 } else {
-                    alert('There was a problem dropping the input.')
+                    this.positionedEventIDs.push(source.id)
+                    positionedSource = this.setupOptionAndCoordinates(source, dropX, dropY, type, false)
+                    this.answersWithIDs.push([this.currentEventID, type, dropX, dropY])
+                    if(type === 'text') {
+                        this.createNewTextOption(false)
+                        this.textOptionDragSetup()
+                    } else if (type === 'number') {
+                        this.createNewNumberOption(false)
+                        this.numberOptionDragSetup()
+                    } else {
+                        alert('There was a problem dropping the input.')
+                    }
                 }
+                event.target.appendChild(positionedSource)
             }
-            event.target.appendChild(positionedSource)
         },
         setupOptionAndCoordinates(source, dropX, dropY, type, existing) {
-            const newDiv = document.createElement('div')
-            newDiv.style.left = dropX + 'px'
-            newDiv.style.top = dropY + 'px'
-            
-            if(existing) {
-                return newDiv
-            } else {
-                if(type === 'text') {
-                source.classList.remove('text-option')
-                source.classList.add('text-answer')
-                source.autocomplete= 'off'
-                source.addEventListener('focusin', (event) => {
-                    event.target.removeAttribute('readonly')
-                })
-                source.addEventListener('focusout', (event) => {
-                    event.target.readOnly = 'readonly'
-                })
-                } else if (type === 'number'){
-                    source.classList.remove('number-option')
-                    source.classList.add('number-answer')
+            if(source) { 
+                const newDiv = document.createElement('div')
+                newDiv.style.left = dropX + 'px'
+                newDiv.style.top = dropY + 'px'
+
+                if(existing) {
+                    return newDiv
+                } else {
+                    if(type === 'text') {
+                    source.classList.remove('text-option')
+                    source.classList.add('text-answer')
+                    source.autocomplete= 'off'
+                    source.addEventListener('focusin', (event) => {
+                        event.target.removeAttribute('readonly')
+                    })
+                    source.addEventListener('focusout', (event) => {
+                        event.target.readOnly = 'readonly'
+                    })
+                    } else if (type === 'number'){
+                        source.classList.remove('number-option')
+                        source.classList.add('number-answer')
+                    }
+                    const newButton = this.createDeleteButton(type)
+                    newDiv.insertBefore(newButton, newDiv.firstChild)
+                    newDiv.insertBefore(source, newDiv.firstChild)
+                    return newDiv
                 }
-                const newButton = this.createDeleteButton(type)
-                newDiv.insertBefore(newButton, newDiv.firstChild)
-                newDiv.insertBefore(source, newDiv.firstChild)
-                return newDiv
             }
         },
         createNewTextOption(reset) {
@@ -257,18 +269,20 @@ export default {
             return button
         },
         deleteOption(id) {
-            const element = document.getElementById(id)
-            const parent = element.parentElement
-            parent.remove()
-            const positionedIndex = this.positionedEventIDs.indexOf(id)
-            this.positionedEventIDs.splice(positionedIndex, 1)
-            
-            let count = 0
-            for(const answer of this.answersWithIDs) {
-                if(answer[0] === id) {
-                    this.answersWithIDs.splice(count, 1)
-                } else {
-                    count +=1
+            if(id) {
+                const element = document.getElementById(id)
+                const parent = element.parentElement
+                parent.remove()
+                const positionedIndex = this.positionedEventIDs.indexOf(id)
+                this.positionedEventIDs.splice(positionedIndex, 1)
+
+                let count = 0
+                for(const answer of this.answersWithIDs) {
+                    if(answer[0] === id) {
+                        this.answersWithIDs.splice(count, 1)
+                    } else {
+                        count +=1
+                    }
                 }
             }
         },

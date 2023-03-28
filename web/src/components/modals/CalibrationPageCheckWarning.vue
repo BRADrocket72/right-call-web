@@ -25,13 +25,6 @@
   <script>  
     export default {
       name: 'CalibrationPageCheckWarning',
-      data() {
-        return {
-          updatedAnswers: [],
-          needsToReset: false,
-          timesArray:[]
-        }
-      },
       methods: {
         close() {
           this.$emit('close');

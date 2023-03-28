@@ -2,12 +2,13 @@ import { mount } from '@vue/test-utils'
 import UpdateClassPage from '@/components/UpdateClassPage.vue'
 import 'jest'
 import {createPinia, setActivePinia} from 'pinia'
+import InstructorClassDto from '@/models/InstructorClassDto'
 
 describe('UpdateClassPage.vue', () => {
-    let mockRouter: any;
-    let mockRoute: any;
-    let wrapper: any;
-    let mockCookies: any;
+    let mockRouter
+    let mockRoute
+    let wrapper
+    let mockCookies
     beforeEach(async () => {
         mockRoute = {}
         mockRouter = {
@@ -25,6 +26,16 @@ describe('UpdateClassPage.vue', () => {
                     $router: mockRouter,
                     $route: mockRoute,
                     $cookies: mockCookies
+                }
+            },
+            data() {
+                return {
+                    instructorId: "",
+                    instructorsClasses: [],
+                    isReadyToAddStudents: false,
+                    isReadyToAddVideos: false,
+                    currentClass: InstructorClassDto,
+                    isLessonsEmpty: false
                 }
             }
         })
@@ -53,6 +64,18 @@ describe('UpdateClassPage.vue', () => {
     it('Renders the add students modal', () => {
         const addStudentsModal = wrapper.find('AddStudentsModal')
         expect(addStudentsModal.exists).toBeTruthy()
+    })
+    it('functions do not throw errors', () => {
+        const addRemoveStudents = jest.spyOn(wrapper.vm, 'addRemoveStudents')
+        wrapper.vm.addRemoveStudents()
+        expect(addRemoveStudents).toHaveBeenCalled
+        const addVideos = jest.spyOn(wrapper.vm, 'addVideos')
+        wrapper.vm.addVideos()
+        expect(addVideos).toHaveBeenCalled
+        const redirectToClassCreationPage = jest.spyOn(wrapper.vm, 'redirectToClassCreationPage')
+        wrapper.vm.redirectToClassCreationPage()
+        expect(redirectToClassCreationPage).toHaveBeenCalled
+        
     })
 
    

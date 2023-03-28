@@ -6,4 +6,5 @@ export interface FeedbackDb {
     findAllByVideoId(videoclipId:string) : Promise<FeedbackDto[]>;
     update(id:string, feedback: FeedbackDto) : Promise<FeedbackDto>;
     findByIdAndDelete(id:string):Promise<FeedbackDto>;
+    findAllByActivityId(activityId:string):Promise<FeedbackDto[]>
 }

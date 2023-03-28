@@ -32,18 +32,20 @@ export default {
     },
     methods: {
         close() {
-            console.log(this.feedback)
             this.$emit('close')
+        },
+        checkAnswer() {
+          if(this.answer === 'Correct') {
+            const correctFeedback = document.getElementById('correct-feedback')
+            correctFeedback.innerText = this.feedback.correctFeedback
+          } else {
+            const incorrectFeedback = document.getElementById('incorrect-feedback')
+            incorrectFeedback.innerText = this.feedback.incorrectFeedback
+          }
         }
     },
     mounted() {
-      if(this.answer === 'Correct') {
-        const correctFeedback = document.getElementById('correct-feedback')
-        correctFeedback.innerText = this.feedback.correctFeedback
-      } else {
-        const incorrectFeedback = document.getElementById('incorrect-feedback')
-        incorrectFeedback.innerText = this.feedback.incorrectFeedback
-      }
+        this.checkAnswer()
     }
 }
 </script>

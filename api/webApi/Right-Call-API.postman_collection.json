@@ -900,6 +900,32 @@
 					"response": []
 				},
 				{
+					"name": "getAllByActivityId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/feedback/getByActivity/:activityId",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"feedback",
+								"getByActivity",
+								":activityId"
+							],
+							"variable": [
+								{
+									"key": "activityId"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "New Request",
 					"request": {
 						"method": "GET",

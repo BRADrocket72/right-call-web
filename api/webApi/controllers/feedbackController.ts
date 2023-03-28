@@ -34,6 +34,17 @@ module.exports.feedback_get_by_videoId =async(req, res) => {
     }
 }
 
+module.exports.feedback_get_by_activityId =async(req, res) => {
+    res.header('Access-Control-Allow-Origin', '*')
+    try {
+        const data = await feedbackDb.findAllByActivityId( req.params.activityId);
+        res.json(data)
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
+
 module.exports.feedback_update= async(req, res)=> {
     res.header('Access-Control-Allow-Origin', '*')
     const id = req?.params?.id;

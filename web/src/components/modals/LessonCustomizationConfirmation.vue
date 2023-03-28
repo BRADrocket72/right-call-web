@@ -24,7 +24,7 @@
   
   <script>  
   export default {
-    name: 'ResultsPage',
+    name: 'LessonCustomizationConfirmation',
     data() {
       return {
         numberOfQuestions: 0,

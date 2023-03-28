@@ -23,6 +23,7 @@
     import { useUsersStore } from "@/stores/UserStore";
     import { useInstructorLessonStore } from "@/stores/InstructorLessonStore";
     import { useActivityStore } from '@/stores/ActivityStore';
+    import { useFeedbackStore } from '@/stores/FeedbackStore';
     
         
     export default {
@@ -36,7 +37,8 @@
                 allLessons: [],
                 isCustomizationConfirmed: false,
                 uploadedInstructorVideos: [],
-                selectedLesson: ""
+                selectedLesson: "",
+                activityArray: []
             }
         },
         async mounted() {
@@ -61,20 +63,32 @@
                   for (let j=0; j<currentVideosTimestamps.timeStamps.length; j++) {
                     for (let x=0; x<videosActivities.length; x++) {
                       if (currentVideosTimestamps.timeStamps[j] == videosActivities[x].timestamp) {
-                        await activityStore.postActivities(videosActivities[x].timestamp, videosActivities[x].questionType, videosActivities[x].questionText, videosActivities[x].answers, videosActivities[x].correctAnswer, this.uploadedInstructorVideos[i]._id)
+                        this.activityArray.push(await activityStore.postActivities(videosActivities[x].timestamp, videosActivities[x].questionType, videosActivities[x].questionText, videosActivities[x].answers, videosActivities[x].correctAnswer, this.uploadedInstructorVideos[i]._id))
                       }
                     }
                   } 
+
+                  videosActivities.sort((a,b) => a.timestamp - b.timestamp)
+                  let feedbackStore = useFeedbackStore()
+                  for (let p=0; p<videosActivities.length;p++) {
+                    let currentFeedback = await feedbackStore.fetchFeedbackByActivityId(videosActivities[p]._id)
+                    await feedbackStore.postFeedback(this.uploadedInstructorVideos[i]._id, this.activityArray[p]._id, currentFeedback[0].timestamp, currentFeedback[0].correctFeedback, currentFeedback[0].incorrectFeedback)
+                  }
+                  this.activityArray = []
                 }
+
                 let instructorLessonStore = useInstructorLessonStore();
                 var userStore = useUsersStore();
                 let instructorUsername = this.$cookies.get("user_session").currentUserName
                 let instructor =  await userStore.getUserByName(instructorUsername)
                 this.instructorId = instructor._id
-                await instructorLessonStore.postInstructorLesson(lesson.name, this.instructorId, lesson.description, this.uploadedInstructorVideos)
+                let postedLesson = await instructorLessonStore.postInstructorLesson(lesson.name, this.instructorId, lesson.description, this.uploadedInstructorVideos)
                 this.$router.push({
-                    name: "InstructorPage"
-                })
+                  name: "AssignTimestamps",
+                  params: {
+                      selectedLesson: postedLesson._id
+                  }
+              })
               } else {
                 this.isCustomizationConfirmed = false
               }

@@ -4,19 +4,19 @@
   <div class="instructor-container">
     <div class="instructor-buttons">
       <router-link to= "/CreateClassroomPage">
-        <button type="button" class="button-selection buttonLinks"><span>Create a Classroom</span></button>
+        <button type="button" class="button-selection createClassLink"><span>Create a Classroom</span></button>
         <p class="create-description">Create a class and assign students to the class.</p>
       </router-link>
       <router-link to="/UpdateClassPage">
-        <button type="button" class="button-selection buttonLinks"><span>Update Class</span></button>
+        <button type="button" class="button-selection updateClassLink"><span>Update Class</span></button>
         <p class="create-description">Update the students and video lessons within a class.</p>
       </router-link>
       <router-link to="/CustomizeLessonMainPage">
-        <button type="button" class="button-selection buttonLinksSecond"><span>Create Custom Lesson Packs</span></button>
+        <button type="button" class="button-selection customLessonLink"><span>Create Custom Lesson Packs</span></button>
         <p class="create-description">Create new timestamps and question activities in lesson videos.</p>
       </router-link>
       <router-link to="/UpdateInstructorLessonsPage">
-        <button type="button" class="button-selection buttonLinks"><span>Update Your Lessons</span></button>
+        <button type="button" class="button-selection updateLessonLink"><span>Update Your Lessons</span></button>
         <p class="create-description">Add timestamps and questions to your lesson packs.</p>
       </router-link>
       <router-link to="/SelectStudentResults">
@@ -90,7 +90,7 @@ export default {
   opacity: 0;
   position: absolute;
   max-width: 250px;
-  margin: 150px 0 0 42px;
+  margin: 150px 0 0 30px;
   font-size: 19px;
   font-weight: normal;
   color: #0e333c;
@@ -112,7 +112,7 @@ export default {
   opacity: 0;
   position: absolute;
   max-width: 250px;
-  margin: 0 0 0 42px;
+  margin: 0 0 0 30px;
   font-size: 19px;
   font-weight: normal;
   color: #0e333c;
