@@ -15,7 +15,7 @@
                 <div class="flex-container-1">
                   <p class="bold-header">Remove Lessons: </p>
                   <div class="student-card" v-for="video in currentlyAddedLessons" :key="video.id">
-                      <a class="removeVideo" @click="deleteLesson(video)">
+                      <a class="removeVideo" @click="deleteNewLesson(video)">
                           <h1>{{video.name}}</h1>
                       </a>   
                   </div>
@@ -25,14 +25,14 @@
                 <div class="flex-container-2">
                   <p class="bold-header">Available Lessons to Add: </p>
                   <div class="student-card" v-for="video in lessonsNotAdded" :key="video.id">
-                      <a class="addVideo" @click="addLesson(video)">
+                      <a class="addVideo" @click="addNewLesson(video)">
                           <h1>{{video.name}}</h1>
                       </a>   
                   </div>
                 </div>
               </div>
               <br/><br/><br/>
-              <button type="button" class="btn-green" @click="close()">Exit</button>
+              <button type="button" class="btn-green" @click="updateLesson()">Update Class</button>
               <br/>
             </slot>
           </section>
@@ -81,28 +81,25 @@ import {useUsersStore} from '@/stores/UserStore'
       close() {
         this.$emit('close');
       },
-      async addLesson(lesson) {
-        var classes = useInstructorClassStore();
-        for (let i=0; i<this.lessonIds.length; i++) {
-          if (this.lessonIds[i] == lesson._id){
-            this.alreadyAdded = true
-          }
-        }
-        if (!this.alreadyAdded) {
-          this.lessonIds.push(lesson._id)
-        }
-        await classes.addVideoClipToClass(this.selectedClass._id, this.lessonIds)
-        this.close()
+      addNewLesson(lesson) {
+        this.currentlyAddedLessons.push(lesson)
       },
-      async deleteLesson(lesson) {
-        var classes = useInstructorClassStore();
-        let updatedVideoIds = []
-        for (let i=0; i<this.lessonIds.length; i++) {
-          if (this.lessonIds[i] != lesson._id){
-            updatedVideoIds.push(this.lessonIds[i])
+      deleteNewLesson(lesson) { 
+        let updatedLessons = []
+        for (let i=0; i<this.currentlyAddedLessons.length; i++) {
+          if (this.currentlyAddedLessons[i]._id != lesson._id ) {
+            updatedLessons.push(this.currentlyAddedLessons[i])
           }
         }
-        await classes.deleteVideoClipFromClass(this.selectedClass._id, updatedVideoIds)
+        this.currentlyAddedLessons = updatedLessons
+      },
+      async updateLesson() {
+        var classes = useInstructorClassStore();
+        let updatedLessonIds = []
+        for (let j=0; j<this.currentlyAddedLessons.length; j++) {
+          updatedLessonIds.push(this.currentlyAddedLessons[j]._id)
+        }
+        await classes.addVideoClipToClass(this.selectedClass._id, updatedLessonIds)
         this.close()
       }
     },
@@ -180,6 +177,7 @@ import {useUsersStore} from '@/stores/UserStore'
     border-radius: 2px;
     padding: 15px;
     margin: 10px;
+    width: 150px;
   }
   
   .modal-fade-enter,
