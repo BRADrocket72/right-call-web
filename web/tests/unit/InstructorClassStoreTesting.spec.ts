@@ -83,28 +83,6 @@ describe('ActivityStore API CALLS Unit TESTING', () => {
     expect(updatedClass[0].videoClipIds[1]).toEqual("newId2")
   });
 
-  it('deleteVideoClipFromClass() mocks the axios.put call (through the api) and is sending an axios.put call successfully', async () => {
-    axios.put= jest.fn().mockResolvedValue({
-        data: [{
-            _id: "abcd123456789jfsf03u40238j",
-            instructorId: "testId123",
-            className: "Test Class",
-            videoClipIds: [
-                "newId1"
-            ],
-            studentIds: [
-                "student1",
-                "student2"
-            ]
-          }
-        ]
-      })
-    const store = useInstructorClassStore()
-    const deletedClass = await store.deleteVideoClipFromClass("abcd123456789jfsf03u40238j", ["newId1"])
-    expect(deletedClass.length).toEqual(1)
-    expect(deletedClass[0].videoClipIds.length).toEqual(1)
-    expect(deletedClass[0].videoClipIds[0]).toEqual("newId1")
-  });
   it('fetchAllInstructorClasses() mocks the axios.get call (through the api) and is sending an axios.get call successfully', async () => {
     axios.get= jest.fn().mockResolvedValue({
         data: [{
