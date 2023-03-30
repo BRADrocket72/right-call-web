@@ -15,7 +15,7 @@
               <div class="flex-container-1">
                 <p class="bold-header">Remove Student From Class: </p>
                 <div v-for="student in currentlyAddedStudents" :key="student._id" class="student-card">
-                  <a class="removeStudent" @click="deleteStudent(student)">
+                  <a class="removeStudent" @click="deleteNewStudent(student)">
                     <h3>
                       <h5>{{ student.userName }}</h5>
                     </h3>
@@ -26,7 +26,7 @@
               <div class="flex-container-2">
                 <p class="bold-header">Add Student to Class: </p>
                 <div v-for="student in studentsNotAdded" :key="student._id" class="student-card">
-                  <a class="addStudent" @click="addStudent(student)">
+                  <a class="addStudent" @click="addNewStudent(student)">
                     <h3>
                       <h5>{{ student.userName }}</h5>
                     </h3>
@@ -35,7 +35,7 @@
               </div>
             </div>
             <br /><br /><br />
-            <button type="button" class="btn-green" @click="close()">Exit</button>
+            <button type="button" class="btn-green" @click="updateStudentList()">Exit</button>
             <br />
           </slot>
         </section>
@@ -79,30 +79,51 @@ export default {
     close() {
       this.$emit('close');
     },
-    async addStudent(student) {
-      var classes = useInstructorClassStore();
-      for (let i = 0; i < this.studentIds.length; i++) {
-        if (this.studentIds[i] == student._id) {
-          this.alreadyAdded = true
-        }
-      }
-      if (!this.alreadyAdded) {
-        this.studentIds.push(student._id)
-      }
-      await classes.updateStudentIdsList(this.selectedClass._id, this.studentIds)
-      this.close()
+    addNewStudent(student) {
+      this.currentlyAddedStudents.push(student)
     },
-    async deleteStudent(student) {
+    deleteNewStudent(student) {
+        let updatedStudents = []
+        for (let i=0; i<this.currentlyAddedStudents.length; i++) {
+          if (this.currentlyAddedStudents[i]._id != student._id ) {
+            updatedStudents.push(this.currentlyAddedStudents[i])
+          }
+        }
+        this.currentlyAddedStudents = updatedStudents
+    },
+    async updateStudentList() {
       var classes = useInstructorClassStore();
       let updatedStudentIds = []
-      for (let i = 0; i < this.studentIds.length; i++) {
-        if (this.studentIds[i] != student._id) {
-          updatedStudentIds.push(this.studentIds[i])
-        }
+      for (let j=0; j<this.currentlyAddedStudents.length; j++) {
+        updatedStudentIds.push(this.currentlyAddedStudents[j]._id)
       }
       await classes.updateStudentIdsList(this.selectedClass._id, updatedStudentIds)
       this.close()
-    }
+    },
+    // async addStudent(student) {
+    //   var classes = useInstructorClassStore();
+    //   for (let i = 0; i < this.studentIds.length; i++) {
+    //     if (this.studentIds[i] == student._id) {
+    //       this.alreadyAdded = true
+    //     }
+    //   }
+    //   if (!this.alreadyAdded) {
+    //     this.studentIds.push(student._id)
+    //   }
+    //   await classes.updateStudentIdsList(this.selectedClass._id, this.studentIds)
+    //   this.close()
+    // },
+    // async deleteStudent(student) {
+    //   var classes = useInstructorClassStore();
+    //   let updatedStudentIds = []
+    //   for (let i = 0; i < this.studentIds.length; i++) {
+    //     if (this.studentIds[i] != student._id) {
+    //       updatedStudentIds.push(this.studentIds[i])
+    //     }
+    //   }
+    //   await classes.updateStudentIdsList(this.selectedClass._id, updatedStudentIds)
+    //   this.close()
+    // }
   },
   computed: {
     studentsNotAdded() {
