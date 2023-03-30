@@ -708,6 +708,27 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "GetByClassId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/instructorClass/getByClassId/:classId",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"instructorClass",
+								"GetByClassId",
+								":classId"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
