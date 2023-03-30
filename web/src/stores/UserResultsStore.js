@@ -43,5 +43,13 @@ export const useUserResultsStore = defineStore("UserResults", {
                 console.log(error);
             }
         },
+        async getByLessonId(lessonId) {
+            try {
+                const data = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/userResults/getByLessonId/${lessonId}`)
+                return data.data
+            } catch (error) {
+                console.log(error);
+            }
+        }
     }
 })

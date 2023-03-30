@@ -607,6 +607,32 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "GetByLessonId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/userResults/getByLessonId/:lessonId",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"userResults",
+								"getByLessonId",
+								":lessonId"
+							],
+							"variable": [
+								{
+									"key": "lessonId"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
