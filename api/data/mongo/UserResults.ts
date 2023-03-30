@@ -21,11 +21,15 @@ async getAllUserResults(){
         return data;
     }
     
-    async getResultsByUsername(username:string){
-        const data = await UserResultsSchema.find({"username": username})
-        return data
-    }
-    
+async getResultsByUsername(username:string){
+    const data = await UserResultsSchema.find({"username": username})
+    return data
+}
+
+async getResultsByLessonId(lessonId: string){
+    const data = await UserResultsSchema.find({"lessonId" : lessonId})
+    return data
+}
 
 }
 export default UserResults
