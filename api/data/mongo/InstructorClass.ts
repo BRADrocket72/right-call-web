@@ -26,12 +26,12 @@ class InstructorClass implements InstructorClassDb {
         const data = await InstructorClassSchema.findByIdAndUpdate(classId, videoClipIds)
         return data;
     }
-    async deleteVideoClip(classId: string, videoClipIds: Array<string>) {
-        const data = await InstructorClassSchema.findByIdAndUpdate(classId, videoClipIds)
-        return data;
-    }
     async updateStudentIdList(classId: string, studentIds: Array<string>) {
         const data = await InstructorClassSchema.findByIdAndUpdate(classId, studentIds)
+        return data;
+    }
+    async getByClassId(classId: string) {
+        const data = await InstructorClassSchema.findById(classId)
         return data;
     }
 }
