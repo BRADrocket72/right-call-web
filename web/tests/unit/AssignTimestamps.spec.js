@@ -46,8 +46,12 @@ describe('AssignTimestamps.vue', () => {
                     $route: mockRoute,
                     $cookies: mockCookies
                 }
+            },
+            mounted() {
+
             }
         })
+        wrapper.vm.getLessonContent = jest.fn()
     })
 
     it('renders AssignTimestamps', () => {
