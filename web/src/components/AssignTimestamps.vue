@@ -35,16 +35,16 @@
                                         <img src="../../images/activity.png">
                                     </button>
                                     <button v-else-if="activities[index] && activities[index] != '' && !checkForId(activities[index])" class="complete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">
-                                        <img v-if="activities[index].questionType == 'multiple-choice'" src="../../images/multiple-choice.png">
-                                        <img v-else-if="activities[index].questionType == 'short-answer'" src="../../images/short-answer.png">
-                                        <img v-if="activities[index].questionType == 'eye-tracking'" src="../../images/eye-tracking.png">
-                                        <img v-if="activities[index].questionType == 'drag-and-drop'" src="../../images/drag-and-drop.png">
+                                        <img v-show="activities[index].questionType == 'multiple-choice'" src="../../images/multiple-choice.png">
+                                        <img v-show="activities[index].questionType == 'short-answer'" src="../../images/short-answer.png">
+                                        <img v-show="activities[index].questionType == 'eye-tracking'" src="../../images/eye-tracking.png">
+                                        <img v-show="activities[index].questionType == 'drag-and-drop'" src="../../images/drag-and-drop.png">
                                     </button>
                                     <button v-else class="pulled-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">
-                                        <img v-if="activities[index].questionType == 'multiple-choice'" src="../../images/multiple-choice.png">
-                                        <img v-else-if="activities[index].questionType == 'short-answer'" src="../../images/short-answer.png">
-                                        <img v-if="activities[index].questionType == 'eye-tracking'" src="../../images/eye-tracking.png">
-                                        <img v-if="activities[index].questionType == 'drag-and-drop'" src="../../images/drag-and-drop.png">
+                                        <img v-show="activities[index].questionType == 'multiple-choice'" src="../../images/multiple-choice.png">
+                                        <img v-show="activities[index].questionType == 'short-answer'" src="../../images/short-answer.png">
+                                        <img v-show="activities[index].questionType == 'eye-tracking'" src="../../images/eye-tracking.png">
+                                        <img v-show="activities[index].questionType == 'drag-and-drop'" src="../../images/drag-and-drop.png">
                                     </button>
                                     
                                     <button v-if="feedback[index] == ''" class="incomplete-feedback" id="feedback-button" @click="toggleFeedbackModal(index)">
