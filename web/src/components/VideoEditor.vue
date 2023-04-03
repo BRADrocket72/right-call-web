@@ -160,10 +160,10 @@
         this.currentVideoClip = await videoClipStore.fetchVideoClipById(this.videoId);
         this.videoName = this.currentVideoClip.videoName
         this.currentVideoQuestions = await activityStore.fetchActivitiesByVideoclipId(this.videoId)
-        this.currentQuestion = this.currentVideoQuestions[this.questionCounter]
         this.feedbackList = await feedbackStore.fetchFeedbackByVideoclipId(this.videoId)
         this.currentVideoQuestions.sort((a,b) => a.timestamp - b.timestamp)
         this.feedbackList.sort((a,b) => a.timestamp - b.timestamp)
+        this.currentQuestion = this.currentVideoQuestions[0]
         this.questionsLoaded = true
         this.checkForEyeTrackingActivity()
       },
