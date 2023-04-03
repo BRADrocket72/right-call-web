@@ -31,20 +31,26 @@
                                 <li v-for="(timestamp,index) in formattedTimestamps" :key="timestamp">
                                     <button id="delete-timestamp-button" @click="deleteTimestamp(index)">X</button>
                                     {{timestamp}}
-                                    <button v-if="activities[index] == ''" class="incomplete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">
+                                    <button v-if="activities[index] == ''" class="incomplete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)" @mouseover="toggleHoverDescription(true, index)" @mouseleave="toggleHoverDescription(false, index)">
                                         <img src="../../images/activity.png">
                                     </button>
-                                    <button v-else-if="activities[index] && activities[index] != '' && !checkForId(activities[index])" class="complete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">
+                                    <button v-else-if="activities[index] && activities[index] != '' && !checkForId(activities[index])" class="complete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)" @mouseover="toggleHoverDescription(true, index)" @mouseleave="toggleHoverDescription(false, index)">
                                         <img v-show="activities[index].questionType == 'multiple-choice'" src="../../images/multiple-choice.png">
                                         <img v-show="activities[index].questionType == 'short-answer'" src="../../images/short-answer.png">
                                         <img v-show="activities[index].questionType == 'eye-tracking'" src="../../images/eye-tracking.png">
                                         <img v-show="activities[index].questionType == 'drag-and-drop'" src="../../images/drag-and-drop.png">
+                                        <div v-show="showHoverDescription && hoverDescriptionIndex === index" class="hover-description">
+                                            <ActivityHoverDescription :activity="activities[index]"/>
+                                        </div>
                                     </button>
-                                    <button v-else class="pulled-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">
+                                    <button v-else class="pulled-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)" @mouseover="toggleHoverDescription(true, index)" @mouseleave="toggleHoverDescription(false, index)">
                                         <img v-show="activities[index].questionType == 'multiple-choice'" src="../../images/multiple-choice.png">
                                         <img v-show="activities[index].questionType == 'short-answer'" src="../../images/short-answer.png">
                                         <img v-show="activities[index].questionType == 'eye-tracking'" src="../../images/eye-tracking.png">
                                         <img v-show="activities[index].questionType == 'drag-and-drop'" src="../../images/drag-and-drop.png">
+                                        <div v-show="showHoverDescription && hoverDescriptionIndex === index" class="hover-description">
+                                            <ActivityHoverDescription :activity="activities[index]"/>
+                                        </div>
                                     </button>
                                     
                                     <button v-if="feedback[index] == ''" class="incomplete-feedback" id="feedback-button" @click="toggleFeedbackModal(index)">
@@ -87,13 +93,15 @@ import { useUsersStore } from '@/stores/UserStore'
 import ActivityFeedbackModal from '@/components/modals/ActivityFeedbackModal.vue'
 import { useInstructorLessonStore } from '@/stores/InstructorLessonStore'
 import { useLessonStore } from '@/stores/LessonsStore'
+import ActivityHoverDescription from '@/components/ActivityHoverDescription.vue'
 
 export default {
     name: 'AssignTimestamps',
     components: { 
         AssignActivityModal,
         LoggedInNavBarVue,
-        ActivityFeedbackModal
+        ActivityFeedbackModal,
+        ActivityHoverDescription
     },
     data() {
         return {
@@ -124,7 +132,9 @@ export default {
             currentLesson: Object,
             isNameUpdated: false,
             lessonName: "",
-            isOnInitialAssignTimestampsPage: true
+            isOnInitialAssignTimestampsPage: true,
+            showHoverDescription: false,
+            hoverDescriptionIndex: Number
         }
     },
     props: {
@@ -311,6 +321,15 @@ export default {
                 this.feedback[this.currentFeedbackIndex] = new FeedbackDto(this.selectedVideo._id, '', returnedData[1], returnedData[2], returnedData[3])
             }
             this.toggleSaveButton()
+        },
+        toggleHoverDescription(isShown, index) {
+            if(isShown) {
+                this.hoverDescriptionIndex = index
+                this.showHoverDescription = true
+            } else {
+                this.hoverDescriptionIndex = Number
+                this.showHoverDescription = false
+            }
         },
         checkForId(object) {
             if(object._id) {
@@ -793,5 +812,17 @@ ul.timestamp-ul {
     border-radius: 8px;
 }
 
+.hover-description {
+    position: absolute;
+    min-width: 200px;
+    max-width: 200px;
+    min-height: 100px;
+    max-height: 100px;
+    background: #ffffff;
+    box-shadow: 1px 1px 6px 1px #313131;
+    color: black;
+    margin-top: -150px;
+    margin-left: -76px;
+}
 
 </style>
