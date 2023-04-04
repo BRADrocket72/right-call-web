@@ -48,7 +48,7 @@ class UserResultsController{
     get_highest_user_results = async (req,res) =>{
         res.header('Access-Control-Allow-Origin', '*')
         try {
-            const data = await this.userResultsDb.getAllHighestUserResults();
+            const data = await this.userResultsDb.getAllHighestUserResults(req.params.userName);
             res.json(data)
         }
         catch (error) {

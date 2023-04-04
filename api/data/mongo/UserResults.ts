@@ -17,16 +17,22 @@ class UserResults implements UserResultsDb {
 }
     
 async getAllUserResults(){
-        const data = await  UserResultsSchema.find()
+        const data = await UserResultsSchema.find()
         return data;
     }
-async getAllHighestUserResults()
-{
-    // const query = {"lessonId":lessonId};
-    const sort = {"$sort":{"username":1,"score":-1}}
-    const groupBy ={ $group:{"username": "$username",score: { $first: "$score" }}}
-    const data = await UserResultsSchema.aggregate([{$sort:{"username":1,"score":-1}},{ $group:{username: "$username",score: { $first: "$score" }}}]);
-    
+async getAllHighestUserResults(userName:string){
+    const usersResults = await this.getResultsByUsername(userName)
+    const quizNames = []
+    for (let i=0; i <usersResults.length; i++) {
+        if (quizNames.includes(usersResults[i].lessonName) == false) {
+            quizNames.push(usersResults[i].lessonName)
+        }
+    }
+    const data = []
+    for (let i=0; i<quizNames.length; i++) {
+        data.push(await UserResultsSchema.aggregate([{$match: {username: userName, lessonName: quizNames[i]}}, {$sort: {'score':-1}}, {$limit: 1}]))
+    }
+
     return data;
 }
     

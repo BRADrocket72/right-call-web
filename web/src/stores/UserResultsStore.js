@@ -43,5 +43,13 @@ export const useUserResultsStore = defineStore("UserResults", {
                 console.log(error);
             }
         },
+        async getHighestResults(userName) {
+            try {
+                const data = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/userResults/getAllHighest/${userName}`)
+                return data.data
+            } catch (error) {
+                console.log(error);
+            }
+        }
     }
 })
