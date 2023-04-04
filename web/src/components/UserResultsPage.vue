@@ -10,7 +10,7 @@
                 </tr>
                 <tr v-for="result in results" :key="result">
                     <td>{{result.lessonName}}</td>
-                    <td>{{result.score}}</td>
+                    <td>{{result.score}}%</td>
                 </tr>
             </table>
         </div>

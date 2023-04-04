@@ -10,7 +10,7 @@ const userResultsSchema = new mongoose.Schema({
     },
     score: {
         required: true,
-        type: String
+        type: Number
     },
     lessonId: {
         required: true,
