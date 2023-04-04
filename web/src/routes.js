@@ -69,9 +69,10 @@ const routesArray = [
         component: UserResultsPage
     },
     {
-        path: "/ViewStudentResultsPage",
+        path: "/ViewStudentResultsPage/:lessonId/:classId",
         name: "ViewStudentResultsPage",
-        component: StudentResultsPage
+        component: StudentResultsPage,
+        props: true
     },
     {
         path: "/LessonDeletion",
@@ -114,7 +115,7 @@ const routesArray = [
         component: SelectStudentResults
     },
     {
-        path: "/VideoSelectionPage:lessonId",
+        path: "/VideoSelectionPage/:lessonId",
         name: "VideoSelectionPage",
         component: VideoSelectionPage,
         props: true
