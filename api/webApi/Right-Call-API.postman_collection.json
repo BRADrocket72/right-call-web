@@ -607,6 +607,32 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "GetHighestResults",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/userResults/getAllHighest/:userName",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"userResults",
+								"getAllHighest",
+								":userName"
+							],
+							"variable": [
+								{
+									"key": "userName"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
