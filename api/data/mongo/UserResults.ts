@@ -20,6 +20,15 @@ async getAllUserResults(){
         const data = await  UserResultsSchema.find()
         return data;
     }
+async getAllHighestUserResults()
+{
+    // const query = {"lessonId":lessonId};
+    const sort = {"$sort":{"username":1,"score":-1}}
+    const groupBy ={ $group:{"username": "$username",score: { $first: "$score" }}}
+    const data = await UserResultsSchema.aggregate([{$sort:{"username":1,"score":-1}},{ $group:{username: "$username",score: { $first: "$score" }}}]);
+    
+    return data;
+}
     
     async getResultsByUsername(username:string){
         const data = await UserResultsSchema.find({"username": username})
