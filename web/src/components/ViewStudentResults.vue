@@ -8,11 +8,14 @@
           </div>
       </div>
       <div v-else class="students-container">
-          <div class="class-list-div">
-              <ul class="class-list">
-                  <li v-for="student in studentList" :key="student" class="class-li" :id="'instructor-class-'" @click="flipArrow(student, index)">
-                      <p class="student-name">{{student.userName}}</p>
-                      <p> {{  student._id }}</p>
+        <div class="class-list-div">
+            <ul class="class-list">
+                 <li v-for="student in studentList" :key="student" class="class-li" :id="'instructor-class-'" @click="flipArrow(student, index)">
+                      <p class="student-name">Student Name:</p>
+                      <span class="class-info">
+                            <p class="student-count"><b> </b>{{student.userName}}</p>
+                        
+                        </span>
                       <p class="arrow-p"><i id="arrow" class="arrow-right"></i></p>
                   </li>
               </ul>
@@ -72,6 +75,9 @@ export default {
       lessonsStudents: [],
 
       studentResults: [],
+      
+      studentList: [],
+
 
       studentsEmpty: false,
       isLessonResultsVisible: false,
@@ -123,13 +129,11 @@ export default {
     this.currentClass = await instructorClassStore.getAllByClassId(this.classId);
     this.lessonsStudents = this.currentClass.studentIds;
 
-    let studentList = [];
-
     for (var i =0 ; i< this.lessonsStudents.length; i++ ) {
         let currentStudent = await userStore.getUserById(this.lessonsStudents[i])
-        studentList.push(currentStudent)
+        this.studentList.push(currentStudent)
     }
-    console.log(studentList)
+    
     if (this.lessonsStudents.length == 0) { 
         this.studentsEmpty = true
     }
