@@ -10,7 +10,7 @@
         <div v-else class="classes-container">
             <div class="class-list-div">
                 <ul class="class-list">
-                    <li v-for="(instructorClass, index) in instructorClasses" :key="instructorClass" class="class-li" :id="'instructor-class-' + (index + 1)" @click="flipArrow(instructorClass.lessonIds, index)">
+                    <li v-for="(instructorClass, index) in instructorClasses" :key="instructorClass" class="class-li" :id="'instructor-class-' + (index + 1)" @click="flipArrow(instructorClass, index)">
                         <p class="class-name">{{instructorClass.className}}</p>
                         <span class="class-info">
                             <p class="student-count"><b>Students: </b>{{instructorClass.studentIds.length}}</p>
@@ -23,7 +23,7 @@
                 <TransitionGroup name="show-lessons">
                     <div v-if="isLessonListVisible && classHasLessons" class="lesson-list-div">
                         <TransitionGroup name="change-lessons" tag="ul" class="lesson-list">
-                            <li v-for="lesson in lessonList" :key="lesson" class="lesson-li">
+                            <li v-for="lesson in lessonList" :key="lesson" class="lesson-li" @click ="reRouteViewStudent(lesson._id)">
                                 <p class="lesson-name">{{lesson.name}}</p>
                                 <p class="lesson-description">{{lesson.description}}</p>
                             </li>
@@ -57,6 +57,7 @@ export default {
             isLessonListVisible: false,
             classHasLessons: false,
             selectedElement: HTMLElement,
+            selectedClass: Object
 
         }
     },
@@ -72,7 +73,8 @@ export default {
               this.classesEmpty = true
             }
         },
-        async flipArrow(lessonIds, index) {
+        async flipArrow(instructorClass, index) {
+            this.selectedClass = instructorClass
             const element = 'instructor-class-' + (index + 1)
             const selected = document.getElementById(element)
             let arrow = selected.querySelector('#arrow')
@@ -100,7 +102,7 @@ export default {
                 arrow.classList.remove('arrow-right')
                 arrow.classList.add('arrow-left')
             }
-            await this.displayLessons(lessonIds)
+            await this.displayLessons(instructorClass.lessonIds)
             this.selectedElement = selected
             this.isLessonListVisible = true
         },
@@ -120,6 +122,15 @@ export default {
             this.$router.push({
                 name: "CreateClassroomPage"
             })
+        },
+        reRouteViewStudent(lessonId){
+            this.$router.push({
+                name: "ViewStudentResultsPage",
+                params: {
+                    lessonId: lessonId,
+                    classId: this.selectedClass._id
+                }
+            });
         }
     },
     mounted() {
