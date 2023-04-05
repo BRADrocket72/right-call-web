@@ -17,4 +17,6 @@ router.get('/userResults/getAllHighest/:userName', userResultsController.get_hig
 //Get by username
 router.get('/userResults/get/:username', userResultsController.get_by_username)
 
+router.get('/userResults/getByQuizId/:quizId', userResultsController.get_by_quizId)
+
 module.exports = router;

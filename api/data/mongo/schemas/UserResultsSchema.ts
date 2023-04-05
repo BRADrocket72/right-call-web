@@ -12,11 +12,11 @@ const userResultsSchema = new mongoose.Schema({
         required: true,
         type: Number
     },
-    lessonId: {
+    quizId: {
         required: true,
         type: String
     },
-    lessonName: {
+    quizName: {
         required: true,
         type: String
     }

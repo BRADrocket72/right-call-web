@@ -9,7 +9,7 @@
                     <th>Score</th>
                 </tr>
                 <tr v-for="result in results" :key="result">
-                    <td>{{result[0].lessonName}}</td>
+                    <td>{{result[0].quizName}}</td>
                     <td>{{result[0].score}}% (Attempts: {{result.length}})</td>
                 </tr>
             </table>

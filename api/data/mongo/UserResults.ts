@@ -8,8 +8,8 @@ class UserResults implements UserResultsDb {
         const data = new UserResultsSchema({
             username:userResult.username,
             score:userResult.score,
-            lessonId: userResult.lessonId,
-            lessonName: userResult.lessonName
+            quizId: userResult.quizId,
+            quizName: userResult.quizName
         })
         const dataToSave = await data.save()
         return dataToSave;
@@ -24,13 +24,13 @@ async getAllHighestUserResults(userName:string){
     const usersResults = await this.getResultsByUsername(userName)
     const quizNames = []
     for (let i=0; i <usersResults.length; i++) {
-        if (quizNames.includes(usersResults[i].lessonName) == false) {
-            quizNames.push(usersResults[i].lessonName)
+        if (quizNames.includes(usersResults[i].quizName) == false) {
+            quizNames.push(usersResults[i].quizName)
         }
     }
     const data = []
     for (let i=0; i<quizNames.length; i++) {
-        data.push(await UserResultsSchema.aggregate([{$match: {username: userName, lessonName: quizNames[i]}}, {$sort: {'score':-1}}]))
+        data.push(await UserResultsSchema.aggregate([{$match: {username: userName, quizName: quizNames[i]}}, {$sort: {'score':-1}}]))
     }
 
     return data;
@@ -41,8 +41,8 @@ async getResultsByUsername(username:string){
     return data
 }
 
-async getResultsByLessonId(lessonId: string){
-    const data = await UserResultsSchema.find({"lessonId" : lessonId})
+async getResultsByQuizId(quizId: string){
+    const data = await UserResultsSchema.find({"quizId" : quizId})
     return data
 }
 
