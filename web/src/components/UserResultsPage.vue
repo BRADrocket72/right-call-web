@@ -9,8 +9,8 @@
                     <th>Score</th>
                 </tr>
                 <tr v-for="result in results" :key="result">
-                    <td>{{result.lessonName}}</td>
-                    <td>{{result.score}}%</td>
+                    <td>{{result[0].lessonName}}</td>
+                    <td>{{result[0].score}}% (Attempts: {{result.length}})</td>
                 </tr>
             </table>
         </div>
@@ -41,7 +41,7 @@ export default {
         webgazer.showPredictionPoints(false)
         webgazer.pause()
         var userResults = useUserResultsStore()
-        this.results = await userResults.fetchByUserName(this.$cookies.get("user_session").currentUserName);
+        this.results = await userResults.getHighestResults(this.$cookies.get("user_session").currentUserName)
         this.ready = true;
     }
 }

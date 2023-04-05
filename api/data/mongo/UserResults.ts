@@ -30,7 +30,7 @@ async getAllHighestUserResults(userName:string){
     }
     const data = []
     for (let i=0; i<quizNames.length; i++) {
-        data.push(await UserResultsSchema.aggregate([{$match: {username: userName, lessonName: quizNames[i]}}, {$sort: {'score':-1}}, {$limit: 1}]))
+        data.push(await UserResultsSchema.aggregate([{$match: {username: userName, lessonName: quizNames[i]}}, {$sort: {'score':-1}}]))
     }
 
     return data;
