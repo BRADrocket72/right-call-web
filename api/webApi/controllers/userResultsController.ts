@@ -57,6 +57,18 @@ class UserResultsController{
     }
 
 
+    get_by_lessonId = async (req, res) => {
+        res.header('Access-Control-Allow-Origin', '*')
+        try {
+            const data = await this.userResultsDb.getResultsByLessonId(req.params.lessonId);
+            res.json(data)
+        }
+        catch (error) {
+            res.status(500).json({ message: error.message })
+        }
+    }
+
+
 
 }
 

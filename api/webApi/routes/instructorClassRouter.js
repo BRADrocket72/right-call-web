@@ -13,9 +13,10 @@ router.get('/instructorClass/getAll', instructorClassController.get_all)
 //Get By Instructor Id method
 router.get('/instructorClass/getById/:instructorId', instructorClassController.get_all_by_instructorId)
 
-router.put('/instructorClass/deleteVideoClip/:classId', instructorClassController.delete_video_clip)
+//Get by classId method
+router.get('/instructorClass/getByClassId/:classId', instructorClassController.get_by_classId)
 
-router.put('/instructorClass/addVideoClip/:classId', instructorClassController.add_video_clip)
+router.put('/instructorClass/updateVideoClips/:classId', instructorClassController.add_video_clip)
 
 //Update Student Ids List Method
 router.put('/instructorClass/updateStudentIds/:classId', instructorClassController.update_student_ids)

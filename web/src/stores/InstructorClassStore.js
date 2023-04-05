@@ -35,15 +35,7 @@ export const useInstructorClassStore = defineStore("InstructorClass", {
         },
         async addVideoClipToClass(classId, lessonIds) {
             try {
-                const data = await axios.put(`${process.env.VUE_APP_API_BASE_URL}/instructorClass/addVideoClip/${classId}`, { lessonIds: lessonIds })
-                return data.data
-            } catch (error) {
-                console.error(error)
-            }
-        },
-        async deleteVideoClipFromClass(classId, lessonIds) {
-            try {
-                const data = await axios.put(`${process.env.VUE_APP_API_BASE_URL}/instructorClass/addVideoClip/${classId}`, { lessonIds: lessonIds })
+                const data = await axios.put(`${process.env.VUE_APP_API_BASE_URL}/instructorClass/updateVideoClips/${classId}`, { lessonIds: lessonIds })
                 return data.data
             } catch (error) {
                 console.error(error)
@@ -63,6 +55,14 @@ export const useInstructorClassStore = defineStore("InstructorClass", {
                 return data.data
             } catch (error) {
                 console.log(error);
+            }
+        },
+        async getAllByClassId(classId) {
+            try {
+                const data = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/instructorClass/getByClassId/` + classId)
+                return data.data
+            } catch (error) {
+                console.error(error)
             }
         }
     }
