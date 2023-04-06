@@ -10,16 +10,15 @@
       <div v-else class="students-container">
         <div class="class-list-div">
             <ul class="class-list">
-                 <li v-for="student in studentList" :key="student" class="class-li" :id="'instructor-class-'" @click="flipArrow(student, index)">
-                      <p class="student-name">Student Name:</p>
-                      <span class="class-info">
+                 <li v-for="(student, index) in studentList" :key="student" class="class-li" :id="'instructor-class-' + (index+1)" @click="flipArrow(student, index)">
+                    <p class="student-name">Student Name:</p>
+                        <span class="class-info">
                             <p class="student-count"><b> </b>{{student.userName}}</p>
-                        
                         </span>
-                      <p class="arrow-p"><i id="arrow" class="arrow-right"></i></p>
-                  </li>
-              </ul>
-          </div>
+                    <p class="arrow-p"><i id="arrow" class="arrow-right"></i></p>
+                </li>
+            </ul>
+        </div>
           
               <!-- <TransitionGroup name="show-lessons">
                   <div v-if="isLessonResultsVisible && StudentHasResults" class="lesson-list-div">
@@ -36,13 +35,6 @@
               </TransitionGroup> -->
 
       </div>
-
-    <div> 
-        <div v-for="student in studentList" :key="student._id"  > 
-            <p> {{student.userName}} </p>
-        </div>
-    </div>
-
   </div>
 </template>
 
@@ -51,6 +43,7 @@ import LoggedInNavBar from './LoggedInNavBar.vue'
 import { useUserResultsStore } from '@/stores/UserResultsStore';
 import { useUsersStore } from '@/stores/UserStore';
 import { useInstructorClassStore } from '@/stores/InstructorClassStore';
+import { useInstructorLessonStore } from '@/stores/InstructorLessonStore';
 
 
 export default {
@@ -78,6 +71,10 @@ export default {
       
       studentList: [],
 
+      selectedElement: HTMLElement,
+      selectedStudent: Object,
+
+
 
       studentsEmpty: false,
       isLessonResultsVisible: false,
@@ -87,8 +84,8 @@ export default {
   },
   methods: {
 
-    async flipArrow(instructorClass, index) {
-            this.selectedClass = instructorClass
+    async flipArrow(studentList, index) {
+            this.selectedStudent = studentList
             const element = 'instructor-class-' + (index + 1)
             const selected = document.getElementById(element)
             let arrow = selected.querySelector('#arrow')
@@ -116,11 +113,30 @@ export default {
                 arrow.classList.remove('arrow-right')
                 arrow.classList.add('arrow-left')
             }
-            await this.displayLessons(instructorClass.lessonIds)
+            await this.displayStudentResults(studentList)
             this.selectedElement = selected
             this.isLessonListVisible = true
         },
+
+        async displayStudentResults(student) {
+            let currentLesson = [];
+
+            var userResultsStore = useUserResultsStore();
+            let highest_results = await userResultsStore.getHighestResults(student.userName)
+            
+            var instructorLessonStore = useInstructorLessonStore();
+            let lesson = await instructorLessonStore.getLessonByLessonId(this.lessonId);
+
+            for (let i = 0 ; i < lesson.videoClipsArray.length ; i++ ) {
+                for (let j = 0 ; j < highest_results.length ; j++ ) {
+                    if (lesson.videoClipsArray[i]._id == highest_results[j][0].quizId ){
+                        currentLesson.push(highest_results[j][0])
+                    }
+                }
+            }
+        },
   },
+
   async mounted() {
     var userResultsStore = useUserResultsStore();
     var instructorClassStore = useInstructorClassStore();
