@@ -5,7 +5,13 @@ export function getPercentageResults(resultsArray, numberOfQuestions) {
       correctCounter++
     }
   }
-  let percentage = ((correctCounter/numberOfQuestions)*100).toFixed(2) + "%"
+  let percentage;
+  if (numberOfQuestions == 0) {
+    percentage = 0
+  }
+  else {
+    percentage = parseFloat(((correctCounter/numberOfQuestions)*100).toFixed(2))
+  }
   return percentage
 }
 

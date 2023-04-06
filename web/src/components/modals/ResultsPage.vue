@@ -10,7 +10,7 @@
 
         <section class="modal-body" id="modalDescription">
           <slot name="body">
-            <p>{{this.percentageCorrect}} Correct</p>
+            <p>{{this.percentageCorrect}}% Correct</p>
             <br>
             <p v-for="n in this.answersArray.length" :key="n">Question {{n}}: {{this.answersArray[n-1]}}
             </p>
@@ -31,7 +31,7 @@ export default {
   data() {
     return {
       numberOfQuestions: 0,
-      percentageCorrect: ""
+      percentageCorrect: 0
     }
   },
   props: {

@@ -26,7 +26,7 @@ describe('ResultsPage.vue', () => {
 
     it('variables are set on time', () => {
         expect(wrapper.vm.numberOfQuestions).toEqual(2)
-        expect(wrapper.vm.percentageCorrect).toEqual("50.00%")
+        expect(wrapper.vm.percentageCorrect).toEqual(50)
     })
    
     it('calls the close modal function and sends to the router on button click', async () => {

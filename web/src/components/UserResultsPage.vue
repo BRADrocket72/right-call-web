@@ -5,12 +5,14 @@
         <div class="results-table">
             <table>
                 <tr>
-                    <th>Lesson Name</th>
+                    <th>Lesson</th>
+                    <th>Quiz Name</th>
                     <th>Score</th>
                 </tr>
                 <tr v-for="result in results" :key="result">
-                    <td>{{result.lessonName}}</td>
-                    <td>{{result.score}}</td>
+                    <td>{{ result[0].lessonName }}</td>
+                    <td>{{result[0].quizName}}</td>
+                    <td>{{result[0].score}}% (Attempts: {{result.length}})</td>
                 </tr>
             </table>
         </div>
@@ -21,6 +23,8 @@
 <script>
 import LoggedInNavBarVue from "./LoggedInNavBar.vue";
 import { useUserResultsStore } from "@/stores/UserResultsStore"
+import { useInstructorLessonStore } from "@/stores/InstructorLessonStore"
+
 import webgazer from 'webgazer';
 
 export default {
@@ -41,7 +45,22 @@ export default {
         webgazer.showPredictionPoints(false)
         webgazer.pause()
         var userResults = useUserResultsStore()
-        this.results = await userResults.fetchByUserName(this.$cookies.get("user_session").currentUserName);
+        this.results = await userResults.getHighestResults(this.$cookies.get("user_session").currentUserName)
+        const quizIds = []
+        for (let i=0; i<this.results.length; i++) {
+            quizIds.push(this.results[i][0].quizId)
+        }
+        const instructorLessons = useInstructorLessonStore()
+        const lessons = await instructorLessons.getAllInstructorLessons()
+        for (let x=0; x<this.results.length; x++) {
+            for (let i =0; i< lessons.length; i++) {
+                for (let j=0; j<lessons[i].videoClipsArray.length; j++) {
+                    if (lessons[i].videoClipsArray[j]._id == this.results[x][0].quizId) {
+                        this.results[x][0].lessonName = lessons[i].name
+                    }
+                }
+            }
+        }
         this.ready = true;
     }
 }
