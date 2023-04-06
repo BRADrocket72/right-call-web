@@ -24,17 +24,24 @@
         <div v-else class="assign-timestamps-container">
             <div class="main-content-div">
                 <video :id="selectedVideo._id" :src="selectedVideo.videoURL" />
-                <div class="controls">
+                <div class="controls" id="controls">
+                    <div v-show="isDraggingSeeker" class="video-time-clock">
+                        <p>{{videoSeekerTime}}</p>
+                    </div>
                     <div class="play-button-div">
                         <button class="play-pause-button" id="play-pause-button" @click="togglePlayVideo()">
                             <img v-show="videoStatus === 'Pause'" src="../../images/play.png">
                             <img v-show="videoStatus === 'Play'" src="../../images/pause.png">
                         </button>
                     </div>
-                    <div class="progress-div">
-                        <div class="progress-bar" id="progress-bar">
-                            <div class="draggable-seeker"></div>
-                        </div>
+                    <div class="video-time" id="video-time">
+                        <span id="video-current-time">00:00</span>
+                        <span> / </span> 
+                        <span id="video-duration">00:00</span>
+                    </div>
+                    <div class="progress-div" id="progress-div">
+                        <div class="progress-bar" id="progress-bar"></div>
+                        <div class="draggable-seeker" id="draggable-seeker"></div>
                     </div>
                     <div class="add-timestamp-div">
                         <button id="add-timestamp-button" @click="newTimestampButtonClick()">Add Timestamp</button>
@@ -146,7 +153,10 @@ export default {
             isOnInitialAssignTimestampsPage: true,
             showHoverDescription: false,
             hoverDescriptionIndex: Number,
-            videoStatus: 'Pause'
+            videoStatus: 'Pause',
+            videoProgressPercent: 0,
+            isDraggingSeeker: false,
+            videoSeekerTime: '00:00'
         }
     },
     props: {
@@ -161,18 +171,12 @@ export default {
             await this.getLessonContent()
             this.isOnInitialAssignTimestampsPage = false
             this.isVideoSelected = !this.isVideoSelected
-            setTimeout(() => {const videoElem = document.getElementById(this.selectedVideo._id)
-                videoElem.addEventListener('timeupdate', function() {
-                    let videoPosition = videoElem.currentTime / videoElem.duration
-                    const progressBar = document.getElementById('progress-bar')
-                    const barWidth = videoPosition * 100
-                    if(barWidth < 1.33){
-                        progressBar.style.width =  1.33 + '%'
-                    } else {
-                        progressBar.style.width =  barWidth + '%'
-                    }
-                }, 10)
-            })
+            setTimeout(() => {
+                this.setupProgressBarListeners()
+                this.setupSeekerEventListeners()
+                this.setupVideoTimeListeners()
+                this.setupProgressDivClickListener()
+            }, 10)
         },
         returnToVideoSelectionPage(){
             this.isOnInitialAssignTimestampsPage = true
@@ -186,9 +190,139 @@ export default {
             this.deletedFeedback = []
             this.updatedFeedback = []
             this.activityModalData = []
+            this.videoProgressPercent = 0
             this.$router.push({
                 name: "AssignTimestamps"
             })
+        },
+        setupVideoTimeListeners() {
+            const videoElem = document.getElementById(this.selectedVideo._id)
+            videoElem.addEventListener('timeupdate', () => {
+                const videoCurrentTime = document.getElementById("video-current-time")
+                const videoDuration = document.getElementById("video-duration")
+                videoCurrentTime.innerHTML = formatTimeForVideo(videoElem.currentTime);
+                videoDuration.innerHTML = formatTimeForVideo(videoElem.duration)
+                if (videoElem.duration == videoElem.currentTime) {
+                    videoElem.pause()
+                    this.videoStatus = 'Pause'
+                }
+            })
+        },
+        setupProgressBarListeners() {
+            const videoElem = document.getElementById(this.selectedVideo._id)
+            videoElem.addEventListener('timeupdate', function() {
+                let videoPosition = videoElem.currentTime / videoElem.duration
+                let barWidth = videoPosition * 100
+                const progressBar = document.getElementById('progress-bar')
+                const seeker = document.getElementById('draggable-seeker')
+                progressBar.style.width =  barWidth + '%'
+                seeker.style.left = barWidth + '%'
+            })
+        },
+        setupSeekerEventListeners() {
+            const seeker = document.getElementById('draggable-seeker')
+            if(seeker) {
+                this.seekerMouseDownListener()
+                this.seekerMouseUpListener()
+                this.setupProgressDivClickListener()
+            }
+        },
+        setupProgressDivClickListener() {
+            const seeker = document.getElementById('draggable-seeker')
+            const progressDiv = document.getElementById('progress-div')
+            const progressDivRect = progressDiv.getBoundingClientRect()
+            const progressDivWidth = progressDivRect.width
+            progressDiv.addEventListener('click', (event) => {
+                event.preventDefault()
+                console.log(event)
+                const progressBar = document.getElementById('progress-bar')
+                let newX = event.layerX
+                this.videoProgressPercent = newX / progressDivWidth
+                seeker.style.left = (this.videoProgressPercent * 100) + '%'
+                progressBar.style.width = (this.videoProgressPercent * 100) + '%'
+
+                const video = document.getElementById(this.selectedVideo._id)
+                video.currentTime = this.videoProgressPercent * video.duration
+            })
+        },
+        seekerMouseDownListener() {
+            const seeker = document.getElementById('draggable-seeker')
+            const progressDiv = document.getElementById('progress-div')
+            const progressDivRect = progressDiv.getBoundingClientRect()
+            const progressDivWidth = progressDivRect.width
+            seeker.addEventListener('mousedown', () => {
+                this.isDraggingSeeker = true
+                progressDiv.addEventListener('mousemove', (event) => {
+                    event.preventDefault()
+                    if(event.target.id == 'progress-div' || event.target.id == 'progress-bar') {
+                        const progressBar = document.getElementById('progress-bar')
+                        let newX = event.layerX
+                        this.videoProgressPercent = newX / progressDivWidth
+                        seeker.style.left = (this.videoProgressPercent * 100) + '%'
+                        progressBar.style.width = (this.videoProgressPercent * 100) + '%'
+                        
+                        const video = document.getElementById(this.selectedVideo._id)
+                        let seekerProgress =  this.videoProgressPercent * video.duration
+                        this.videoSeekerTime = formatTimeForVideo(seekerProgress)
+                    }
+                })
+            })
+        },
+        seekerMouseUpListener() {
+            const seeker = document.getElementById('draggable-seeker')
+            const video = document.getElementById(this.selectedVideo._id)
+            seeker.addEventListener('mouseup', (event) => {
+                event.preventDefault()
+                if(event.target.id === 'draggable-seeker') {
+                    this.isDraggingSeeker = false
+                    video.currentTime = this.videoProgressPercent * video.duration
+                    this.replaceVideoControlElements()
+                    this.setupSeekerEventListeners() 
+                }  
+            })
+
+            const videoTimer = document.getElementById('video-time')
+            videoTimer.addEventListener('mouseup', (event) => {
+                event.preventDefault()
+                video.currentTime = 0
+                this.replaceVideoControlElements()
+                this.setupSeekerEventListeners() 
+            })
+
+            const controls = document.getElementById('controls')
+            controls.addEventListener('mouseup', (event) => {
+                event.preventDefault()
+                if(this.isDraggingSeeker === true) {
+                    if(event.layerX <= 145) {
+                        video.currentTime = 0
+                    } else if(event.layerX >= 836) {
+                        video.currentTime = video.duration
+                    } else {
+                        const progressBar = document.getElementById('progress-bar')
+                        const progressDiv = document.getElementById('progress-div')
+                        const progressDivRect = progressDiv.getBoundingClientRect()
+                        const progressDivWidth = progressDivRect.width
+                        let newX = event.layerX - 145
+                        this.videoProgressPercent = newX / progressDivWidth
+                        seeker.style.left = (this.videoProgressPercent * 100) + '%'
+                        progressBar.style.width = (this.videoProgressPercent * 100) + '%'
+                        video.currentTime = this.videoProgressPercent * video.duration
+                    }
+                    this.replaceVideoControlElements()
+                    this.setupSeekerEventListeners() 
+                }
+            })
+
+        },
+        replaceVideoControlElements() {
+            const seeker = document.getElementById('draggable-seeker')
+            const progressDiv = document.getElementById('progress-div')
+            const progressBar = document.getElementById('progress-bar')
+            const newSeeker = seeker.cloneNode(false)
+            const newProgressDiv = progressDiv.cloneNode(false)
+            newProgressDiv.appendChild(progressBar)
+            newProgressDiv.appendChild(newSeeker)
+            progressDiv.replaceWith(newProgressDiv)
         },
         moveVideoToTimestampFrame() {
             const video = document.getElementById(this.selectedVideo._id)
@@ -583,8 +717,8 @@ video {
 .controls {
     display: flex;
     position: absolute;
-    bottom: 62px;
     flex-wrap: wrap;
+    margin-top: 540px;
     background: #0e333c;
     width: 972px;
     height: 50px;
@@ -592,9 +726,53 @@ video {
     border-bottom-left-radius: 13px;
 }
 
+.video-time {
+    display: flex;
+    flex-direction: row;
+    width: 75px;
+    margin-right: 10px;
+    justify-content: space-between;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    cursor: pointer;
+}
+
+.video-time span {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 13px;
+    text-align: center;
+}
+
+.video-time-clock {
+    background-image: url('../../images/blank-clock.png');
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-size: cover;
+    height: 85px;
+    width: 85px;
+    position: absolute;
+    margin: -100px 50%;
+    text-align: center;
+    border: 2px solid #000000;
+    border-radius: 50%;
+    background-color: #ffffff;
+}
+
+.video-time-clock p {
+    color: #000000;
+    margin: 26px 0 0 0;
+    font-size: 17px;
+    font-weight: bold;
+}
+
 .play-button-div {
     width: 40px;
     height: 40px;
+    margin: 9px 5px 0 10px;
 }
 
 .play-pause-button {
@@ -602,7 +780,6 @@ video {
     height: 30px;
     background: #52746d;
     border: none;
-    margin: 9px;
     border-radius: 50%;
 }
 
@@ -616,16 +793,16 @@ video {
 }
 
 .progress-div {
-    margin: 15px 10px 0 12px;
-    width: 780px;
+    position: relative;
+    margin: 15px 10px 0 5px;
+    width: 690px;
     height: 20px;
     background: black;
     border-radius: 6px;
+    cursor: pointer;
 }
 
 .progress-bar {
-    display: inherit;
-    overflow: unset;
     width: 10px;
     height: 20px;
     background: #FFA500;
@@ -641,8 +818,9 @@ video {
     background: #ffffff;
     border: 1px solid #636363;
     border-radius: 6px;
-    float: right;
-    margin: -10px 0 0 0;
+    left: 0%;
+    margin: -30px 0 0 0;
+    cursor: pointer;
 }
 
 .add-timestamp-div {
@@ -660,6 +838,10 @@ video {
     height: 30px;
     border-radius: 10px;
     margin: 9px 0 9px 0;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 #add-timestamp-button:hover {
