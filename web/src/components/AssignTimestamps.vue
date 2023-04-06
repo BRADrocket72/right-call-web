@@ -31,13 +31,31 @@
                                 <li v-for="(timestamp,index) in formattedTimestamps" :key="timestamp">
                                     <button id="delete-timestamp-button" @click="deleteTimestamp(index)">X</button>
                                     {{timestamp}}
-                                    <button v-if="activities[index] == ''" class="incomplete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)"><img src="../../images/activity.png"></button>
-                                    <button v-else-if="activities[index] && activities[index] != '' && !checkForId(activities[index])" class="complete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)"><img src="../../images/activity.png"></button>
-                                    <button v-else class="pulled-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)"><img src="../../images/activity.png"></button>
+                                    <button v-if="activities[index] == ''" class="incomplete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">
+                                        <img src="../../images/activity.png">
+                                    </button>
+                                    <button v-else-if="activities[index] && activities[index] != '' && !checkForId(activities[index])" class="complete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">
+                                        <img v-show="activities[index].questionType == 'multiple-choice'" src="../../images/multiple-choice.png">
+                                        <img v-show="activities[index].questionType == 'short-answer'" src="../../images/short-answer.png">
+                                        <img v-show="activities[index].questionType == 'eye-tracking'" src="../../images/eye-tracking.png">
+                                        <img v-show="activities[index].questionType == 'drag-and-drop'" src="../../images/drag-and-drop.png">
+                                    </button>
+                                    <button v-else class="pulled-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">
+                                        <img v-show="activities[index].questionType == 'multiple-choice'" src="../../images/multiple-choice.png">
+                                        <img v-show="activities[index].questionType == 'short-answer'" src="../../images/short-answer.png">
+                                        <img v-show="activities[index].questionType == 'eye-tracking'" src="../../images/eye-tracking.png">
+                                        <img v-show="activities[index].questionType == 'drag-and-drop'" src="../../images/drag-and-drop.png">
+                                    </button>
                                     
-                                    <button v-if="feedback[index] == ''" class="incomplete-feedback" id="feedback-button" @click="toggleFeedbackModal(index)"><img src="../../images/feedback.png"></button>
-                                    <button v-else-if="feedback[index] && feedback[index] != '' && !checkForId(feedback[index])" class="complete-feedback" id="feedback-button" @click="toggleFeedbackModal(index)"><img src="../../images/feedback.png"></button>
-                                    <button v-else class="pulled-feedback" id="feedback-button" @click="toggleFeedbackModal(index)"><img src="../../images/feedback.png"></button>
+                                    <button v-if="feedback[index] == ''" class="incomplete-feedback" id="feedback-button" @click="toggleFeedbackModal(index)">
+                                        <img src="../../images/feedback.png">
+                                    </button>
+                                    <button v-else-if="feedback[index] && feedback[index] != '' && !checkForId(feedback[index])" class="complete-feedback" id="feedback-button" @click="toggleFeedbackModal(index)">
+                                        <img src="../../images/feedback.png">
+                                    </button>
+                                    <button v-else class="pulled-feedback" id="feedback-button" @click="toggleFeedbackModal(index)">
+                                        <img src="../../images/feedback.png">
+                                    </button>
                                 </li>
                             </ul>
                         </div>
@@ -116,9 +134,9 @@ export default {
         
     },
     methods: {
-        videoSelection(video) {
+        async videoSelection(video) {
             this.selectedVideo = video
-            this.getLessonContent()
+            await this.getLessonContent()
             this.isOnInitialAssignTimestampsPage = false
             this.isVideoSelected = !this.isVideoSelected
         },

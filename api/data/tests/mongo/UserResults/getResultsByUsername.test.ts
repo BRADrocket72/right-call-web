@@ -5,8 +5,8 @@ const testMongoDb = require('../testMongoDb')
 const userResultsCollection :UserResults =  new UserResults()
 
 beforeEach(async () => {
-    const userOne =new UserResultsSchema( {username:"Batman" ,score:"good",lessonId:"1", lessonName:"2"})
-    const userTwo =new UserResultsSchema({username:"Robin" ,score:"bad",lessonId:"a", lessonName:"b"})
+    const userOne =new UserResultsSchema( {username:"Batman" ,score:100.00, quizId:"1", quizName:"2"})
+    const userTwo =new UserResultsSchema({username:"Robin" ,score:50, quizId:"a", quizName:"b"})
 
     await userOne.save();
     await userTwo.save();
@@ -23,10 +23,10 @@ afterAll(async () => await testMongoDb.closeDatabase())
 describe('Get Results By Username',()=>{
     it('First User', async () => {
         const UserResultsOne = await userResultsCollection.getResultsByUsername("Robin");
-        expect(UserResultsOne[0].score).toEqual("bad");
+        expect(UserResultsOne[0].score).toEqual(50);
     })
     it('Second User', async () => {
         const UserResultsTwo = await userResultsCollection.getResultsByUsername("Batman");
-        expect(UserResultsTwo[0].score).toEqual("good");
+        expect(UserResultsTwo[0].score).toEqual(100.00);
     })
 })
