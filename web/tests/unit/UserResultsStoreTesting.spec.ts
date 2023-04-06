@@ -19,12 +19,13 @@ describe('UserStore API CALLS Unit TESTING', () => {
         {
             _id: "638eb09ce6833ae0f7e",
             username: "testUser123",
-            score: "100.00",
-            lessonId: "testLessonId"
+            score: 100.00,
+            quizId: "testQuizId",
+            quizName: "testQuiz"
         },
     })
-    const postedResults = await store.postUserResults("testUser123", "100.00", "testLessonId", "testLessonName")
-    expect(postedResults.score).toEqual("100.00")
+    const postedResults = await store.postUserResults("testUser123", 100.00, "testLessonId", "testQuiz")
+    expect(postedResults.score).toEqual(100.00)
   });
 
   it('fetchUserResults() mock calls axios.get (the api) successfully and mock retrieves all of the results for all users', async () => {
@@ -33,13 +34,14 @@ describe('UserStore API CALLS Unit TESTING', () => {
         [{
             _id: "638eb09ce6833ae0f7e",
             username: "testUser123",
-            score: "100.00",
-            lessonId: "testLessonId"
+            score: 100.00,
+            quizId: "testQuizId",
+            quizName: "testQuiz"
         }]
     })
     const allResults = await store.fetchUserResults()
     expect(allResults.length).toEqual(1)
-    expect(allResults[0].lessonId).toEqual("testLessonId")
+    expect(allResults[0].quizId).toEqual("testQuizId")
   });
 
   it('fetchByUsername() mock calls axios.get (the api) successfully and mock retrieves all of the results for a specific user', async () => {
@@ -48,8 +50,9 @@ describe('UserStore API CALLS Unit TESTING', () => {
         {
             _id: "638eb09ce6833ae0f7e",
             username: "testUser123",
-            score: "100.00",
-            lessonId: "testLessonId"
+            score: 100.00,
+            quizId: "testLessonId",
+            quizName: "testQuiz"
         }]
     })
 
