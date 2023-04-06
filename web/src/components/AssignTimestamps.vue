@@ -29,12 +29,12 @@
                         <p>{{videoSeekerTime}}</p>
                     </div>
                     <div class="play-button-div">
-                        <button class="play-pause-button" id="play-pause-button" @click="togglePlayVideo()">
+                        <button class="play-pause-button" id="play-pause-button" @click="togglePlayVideo()" draggable="false">
                             <img v-show="videoStatus === 'Pause'" src="../../images/play.png">
                             <img v-show="videoStatus === 'Play'" src="../../images/pause.png">
                         </button>
                     </div>
-                    <div class="video-time" id="video-time">
+                    <div class="video-time" id="video-time" draggable="false">
                         <span id="video-current-time">00:00</span>
                         <span> / </span> 
                         <span id="video-duration">00:00</span>
@@ -43,8 +43,8 @@
                         <div class="progress-bar" id="progress-bar"></div>
                         <div class="draggable-seeker" id="draggable-seeker"></div>
                     </div>
-                    <div class="add-timestamp-div">
-                        <button id="add-timestamp-button" @click="newTimestampButtonClick()">Add Timestamp</button>
+                    <div class="add-timestamp-div" draggable="false">
+                        <button id="add-timestamp-button" @click="newTimestampButtonClick()">Timestamp</button>
                     </div>
                 </div>
                 <div class="timestamps-div">
@@ -234,7 +234,6 @@ export default {
             const progressDivWidth = progressDivRect.width
             progressDiv.addEventListener('click', (event) => {
                 event.preventDefault()
-                console.log(event)
                 const progressBar = document.getElementById('progress-bar')
                 let newX = event.layerX
                 this.videoProgressPercent = newX / progressDivWidth
@@ -293,6 +292,7 @@ export default {
             controls.addEventListener('mouseup', (event) => {
                 event.preventDefault()
                 if(this.isDraggingSeeker === true) {
+                    this.isDraggingSeeker = false
                     if(event.layerX <= 145) {
                         video.currentTime = 0
                     } else if(event.layerX >= 836) {
@@ -325,8 +325,15 @@ export default {
             progressDiv.replaceWith(newProgressDiv)
         },
         moveVideoToTimestampFrame() {
-            const video = document.getElementById(this.selectedVideo._id)
-            video.currentTime = this.currentActivityTimestamp
+            const videoElem = document.getElementById(this.selectedVideo._id)
+            videoElem.currentTime = this.currentActivityTimestamp
+
+            let videoPosition = videoElem.currentTime / videoElem.duration
+            let barWidth = videoPosition * 100
+            const progressBar = document.getElementById('progress-bar')
+            const seeker = document.getElementById('draggable-seeker')
+            progressBar.style.width =  barWidth + '%'
+            seeker.style.left = barWidth + '%'
         },
         async getLessonContent() {
             if(this.selectedVideo.timeStamps) {
@@ -724,6 +731,10 @@ video {
     height: 50px;
     border-bottom-right-radius: 13px;
     border-bottom-left-radius: 13px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .video-time {
@@ -831,7 +842,8 @@ video {
     float: right;
     text-align: center;
     border: none;
-    font-size: 15px;
+    font-size: 20px;
+    text-shadow: 1px 1px #0e333c;
     color: white;
     background: #4AAE9B;
     width: 117px;
