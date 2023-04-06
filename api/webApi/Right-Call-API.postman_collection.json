@@ -609,12 +609,12 @@
 					"response": []
 				},
 				{
-					"name": "GetByLessonId",
+					"name": "GetByQuizId",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/api/userResults/getByLessonId/:lessonId",
+							"raw": "localhost:3000/api/userResults/getByQuizId/:quizId",
 							"host": [
 								"localhost"
 							],
@@ -622,14 +622,40 @@
 							"path": [
 								"api",
 								"userResults",
-								"getByLessonId",
-								":lessonId"
+								"getByQuizId",
+								":quizId"
 							],
 							"variable": [
 								{
-									"key": "lessonId"
+									"key": "quizId"
 								}
 							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetHighestResults",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/userResults/getAllHighest/:userName",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"userResults",
+								"getAllHighest",
+								":userName"
+							],
+							"variable": [
+								{
+									"key": "userName"
+								}
+											]
 						}
 					},
 					"response": []

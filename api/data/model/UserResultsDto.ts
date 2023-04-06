@@ -1,6 +1,6 @@
 export type UserResultsDto  = {
     username :string,
-    score : string,
-    lessonId : string,
-    lessonName:string
+    score : number,
+    quizId : string,
+    quizName:string
 }
