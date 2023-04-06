@@ -1093,6 +1093,7 @@ ul.timestamp-ul {
 .tail {
     position: absolute;
     bottom: 30px;
+    left: 12px;
     width: 0;
     height: 0;
     border-color:#f9f9f9 transparent transparent transparent;
@@ -1101,15 +1102,16 @@ ul.timestamp-ul {
 }
 
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 13px;
 }
   
 ::-webkit-scrollbar-track {
-    background: #f1f1f1; 
+    background: #ffffff; 
 }
    
 ::-webkit-scrollbar-thumb {
-    background: #888; 
+    background: #888;
+    border-radius: 8px; 
 }
   
 ::-webkit-scrollbar-thumb:hover {
