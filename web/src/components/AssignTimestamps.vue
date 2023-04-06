@@ -156,7 +156,8 @@ export default {
             videoStatus: 'Pause',
             videoProgressPercent: 0,
             isDraggingSeeker: false,
-            videoSeekerTime: '00:00'
+            videoSeekerTime: '00:00',
+            maxTimestamps: 7
         }
     },
     props: {
@@ -395,10 +396,14 @@ export default {
             }
         },
         newTimestampButtonClick() {
-            const video = document.getElementById(this.selectedVideo._id)
-            this.newTimestamp = video.currentTime
-            this.createNewTimestamp()
-            this.toggleSaveButton()
+            if(this.timestamps.length >= this.maxTimestamps) {
+                console.log('test')
+            } else {
+                const video = document.getElementById(this.selectedVideo._id)
+                this.newTimestamp = video.currentTime
+                this.createNewTimestamp()
+                this.toggleSaveButton()
+            }
         },
         createNewTimestamp() {
             if(this.timestamps.length > 0) {
