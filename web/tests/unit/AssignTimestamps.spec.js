@@ -83,7 +83,7 @@ describe('AssignTimestamps.vue', () => {
         await lesson.trigger('click')
         wrapper.vm.newTimestampButtonClick = jest.fn()
         const newTimestamp = jest.spyOn(wrapper.vm, 'newTimestampButtonClick')
-        const addTimestamp = wrapper.find('.add-button-div').find('#add-timestamp-button')
+        const addTimestamp = wrapper.find('#add-timestamp-button')
         expect(addTimestamp.exists()).toBe(true)
         await addTimestamp.trigger('click')
         expect(newTimestamp).toHaveBeenCalled

@@ -44,7 +44,17 @@
                         <div class="draggable-seeker" id="draggable-seeker"></div>
                     </div>
                     <div class="add-timestamp-div" draggable="false">
-                        <button id="add-timestamp-button" @click="newTimestampButtonClick()">Timestamp</button>
+                        <button id="add-timestamp-button" @click="newTimestampButtonClick()">
+                            Timestamp
+                            <TransitionGroup name="toggle-tooltip">
+                                <div v-show="timestampMaxExceeded" :key="timestampMaxExceeded" class="show-exceeded-max-timestamps">
+                                    <div class="exceeded-max-timestamps">
+                                        <p>You have reached the maximum amount of timestamps.</p>
+                                    </div>
+                                    <div class="exceeded-max-timestamps-tail"></div>
+                                </div>
+                            </TransitionGroup>
+                        </button>
                     </div>
                 </div>
                 <div class="timestamps-div">
@@ -54,32 +64,45 @@
                                 <li v-for="(timestamp,index) in formattedTimestamps" :key="timestamp">
                                     <button id="delete-timestamp-button" @click="deleteTimestamp(index)">X</button>
                                     {{timestamp}}
+
                                     <button v-if="activities[index] == ''" class="incomplete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)" @mouseover="toggleHoverDescription(true, index)" @mouseleave="toggleHoverDescription(false, index)">
                                         <img src="../../images/activity.png">
                                     </button>
+
                                     <button v-else-if="activities[index] && activities[index] != '' && !checkForId(activities[index])" class="complete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)" @mouseover="toggleHoverDescription(true, index)" @mouseleave="toggleHoverDescription(false, index)">
                                         <img v-show="activities[index].questionType == 'multiple-choice'" src="../../images/multiple-choice.png">
                                         <img v-show="activities[index].questionType == 'short-answer'" src="../../images/short-answer.png">
                                         <img v-show="activities[index].questionType == 'eye-tracking'" src="../../images/eye-tracking.png">
                                         <img v-show="activities[index].questionType == 'drag-and-drop'" src="../../images/drag-and-drop.png">
+                                        <TransitionGroup name="toggle-tooltip">
+                                            <div v-show="showHoverDescription && hoverDescriptionIndex === index" class="hover-description" :key="showHoverDescription">
+                                                <ActivityHoverDescription :activity="activities[index]"/>
+                                                <div class="tail"></div>
+                                            </div>
+                                        </TransitionGroup>
                                     </button>
+
                                     <button v-else class="pulled-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)" @mouseover="toggleHoverDescription(true, index)" @mouseleave="toggleHoverDescription(false, index)">
                                         <img v-show="activities[index].questionType == 'multiple-choice'" src="../../images/multiple-choice.png">
                                         <img v-show="activities[index].questionType == 'short-answer'" src="../../images/short-answer.png">
                                         <img v-show="activities[index].questionType == 'eye-tracking'" src="../../images/eye-tracking.png">
                                         <img v-show="activities[index].questionType == 'drag-and-drop'" src="../../images/drag-and-drop.png">
-                                        <div v-show="showHoverDescription && hoverDescriptionIndex === index" class="hover-description">
-                                            <ActivityHoverDescription :activity="activities[index]"/>
-                                            <div class="tail"></div>
-                                        </div>
+                                        <TransitionGroup name="toggle-tooltip">
+                                            <div v-show="showHoverDescription && hoverDescriptionIndex === index" class="hover-description" :key="showHoverDescription">
+                                                <ActivityHoverDescription :activity="activities[index]"/>
+                                                <div class="tail"></div>
+                                            </div>
+                                        </TransitionGroup>
                                     </button>
                                     
                                     <button v-if="feedback[index] == ''" class="incomplete-feedback" id="feedback-button" @click="toggleFeedbackModal(index)">
                                         <img src="../../images/feedback.png">
                                     </button>
+
                                     <button v-else-if="feedback[index] && feedback[index] != '' && !checkForId(feedback[index])" class="complete-feedback" id="feedback-button" @click="toggleFeedbackModal(index)">
                                         <img src="../../images/feedback.png">
                                     </button>
+
                                     <button v-else class="pulled-feedback" id="feedback-button" @click="toggleFeedbackModal(index)">
                                         <img src="../../images/feedback.png">
                                     </button>
@@ -157,7 +180,8 @@ export default {
             videoProgressPercent: 0,
             isDraggingSeeker: false,
             videoSeekerTime: '00:00',
-            maxTimestamps: 7
+            maxTimestamps: 7,
+            timestampMaxExceeded: false
         }
     },
     props: {
@@ -173,10 +197,11 @@ export default {
             this.isOnInitialAssignTimestampsPage = false
             this.isVideoSelected = !this.isVideoSelected
             setTimeout(() => {
+                this.setupVideoTimeListeners()
                 this.setupProgressBarListeners()
                 this.setupSeekerEventListeners()
-                this.setupVideoTimeListeners()
                 this.setupProgressDivClickListener()
+                this.resetVideo()
             }, 10)
         },
         returnToVideoSelectionPage(){
@@ -284,9 +309,7 @@ export default {
             const videoTimer = document.getElementById('video-time')
             videoTimer.addEventListener('mouseup', (event) => {
                 event.preventDefault()
-                video.currentTime = 0
-                this.replaceVideoControlElements()
-                this.setupSeekerEventListeners() 
+                this.resetVideo()
             })
 
             const controls = document.getElementById('controls')
@@ -324,6 +347,16 @@ export default {
             newProgressDiv.appendChild(progressBar)
             newProgressDiv.appendChild(newSeeker)
             progressDiv.replaceWith(newProgressDiv)
+        },
+        resetVideo() {
+            const video = document.getElementById(this.selectedVideo._id)
+            const seeker = document.getElementById('draggable-seeker')
+            const progressBar = document.getElementById('progress-bar')
+            const videoCurrentTime = document.getElementById('video-current-time')
+            video.currentTime = 0
+            seeker.style.left = 0 + '%'
+            progressBar.style.width = 0 + '%'
+            videoCurrentTime.innerHTML = '00:00'
         },
         moveVideoToTimestampFrame() {
             const videoElem = document.getElementById(this.selectedVideo._id)
@@ -397,7 +430,12 @@ export default {
         },
         newTimestampButtonClick() {
             if(this.timestamps.length >= this.maxTimestamps) {
-                console.log('test')
+                if(this.timestampMaxExceeded === false) {
+                    this.timestampMaxExceeded = true
+                    setTimeout(() => {
+                        this.timestampMaxExceeded = false
+                    }, 2000)
+                }
             } else {
                 const video = document.getElementById(this.selectedVideo._id)
                 this.newTimestamp = video.currentTime
@@ -1114,7 +1152,38 @@ ul.timestamp-ul {
     width: 0;
     height: 0;
     border-color:#f9f9f9 transparent transparent transparent;
-    border-width:10px;
+    border-width: 10px;
+    border-style: solid;
+}
+
+.show-exceeded-max-timestamps {
+    position: relative;
+}
+
+.exceeded-max-timestamps {
+    position: absolute;
+    width: 150px;
+    height: 100px;
+    background: #ffffff;
+    margin-top: -140px;
+    margin-left: -25px;
+    box-shadow: 0 0 15px #141414
+}
+
+.exceeded-max-timestamps p {
+    color: #000000;
+    text-shadow: none;
+    font-size: 16px;
+}
+
+.exceeded-max-timestamps-tail {
+    position: absolute;
+    bottom: 20px;
+    right: 44px;
+    width: 0;
+    height: 0;
+    border-color: #f9f9f9 transparent transparent transparent;
+    border-width: 10px;
     border-style: solid;
 }
 
@@ -1133,6 +1202,24 @@ ul.timestamp-ul {
   
 ::-webkit-scrollbar-thumb:hover {
     background: #555; 
+}
+
+.toggle-tooltip-leave-from,
+.toggle-tooltip-enter-to  {
+    opacity: 1;
+}
+
+.toggle-tooltip-leave-to,
+.toggle-tooltip-enter-from {
+    opacity: 0;
+}
+
+.toggle-tooltip-leave-active {
+  transition: all .25s ease-in-out;
+}
+
+.toggle-tooltip-enter-active {
+  transition: all .25s ease-in-out;
 }
 
 </style>
