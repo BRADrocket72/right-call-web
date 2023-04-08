@@ -14,7 +14,8 @@
               <br>
               <p>By clicking ok, you understand that this question will track your eye movements, which will contribute to your quiz results.</p>
               
-  
+              <h1>Question: </h1>
+              <p> {{ question.questionText }} </p>
               <button type="button" class="btn-green" @click="close()">OK</button>
             </slot>
           </section>
@@ -27,6 +28,9 @@
 
 export default {
   name: 'EyeTrackingConfirm',
+  props: {
+    question: Object
+  },
   methods: {
     close() {
         this.$emit('close');
