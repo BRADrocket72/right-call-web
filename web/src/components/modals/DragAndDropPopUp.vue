@@ -46,7 +46,6 @@ export default {
             this.$emit('close', this.returnAnswers);
         },
         wordBankSetup(answer) {
-            console.log(answer)
             let wordBank = document.getElementById(answer)
             if (wordBank) {
                 wordBank.addEventListener('dragstart', (event) => {
