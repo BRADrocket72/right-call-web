@@ -4,7 +4,7 @@
       <div v-if="studentsEmpty" class="students-container">
           <div class="empty-classes">
               <h4>There are no students assigned to this lesson.</h4>
-              <p>No Students? <a students="to-class-creation-page" @click="redirectToClassCreationPage" >Add Students Here</a></p>
+              <p>No Students? <a class="to-class-creation-page" @click="redirectToUpdateClassPage" >Add Students Here</a></p>
           </div>
       </div>
       <div v-else class="students-container">
@@ -74,7 +74,7 @@ export default {
       selectedElement: HTMLElement,
       selectedStudent: Object,
 
-
+      studentsResultsForLesson: [],
 
       studentsEmpty: false,
       isLessonResultsVisible: false,
@@ -97,7 +97,7 @@ export default {
                     } else {
                         arrow.classList.remove('arrow-left')
                         arrow.classList.add('arrow-right')
-                        this.isLessonListVisible = false
+                        this.isLessonResultsVisible = false
                         this.lessonList = []
                         return
                     } 
@@ -115,30 +115,38 @@ export default {
             }
             await this.displayStudentResults(studentList)
             this.selectedElement = selected
-            this.isLessonListVisible = true
+            this.isLessonResultsVisible = true
         },
 
         async displayStudentResults(student) {
-            let currentLesson = [];
-
+            this.studentsResultsForLesson = [];
             var userResultsStore = useUserResultsStore();
             let highest_results = await userResultsStore.getHighestResults(student.userName)
-            
             var instructorLessonStore = useInstructorLessonStore();
-            let lesson = await instructorLessonStore.getLessonByLessonId(this.lessonId);
+            let lesson = await instructorLessonStore.fetchLessonById(this.lessonId);
 
             for (let i = 0 ; i < lesson.videoClipsArray.length ; i++ ) {
                 for (let j = 0 ; j < highest_results.length ; j++ ) {
                     if (lesson.videoClipsArray[i]._id == highest_results[j][0].quizId ){
-                        currentLesson.push(highest_results[j][0])
+                        this.studentsResultsForLesson.push(highest_results[j][0])
                     }
                 }
             }
+
+            if(this.studentsResultsForLesson.length > 0) {
+                this.StudentHasResults = true
+            } else {
+                this.StudentHasResults = false
+            }
         },
+        redirectToUpdateClassPage() {
+            this.$router.push({
+            name: "UpdateClassPage"
+          })
+        }
   },
 
   async mounted() {
-    var userResultsStore = useUserResultsStore();
     var instructorClassStore = useInstructorClassStore();
     var userStore = useUsersStore();
 
@@ -153,8 +161,6 @@ export default {
     if (this.lessonsStudents.length == 0) { 
         this.studentsEmpty = true
     }
-
-    this.studentResults = await userResultsStore.getByLessonId(this.lessonId);
   }
 }
 
