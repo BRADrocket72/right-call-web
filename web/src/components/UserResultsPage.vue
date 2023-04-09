@@ -3,13 +3,14 @@
     <LoggedInNavBarVue />
     <div v-if="ready" class="user-results">
         <div class="results-table">
-            <table>
-                <tr>
+            <table class="resultsTable">
+                <tr class="resultsHeader">
                     <th>Lesson</th>
                     <th>Quiz Name</th>
                     <th>Score</th>
                 </tr>
-                <tr v-for="result in results" :key="result">
+                <br/>
+                <tr class="resultsBody" v-for="result in results" :key="result">
                     <td>{{ result[0].lessonName }}</td>
                     <td>{{result[0].quizName}}</td>
                     <td>{{result[0].score}}% (Attempts: {{result.length}})</td>
@@ -85,11 +86,14 @@ export default {
 
 .results-table {
     padding: 20px;
+    border: 4px solid #4AAE9B;
+    border-radius: 10px;
 }
 
 .results-table th {
     font-size: 40px;
     padding: 0 25px 0 25px;
+    color: #4AAE9B;
 }
 
 .results-table td {
