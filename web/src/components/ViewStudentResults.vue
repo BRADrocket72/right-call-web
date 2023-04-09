@@ -20,19 +20,19 @@
             </ul>
         </div>
           
-              <!-- <TransitionGroup name="show-lessons">
+              <TransitionGroup name="show-results">
                   <div v-if="isLessonResultsVisible && StudentHasResults" class="lesson-list-div">
                       <TransitionGroup name="change-lessons" tag="ul" class="lesson-list">
-                          <li v-for="lesson in lessonList" :key="lesson" class="lesson-li">
-                              <p class="lesson-name">{{lesson.name}}</p>
-                              <p class="lesson-description">{{lesson.description}}</p>
+                          <li v-for="results in studentsResultsForLesson" :key="results" class="lesson-li">
+                              <p class="lesson-name">{{results.quizName}}</p>
+                              <p class="lesson-description">{{results.score}}</p>
                           </li>
                       </TransitionGroup>
                   </div>
                   <div v-else-if="isLessonResultsVisible && !StudentHasResults" class="empty-class">
-                      <h2 class="empty-message">This class contains no lessons</h2>
+                      <h2 class="empty-message">This student has not taken this lesson yet ..</h2>
                   </div>
-              </TransitionGroup> -->
+              </TransitionGroup>
 
       </div>
   </div>
@@ -149,10 +149,12 @@ export default {
   async mounted() {
     var instructorClassStore = useInstructorClassStore();
     var userStore = useUsersStore();
+    var userResults = useUserResultsStore();
 
     this.currentClass = await instructorClassStore.getAllByClassId(this.classId);
     this.lessonsStudents = this.currentClass.studentIds;
-
+    this.results = await userResults.getHighestResults(this.$cookies.get("user_session").currentUserName)
+        
     for (var i =0 ; i< this.lessonsStudents.length; i++ ) {
         let currentStudent = await userStore.getUserById(this.lessonsStudents[i])
         this.studentList.push(currentStudent)
@@ -161,6 +163,9 @@ export default {
     if (this.lessonsStudents.length == 0) { 
         this.studentsEmpty = true
     }
+
+
+
   }
 }
 
@@ -298,11 +303,11 @@ export default {
     animation: inDiv .25s;
 }
 
-.show-lessons-enter-active {
+.show-results-enter-active {
     animation: inDiv .25s;
 }
 
-.show-lessons-leave-active {
+.show-results-leave-active {
     animation: outDiv .25s;
 }
 
