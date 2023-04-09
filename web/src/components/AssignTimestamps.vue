@@ -23,7 +23,40 @@
         </div>
         <div v-else class="assign-timestamps-container">
             <div class="main-content-div">
-                <video :id="selectedVideo._id" :src="selectedVideo.videoURL" controls/>
+                <video :id="selectedVideo._id" :src="selectedVideo.videoURL" />
+                <div class="controls" id="controls">
+                    <div v-show="isDraggingSeeker" class="video-time-clock">
+                        <p>{{videoSeekerTime}}</p>
+                    </div>
+                    <div class="play-button-div">
+                        <button class="play-pause-button" id="play-pause-button" @click="togglePlayVideo()" draggable="false">
+                            <img v-show="videoStatus === 'Pause'" src="../../images/play.png">
+                            <img v-show="videoStatus === 'Play'" src="../../images/pause.png">
+                        </button>
+                    </div>
+                    <div class="video-time" id="video-time" draggable="false">
+                        <span id="video-current-time">00:00</span>
+                        <span> / </span> 
+                        <span id="video-duration">00:00</span>
+                    </div>
+                    <div class="progress-div" id="progress-div">
+                        <div class="progress-bar" id="progress-bar"></div>
+                        <div class="draggable-seeker" id="draggable-seeker"></div>
+                    </div>
+                    <div class="add-timestamp-div" draggable="false">
+                        <button id="add-timestamp-button" @click="newTimestampButtonClick()">
+                            Timestamp
+                            <TransitionGroup name="toggle-tooltip">
+                                <div v-show="timestampMaxExceeded" :key="timestampMaxExceeded" class="show-exceeded-max-timestamps">
+                                    <div class="exceeded-max-timestamps">
+                                        <p>You have reached the maximum amount of timestamps.</p>
+                                    </div>
+                                    <div class="exceeded-max-timestamps-tail"></div>
+                                </div>
+                            </TransitionGroup>
+                        </button>
+                    </div>
+                </div>
                 <div class="timestamps-div">
                     <div class="display-timestamps-div">
                         <div class="timestamps">
@@ -31,28 +64,45 @@
                                 <li v-for="(timestamp,index) in formattedTimestamps" :key="timestamp">
                                     <button id="delete-timestamp-button" @click="deleteTimestamp(index)">X</button>
                                     {{timestamp}}
-                                    <button v-if="activities[index] == ''" class="incomplete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">
+
+                                    <button v-if="activities[index] == ''" class="incomplete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)" @mouseover="toggleHoverDescription(true, index)" @mouseleave="toggleHoverDescription(false, index)">
                                         <img src="../../images/activity.png">
                                     </button>
-                                    <button v-else-if="activities[index] && activities[index] != '' && !checkForId(activities[index])" class="complete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">
+
+                                    <button v-else-if="activities[index] && activities[index] != '' && !checkForId(activities[index])" class="complete-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)" @mouseover="toggleHoverDescription(true, index)" @mouseleave="toggleHoverDescription(false, index)">
                                         <img v-show="activities[index].questionType == 'multiple-choice'" src="../../images/multiple-choice.png">
                                         <img v-show="activities[index].questionType == 'short-answer'" src="../../images/short-answer.png">
                                         <img v-show="activities[index].questionType == 'eye-tracking'" src="../../images/eye-tracking.png">
                                         <img v-show="activities[index].questionType == 'drag-and-drop'" src="../../images/drag-and-drop.png">
+                                        <TransitionGroup name="toggle-tooltip">
+                                            <div v-show="showHoverDescription && hoverDescriptionIndex === index" class="hover-description" :key="showHoverDescription">
+                                                <ActivityHoverDescription :activity="activities[index]"/>
+                                                <div class="tail"></div>
+                                            </div>
+                                        </TransitionGroup>
                                     </button>
-                                    <button v-else class="pulled-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)">
+
+                                    <button v-else class="pulled-timestamp" id="assign-activity-button" @click="toggleAssignActivityModal(index)" @mouseover="toggleHoverDescription(true, index)" @mouseleave="toggleHoverDescription(false, index)">
                                         <img v-show="activities[index].questionType == 'multiple-choice'" src="../../images/multiple-choice.png">
                                         <img v-show="activities[index].questionType == 'short-answer'" src="../../images/short-answer.png">
                                         <img v-show="activities[index].questionType == 'eye-tracking'" src="../../images/eye-tracking.png">
                                         <img v-show="activities[index].questionType == 'drag-and-drop'" src="../../images/drag-and-drop.png">
+                                        <TransitionGroup name="toggle-tooltip">
+                                            <div v-show="showHoverDescription && hoverDescriptionIndex === index" class="hover-description" :key="showHoverDescription">
+                                                <ActivityHoverDescription :activity="activities[index]"/>
+                                                <div class="tail"></div>
+                                            </div>
+                                        </TransitionGroup>
                                     </button>
                                     
                                     <button v-if="feedback[index] == ''" class="incomplete-feedback" id="feedback-button" @click="toggleFeedbackModal(index)">
                                         <img src="../../images/feedback.png">
                                     </button>
+
                                     <button v-else-if="feedback[index] && feedback[index] != '' && !checkForId(feedback[index])" class="complete-feedback" id="feedback-button" @click="toggleFeedbackModal(index)">
                                         <img src="../../images/feedback.png">
                                     </button>
+
                                     <button v-else class="pulled-feedback" id="feedback-button" @click="toggleFeedbackModal(index)">
                                         <img src="../../images/feedback.png">
                                     </button>
@@ -60,9 +110,6 @@
                             </ul>
                         </div>
                         <button id="save-timestamps-button" @click="updateAPI(selectedVideo._id,timestamps)">Save</button>
-                    </div>
-                    <div class="add-button-div">
-                        <button id="add-timestamp-button" @click="newTimestampButtonClick()">Add Timestamp Here</button>
                     </div>
                 </div>
             </div>
@@ -87,13 +134,15 @@ import { useUsersStore } from '@/stores/UserStore'
 import ActivityFeedbackModal from '@/components/modals/ActivityFeedbackModal.vue'
 import { useInstructorLessonStore } from '@/stores/InstructorLessonStore'
 import { useLessonStore } from '@/stores/LessonsStore'
+import ActivityHoverDescription from '@/components/ActivityHoverDescription.vue'
 
 export default {
     name: 'AssignTimestamps',
     components: { 
         AssignActivityModal,
         LoggedInNavBarVue,
-        ActivityFeedbackModal
+        ActivityFeedbackModal,
+        ActivityHoverDescription
     },
     data() {
         return {
@@ -124,7 +173,15 @@ export default {
             currentLesson: Object,
             isNameUpdated: false,
             lessonName: "",
-            isOnInitialAssignTimestampsPage: true
+            isOnInitialAssignTimestampsPage: true,
+            showHoverDescription: false,
+            hoverDescriptionIndex: Number,
+            videoStatus: 'Pause',
+            videoProgressPercent: 0,
+            isDraggingSeeker: false,
+            videoSeekerTime: '00:00',
+            maxTimestamps: 7,
+            timestampMaxExceeded: false
         }
     },
     props: {
@@ -139,6 +196,13 @@ export default {
             await this.getLessonContent()
             this.isOnInitialAssignTimestampsPage = false
             this.isVideoSelected = !this.isVideoSelected
+            setTimeout(() => {
+                this.setupVideoTimeListeners()
+                this.setupProgressBarListeners()
+                this.setupSeekerEventListeners()
+                this.setupProgressDivClickListener()
+                this.resetVideo()
+            }, 10)
         },
         returnToVideoSelectionPage(){
             this.isOnInitialAssignTimestampsPage = true
@@ -152,13 +216,158 @@ export default {
             this.deletedFeedback = []
             this.updatedFeedback = []
             this.activityModalData = []
+            this.videoProgressPercent = 0
             this.$router.push({
                 name: "AssignTimestamps"
             })
         },
-        moveVideoToTimestampFrame() {
+        setupVideoTimeListeners() {
+            const videoElem = document.getElementById(this.selectedVideo._id)
+            videoElem.addEventListener('timeupdate', () => {
+                const videoCurrentTime = document.getElementById("video-current-time")
+                const videoDuration = document.getElementById("video-duration")
+                videoCurrentTime.innerHTML = formatTimeForVideo(videoElem.currentTime);
+                videoDuration.innerHTML = formatTimeForVideo(videoElem.duration)
+                if (videoElem.duration == videoElem.currentTime) {
+                    videoElem.pause()
+                    this.videoStatus = 'Pause'
+                }
+            })
+        },
+        setupProgressBarListeners() {
+            const videoElem = document.getElementById(this.selectedVideo._id)
+            videoElem.addEventListener('timeupdate', function() {
+                let videoPosition = videoElem.currentTime / videoElem.duration
+                let barWidth = videoPosition * 100
+                const progressBar = document.getElementById('progress-bar')
+                const seeker = document.getElementById('draggable-seeker')
+                progressBar.style.width =  barWidth + '%'
+                seeker.style.left = barWidth + '%'
+            })
+        },
+        setupSeekerEventListeners() {
+            const seeker = document.getElementById('draggable-seeker')
+            if(seeker) {
+                this.seekerMouseDownListener()
+                this.seekerMouseUpListener()
+                this.setupProgressDivClickListener()
+            }
+        },
+        setupProgressDivClickListener() {
+            const seeker = document.getElementById('draggable-seeker')
+            const progressDiv = document.getElementById('progress-div')
+            const progressDivRect = progressDiv.getBoundingClientRect()
+            const progressDivWidth = progressDivRect.width
+            progressDiv.addEventListener('click', (event) => {
+                event.preventDefault()
+                const progressBar = document.getElementById('progress-bar')
+                let newX = event.layerX
+                this.videoProgressPercent = newX / progressDivWidth
+                seeker.style.left = (this.videoProgressPercent * 100) + '%'
+                progressBar.style.width = (this.videoProgressPercent * 100) + '%'
+
+                const video = document.getElementById(this.selectedVideo._id)
+                video.currentTime = this.videoProgressPercent * video.duration
+            })
+        },
+        seekerMouseDownListener() {
+            const seeker = document.getElementById('draggable-seeker')
+            const progressDiv = document.getElementById('progress-div')
+            const progressDivRect = progressDiv.getBoundingClientRect()
+            const progressDivWidth = progressDivRect.width
+            seeker.addEventListener('mousedown', () => {
+                this.isDraggingSeeker = true
+                progressDiv.addEventListener('mousemove', (event) => {
+                    event.preventDefault()
+                    if(event.target.id == 'progress-div' || event.target.id == 'progress-bar') {
+                        const progressBar = document.getElementById('progress-bar')
+                        let newX = event.layerX
+                        this.videoProgressPercent = newX / progressDivWidth
+                        seeker.style.left = (this.videoProgressPercent * 100) + '%'
+                        progressBar.style.width = (this.videoProgressPercent * 100) + '%'
+                        
+                        const video = document.getElementById(this.selectedVideo._id)
+                        let seekerProgress =  this.videoProgressPercent * video.duration
+                        this.videoSeekerTime = formatTimeForVideo(seekerProgress)
+                    }
+                })
+            })
+        },
+        seekerMouseUpListener() {
+            const seeker = document.getElementById('draggable-seeker')
             const video = document.getElementById(this.selectedVideo._id)
-            video.currentTime = this.currentActivityTimestamp
+            seeker.addEventListener('mouseup', (event) => {
+                event.preventDefault()
+                if(event.target.id === 'draggable-seeker') {
+                    this.isDraggingSeeker = false
+                    video.currentTime = this.videoProgressPercent * video.duration
+                    this.replaceVideoControlElements()
+                    this.setupSeekerEventListeners() 
+                }  
+            })
+
+            const videoTimer = document.getElementById('video-time')
+            videoTimer.addEventListener('mouseup', (event) => {
+                event.preventDefault()
+                this.resetVideo()
+            })
+
+            const controls = document.getElementById('controls')
+            controls.addEventListener('mouseup', (event) => {
+                event.preventDefault()
+                if(this.isDraggingSeeker === true) {
+                    this.isDraggingSeeker = false
+                    if(event.layerX <= 145) {
+                        video.currentTime = 0
+                    } else if(event.layerX >= 836) {
+                        video.currentTime = video.duration
+                    } else {
+                        const progressBar = document.getElementById('progress-bar')
+                        const progressDiv = document.getElementById('progress-div')
+                        const progressDivRect = progressDiv.getBoundingClientRect()
+                        const progressDivWidth = progressDivRect.width
+                        let newX = event.layerX - 145
+                        this.videoProgressPercent = newX / progressDivWidth
+                        seeker.style.left = (this.videoProgressPercent * 100) + '%'
+                        progressBar.style.width = (this.videoProgressPercent * 100) + '%'
+                        video.currentTime = this.videoProgressPercent * video.duration
+                    }
+                    this.replaceVideoControlElements()
+                    this.setupSeekerEventListeners() 
+                }
+            })
+
+        },
+        replaceVideoControlElements() {
+            const seeker = document.getElementById('draggable-seeker')
+            const progressDiv = document.getElementById('progress-div')
+            const progressBar = document.getElementById('progress-bar')
+            const newSeeker = seeker.cloneNode(false)
+            const newProgressDiv = progressDiv.cloneNode(false)
+            newProgressDiv.appendChild(progressBar)
+            newProgressDiv.appendChild(newSeeker)
+            progressDiv.replaceWith(newProgressDiv)
+        },
+        resetVideo() {
+            const video = document.getElementById(this.selectedVideo._id)
+            const seeker = document.getElementById('draggable-seeker')
+            const progressBar = document.getElementById('progress-bar')
+            const videoCurrentTime = document.getElementById('video-current-time')
+            video.currentTime = 0
+            seeker.style.left = 0 + '%'
+            progressBar.style.width = 0 + '%'
+            videoCurrentTime.innerHTML = '00:00'
+        },
+        moveVideoToTimestampFrame() {
+            const videoElem = document.getElementById(this.selectedVideo._id)
+            videoElem.currentTime = this.currentActivityTimestamp
+
+            let videoPosition = videoElem.currentTime / videoElem.duration
+            let barWidth = videoPosition * 100
+            const progressBar = document.getElementById('progress-bar')
+            const seeker = document.getElementById('draggable-seeker')
+            progressBar.style.width =  barWidth + '%'
+            seeker.style.left = barWidth + '%'
         },
         async getLessonContent() {
             if(this.selectedVideo.timeStamps) {
@@ -205,11 +414,34 @@ export default {
                 this.sortFeedback()
             }
         },
-        newTimestampButtonClick() {
+        togglePlayVideo() {
             const video = document.getElementById(this.selectedVideo._id)
-            this.newTimestamp = video.currentTime
-            this.createNewTimestamp()
-            this.toggleSaveButton()
+            if (video.paused) {
+                setTimeout(() => {
+                    video.play()
+                }, 10)
+                this.videoStatus = 'Play'
+            } else {
+                setTimeout(() => {
+                    video.pause()
+                }, 10)
+                this.videoStatus = 'Pause'
+            }
+        },
+        newTimestampButtonClick() {
+            if(this.timestamps.length >= this.maxTimestamps) {
+                if(this.timestampMaxExceeded === false) {
+                    this.timestampMaxExceeded = true
+                    setTimeout(() => {
+                        this.timestampMaxExceeded = false
+                    }, 2000)
+                }
+            } else {
+                const video = document.getElementById(this.selectedVideo._id)
+                this.newTimestamp = video.currentTime
+                this.createNewTimestamp()
+                this.toggleSaveButton()
+            }
         },
         createNewTimestamp() {
             if(this.timestamps.length > 0) {
@@ -311,6 +543,15 @@ export default {
                 this.feedback[this.currentFeedbackIndex] = new FeedbackDto(this.selectedVideo._id, '', returnedData[1], returnedData[2], returnedData[3])
             }
             this.toggleSaveButton()
+        },
+        toggleHoverDescription(isShown, index) {
+            if(isShown) {
+                this.hoverDescriptionIndex = index
+                this.showHoverDescription = true
+            } else {
+                this.hoverDescriptionIndex = Number
+                this.showHoverDescription = false
+            }
         },
         checkForId(object) {
             if(object._id) {
@@ -517,10 +758,149 @@ export default {
 }
 
 video {
-  width: 972px;
-  height: 550px;
-  display: block;
-  margin: 0;
+    width: 972px;
+    height: 550px;
+    display: block;
+    margin: 0;
+}
+
+.controls {
+    display: flex;
+    position: absolute;
+    flex-wrap: wrap;
+    margin-top: 540px;
+    background: #0e333c;
+    width: 972px;
+    height: 50px;
+    border-bottom-right-radius: 13px;
+    border-bottom-left-radius: 13px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.video-time {
+    display: flex;
+    flex-direction: row;
+    width: 75px;
+    margin-right: 10px;
+    justify-content: space-between;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    cursor: pointer;
+}
+
+.video-time span {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 13px;
+    text-align: center;
+}
+
+.video-time-clock {
+    background-image: url('../../images/blank-clock.png');
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-size: cover;
+    height: 85px;
+    width: 85px;
+    position: absolute;
+    margin: -100px 50%;
+    text-align: center;
+    border: 2px solid #000000;
+    border-radius: 50%;
+    background-color: #ffffff;
+}
+
+.video-time-clock p {
+    color: #000000;
+    margin: 26px 0 0 0;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.play-button-div {
+    width: 40px;
+    height: 40px;
+    margin: 9px 5px 0 10px;
+}
+
+.play-pause-button {
+    width: 30px;
+    height: 30px;
+    background: #52746d;
+    border: none;
+    border-radius: 50%;
+}
+
+.play-pause-button img {
+    width: 25px;
+    margin-left: -3px;
+}
+
+.play-pause-button:hover {
+    background: #415551;
+}
+
+.progress-div {
+    position: relative;
+    margin: 15px 10px 0 5px;
+    width: 690px;
+    height: 20px;
+    background: black;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.progress-bar {
+    width: 10px;
+    height: 20px;
+    background: #FFA500;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+.draggable-seeker {
+    display: flex;
+    position: relative;
+    width: 10px;
+    height: 40px;
+    background: #ffffff;
+    border: 1px solid #636363;
+    border-radius: 6px;
+    left: 0%;
+    margin: -30px 0 0 0;
+    cursor: pointer;
+}
+
+.add-timestamp-div {
+    width: 117px;
+}
+
+#add-timestamp-button {
+    float: right;
+    text-align: center;
+    border: none;
+    font-size: 20px;
+    text-shadow: 1px 1px #0e333c;
+    color: white;
+    background: #4AAE9B;
+    width: 117px;
+    height: 30px;
+    border-radius: 10px;
+    margin: 9px 0 9px 0;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+#add-timestamp-button:hover {
+    background: #349b88;
 }
 
 .main-content-div {
@@ -528,33 +908,8 @@ video {
     flex-direction: row;
 }
 
-.actions-div {
-    width: 100%;
-    margin: 30px auto;
-    justify-content: space-around;
-}
-
-#add-timestamp-button {
-    text-align: center;
-    margin-left: 22px;
-    border: none;
-    font-size: 30px;
-    color: white;
-    text-shadow: 2px 1px 1px black;
-    box-shadow: 0 6px 6px #d1d1d1;
-    background: #4AAE9B;
-    min-width: 100px;
-    min-height: 80px;
-    border-radius: 15px;
-}
-
-#add-timestamp-button:hover {
-    background: #349b88;
-    box-shadow: 0 10px 10px #d1d1d1;
-}
-
 .timestamps-div {
-    flex-direction: column;
+    position: relative;
     height: 600px;
 }
 .video-link {
@@ -565,7 +920,7 @@ video {
 .display-timestamps-div {
     position: relative;
     width: 320px;
-    height: 400px;
+    height: 590px;
     margin-left: 10px;
     background: #0e333c;
     border:  1px solid black;
@@ -574,20 +929,13 @@ video {
     font-size: 0;
 }
 
-.display-timestamps-div ul{
-    margin-left: auto;
-    
-}
-
 .timestamps {
-    overflow-x: none;
-    overflow-y: auto;
     width: 320px;
-    height: 300px;
     font-size: 0;
 }
 
 ul.timestamp-ul {
+    margin-left: auto;
     padding: 0 0 0 7px;
 }
 
@@ -730,7 +1078,7 @@ ul.timestamp-ul {
 }
 
 #lessonNameText {
-        text-align: center;
+    text-align: center;
 }
 
 #lessonNameInput {
@@ -793,5 +1141,85 @@ ul.timestamp-ul {
     border-radius: 8px;
 }
 
+.hover-description {
+    position: relative;
+}
+
+.tail {
+    position: absolute;
+    bottom: 30px;
+    left: 12px;
+    width: 0;
+    height: 0;
+    border-color:#f9f9f9 transparent transparent transparent;
+    border-width: 10px;
+    border-style: solid;
+}
+
+.show-exceeded-max-timestamps {
+    position: relative;
+}
+
+.exceeded-max-timestamps {
+    position: absolute;
+    width: 150px;
+    height: 100px;
+    background: #ffffff;
+    margin-top: -140px;
+    margin-left: -25px;
+    box-shadow: 0 0 15px #141414
+}
+
+.exceeded-max-timestamps p {
+    color: #000000;
+    text-shadow: none;
+    font-size: 16px;
+}
+
+.exceeded-max-timestamps-tail {
+    position: absolute;
+    bottom: 20px;
+    right: 44px;
+    width: 0;
+    height: 0;
+    border-color: #f9f9f9 transparent transparent transparent;
+    border-width: 10px;
+    border-style: solid;
+}
+
+::-webkit-scrollbar {
+    width: 13px;
+}
+  
+::-webkit-scrollbar-track {
+    background: #ffffff; 
+}
+   
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 8px; 
+}
+  
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
+.toggle-tooltip-leave-from,
+.toggle-tooltip-enter-to  {
+    opacity: 1;
+}
+
+.toggle-tooltip-leave-to,
+.toggle-tooltip-enter-from {
+    opacity: 0;
+}
+
+.toggle-tooltip-leave-active {
+  transition: all .25s ease-in-out;
+}
+
+.toggle-tooltip-enter-active {
+  transition: all .25s ease-in-out;
+}
 
 </style>

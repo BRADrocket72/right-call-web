@@ -11,7 +11,8 @@
         <div v-if="containsEyeTrackingActivity && isEyeTrackingVisible && !webcamPermission" class="quadrants-container">
           <NoWebcamPopUp :answersArray="answers" :question="currentVideoQuestions[questionIndex]" @close="toggleEyeTracking" />
         </div>
-        <div v-if="currentQuestion && currentQuestion.questionType == 'eye-tracking' && webcamPermission" class="question">
+        <div v-if="!isEyeTrackingConfirmed && currentQuestion && currentQuestion.questionType == 'eye-tracking' && webcamPermission" class="question">
+            <EyeTrackingConfirm :question="currentQuestion" @close="closeEyeTrackingConfirm"> </EyeTrackingConfirm>
             <h2>{{currentQuestion.questionText}}</h2>
             <p>Use your eyes to answer this question.</p>
         </div>
@@ -62,6 +63,7 @@
   import webgazer from 'webgazer'
   import { useFeedbackStore } from '@/stores/FeedbackStore'
   import QuizFeedbackModal from '@/components/modals/QuizFeedbackModal.vue'
+  import EyeTrackingConfirm from '@/components/modals/EyeTrackingConfirm.vue'
   
   export default {
     name: 'VideoEditor',
@@ -74,7 +76,8 @@
       WebgazerCalibrationPage,
       WebcamPermissionModal,
       DragAndDropPopUp,
-      QuizFeedbackModal
+      QuizFeedbackModal,
+      EyeTrackingConfirm
     },
     props: {
       videoId: {
@@ -106,7 +109,8 @@
         dragAndDropReady: false,
         feedbackList: [],
         isFeedbackVisible: false,
-        redDotVisibility: false
+        redDotVisibility: false,
+        isEyeTrackingConfirmed: false
       };
     },
     async mounted() {
@@ -160,10 +164,10 @@
         this.currentVideoClip = await videoClipStore.fetchVideoClipById(this.videoId);
         this.videoName = this.currentVideoClip.videoName
         this.currentVideoQuestions = await activityStore.fetchActivitiesByVideoclipId(this.videoId)
-        this.currentQuestion = this.currentVideoQuestions[this.questionCounter]
         this.feedbackList = await feedbackStore.fetchFeedbackByVideoclipId(this.videoId)
         this.currentVideoQuestions.sort((a,b) => a.timestamp - b.timestamp)
         this.feedbackList.sort((a,b) => a.timestamp - b.timestamp)
+        this.currentQuestion = this.currentVideoQuestions[this.questionCounter]
         this.questionsLoaded = true
         this.checkForEyeTrackingActivity()
       },
@@ -242,10 +246,13 @@
         this.isFeedbackVisible = !this.isFeedbackVisible
         if(!this.isFeedbackVisible) {
           setTimeout(() => {
-            this.playOrPauseVideo()
-            this.togglePlayButton()
+            if (this.questionCounter >= this.currentVideoQuestions.length || (this.currentVideoQuestions[this.questionCounter].questionType != 'eye-tracking')) {
+              this.playOrPauseVideo()
+            }
+            this.togglePlayButton()  
             this.currentQuestion = this.currentVideoQuestions[this.questionCounter]
             this.questionIndex++
+            this.isEyeTrackingConfirmed = false
           }, 100)
         }
       },
@@ -297,6 +304,10 @@
           this.xPrediction = 0
           this.yPrediction = 0
         }
+      },
+      closeEyeTrackingConfirm() {
+        this.isEyeTrackingConfirmed = true
+        this.playOrPauseVideo()
       }
     },
     watch: {
