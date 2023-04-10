@@ -19,6 +19,10 @@
         <button type="button" class="button-selection updateLessonLink"><span>Update Your Lessons</span></button>
         <p class="create-description">Add timestamps and questions to your lesson packs.</p>
       </router-link>
+      <router-link to="/SelectStudentResults">
+        <button type="button" class="button-selection buttonLinks"><span>Student Results</span></button>
+        <p class="create-description">View the details of students lesson results within a class.</p>
+      </router-link>
     </div>
   </div>
 </div>

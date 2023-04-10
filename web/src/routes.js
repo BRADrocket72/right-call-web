@@ -15,6 +15,8 @@ import UpdateLessonsPage from "@/components/UpdateLessonsPage.vue"
 import CustomizeLessonMainPage from "@/components/CustomizeLessonMainPage.vue"
 import UpdateInstructorLessonsPage from "@/components/UpdateInstructorLessonsPage.vue"
 import VideoSelectionPage from "@/components/VideoSelectionPage.vue"
+import StudentResultsPage from "@/components/ViewStudentResults.vue"
+import SelectStudentResults from "@/components/SelectStudentResults.vue"
 import { createRouter, createWebHistory } from 'vue-router'
 
 
@@ -67,6 +69,12 @@ const routesArray = [
         component: UserResultsPage
     },
     {
+        path: "/ViewStudentResultsPage/:lessonId/:classId",
+        name: "ViewStudentResultsPage",
+        component: StudentResultsPage,
+        props: true
+    },
+    {
         path: "/LessonDeletion",
         name: "LessonDeletion",
         component: LessonDeletion
@@ -102,7 +110,12 @@ const routesArray = [
         component: UpdateInstructorLessonsPage
     },
     {
-        path: "/VideoSelectionPage:lessonId",
+        path: "/SelectStudentResults",
+        name: "SelectStudentResults",
+        component: SelectStudentResults
+    },
+    {
+        path: "/VideoSelectionPage/:lessonId",
         name: "VideoSelectionPage",
         component: VideoSelectionPage,
         props: true
