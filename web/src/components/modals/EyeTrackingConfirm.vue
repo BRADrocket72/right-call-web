@@ -7,25 +7,24 @@
               Eye Tracking Question Incoming
             </slot>
           </header>
-  
           <section class="modal-body" id="modalDescription">
             <slot name="body">
-              <p>The following question involves using eye tracking software to guage your understanding of the subject.</p>
-              <br>
-              <p>By clicking ok, you understand that this question will track your eye movements, which will contribute to your quiz results.</p>
-              
-              <h1>Question: </h1>
-              <p> {{ question.questionText }} </p>
-              <button type="button" class="btn-green" @click="close()">OK</button>
+              <div class="instructions">
+                <p>The following question involves using eye tracking software to guage your understanding of the subject.</p>
+                <p>By clicking ok, you understand that this question will track your eye movements, which will contribute to your quiz results.</p>
+              </div>
+              <div class="question">
+                <h2>Question: </h2>
+                <p class="questionText"> {{ question.questionText }} </p>
+                <button type="button" class="btn-green" @click="close()">OK</button>
+              </div>
             </slot>
           </section>
         </div>
       </div>
     </transition>
   </template>
-
 <script>
-
 export default {
   name: 'EyeTrackingConfirm',
   props: {
@@ -38,9 +37,6 @@ export default {
   }
 };
 </script>
-
-
-
 <style scoped>
 .modal-backdrop {
   position: fixed;
@@ -53,7 +49,6 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
 .modal {
   background: white;
   width: 600px;
@@ -66,28 +61,25 @@ export default {
   overflow-x: auto;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
-
 .modal-header {
   position: relative;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid #EEEEEE;
   background-color: #4AAE9B;
   justify-content: space-between;
   border-radius: 2px 2px 0px 0px;
-
+  color: white
 }
-
 .modal-footer {
-  border-top: 1px solid #eeeeee;
+  border-top: 1px solid #EEEEEE;
   flex-direction: column;
 }
-
 .modal-body {
   position: relative;
   background: white;
   padding: 20px 10px;
 }
-
 .btn-close {
   position: absolute;
   top: 0;
@@ -100,23 +92,38 @@ export default {
   color: #4AAE9B;
   background: transparent;
 }
-
 .btn-green {
-  color: white;
-  background: #4AAE9B;
-  border: 1px solid #eeeeee;
-  border-radius: 2px;
+  color: black;
+  background: #EEEEEE;
+  border: 1px solid #EEEEEE;
+  border-radius: 10px;
   padding: 15px;
   margin: 10px;
+  font-weight: bold;
 }
-
+.btn-green p {
+  font-size: larger;
+}
 .modal-fade-enter,
 .modal-fade-leave-to {
   opacity: 0;
 }
-
 .modal-fade-enter-active,
 .modal-fade-leave-active {
   transition: opacity .5s ease;
+}
+.instructions {
+  border-radius: 10px;
+}
+.question {
+  background-color: #4AAE9B;
+  color: white;
+  border-radius: 10px;
+}
+.question h2 {
+  font-weight: bold;
+}
+.questionText {
+  font-size: 22px;
 }
 </style>
