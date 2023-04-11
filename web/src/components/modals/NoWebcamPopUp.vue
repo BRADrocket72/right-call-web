@@ -4,11 +4,18 @@
         <h2>{{question.questionText}}</h2>
         <p>Hover and click on an area in the video to answer this question.</p>
     </div>
-    <div class="quadrants">
+
+    <div v-if="quadrantType === 'corner-quadrants'" class="corner-quadrants">
         <div class="quadrant" id="quadrant-one" @click="quadrantSelection('quadrant-one')"></div>
         <div class="quadrant" id="quadrant-two" @click="quadrantSelection('quadrant-two')"></div>
         <div class="quadrant" id="quadrant-three" @click="quadrantSelection('quadrant-three')"></div>
         <div class="quadrant" id="quadrant-four" @click="quadrantSelection('quadrant-four')"></div>
+    </div>
+    <div v-else-if="quadrantType === 'horizontal-quadrants'" class="horizontal-quadrants">
+        <div class="horizontal-quadrant" id="quadrant-one" @click="quadrantSelection('quadrant-one')"></div>
+        <div class="horizontal-quadrant" id="quadrant-two" @click="quadrantSelection('quadrant-two')"></div>
+        <div class="horizontal-quadrant" id="quadrant-three" @click="quadrantSelection('quadrant-three')"></div>
+        <div class="horizontal-quadrant" id="quadrant-four" @click="quadrantSelection('quadrant-four')"></div>
     </div>
 </div>
 </template>
@@ -20,7 +27,8 @@ export default {
     name: 'NoWebcamPopUp',
     data() {
         return {
-            updatedAnswers: []
+            updatedAnswers: [],
+            quadrantType: String
         }
     },
     props:{
@@ -32,6 +40,9 @@ export default {
             this.updatedAnswers = checkAnswer(this.question, this.answersArray, quadrant)
             this.$emit('close', this.updatedAnswers)
         }
+    },
+    mounted() {
+        this.quadrantType = this.question.answers[1]
     }
 }
 </script>
@@ -39,7 +50,7 @@ export default {
 
 <style scoped>
 
-.quadrants {
+.corner-quadrants {
     position: absolute;
     max-width: 972px;
     min-width: 972px;
@@ -61,6 +72,32 @@ export default {
 }
 
 .quadrant:hover {
+    backdrop-filter: brightness(150%);
+    cursor: pointer;
+}
+
+.horizontal-quadrants {
+    position: absolute;
+    max-width: 972px;
+    min-width: 972px;
+    height: 550px;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    text-align: center;
+}  
+
+.horizontal-quadrant {
+    max-width: 243px;
+    min-width: 243px;
+    max-height: 550px;
+    min-height: 550px;
+    float: left;
+    border: none;
+}
+
+.horizontal-quadrant:hover {
     backdrop-filter: brightness(150%);
     cursor: pointer;
 }
