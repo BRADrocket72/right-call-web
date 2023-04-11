@@ -1,4 +1,4 @@
-<template>
+template>
     <transition name="modal-fade">
       <div class="modal-backdrop">
         <div class="modal" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription">
