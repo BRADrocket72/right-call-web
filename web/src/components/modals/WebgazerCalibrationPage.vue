@@ -8,7 +8,9 @@
         <section class="modal-body" id="modalDescription">
           <slot name="body">
             <p class="title_1">Calibration Screen</p>
-            <p class="title_2">While looking at the cursor, Click on each button 5 times until each button is Red</p>
+            <p class="title_2">When the red dot appears:
+              while looking at the cursor, click on each button 5 times until each button is red</p>
+            <p class="title_2">(It may take around 15-20 seconds for the red dot to appear.)</p>
             <button type="button" v-if="readyForRecalibration && leftButton == 5 && rightButton == 5 && topLeftButton == 5 && topRightButton == 5 && centerButton == 5" class="btn-green" @click="close()"> Back to Quiz </button> 
             <button type="button" v-if="readyForRecalibration" class="btn-green" @click="recalibrate()"> Redo Calibration </button> 
             <calibration-page-check-warning v-if="isWarningNotAvailable && leftButton == 5 && rightButton == 5 && topLeftButton == 5 && topRightButton == 5 && centerButton == 5" @close="closeAccuracyWarning"></calibration-page-check-warning>
