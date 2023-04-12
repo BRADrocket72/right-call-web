@@ -56,7 +56,7 @@ export default {
     }
   },
   methods: {
-    logout() {
+    async logout() {
         if (webgazer.isReady()) {
             webgazer.showPredictionPoints(false)
             webgazer.end()
@@ -64,9 +64,10 @@ export default {
         var store = useUsersStore();
         store.usersEyeTrackingCalibration == ""
         this.$cookies.remove("user_session")
-        this.$router.push({
+        await this.$router.push({
           name: "LoginPage"
         })
+        window.location.reload();
     }
   },
 }
