@@ -25,7 +25,8 @@
                       <TransitionGroup name="change-lessons" tag="ul" class="lesson-list">
                           <li v-for="results in studentsResultsForLesson" :key="results" class="lesson-li">
                               <p class="lesson-name">{{results.quizName}}</p>
-                              <p class="lesson-description">{{results.score}}</p>
+                              <p class="lesson-description"> Score Received : {{results.score}}</p>
+                              <p class="lesson-description"> Time Spent : {{results.questionTime}}</p>
                           </li>
                       </TransitionGroup>
                   </div>
