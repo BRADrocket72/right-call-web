@@ -1,6 +1,6 @@
 const express = require('express');
 // const instructorClassController = require('../controllers/instructorClassController.ts')
-const instructorClassController = require('../controllers/instructorClassController.ts')
+const instructorClassController = require('../controllers/instructorClassController')
 
 const router = express.Router()
 

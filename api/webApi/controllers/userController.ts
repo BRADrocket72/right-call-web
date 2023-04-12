@@ -101,10 +101,10 @@ exports.user_login = async (req, res) => {
             if (user.password != req.body.password) {
                 res.status(200).json({ success: false })
             } else {
-                const refreshId = user._id + process.env.jwtSecret
+                const refreshId = user._id + process.env.JWT_SECRET
                 const salt = crypto.randomBytes(16).toString('base64');
                 const hash = crypto.createHmac('sha512', salt).update(refreshId).digest("base64");
-                const token = jwt.sign({ userId: user._id }, process.env.jwtSecret);
+                const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
                 const b = Buffer.from(hash);
                 const refresh_token = b.toString('base64');
                 res.status(201).send({ accessToken: token, refreshToken: refresh_token, success: true, userType: user.userType });

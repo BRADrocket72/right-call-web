@@ -2,12 +2,14 @@
   "name": "right-call-api",
   "version": "1.0.0",
   "description": "API connecting Right Call Web to Database",
-  "main": "./webApi/index.js",
+  "main": "./dist/webApi/index.js",
   "scripts": {
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "start": "ts-node ./webApi/index.js",
-    "lint": "eslint --fix ./*/*/*.js"
+    "lint": "eslint --fix ./*/*/*.js",
+    "deploy": "firebase deploy --only functions",
+    "build": "npx tsc"
   },
   "repository": {
     "type": "git",
@@ -26,6 +28,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "firebase-admin": "^11.5.0",
+    "firebase-functions": "^4.2.1",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.12.1",
     "mongodb-memory-server": "^8.11.4",
@@ -50,5 +54,8 @@
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.4"
+  },
+  "engines": {
+    "node": "18"
   }
 }

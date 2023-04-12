@@ -3,6 +3,9 @@ node_modules
 /dist
 /node_modules
 /coverage
+firebase-debug.log
+.env.firebase
+
 
 
 # local env files
