@@ -11,11 +11,11 @@
         <div class="quadrant" id="quadrant-three" @click="quadrantSelection('quadrant-three')"></div>
         <div class="quadrant" id="quadrant-four" @click="quadrantSelection('quadrant-four')"></div>
     </div>
-    <div v-else-if="quadrantType === 'horizontal-quadrants'" class="horizontal-quadrants">
-        <div class="horizontal-quadrant" id="quadrant-one" @click="quadrantSelection('quadrant-one')"></div>
-        <div class="horizontal-quadrant" id="quadrant-two" @click="quadrantSelection('quadrant-two')"></div>
-        <div class="horizontal-quadrant" id="quadrant-three" @click="quadrantSelection('quadrant-three')"></div>
-        <div class="horizontal-quadrant" id="quadrant-four" @click="quadrantSelection('quadrant-four')"></div>
+    <div v-else-if="quadrantType === 'vertical-quadrants'" class="vertical-quadrants">
+        <div class="vertical-quadrant" id="quadrant-one" @click="quadrantSelection('quadrant-one')"></div>
+        <div class="vertical-quadrant" id="quadrant-two" @click="quadrantSelection('quadrant-two')"></div>
+        <div class="vertical-quadrant" id="quadrant-three" @click="quadrantSelection('quadrant-three')"></div>
+        <div class="vertical-quadrant" id="quadrant-four" @click="quadrantSelection('quadrant-four')"></div>
     </div>
 </div>
 </template>
@@ -76,7 +76,7 @@ export default {
     cursor: pointer;
 }
 
-.horizontal-quadrants {
+.vertical-quadrants {
     position: absolute;
     max-width: 972px;
     min-width: 972px;
@@ -88,7 +88,7 @@ export default {
     text-align: center;
 }  
 
-.horizontal-quadrant {
+.vertical-quadrant {
     max-width: 243px;
     min-width: 243px;
     max-height: 550px;
@@ -97,7 +97,7 @@ export default {
     border: none;
 }
 
-.horizontal-quadrant:hover {
+.vertical-quadrant:hover {
     backdrop-filter: brightness(150%);
     cursor: pointer;
 }

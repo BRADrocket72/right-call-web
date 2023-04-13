@@ -9,7 +9,7 @@ describe('NoWebcamPopUp.vue', () => {
             data() {
                 return {
                     updatedAnswers: ['Incorrect','Correct'],
-                    quadrantType: 'horizontal-quadrants'
+                    quadrantType: 'vertical-quadrants'
                 }
             },
             props:{
