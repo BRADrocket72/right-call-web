@@ -8,7 +8,8 @@ describe('NoWebcamPopUp.vue', () => {
         wrapper = mount(NoWebcamPopUp, {
             data() {
                 return {
-                    updatedAnswers: ['Incorrect','Correct']
+                    updatedAnswers: ['Incorrect','Correct'],
+                    quadrantType: 'horizontal-quadrants'
                 }
             },
             props:{
@@ -19,6 +20,9 @@ describe('NoWebcamPopUp.vue', () => {
                     correctAnswer: 'quadrant-four'
                 },
                 answersArray: []
+            },
+            mounted() {
+                
             }
         })
     })
