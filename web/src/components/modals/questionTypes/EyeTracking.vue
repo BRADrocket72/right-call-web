@@ -19,7 +19,7 @@
     <div class="quadrant-type">
         <select id="quadrant-type-select" :onchange="viewSelectedType">
             <option value="corner-quadrants" :selected="selectedType === 'corner-quadrants'">Corner Quadrants</option>
-            <option value="horizontal-quadrants" :selected="selectedType === 'horizontal-quadrants'">Horizontal Quadrants</option>
+            <option value="vertical-quadrants" :selected="selectedType === 'vertical-quadrants'">Vertical Quadrants</option>
         </select>
     </div>
 
@@ -29,11 +29,11 @@
         <div class="quadrant" id="quadrant-three"></div>
         <div class="quadrant" id="quadrant-four"></div>
     </div>
-    <div v-show="selectedType === 'horizontal-quadrants'" class="horizontal-quadrants" id="horizontal-quadrants">
-        <div class="horizontal-quadrant" id="horizontal-quadrant-one"></div>
-        <div class="horizontal-quadrant" id="horizontal-quadrant-two"></div>
-        <div class="horizontal-quadrant" id="horizontal-quadrant-three"></div>
-        <div class="horizontal-quadrant" id="horizontal-quadrant-four"></div>
+    <div v-show="selectedType === 'vertical-quadrants'" class="vertical-quadrants" id="vertical-quadrants">
+        <div class="vertical-quadrant" id="vertical-quadrant-one"></div>
+        <div class="vertical-quadrant" id="vertical-quadrant-two"></div>
+        <div class="vertical-quadrant" id="vertical-quadrant-three"></div>
+        <div class="vertical-quadrant" id="vertical-quadrant-four"></div>
     </div>
 
     <div class="button-div">
@@ -81,10 +81,10 @@ export default {
             if(this.selectedType === 'corner-quadrants') {
                 const quadrantDiv = document.getElementById(quadrant)
                 quadrantDiv.classList.add('selected')
-            } else if(this.selectedType === 'horizontal-quadrants') {
-                let horizontalQuadrant = 'horizontal-' + quadrant
-                const horizontalDiv = document.getElementById(horizontalQuadrant)
-                horizontalDiv.classList.add('selected')
+            } else if(this.selectedType === 'vertical-quadrants') {
+                let verticalQuadrant = 'vertical-' + quadrant
+                const verticalDiv = document.getElementById(verticalQuadrant)
+                verticalDiv.classList.add('selected')
             }
         },
         viewSelectedType() {
@@ -99,8 +99,8 @@ export default {
                 child.classList.remove('selected')
             }
 
-            const horizontalParent = document.getElementById('horizontal-quadrants')
-            for (const child of horizontalParent.children) {
+            const verticalParent = document.getElementById('vertical-quadrants')
+            for (const child of verticalParent.children) {
                 child.classList.remove('selected')
             }
         },
@@ -200,7 +200,7 @@ export default {
     text-align: center;
 }
 
-.horizontal-quadrants {
+.vertical-quadrants {
     position: absolute;
     max-width: 150px;
     min-width: 150px;
@@ -219,7 +219,7 @@ export default {
   float: left;
 }
 
-.horizontal-quadrant {
+.vertical-quadrant {
     max-width: 30px;
     min-width: 30px;
     max-height: 100px;
