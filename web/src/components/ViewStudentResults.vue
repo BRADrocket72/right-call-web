@@ -23,10 +23,10 @@
               <TransitionGroup name="show-results">
                   <div v-if="isLessonResultsVisible && StudentHasResults" class="lesson-list-div">
                       <TransitionGroup name="change-lessons" tag="ul" class="lesson-list">
-                          <li v-for="results in studentsResultsForLesson" :key="results" class="lesson-li">
-                              <p class="lesson-name">{{results.quizName}}</p>
-                              <p class="lesson-description"> Score Received : {{results.score}}</p>
-                              <p class="lesson-description"> Time Spent : {{results.questionTime}}</p>
+                          <li v-for="results in studentsResultsForLesson" :key="results" class="lesson-resultList">
+                              <p class="lesson-name"> Quiz Name: {{results.quizName}}</p>
+                              <p class="lesson-description"> Highest Score : {{results.score}}%</p>
+                              <p class="lesson-description"> Time Spent : {{results.questionTime}}%</p>
                           </li>
                       </TransitionGroup>
                   </div>
@@ -419,4 +419,17 @@ export default {
         margin: 100px auto auto 50px;
     }
 }
+.lesson-resultList {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    min-height: 70px;
+    max-height: 70px;
+    min-width: 450px;
+    max-width: 450px;
+    border: 1px solid #0E333C;
+    border-radius: 10px;
+    margin: 10px;
+}
+
 </style>
