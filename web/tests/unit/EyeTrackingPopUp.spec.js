@@ -49,7 +49,7 @@ describe('EyeTrackingPopUp.vue', () => {
     })
 
     it('gets the correct quadrant based on the coordinates', () => {
-        wrapper.vm.getQuadrant()
+        wrapper.vm.getCornerQuadrant()
         expect(wrapper.vm.guessQuadrant).toEqual('quadrant-four')
     })
 
