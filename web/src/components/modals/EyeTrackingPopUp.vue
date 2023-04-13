@@ -131,8 +131,10 @@ export default {
             this.$emit('close',this.updatedAnswers)
         }
     },
-    mounted() {
+    created() {
         this.quadrantType = this.question.answers[1]
+    },
+    mounted() {
         this.getCoordinates()
         this.checkPredictionInBounds()
         if(this.quadrantType === 'corner-quadrants') {
