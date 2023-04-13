@@ -146,6 +146,7 @@
         if (cookiesCalibration == "false" || !webgazer.isReady()) {
           this.calibrationReady = true
           this.replaceCookie()
+          webgazer.applyKalmanFilter(true)
           webgazer.showVideo(false)
           webgazer.showFaceOverlay(false)
           webgazer.showFaceFeedbackBox(false)
@@ -258,6 +259,14 @@
             this.questionIndex++
             this.isEyeTrackingConfirmed = false
           }, 100)
+        } else {
+          var userResults = useUserResultsStore()
+          var questionName = 'question' + (this.questionCounter + 1)
+          if (userResults.questionTime.length > 0) {
+            userResults.questionTimes.push({'questionName': questionName, 'questionTime': userResults.questionTime})
+          }
+          userResults.questionTime = ""
+          console.log(userResults.questionTimes)
         }
       },
       togglePlayButton() {
