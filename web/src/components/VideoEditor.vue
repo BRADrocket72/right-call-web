@@ -114,6 +114,9 @@
       };
     },
     async mounted() {
+      var userResults = useUserResultsStore()
+      userResults.questionTimes = []
+      userResults.questionTime = ""
       this.videoAndQuestionDataSetup()
       const videoElement = document.getElementById(this.videoId)
       if (videoElement) {
@@ -273,7 +276,7 @@
           }, 100)
         } else {
           var userResults = useUserResultsStore()
-          var questionName = 'question' + (this.questionCounter + 1)
+          var questionName = 'Question ' + (this.questionCounter)
           if (userResults.questionTime.length > 0) {
             userResults.questionTimes.push({'questionName': questionName, 'questionTime': userResults.questionTime})
           }
@@ -293,7 +296,8 @@
       },
       async closeResultsPage(percentageCorrect) {
         var userResults = useUserResultsStore()
-        await userResults.postUserResults(this.$cookies.get("user_session").currentUserName,percentageCorrect,this.videoId,this.videoName)
+        await userResults.postUserResults(this.$cookies.get("user_session").currentUserName,percentageCorrect,this.videoId,this.videoName, userResults.questionTimes)
+        userResults.questionTimes = []
         this.$router.push({
           name: "LessonSelection"
         })
