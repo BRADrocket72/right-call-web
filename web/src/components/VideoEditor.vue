@@ -141,16 +141,29 @@
         }
         this.permissionModalVisible = false
       },
-      webgazerSetup() {
+      async webgazerSetup() {
         let cookiesCalibration = this.$cookies.get("user_session").currentEyeTrackingCalibration
         if (cookiesCalibration == "false" || !webgazer.isReady()) {
           this.calibrationReady = true
           this.replaceCookie()
-          webgazer.showVideo(false)
-          webgazer.showFaceOverlay(false)
-          webgazer.showFaceFeedbackBox(false)
-          webgazer.showPredictionPoints(true)
-          webgazer.begin()
+          // webgazer.applyKalmanFilter(true)
+          // webgazer.setRegression("ridge")
+          // webgazer.showVideo(false)
+          // webgazer.showFaceOverlay(false)
+          // webgazer.showFaceFeedbackBox(false)
+          // webgazer.showPredictionPoints(true)
+          // webgazer.begin()
+          await webgazer.setRegression('ridge') /* currently must set regression and tracker */
+            .setGazeListener(function() {
+                
+            })
+            .begin();
+          webgazer.showVideoPreview(false) /* shows all video previews */
+            .showVideo(false)
+            .showFaceOverlay(false)
+            .showFaceFeedbackBox(false)
+            .showPredictionPoints(true) /* shows a square every 100 milliseconds where current prediction is */
+            .applyKalmanFilter(true); 
         }
         else {
           webgazer.showPredictionPoints(true)
@@ -258,6 +271,14 @@
             this.questionIndex++
             this.isEyeTrackingConfirmed = false
           }, 100)
+        } else {
+          var userResults = useUserResultsStore()
+          var questionName = 'question' + (this.questionCounter + 1)
+          if (userResults.questionTime.length > 0) {
+            userResults.questionTimes.push({'questionName': questionName, 'questionTime': userResults.questionTime})
+          }
+          userResults.questionTime = ""
+          console.log(userResults.questionTimes)
         }
       },
       togglePlayButton() {
