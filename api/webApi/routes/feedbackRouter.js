@@ -1,5 +1,5 @@
 const express = require('express');
-const feedbackController = require('../controllers/feedbackController.js')
+const feedbackController = require('../controllers/feedbackController')
 const router = express.Router()
 //Post Method
 router.post('/feedback/post', feedbackController.feedback_create_feedback)
