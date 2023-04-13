@@ -51,8 +51,8 @@ app.use(function (error, req, res, next) {
     }
 });
 var PORT = process.env.PORT;
-// app.listen(PORT, () => {
-//     console.log(`Server Started at http://localhost:${PORT}`)
-// })
+app.listen(PORT, () => {
+    console.log(`Server Started at http://localhost:${PORT}`)
+})
 // module.exports = app
 exports.api = functions.https.onRequest(app);

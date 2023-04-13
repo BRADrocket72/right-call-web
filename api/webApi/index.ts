@@ -62,9 +62,9 @@ app.use((error, req, res, next) => {
 
 const PORT = process.env.PORT
 
-// app.listen(PORT, () => {
-//     console.log(`Server Started at http://localhost:${PORT}`)
-// })
+app.listen(PORT, () => {
+    console.log(`Server Started at http://localhost:${PORT}`)
+})
 
 // module.exports = app
 app.get('/api', (req, res) => {
