@@ -76,6 +76,7 @@
       }
     ]
   },
+  "proxy": "https://us-central1-right-call-web.cloudfunctions.net/api",
   "browserslist": [
     "> 1%",
     "last 2 versions",

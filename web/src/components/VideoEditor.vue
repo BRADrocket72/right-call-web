@@ -246,7 +246,11 @@
         this.isFeedbackVisible = !this.isFeedbackVisible
         if(!this.isFeedbackVisible) {
           setTimeout(() => {
-            if (this.questionCounter >= this.currentVideoQuestions.length || (this.currentVideoQuestions[this.questionCounter].questionType != 'eye-tracking')) {
+            if (this.webcamPermission) {
+              if (this.questionCounter >= this.currentVideoQuestions.length || (this.currentVideoQuestions[this.questionCounter].questionType != 'eye-tracking')) {
+                this.playOrPauseVideo()
+              }
+            } else {
               this.playOrPauseVideo()
             }
             this.togglePlayButton()  
