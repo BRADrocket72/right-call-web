@@ -19,6 +19,10 @@ const userResultsSchema = new mongoose.Schema({
     quizName: {
         required: true,
         type: String
+    },
+    questionTimes: {
+        reuired: true,
+        type: Array
     }
 })
 interface IUserResults extends UserResultsDto, mongoose.Document {}

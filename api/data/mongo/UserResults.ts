@@ -9,7 +9,8 @@ class UserResults implements UserResultsDb {
             username:userResult.username,
             score:userResult.score,
             quizId: userResult.quizId,
-            quizName: userResult.quizName
+            quizName: userResult.quizName,
+            questionTimes: userResult.questionTimes
         })
         const dataToSave = await data.save()
         return dataToSave;
