@@ -149,24 +149,16 @@
         if (cookiesCalibration == "false" || !webgazer.isReady()) {
           this.calibrationReady = true
           this.replaceCookie()
-          // webgazer.applyKalmanFilter(true)
-          // webgazer.setRegression("ridge")
-          // webgazer.showVideo(false)
-          // webgazer.showFaceOverlay(false)
-          // webgazer.showFaceFeedbackBox(false)
-          // webgazer.showPredictionPoints(true)
-          // webgazer.begin()
-          await webgazer.setRegression('ridge') /* currently must set regression and tracker */
-            .setGazeListener(function() {
-                
+          await webgazer.setRegression('ridge') 
+            .setGazeListener(function() {               
             })
-            .begin();
-          webgazer.showVideoPreview(false) /* shows all video previews */
+            .showVideoPreview(false)
             .showVideo(false)
             .showFaceOverlay(false)
             .showFaceFeedbackBox(false)
-            .showPredictionPoints(true) /* shows a square every 100 milliseconds where current prediction is */
-            .applyKalmanFilter(true); 
+            .showPredictionPoints(true) 
+            .applyKalmanFilter(true) 
+            .begin();
         }
         else {
           webgazer.showPredictionPoints(true)

@@ -1,6 +1,10 @@
 <template>
   <div>
       <LoggedInNavBar />
+      <br/><br/>
+        <h1>
+            Student Results
+        </h1>
       <div v-if="studentsEmpty" class="students-container">
           <div class="empty-classes">
               <h4>There are no students assigned to this lesson.</h4>
@@ -10,6 +14,7 @@
       <div v-else class="students-container">
         <div class="class-list-div">
             <ul class="class-list">
+                <h4>Select a Student to View</h4>
                  <li v-for="(student, index) in studentList" :key="student" class="class-li" :id="'instructor-class-' + (index+1)" @click="flipArrow(student, index)">
                     <p class="student-name">Student Name:</p>
                         <span class="class-info">
@@ -23,11 +28,12 @@
               <TransitionGroup name="show-results">
                   <div v-if="isLessonResultsVisible && StudentHasResults" class="lesson-list-div">
                       <TransitionGroup name="change-lessons" tag="ul" class="lesson-list">
+                        <br/>
                           <li v-for="results in studentsResultsForLesson" :key="results" class="lesson-resultList">
                               <p class="lesson-name"> Quiz Name: {{results.quizName}}</p>
                               <p class="lesson-description"> Highest Score: {{results.score}}%</p>
                               <p v-if="results.questionTimes.length > 0" class="lesson-description"> Time Taken to Answer Questions: <button type="button" class="viewButton" @click="openQuestionTimesModal(results.questionTimes)">View</button></p>
-                              <p v-else class="lesson-description"> Time Taken to Answer Questions: This quiz does not contain any questions that require a timer.</p>
+                              <p v-else class="lesson-description"> This quiz had only eye-tracking or drag-and-drop questions.</p>
                           </li>
                       </TransitionGroup>
                   </div>
