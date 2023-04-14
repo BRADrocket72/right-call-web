@@ -3,10 +3,18 @@ import crypto from'crypto';
 import jwt from'jsonwebtoken';
 import { UserDto } from '../../data/model/UserDto';
 import {IUserDoc} from '../../data/mongo/schemas/UserSchema';
+import { UserDb } from '../../data/db/UserDb';
 
-const userDb = new User();
 
-exports.create_user = async (req, res) => {
+class UserController {
+    private userDb:UserDb = new User();
+
+    constructor(userDb:UserDb){
+        this.userDb = userDb;
+    }
+
+
+    create_user = async (req, res) => {
 
     const salt = crypto.randomBytes(16).toString('base64');
     const hash = crypto.createHmac('sha512', salt)
@@ -14,7 +22,7 @@ exports.create_user = async (req, res) => {
         .digest("base64");
     req.body.password = salt + "$" + hash;
 
-    const user = await userDb.findUserByEmail( req.body.email);
+    const user = await this.userDb.findUserByEmail( req.body.email);
     if (user != undefined) {
         return res.status(400).send('That email is already in use!')
     }
@@ -27,7 +35,7 @@ exports.create_user = async (req, res) => {
             salt: salt
         }
         res.header('Access-Control-Allow-Origin', '*')
-        const savedData = userDb.createUser(data)
+        const savedData = this.userDb.createUser(data)
         res.status(200).json(savedData)
     }
     catch (error) {
@@ -35,11 +43,11 @@ exports.create_user = async (req, res) => {
     }
 }
 
-exports.get_by_username = async (req, res) => {
+    get_by_username = async (req, res) => {
     try {
         res.header('Access-Control-Allow-Origin', '*')
         const userName = req.params.username
-        const data = await userDb.findUserByUsername(userName)
+        const data = await this.userDb.findUserByUsername(userName)
         res.json(data)
     }
     catch (error) {
@@ -47,11 +55,11 @@ exports.get_by_username = async (req, res) => {
     }
 }
 
-exports.get_by_id = async (req, res) => {
+    get_by_id = async (req, res) => {
     try {
         res.header('Access-Control-Allow-Origin', '*')
         const id = req.params.id
-        const data = await userDb.findUserById(id)
+        const data = await this.userDb.findUserById(id)
         res.json(data)
     }
     catch (error) {
@@ -59,10 +67,10 @@ exports.get_by_id = async (req, res) => {
     }
 }
 
-exports.get_all = async (req, res) => {
+    get_all = async (req, res) => {
     try {
         res.header('Access-Control-Allow-Origin', '*')
-        const data = await userDb.getAll();
+        const data = await this.userDb.getAll();
         res.json(data)
     }
     catch (error) {
@@ -70,11 +78,11 @@ exports.get_all = async (req, res) => {
     }
 }
 
-exports.delete_user = async (req, res) => {
+    delete_user = async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
         const id = req.params.id;
-        const data = await userDb.deleteUser(id)
+        const data = await this.userDb.deleteUser(id)
         res.send(`Document with ${data.userName} has been deleted..`)
     }
     catch (error) {
@@ -82,12 +90,12 @@ exports.delete_user = async (req, res) => {
     }
 }
 
-exports.user_login = async (req, res) => {
+    user_login = async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
         const userName = req.body.userName
-        const userByUsername = await userDb.findUserByUsername(userName)
-        const userByEmail = await userDb.findUserByEmail(userName)
+        const userByUsername = await this.userDb.findUserByUsername(userName)
+        const userByEmail = await this.userDb.findUserByEmail(userName)
         if (userByEmail == null && userByUsername ==null) {
             res.status(200).json({ success: false })
             return
@@ -114,3 +122,5 @@ exports.user_login = async (req, res) => {
         res.status(400).json({ message: error.message })
     }
 }
+} 
+export default UserController

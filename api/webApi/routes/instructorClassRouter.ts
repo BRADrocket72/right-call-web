@@ -1,8 +1,10 @@
-const express = require('express');
-// const instructorClassController = require('../controllers/instructorClassController.ts')
-const instructorClassController = require('../controllers/instructorClassController')
+import express  from 'express';
+import InstructorClassController from '../controllers/instructorClassController';
+import InstructorClass from '../../data/mongo/InstructorClass';
 
 const router = express.Router()
+
+const instructorClassController = new InstructorClassController(new InstructorClass())
 
 //Post Method
 router.post('/instructorClass/post', instructorClassController.create_instructorClass)

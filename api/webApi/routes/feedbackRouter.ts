@@ -1,6 +1,10 @@
-const express = require('express');
-const feedbackController = require('../controllers/feedbackController')
-const router = express.Router()
+import express from 'express';
+import FeedbackController from '../controllers/feedbackController';
+import Feedback from '../../data/mongo/Feedback';
+
+const  router = express.Router()
+
+const feedbackController = new FeedbackController(new Feedback())
 //Post Method
 router.post('/feedback/post', feedbackController.feedback_create_feedback)
 //Get all Method
