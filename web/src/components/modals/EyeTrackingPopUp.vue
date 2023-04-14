@@ -6,11 +6,11 @@
         <div class="quadrant" id="quadrant-three"></div>
         <div class="quadrant" id="quadrant-four"></div>
     </div>
-    <div v-else-if="quadrantType === 'horizontal-quadrants'" class="horizontal-quadrants">
-        <div class="horizontal-quadrant" id="quadrant-one"></div>
-        <div class="horizontal-quadrant" id="quadrant-two"></div>
-        <div class="horizontal-quadrant" id="quadrant-three"></div>
-        <div class="horizontal-quadrant" id="quadrant-four"></div>
+    <div v-else-if="quadrantType === 'vertical-quadrants'" class="vertical-quadrants">
+        <div class="vertical-quadrant" id="quadrant-one"></div>
+        <div class="vertical-quadrant" id="quadrant-two"></div>
+        <div class="vertical-quadrant" id="quadrant-three"></div>
+        <div class="vertical-quadrant" id="quadrant-four"></div>
     </div>
 </div> 
 </template>
@@ -61,7 +61,7 @@ export default {
                 this.yMin = oneCoords.top
                 this.yMax = threeCoords.bottom
                 this.yHalf = fourCoords.top - 1
-            } else if(this.quadrantType === 'horizontal-quadrants') {
+            } else if(this.quadrantType === 'vertical-quadrants') {
                 this.xMin = oneCoords.left
                 this.xQuarterOne = oneCoords.right - 1
                 this.xHalf = twoCoords.right - 1
@@ -103,7 +103,7 @@ export default {
                 }
             }
         },
-        getHorizontalQuadrant() {
+        getVerticalQuadrant() {
             if(this.xCoordinate <= this.xHalf) {
                 if(this.xCoordinate <= this.xQuarterOne) {
                     this.guessQuadrant = 'quadrant-one'
@@ -139,8 +139,8 @@ export default {
         this.checkPredictionInBounds()
         if(this.quadrantType === 'corner-quadrants') {
             this.getCornerQuadrant()
-        } else if(this.quadrantType === 'horizontal-quadrants') {
-            this.getHorizontalQuadrant()
+        } else if(this.quadrantType === 'vertical-quadrants') {
+            this.getVerticalQuadrant()
         }
         this.checkQuadrant()
         this.close()
@@ -171,7 +171,7 @@ export default {
     border: none;
 }
 
-.horizontal-quadrants {
+.vertical-quadrants {
     position: absolute;
     max-width: 972px;
     min-width: 972px;
@@ -183,7 +183,7 @@ export default {
     text-align: center;
 }  
 
-.horizontal-quadrant {
+.vertical-quadrant {
     max-width: 243px;
     min-width: 243px;
     max-height: 550px;
