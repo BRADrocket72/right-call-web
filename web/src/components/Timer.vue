@@ -46,7 +46,7 @@ export default {
             if (this.seconds > 9) {
                 appendSeconds.innerHTML = this.seconds;
             }
-            resultStore.questionTime = this.seconds + ":" + this.tens
+            resultStore.questionTime = this.seconds + "." + this.tens
         },
 
     },

@@ -14,7 +14,7 @@ afterAll(async () => await testMongoDb.closeDatabase())
 
 describe('Activity created when',()=>{
     it('First Activity', async () => {
-        const UserResultsOne: UserResultsDto = {username:"batman",score:75.00, quizId:"lesson1", quizName:"First Lesson"}
+        const UserResultsOne: UserResultsDto = {username:"batman",score:75.00, quizId:"lesson1", quizName:"First Lesson", questionTimes: []}
         const UserResultsResult = await userResultsCollection.createUserResult(UserResultsOne);
         const foundUserResults = await UserResultsSchema.findById(UserResultsResult._id);
               

@@ -8,8 +8,8 @@ const testMongoDb = require('../testMongoDb')
 const userResultsCollection :UserResults =  new UserResults()
 
 beforeEach(async () => {
-    const userOne =new UserResultsSchema({username:"batman" ,score:75,quizId:"1", quizName:"2"})
-    const userTwo =new UserResultsSchema({username:"Robin" ,score:50, quizId:"a", quizName:"b"})
+    const userOne =new UserResultsSchema({username:"batman" ,score:75,quizId:"1", quizName:"2", questionTimes:[]})
+    const userTwo =new UserResultsSchema({username:"Robin" ,score:50, quizId:"a", quizName:"b", questionTimes:[]})
     
     testUserA = await userOne.save();
     testUserB = await userTwo.save();
