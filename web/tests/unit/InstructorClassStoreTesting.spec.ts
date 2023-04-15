@@ -36,6 +36,12 @@ describe('ActivityStore API CALLS Unit TESTING', () => {
     expect(postedClass[0].videoClipIds.length).toEqual(2)
   });
 
+  it('postInstructorClass() mock fails and catches error successfully', async () => {
+    axios.post.mockRejectedValueOnce()
+    const postedClass = await store.postInstructorClass("testId123", "Test Class", ["video1", "video2"], ["student1", "student2"])
+    expect(postedClass).toEqual(undefined)
+  });
+
   it('getClassesByInstructorId() mocks the axios.get call, sends an axios.get call successfully, and returns the retrieved class', async () => {
     axios.get= jest.fn().mockResolvedValue({
         data: [{
@@ -57,6 +63,12 @@ describe('ActivityStore API CALLS Unit TESTING', () => {
     const retrievedClass = await store.getClassesByInstructorId("testId123")
     expect(retrievedClass.length).toEqual(1)
     expect(retrievedClass[0]._id).toEqual("abcd123456789jfsf03u40238j")
+  });
+
+  it('getClassesByInstructorId() mock fails and catches error successfully', async () => {
+    axios.get.mockRejectedValueOnce()
+    const retrievedClass = await store.getClassesByInstructorId("testId123")
+    expect(retrievedClass).toEqual(undefined)
   });
 
   it('addVideoClipToClass() mocks the axios.put call (through the api) and is sending an axios.put call successfully', async () => {
@@ -81,6 +93,12 @@ describe('ActivityStore API CALLS Unit TESTING', () => {
     expect(updatedClass.length).toEqual(1)
     expect(updatedClass[0].videoClipIds[0]).toEqual("newId1")
     expect(updatedClass[0].videoClipIds[1]).toEqual("newId2")
+  });
+
+  it('addVideoClipToClass() mock fails and catches error successfully', async () => {
+    axios.put.mockRejectedValueOnce()
+    const updatedClass = await store.addVideoClipToClass("abcd123456789jfsf03u40238j", ["newId1", "newId2"])
+    expect(updatedClass).toEqual(undefined)
   });
 
   it('fetchAllInstructorClasses() mocks the axios.get call (through the api) and is sending an axios.get call successfully', async () => {
@@ -119,6 +137,13 @@ describe('ActivityStore API CALLS Unit TESTING', () => {
     expect(allClasses[0].videoClipIds.length).toEqual(1)
     expect(allClasses[1].studentIds[2]).toEqual("student4")
   });
+
+  it('fetchAllInstructorClasses() mock fails and catches error successfully', async () => {
+    axios.get.mockRejectedValueOnce()
+    const allClasses = await store.fetchAllInstructorClasses()
+    expect(allClasses).toEqual(undefined)
+  });
+
   it('updateStudentIdsList() mocks the axios.put call (through the api) and is sending an axios.put call successfully', async () => {
     axios.put= jest.fn().mockResolvedValue({
         data: [{
@@ -142,5 +167,9 @@ describe('ActivityStore API CALLS Unit TESTING', () => {
     expect(updatedClassStudentList[0].studentIds[1]).toEqual("student10")
   });
 
-
+  it('updateStudentIdsList() mock fails and catches error successfully', async () => {
+    axios.put.mockRejectedValueOnce()
+    const updatedClassStudentList = await store.updateStudentIdsList("abcd123456789jfsf03u40238j", ["student1", "student10"])
+    expect(updatedClassStudentList).toEqual(undefined)
+  });
 })

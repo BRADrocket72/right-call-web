@@ -61,6 +61,12 @@ describe('UserStore API CALLS Unit TESTING', () => {
     expect(registeredUser.userType).toEqual("Instructor")
   });
 
+  it('postUser() mock fails and catches error successfully', async () => {
+    axios.post.mockRejectedValueOnce()
+    const registeredUser = await store.postUser("testUser123", "testEncryptedPassword", "Admin")
+    expect(registeredUser).toEqual(undefined)
+  });
+
   it('loginUser() mock calls axios.post (the api) successfully and mock logins a user by returning the logged in users id', async () => {
     axios.post.mockResolvedValue({
       data: 
@@ -70,6 +76,12 @@ describe('UserStore API CALLS Unit TESTING', () => {
     })
     const loggedInUsersId = await store.loginUser("testInstructor123", "123testEncryptedPassword")
     expect(loggedInUsersId._id).toEqual("instructorTest")
+  });
+
+  it('loginUser() mock fails and catches error successfully', async () => {
+    axios.post.mockRejectedValueOnce()
+    const loggedInUsersId = await store.loginUser("testInstructor123", "123testEncryptedPassword")
+    expect(loggedInUsersId).toEqual(undefined)
   });
 
   it('getUserByName() mock calls axios.get (the api) successfully and successfully gets the user by name', async () => {
@@ -87,6 +99,12 @@ describe('UserStore API CALLS Unit TESTING', () => {
     const retrievedUser = await store.getUserByName("abctestUser123")
     expect(retrievedUser._id).toEqual("12345test")
     expect(retrievedUser.email).toEqual("testEmail")
+  });
+
+  it('getUserByName() mock fails and catches error successfully', async () => {
+    axios.get.mockRejectedValueOnce()
+    const retrievedUser = await store.getUserByName("abctestUser123")
+    expect(retrievedUser).toEqual(undefined)
   });
 
   it('getAllUsers() mock calls axios.get (the api) successfully and correctly returns all users', async () => {
@@ -118,6 +136,12 @@ describe('UserStore API CALLS Unit TESTING', () => {
     expect(allUsers[1].userName).toEqual("123testUserabc")
   });
 
+  it('getAllUsers() mock fails and catches error successfully', async () => {
+    axios.get.mockRejectedValueOnce()
+    const allUsers = await store.getAllUsers()
+    expect(allUsers).toEqual(undefined)
+  });
+
   it('getUserById() mock calls axios.get (the api) successfully and returns the user by their ID', async () => {
     axios.get.mockResolvedValue({
       data: 
@@ -135,4 +159,11 @@ describe('UserStore API CALLS Unit TESTING', () => {
     expect(retrievedUserById.userName).toEqual("abctestUser123")
     expect(retrievedUserById.userType).toEqual("Student")
   });
+
+  it('getUserById() mock fails and catches error successfully', async () => {
+    axios.get.mockRejectedValueOnce()
+    const retrievedUserById = await store.getUserById("12345test")
+    expect(retrievedUserById).toEqual(undefined)
+  });
+
 })
