@@ -21,7 +21,7 @@
       </div>
       </div>
     </div>
-    </template>
+</template>
     
     <script>
     import LoggedInNavBar from './LoggedInNavBar.vue';
@@ -68,15 +68,13 @@
     }
     </script>
     
-    <style>
+    <style scoped>
     
     .admin-container {
       margin: auto;
       display: flex;
       flex-direction: column;
     }
-
-    
 
     .button-selection {
       display: inline-flex;
@@ -99,70 +97,33 @@
     }
     
     .upload-description {
-      visibility: hidden;
-      opacity: 0;
       position: absolute;
       max-width: 250px;
+      min-width: 250px;
       margin: -200px 0 0 30px;
       font-size: 19px;
       font-weight: normal;
       color: #0e333c;
-      transition: visibility 0s, opacity 0.3s linear;
-    }
-    
-    .upload-description:hover {
-      visibility: visible;
-      opacity: 1;
-      cursor: pointer;
-    }
-    
-    .button-selection:hover + .upload-description {
-      visibility: visible;
-      opacity: 1;
     }
     
     .delete-description {
-      visibility: hidden;
-      opacity: 0;
       position: absolute;
       max-width: 250px;
+      min-width: 250px;
       margin: -150px 0 0 42px;
       font-size: 19px;
       font-weight: normal;
       color: #0e333c;
-      transition: visibility 0s, opacity 0.3s linear;
-    }
-    
-    .delete-description:hover {
-      visibility: visible;
-      opacity: 1;
-    }
-    
-    .button-selection:hover + .delete-description {
-      visibility: visible;
-      opacity: 1;
     }
     
     .assign-description {
-      visibility: hidden;
-      opacity: 0;
       position: absolute;
       max-width: 250px;
+      min-width: 250px;
       margin: -150px 0 0 42px;
       font-size: 19px;
       font-weight: normal;
       color: #0e333c;
-      transition: visibility 0s, opacity 0.3s linear;
-    }
-    
-    .assign-description:hover {
-      visibility: visible;
-      opacity: 1;
-    }
-    
-    .button-selection:hover + .assign-description {
-      visibility: visible;
-      opacity: 1;
     }
     
     .admin-buttons {
