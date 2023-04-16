@@ -40,7 +40,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .instructor-container {
   margin: auto;
   display: flex;
@@ -86,47 +86,24 @@ export default {
 }
 
 .create-description {
-  visibility: hidden;
-  opacity: 0;
   position: absolute;
   max-width: 250px;
-  margin: 150px 0 0 30px;
+  min-width: 250px;
+  margin: 150px 0 0 42px;
   font-size: 19px;
   font-weight: normal;
   color: #0e333c;
-  transition: visibility 0s, opacity 0.3s linear;
-}
-
-.create-description:hover {
-  visibility: visible;
-  opacity: 1;
-}
-
-.button-selection:hover + .create-description {
-  visibility: visible;
-  opacity: 1;
 }
 
 .assign-description {
-  visibility: hidden;
   opacity: 0;
   position: absolute;
   max-width: 250px;
-  margin: 0 0 0 30px;
+  min-width: 250px;
+  margin: 0 0 0 42px;
   font-size: 19px;
   font-weight: normal;
   color: #0e333c;
-  transition: visibility 0s, opacity 0.3s linear;
-}
-
-.assign-description:hover {
-  visibility: visible;
-  opacity: 1;
-}
-
-.button-selection:hover + .assign-description {
-  visibility: visible;
-  opacity: 1;
 }
 
 
