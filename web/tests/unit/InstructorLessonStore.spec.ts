@@ -34,6 +34,12 @@ describe('InstructorLessonStore API CALLS Unit TESTING', () => {
     expect(postedInstructorLesson[0].instructorId).toEqual("sampleInstructorLesson123")
   });
 
+  it('postInstructorLesson() mock fails and catches error successfully', async () => {
+    axios.post.mockRejectedValueOnce()
+    const postedInstructorLesson = await store.postInstructorLesson("Test Instructor Lesson", "sampleInstructorLesson123", "This is a test instructor lesson.", ["testVideo1","testVideo2","testVideo3"])
+    expect(postedInstructorLesson).toEqual(undefined)
+  });
+
   it('getAllInstructorLessons() mocks the axios.get call, sends an axios.get call successfully, and returns all instructor lessons', async () => {
     axios.get= jest.fn().mockResolvedValue({
       data: [{
@@ -65,6 +71,12 @@ describe('InstructorLessonStore API CALLS Unit TESTING', () => {
     expect(retrievedInstructorLessons[1].name).toEqual("Test Instructor Lesson 2")
   });
 
+  it('getAllInstructorLessons() mock fails and catches error successfully', async () => {
+    axios.get.mockRejectedValueOnce()
+    const retrievedInstructorLessons = await store.getAllInstructorLessons()
+    expect(retrievedInstructorLessons).toEqual(undefined)
+  });
+
   it('getLessonsByInstructorId() mocks the axios.get call (through the api) and retrieves the lessons by instructor ID successfully', async () => {
     axios.get= jest.fn().mockResolvedValue({
         data: [{
@@ -84,6 +96,12 @@ describe('InstructorLessonStore API CALLS Unit TESTING', () => {
     const retrievedLesson = await store.getLessonsByInstructorId("sampleInstructorLesson123")
     expect(retrievedLesson[0]._id).toEqual("638f6362c5ea3845b73a18cd")
     expect(retrievedLesson[0].instructorId).toEqual("sampleInstructorLesson123")
+  });
+
+  it('getLessonsByInstructorId() mock fails and catches error successfully', async () => {
+    axios.get.mockRejectedValueOnce()
+    const retrievedLesson = await store.getLessonsByInstructorId("sampleInstructorLesson123")
+    expect(retrievedLesson).toEqual(undefined)
   });
 
   it('updateInstructorLessonName() mocks the axios.put call (through the api) and is sending an axios.put call successfully', async () => {
@@ -108,6 +126,12 @@ describe('InstructorLessonStore API CALLS Unit TESTING', () => {
     expect(updatedLesson[0].description).toEqual("This is a test instructor lesson.")
   });
 
+  it('updateInstructorLessonName() mock fails and catches error successfully', async () => {
+    axios.put.mockRejectedValueOnce()
+    const updatedLesson = await store.updateInstructorLessonName("12sdf453nlsla347p3a90233", "New Lesson Name")
+    expect(updatedLesson).toEqual(undefined)
+  });
+
   it('fetchLessonById() mocks the axios.get call (through the api) and retrieves the lessons by ID successfully', async () => {
     axios.get= jest.fn().mockResolvedValue({
         data: [{
@@ -126,5 +150,11 @@ describe('InstructorLessonStore API CALLS Unit TESTING', () => {
     expect(retrievedLesson.length).toEqual(1)
     expect(retrievedLesson[0].name).toEqual("Test Instructor Lesson 2")
     expect(retrievedLesson[0].videoClipsArray.length).toEqual(1)
+  });
+
+  it('fetchLessonById() mock fails and catches error successfully', async () => {
+    axios.get.mockRejectedValueOnce()
+    const retrievedLesson = await store.fetchLessonById("d7nm0903rji21sthds3i4ht459")
+    expect(retrievedLesson).toEqual(undefined)
   });
 })

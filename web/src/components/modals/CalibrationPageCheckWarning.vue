@@ -3,9 +3,6 @@
       <div class="modal-backdrop">
         <div class="modal" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription">
           <header class="modal-header" id="modalTitle">
-            <div>
-              <Timer />
-            </div>
             <slot name="header">
               Accuracy Test
             </slot>

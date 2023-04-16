@@ -150,15 +150,14 @@
           this.calibrationReady = true
           this.replaceCookie()
           await webgazer.setRegression('ridge') 
-            .setGazeListener(function() {               
-            })
-            .showVideoPreview(false)
-            .showVideo(false)
-            .showFaceOverlay(false)
-            .showFaceFeedbackBox(false)
-            .showPredictionPoints(true) 
-            .begin()
-            .applyKalmanFilter(true);
+          webgazer.setGazeListener(function() {})
+          webgazer.showVideoPreview(false)
+          webgazer.showVideo(false)
+          webgazer.showFaceOverlay(false)
+          webgazer.showFaceFeedbackBox(false)
+          webgazer.showPredictionPoints(true) 
+          webgazer.begin()
+          webgazer.applyKalmanFilter(true);
 
         }
         else {
