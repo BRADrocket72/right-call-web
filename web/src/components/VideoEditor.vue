@@ -31,7 +31,7 @@
         <label class="redDotLabel" v-if="webcamPermission"> Hide Eye-Tracking Red Dot: &nbsp;<br/></label>  
         <label class="switch" v-if="webcamPermission">
           <input type="checkbox" class="redDotVisibility" id="redDotVisibility" name="redDotVisibility" v-model="redDotVisibility"/>
-          <span class="slider round"></span>
+          <span class="toggleSlider shape"></span>
         </label>
       </div>
       <results-page v-if="isResultsPageModalVisible" :answersArray="answers" @close="closeResultsPage">
@@ -149,24 +149,17 @@
         if (cookiesCalibration == "false" || !webgazer.isReady()) {
           this.calibrationReady = true
           this.replaceCookie()
-          // webgazer.applyKalmanFilter(true)
-          // webgazer.setRegression("ridge")
-          // webgazer.showVideo(false)
-          // webgazer.showFaceOverlay(false)
-          // webgazer.showFaceFeedbackBox(false)
-          // webgazer.showPredictionPoints(true)
-          // webgazer.begin()
-          await webgazer.setRegression('ridge') /* currently must set regression and tracker */
-            .setGazeListener(function() {
-                
+          await webgazer.setRegression('ridge') 
+            .setGazeListener(function() {               
             })
-            .begin();
-          webgazer.showVideoPreview(false) /* shows all video previews */
+            .showVideoPreview(false)
             .showVideo(false)
             .showFaceOverlay(false)
             .showFaceFeedbackBox(false)
-            .showPredictionPoints(true) /* shows a square every 100 milliseconds where current prediction is */
-            .applyKalmanFilter(true); 
+            .showPredictionPoints(true) 
+            .begin()
+            .applyKalmanFilter(true);
+
         }
         else {
           webgazer.showPredictionPoints(true)
@@ -473,7 +466,6 @@
     }
   }
 
- /* The switch - the box around the slider */
 .switch {
   position: relative;
   display: inline-block;
@@ -481,15 +473,13 @@
   height: 25px;
 }
 
-/* Hide default HTML checkbox */
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-/* The slider */
-.slider {
+.toggleSlider {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -501,7 +491,7 @@
   transition: .4s;
 }
 
-.slider:before {
+.toggleSlider:before {
   position: absolute;
   content: "";
   height: 18px;
@@ -513,26 +503,25 @@
   transition: .4s;
 }
 
-input:checked + .slider {
+input:checked + .toggleSlider {
   background-color: #2196F3;
 }
 
-input:focus + .slider {
+input:focus + .toggleSlider {
   box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked + .slider:before {
+input:checked + .toggleSlider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
 
-/* Rounded sliders */
-.slider.round {
+.toggleSlider.shape {
   border-radius: 34px;
 }
 
-.slider.round:before {
+.toggleSlider.shape:before {
   border-radius: 50%;
 }
 
