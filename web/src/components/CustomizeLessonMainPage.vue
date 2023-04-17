@@ -6,8 +6,9 @@
         <h1>Select Admin Lesson to Customize</h1>
         <div class="admin-buttons">
             <div v-for="lesson in allLessons" :key="lesson._id">
-                <button type="button" class="button-selection buttonLink" @click="confirmCustomization(lesson)"><span>{{lesson.name}}</span></button>
-                <p class="upload-description">{{lesson.description}}<br/><br/>Content: {{ lesson.videoClipsArray.length }} videos</p>
+                <button type="button" class="button-selection buttonLink" @click="confirmCustomization(lesson)"><span>{{lesson.name}}</span>
+                  <p class="upload-description">{{lesson.description}}<br/><br/>Content: {{ lesson.videoClipsArray.length }} videos</p>
+                </button>
             </div>
         </div>
       </div>
@@ -124,7 +125,7 @@
       position: absolute;
       max-width: 250px;
       min-width: 250px;
-      margin: -150px 0 0 30px;
+      margin: 150px 0 0 17px;
       font-size: 19px;
       font-weight: normal;
       color: #0e333c;

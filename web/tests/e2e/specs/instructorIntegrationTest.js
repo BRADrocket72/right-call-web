@@ -15,7 +15,7 @@ describe('Instructor Integration Testing', () => {
         cy.get('.updateLessonLink').contains('Update Your Lessons')
         cy.get('.customLessonLink').click()
     })
-       it('Instructor sees the admin lessons and can create their own custom version of a lesson', () => {
+    it('Instructor sees the admin lessons and can create their own custom version of a lesson', () => {
         cy.contains('h1', 'Select Admin Lesson to Customize')
         cy.get('.buttonLink').its('length').should('be.gte', 1)
         cy.get('.buttonLink:last').click()
@@ -80,5 +80,20 @@ describe('Instructor Integration Testing', () => {
         cy.get('.addStudent:first').click()
         cy.contains('p', '2 Students')
         cy.get('.button').click()
+    })  
+    it('Instructor can create custom lesson packs', () => {
+        cy.get('#userName').type('testinstructor123')
+        cy.get('#password').type('testinstructor123')
+        cy.get('button').click()
+        cy.get('.customLessonLink').click()
+        cy.get('.buttonLink').contains('span', 'Into to Refereeing')
+        cy.get('.button').click()
+    })
+    it('Instructor can see Student Results', () => {
+        cy.get('#userName').type('testinstructor123')
+        cy.get('#password').type('testinstructor123')
+        cy.get('button').click()
+        cy.get('.buttonLinks').click()
+        cy.get('.class-list-div').contains('TestClass123')
     })  
 })
