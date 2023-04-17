@@ -1,9 +1,9 @@
 require('dotenv').config();
-const multer = require('multer')
-const express = require('express');
-const { default: VideoClipController } = require('../controllers/videoClipController');
-const { default: AmazonS3Service } = require('../services/Storage/AmazonS3Service');
-const { default: VideoClip } = require('../../data/mongo/VideoClip');
+import multer  from'multer'
+import express from 'express';
+import  VideoClipController from '../controllers/videoClipController';
+import  AmazonS3Service from'../services/Storage/AmazonS3Service';
+import VideoClip  from'../../data/mongo/VideoClip';
 // const VideoClipController = require('../controllers/videoClipController')
 
 const videoClipController = new VideoClipController(new AmazonS3Service(), new VideoClip());
