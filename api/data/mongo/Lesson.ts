@@ -19,7 +19,7 @@ import LessonSchema from "./schemas/LessonSchema"
         const data =await LessonSchema.find()
         return data;
     }
-    async findByIdAndDelete(id:string) {
+    async findByIdAndDelete(id:string)  {
         const data =  await LessonSchema.findByIdAndDelete(id); 
         return data;
     }

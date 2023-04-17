@@ -1,16 +1,26 @@
 import VideoClip from '../../data/mongo/VideoClip';
 import AmazonS3Service from '../services/Storage/AmazonS3Service';
 
-const s3Service = new AmazonS3Service()
-const videoclipDb = new VideoClip()
 
-exports.create_clip = async (req, res) => {
+
+class VideoClipController{
+    private s3Service:AmazonS3Service = new AmazonS3Service();
+    private videoclipDb:VideoClip = new VideoClip()
+
+    constructor(s3Service:AmazonS3Service,videoclipDb:VideoClip)
+    {
+        this.s3Service = s3Service;
+        this.videoclipDb = videoclipDb;
+    }
+
+
+    create_clip = async (req, res) => {
     try {
         res.header('Access-Control-Allow-Origin', '*')
         res.header('Content-Type', 'multipart/form-data')
 
-        const fileUploadURL = await s3Service.s3Upload(req.file)
-        const data =  await videoclipDb.createVideoClip(req.body.name, fileUploadURL, []);
+        const fileUploadURL = await this.s3Service.s3Upload(req.file)
+        const data =  await this.videoclipDb.createVideoClip(req.body.name, fileUploadURL, []);
         res.json(data)
     }
     catch (error) {
@@ -19,12 +29,12 @@ exports.create_clip = async (req, res) => {
     }
 }
 
-exports.create_instructor_clip = async (req, res) => {
+    create_instructor_clip = async (req, res) => {
     try {
         res.header('Access-Control-Allow-Origin', '*')
         res.header('Content-Type', 'multipart/form-data')
 
-        const data =  await videoclipDb.createVideoClip(req.body.videoName, req.body.videoUrl, req.body.timeStamps);
+        const data =  await this.videoclipDb.createVideoClip(req.body.videoName, req.body.videoUrl, req.body.timeStamps);
         res.json(data)
     }
     catch (error) {
@@ -33,11 +43,11 @@ exports.create_instructor_clip = async (req, res) => {
     }
 }
 
-exports.get_all = async (req, res) => {
+    get_all = async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
         res.header('Access-Control-Allow-Origin', '*')
-         const data = await videoclipDb.getAllVideoClips()
+         const data = await this.videoclipDb.getAllVideoClips()
          res.json(data)
     }
     catch (error) {
@@ -45,10 +55,10 @@ exports.get_all = async (req, res) => {
     }
 }
 
-exports.get_by_id = async (req, res) => {
+    get_by_id = async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
-        const data = await videoclipDb.getVideoClipById(req.params.id)
+        const data = await this.videoclipDb.getVideoClipById(req.params.id)
         res.json(data)
     }
     catch (error) {
@@ -56,10 +66,10 @@ exports.get_by_id = async (req, res) => {
     }
 }
 
-exports.update_clip = async (req, res) => {
+    update_clip = async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
-        const data =  await videoclipDb.updateVideoClip(
+        const data =  await this.videoclipDb.updateVideoClip(
             req.params.id, req.body
         )
         res.json(data)
@@ -69,13 +79,15 @@ exports.update_clip = async (req, res) => {
     }
 }
 
-exports.delete_clip = async (req, res) => {
+    delete_clip = async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*')
     try {
-        const data =  await videoclipDb.deleteClipById(req.params.id)
+        const data =  await this.videoclipDb.deleteClipById(req.params.id)
         res.json(data)
     }
     catch (error) {
         res.status(400).json({ message: error.message })
     }
 }
+}
+export default VideoClipController;
