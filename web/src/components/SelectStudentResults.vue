@@ -26,7 +26,7 @@
                 </ul>
             </div>
                 <TransitionGroup name="show-lessons">
-                    <div v-if="isLessonListVisible && classHasLessons" class="lesson-list-div">
+                    <div v-show="isLessonListVisible && classHasLessons" class="lesson-list-div">
                         <TransitionGroup name="change-lessons" tag="ul" class="lesson-list">
                             <h4>Select a Lesson</h4>
                             <li v-for="lesson in lessonList" :key="lesson" class="lesson-li" @click ="reRouteViewStudent(lesson._id)">
@@ -35,7 +35,7 @@
                             </li>
                         </TransitionGroup>
                     </div>
-                    <div v-else-if="isLessonListVisible && !classHasLessons" class="empty-class">
+                    <div v-show="isLessonListVisible && !classHasLessons" class="empty-class">
                         <h2 class="empty-message">This class contains no lessons</h2>
                     </div>
                 </TransitionGroup>

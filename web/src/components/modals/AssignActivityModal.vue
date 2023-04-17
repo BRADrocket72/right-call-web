@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div v-else class="assign-activity-div">
-              <p>Select a question type: </p>
+              <p class="select-type">Select a question type: </p>
               <select id="question-type" name="question-type">
                 <option id="multiple-choice" value="multiple-choice">Multiple Choice</option>
                 <option id="short-answer" value="short-answer">Short Answer</option>
@@ -79,8 +79,12 @@ export default {
           this.questionType = option
           if(this.questionType === "drag-and-drop") {
             this.dragAndDropSetup()
+          } else if(this.questionType === "short-answer"){
+            this.shortAnswerSetup()
+          } else if(this.questionType === "eye-tracking"){
+            this.shortAnswerSetup()
           } else {
-            this.otherQuestionTypesSetup()
+            this.multipleChoiceSetup()
           }
           this.questionTypeSelected = true 
         },
@@ -95,9 +99,19 @@ export default {
             this.getFrameImage()
           }, 150)
         },
-        otherQuestionTypesSetup() {
+        shortAnswerSetup() {
           const modal = document.getElementById("modal")
-          modal.style.height = "500px"
+          modal.style.height = "475px"
+          modal.style.width = "550px"
+        },
+        multipleChoiceSetup() {
+          const modal = document.getElementById("modal")
+          modal.style.height = "550px"
+          modal.style.width = "550px"
+        },
+        eyeTrackingSetup() {
+          const modal = document.getElementById("modal")
+          modal.style.height = "550px"
           modal.style.width = "550px"
         },
         getFrameImage() {
@@ -115,8 +129,12 @@ export default {
     mounted() {
       if(this.questionTypeExists && this.activity.questionType === "drag-and-drop") {
         this.dragAndDropSetup()
-      } else {
-        this.otherQuestionTypesSetup()
+      } else if(this.questionTypeExists && this.activity.questionType === "short-answer"){
+        this.shortAnswerSetup()
+      } else if(this.questionTypeExists && this.activity.questionType === "eye-tracking"){
+        this.eyeTrackingSetup()
+      } else if(this.questionTypeExists && this.activity.questionType === "multiple-choice"){
+        this.multipleChoiceSetup()
       }
     }
 }
@@ -137,8 +155,8 @@ export default {
 
 .modal {
   background: white;
-  height: 500px;
-  width: 450px;
+  min-height: 300px;
+  width: 300px;
   border-radius: 2px;
   position: fixed;
   left: auto;
@@ -183,7 +201,7 @@ export default {
   width: 100px;
   border-radius: 2px;
   padding: 15px;
-  margin: 10px;
+  margin: 10px 0 0 86px;
 }
 
 .modal-fade-enter,
@@ -223,5 +241,13 @@ export default {
   font-size: 20px;
   font-weight: bold;
   color: #dd2a2a;
+}
+
+#question-type {
+  margin-left: 60px;
+}
+
+.select-type {
+  margin-left: 50px;
 }
 </style>
