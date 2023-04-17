@@ -6,8 +6,8 @@ describe('Student Integration Testing', () => {
         cy.get('.login-div h1').contains('Sign in to your account')
     })
     it('Student logs in', () => {
-        cy.get('#userName').type('jeremiah')
-        cy.get('#password').type('123')
+        cy.get('#userName').type('jeremiah22')
+        cy.get('#password').type('jeremiah22')
         cy.get('button').click()
     })
     it('Student sees their assigned lessons and can click on one', () => {
@@ -17,8 +17,6 @@ describe('Student Integration Testing', () => {
     })
     it('Student sees the quizzes in the lesson and can click on one', () => {
         cy.get('.div-header h1').contains('Select a Quiz to Take')
-        let video = cy.get('.nav-link:last')
-        video.contains('Quiz')
         cy.get('.nav-link').its('length').should('be.gte', 1)
         cy.get(".button").click()
     })
@@ -27,7 +25,8 @@ describe('Student Integration Testing', () => {
         cy.get('#password').type('123')
         cy.get('button').click()
         cy.get(".user-button-multiline-text").click()
-        cy.contains('div', 'Lesson Name')
+        cy.contains('div', 'Lesson')
+        cy.contains('div', 'Quiz Name')
         cy.contains('div', 'Score')
         cy.get('tr').its('length').should('be.gt', 0)
     })

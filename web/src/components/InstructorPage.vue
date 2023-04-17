@@ -4,24 +4,29 @@
   <div class="instructor-container">
     <div class="instructor-buttons">
       <router-link to= "/CreateClassroomPage">
-        <button type="button" class="button-selection createClassLink"><span>Create a Classroom</span></button>
-        <p class="create-description">Create a class and assign students to the class.</p>
+        <button type="button" class="button-selection createClassLink"><span>Create a Classroom</span>
+          <p class="create-description">Create a class and assign students to the class.</p>
+        </button>
       </router-link>
       <router-link to="/UpdateClassPage">
-        <button type="button" class="button-selection updateClassLink"><span>Update Class</span></button>
-        <p class="create-description">Update the students and video lessons within a class.</p>
+        <button type="button" class="button-selection updateClassLink"><span>Update Class</span>
+          <p class="create-description">Update the students and video lessons within a class.</p>
+        </button>
       </router-link>
       <router-link to="/CustomizeLessonMainPage">
-        <button type="button" class="button-selection customLessonLink"><span>Create Custom Lesson Packs</span></button>
-        <p class="create-description">Create new timestamps and question activities in lesson videos.</p>
+        <button type="button" class="button-selection customLessonLink"><span>Create Custom Lesson Packs</span>
+          <p class="create-description">Create new timestamps and question activities in lesson videos.</p>
+        </button>
       </router-link>
       <router-link to="/UpdateInstructorLessonsPage">
-        <button type="button" class="button-selection updateLessonLink"><span>Update Your Lessons</span></button>
-        <p class="create-description">Add timestamps and questions to your lesson packs.</p>
+        <button type="button" class="button-selection updateLessonLink"><span>Update Your Lessons</span>
+          <p class="create-description">Add timestamps and questions to your lesson packs.</p>
+        </button>
       </router-link>
       <router-link to="/SelectStudentResults">
-        <button type="button" class="button-selection buttonLinks"><span>Student Results</span></button>
-        <p class="create-description">View the details of students lesson results within a class.</p>
+        <button type="button" class="button-selection buttonLinks"><span>Student Results</span>
+          <p class="create-description">View the details of students lesson results within a class.</p>
+        </button>
       </router-link>
     </div>
   </div>
@@ -40,7 +45,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .instructor-container {
   margin: auto;
   display: flex;
@@ -86,47 +91,24 @@ export default {
 }
 
 .create-description {
-  visibility: hidden;
-  opacity: 0;
   position: absolute;
   max-width: 250px;
-  margin: 150px 0 0 30px;
+  min-width: 250px;
+    margin: 150px 0 0 16px;
   font-size: 19px;
   font-weight: normal;
   color: #0e333c;
-  transition: visibility 0s, opacity 0.3s linear;
-}
-
-.create-description:hover {
-  visibility: visible;
-  opacity: 1;
-}
-
-.button-selection:hover + .create-description {
-  visibility: visible;
-  opacity: 1;
 }
 
 .assign-description {
-  visibility: hidden;
   opacity: 0;
   position: absolute;
   max-width: 250px;
-  margin: 0 0 0 30px;
+  min-width: 250px;
+  margin: 0 0 0 42px;
   font-size: 19px;
   font-weight: normal;
   color: #0e333c;
-  transition: visibility 0s, opacity 0.3s linear;
-}
-
-.assign-description:hover {
-  visibility: visible;
-  opacity: 1;
-}
-
-.button-selection:hover + .assign-description {
-  visibility: visible;
-  opacity: 1;
 }
 
 

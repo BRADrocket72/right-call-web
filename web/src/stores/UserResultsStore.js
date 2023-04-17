@@ -13,14 +13,15 @@ export const useUserResultsStore = defineStore("UserResults", {
         }
     },
     actions: {
-        async postUserResults(username, score, quizId, quizName) {
+        async postUserResults(username, score, quizId, quizName, questionTimes) {
             try {
                 const data = await axios.post(`${process.env.VUE_APP_API_BASE_URL}/userResults/post`,
                     {
                         username: username,
                         score: score,
                         quizId: quizId,
-                        quizName: quizName
+                        quizName: quizName,
+                        questionTimes: questionTimes
                     })
                 return data.data
             } catch (error) {

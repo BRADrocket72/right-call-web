@@ -6,14 +6,15 @@
         <h1>Select Admin Lesson to Customize</h1>
         <div class="admin-buttons">
             <div v-for="lesson in allLessons" :key="lesson._id">
-                <button type="button" class="button-selection buttonLink" @click="confirmCustomization(lesson)"><span>{{lesson.name}}</span></button>
-                <p class="upload-description">{{lesson.description}}<br/><br/>Content: {{ lesson.videoClipsArray.length }} videos</p>
+                <button type="button" class="button-selection buttonLink" @click="confirmCustomization(lesson)"><span>{{lesson.name}}</span>
+                  <p class="upload-description">{{lesson.description}}<br/><br/>Content: {{ lesson.videoClipsArray.length }} videos</p>
+                </button>
             </div>
         </div>
       </div>
       <LessonCustomizationConfirmation v-if="isCustomizationConfirmed" :lesson="selectedLesson" @close="closeModal"/>
     </div>
-    </template>
+</template>
     
     <script>
     import LoggedInNavBar from './LoggedInNavBar.vue';
@@ -98,7 +99,7 @@
     }
     </script>
     
-    <style>
+    <style scoped>
     
     .button-selection {
       display: inline-flex;
@@ -106,7 +107,7 @@
       flex: 1 0 0;
       height: 300px;
       width: 300px;
-      margin: auto 20px auto;
+      margin: auto 20px 26px auto;
       border: 4px solid #0e333c;
       color: #0e333c;
       background: #e9e9e9;
@@ -121,74 +122,40 @@
     }
     
     .upload-description {
-      visibility: hidden;
-      opacity: 0;
       position: absolute;
       max-width: 250px;
-      margin: -150px 0 0 42px;
+      min-width: 250px;
+      margin: 150px 0 0 17px;
       font-size: 19px;
       font-weight: normal;
       color: #0e333c;
-      transition: visibility 0s, opacity 0.3s linear;
-    }
-    
-    .upload-description:hover {
-      visibility: visible;
-      opacity: 1;
-    }
-    
-    .button-selection:hover + .upload-description {
-      visibility: visible;
-      opacity: 1;
     }
     
     .delete-description {
-      visibility: hidden;
-      opacity: 0;
       position: absolute;
       max-width: 250px;
+      min-width: 250px;
       margin: -150px 0 0 42px;
       font-size: 19px;
       font-weight: normal;
       color: #0e333c;
-      transition: visibility 0s, opacity 0.3s linear;
-    }
-    
-    .delete-description:hover {
-      visibility: visible;
-      opacity: 1;
-    }
-    
-    .button-selection:hover + .delete-description {
-      visibility: visible;
-      opacity: 1;
     }
     
     .assign-description {
-      visibility: hidden;
-      opacity: 0;
       position: absolute;
       max-width: 250px;
+      min-width: 250px;
       margin: -150px 0 0 42px;
       font-size: 19px;
       font-weight: normal;
       color: #0e333c;
-      transition: visibility 0s, opacity 0.3s linear;
-    }
-    
-    .assign-description:hover {
-      visibility: visible;
-      opacity: 1;
-    }
-    
-    .button-selection:hover + .assign-description {
-      visibility: visible;
-      opacity: 1;
     }
     
     .admin-buttons {
       display: flex;
-      margin-top: 60px;
+      flex: 22%;
+      margin: 60px;
+      flex-wrap: wrap;
     }
     
     .admin-buttons a {

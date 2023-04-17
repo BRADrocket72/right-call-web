@@ -1,10 +1,16 @@
 <template>
 <div>
-    <div class="quadrants">
+    <div v-if="quadrantType === 'corner-quadrants'" class="corner-quadrants">
         <div class="quadrant" id="quadrant-one"></div>
         <div class="quadrant" id="quadrant-two"></div>
         <div class="quadrant" id="quadrant-three"></div>
         <div class="quadrant" id="quadrant-four"></div>
+    </div>
+    <div v-else-if="quadrantType === 'vertical-quadrants'" class="vertical-quadrants">
+        <div class="vertical-quadrant" id="quadrant-one"></div>
+        <div class="vertical-quadrant" id="quadrant-two"></div>
+        <div class="vertical-quadrant" id="quadrant-three"></div>
+        <div class="vertical-quadrant" id="quadrant-four"></div>
     </div>
 </div> 
 </template>
@@ -18,13 +24,16 @@ export default {
             xMin: 0,
             xMax: 0,
             xHalf: 0,
+            xQuarterOne: 0,
+            xQuarterTwo: 0,
             yMin: 0,
             yMax: 0,
             yHalf: 0,
             xCoordinate: 0,
             yCoordinate: 0,
             guessQuadrant: '',
-            answer: ''
+            answer: '',
+            quadrantType: String
         }
     },
     props:{
@@ -45,12 +54,22 @@ export default {
             const threeCoords = quadrantThree.getBoundingClientRect()
             const fourCoords = quadrantFour.getBoundingClientRect()
 
-            this.xMin = oneCoords.left
-            this.xMax = twoCoords.right
-            this.xHalf = oneCoords.right-1
-            this.yMin = oneCoords.top
-            this.yMax = threeCoords.bottom
-            this.yHalf = fourCoords.top-1
+            if(this.quadrantType === 'corner-quadrants') {
+                this.xMin = oneCoords.left
+                this.xMax = twoCoords.right
+                this.xHalf = oneCoords.right - 1
+                this.yMin = oneCoords.top
+                this.yMax = threeCoords.bottom
+                this.yHalf = fourCoords.top - 1
+            } else if(this.quadrantType === 'vertical-quadrants') {
+                this.xMin = oneCoords.left
+                this.xQuarterOne = oneCoords.right - 1
+                this.xHalf = twoCoords.right - 1
+                this.xQuarterTwo = threeCoords.right - 1
+                this.xMax = fourCoords.right
+                this.yMin = oneCoords.top
+                this.yMax = oneCoords.bottom
+            }
         },
         checkPredictionInBounds() {
             if(this.xPrediction < this.xMin) {
@@ -69,16 +88,31 @@ export default {
                 this.yCoordinate = this.yPrediction
             }
         },
-        getQuadrant() {
-            if(this.xPrediction <= this.xHalf) {
-                if(this.yPrediction <= this.yHalf) {
+        getCornerQuadrant() {
+            if(this.xCoordinate <= this.xHalf) {
+                if(this.yCoordinate <= this.yHalf) {
                     this.guessQuadrant = 'quadrant-one'
                 } else {
                     this.guessQuadrant = 'quadrant-three'
                 }
             } else {
-                if(this.yPrediction <= this.yHalf) {
+                if(this.yCoordinate <= this.yHalf) {
                     this.guessQuadrant = 'quadrant-two'
+                } else {
+                    this.guessQuadrant = 'quadrant-four'
+                }
+            }
+        },
+        getVerticalQuadrant() {
+            if(this.xCoordinate <= this.xHalf) {
+                if(this.xCoordinate <= this.xQuarterOne) {
+                    this.guessQuadrant = 'quadrant-one'
+                } else {
+                    this.guessQuadrant = 'quadrant-two'
+                }
+            } else {
+                if(this.xCoordinate <= this.xQuarterTwo) {
+                    this.guessQuadrant = 'quadrant-three'
                 } else {
                     this.guessQuadrant = 'quadrant-four'
                 }
@@ -97,10 +131,17 @@ export default {
             this.$emit('close',this.updatedAnswers)
         }
     },
+    created() {
+        this.quadrantType = this.question.answers[1]
+    },
     mounted() {
         this.getCoordinates()
         this.checkPredictionInBounds()
-        this.getQuadrant()
+        if(this.quadrantType === 'corner-quadrants') {
+            this.getCornerQuadrant()
+        } else if(this.quadrantType === 'vertical-quadrants') {
+            this.getVerticalQuadrant()
+        }
         this.checkQuadrant()
         this.close()
     }
@@ -109,7 +150,7 @@ export default {
 
 <style scoped>
 
-.quadrants {
+.corner-quadrants {
     position: absolute;
     max-width: 1350px;
     min-width: 1350px;
@@ -130,9 +171,25 @@ export default {
     border: none;
 }
 
-.quadrant:hover {
-    backdrop-filter: brightness(150%);
-    cursor: pointer;
+.vertical-quadrants {
+    position: absolute;
+    max-width: 972px;
+    min-width: 972px;
+    height: 550px;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    text-align: center;
+}  
+
+.vertical-quadrant {
+    max-width: 243px;
+    min-width: 243px;
+    max-height: 550px;
+    min-height: 550px;
+    float: left;
+    border: none;
 }
 
 .question {

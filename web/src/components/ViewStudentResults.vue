@@ -1,6 +1,10 @@
 <template>
   <div>
       <LoggedInNavBar />
+      <br/><br/>
+        <h1>
+            Student Results
+        </h1>
       <div v-if="studentsEmpty" class="students-container">
           <div class="empty-classes">
               <h4>There are no students assigned to this lesson.</h4>
@@ -10,6 +14,7 @@
       <div v-else class="students-container">
         <div class="class-list-div">
             <ul class="class-list">
+                <h4>Select a Student to View</h4>
                  <li v-for="(student, index) in studentList" :key="student" class="class-li" :id="'instructor-class-' + (index+1)" @click="flipArrow(student, index)">
                     <p class="student-name">Student Name:</p>
                         <span class="class-info">
@@ -23,10 +28,12 @@
               <TransitionGroup name="show-results">
                   <div v-if="isLessonResultsVisible && StudentHasResults" class="lesson-list-div">
                       <TransitionGroup name="change-lessons" tag="ul" class="lesson-list">
+                        <br/>
                           <li v-for="results in studentsResultsForLesson" :key="results" class="lesson-resultList">
                               <p class="lesson-name"> Quiz Name: {{results.quizName}}</p>
-                              <p class="lesson-description"> Highest Score : {{results.score}}%</p>
-                              <p class="lesson-description"> Time Spent : {{results.questionTime}}%</p>
+                              <p class="lesson-description"> Highest Score: {{results.score}}%</p>
+                              <p v-if="results.questionTimes.length > 0" class="lesson-description"> Time Taken to Answer Questions: <button type="button" class="viewButton" @click="openQuestionTimesModal(results.questionTimes)">View</button></p>
+                              <p v-else class="lesson-description"> This quiz had only eye-tracking or drag-and-drop questions.</p>
                           </li>
                       </TransitionGroup>
                   </div>
@@ -34,8 +41,8 @@
                       <h2 class="empty-message">This student has not taken this lesson yet ..</h2>
                   </div>
               </TransitionGroup>
-
       </div>
+      <QuestionTimesModal v-if="isQuestionTimesChosen" :questionTimes="chosenQuestionsTimes" @close="closeQuestionTimesModal"/>
   </div>
 </template>
 
@@ -45,13 +52,15 @@ import { useUserResultsStore } from '@/stores/UserResultsStore';
 import { useUsersStore } from '@/stores/UserStore';
 import { useInstructorClassStore } from '@/stores/InstructorClassStore';
 import { useInstructorLessonStore } from '@/stores/InstructorLessonStore';
+import QuestionTimesModal from './modals/QuestionTimesModal.vue';
 
 
 export default {
   name: 'ViewStudentResults',
-  components: { 
-    LoggedInNavBar 
-  },
+  components: {
+    LoggedInNavBar,
+    QuestionTimesModal
+},
 
   props: {
     lessonId: { 
@@ -65,22 +74,17 @@ export default {
   data() {
     return {
       currentClass: [],
-
       lessonsStudents: [],
-
       studentResults: [],
-      
       studentList: [],
-
       selectedElement: HTMLElement,
       selectedStudent: Object,
-
       studentsResultsForLesson: [],
-
       studentsEmpty: false,
       isLessonResultsVisible: false,
       StudentHasResults: false,
-
+      chosenQuestionsTimes: [],
+      isQuestionTimesChosen: false
     }
   },
   methods: {
@@ -144,6 +148,13 @@ export default {
             this.$router.push({
             name: "UpdateClassPage"
           })
+        },
+        openQuestionTimesModal(questionTimes) {
+            this.chosenQuestionsTimes = questionTimes
+            this.isQuestionTimesChosen = true
+        },
+        closeQuestionTimesModal() {
+            this.isQuestionTimesChosen = false
         }
   },
 
@@ -164,9 +175,6 @@ export default {
     if (this.lessonsStudents.length == 0) { 
         this.studentsEmpty = true
     }
-
-
-
   }
 }
 
@@ -423,13 +431,22 @@ export default {
     display: flex;
     flex-direction: column;
     text-align: center;
-    min-height: 70px;
-    max-height: 70px;
+    min-height: 85px;
+    max-height: 85px;
     min-width: 450px;
     max-width: 450px;
-    border: 1px solid #0E333C;
+    border: 3px solid #1e505c;
     border-radius: 10px;
     margin: 10px;
+}
+
+.viewButton {
+    height: 30px;
+    width: 100px;
+    color: white;
+    background:#4AAE9B;
+    border: 1px solid #eeeeee;
+    border-radius: 10px;
 }
 
 </style>

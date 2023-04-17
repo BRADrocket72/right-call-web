@@ -1,6 +1,10 @@
 <template>
     <div>
         <LoggedInNavBar />
+        <br/><br/>
+        <h1>
+            Class Results
+        </h1>
         <div v-if="classesEmpty" class="classes-container">
             <div class="empty-classes">
                 <h4>You have not created any classes.</h4>
@@ -10,6 +14,7 @@
         <div v-else class="classes-container">
             <div class="class-list-div">
                 <ul class="class-list">
+                    <h4>Select a Class</h4>
                     <li v-for="(instructorClass, index) in instructorClasses" :key="instructorClass" class="class-li" :id="'instructor-class-' + (index + 1)" @click="flipArrow(instructorClass, index)">
                         <p class="class-name">{{instructorClass.className}}</p>
                         <span class="class-info">
@@ -21,15 +26,16 @@
                 </ul>
             </div>
                 <TransitionGroup name="show-lessons">
-                    <div v-if="isLessonListVisible && classHasLessons" class="lesson-list-div">
+                    <div v-show="isLessonListVisible && classHasLessons" class="lesson-list-div">
                         <TransitionGroup name="change-lessons" tag="ul" class="lesson-list">
+                            <h4>Select a Lesson</h4>
                             <li v-for="lesson in lessonList" :key="lesson" class="lesson-li" @click ="reRouteViewStudent(lesson._id)">
                                 <p class="lesson-name">{{lesson.name}}</p>
                                 <p class="lesson-description">{{lesson.description}}</p>
                             </li>
                         </TransitionGroup>
                     </div>
-                    <div v-else-if="isLessonListVisible && !classHasLessons" class="empty-class">
+                    <div v-show="isLessonListVisible && !classHasLessons" class="empty-class">
                         <h2 class="empty-message">This class contains no lessons</h2>
                     </div>
                 </TransitionGroup>

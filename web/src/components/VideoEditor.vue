@@ -31,7 +31,7 @@
         <label class="redDotLabel" v-if="webcamPermission"> Hide Eye-Tracking Red Dot: &nbsp;<br/></label>  
         <label class="switch" v-if="webcamPermission">
           <input type="checkbox" class="redDotVisibility" id="redDotVisibility" name="redDotVisibility" v-model="redDotVisibility"/>
-          <span class="slider round"></span>
+          <span class="toggleSlider shape"></span>
         </label>
       </div>
       <results-page v-if="isResultsPageModalVisible" :answersArray="answers" @close="closeResultsPage">
@@ -114,6 +114,9 @@
       };
     },
     async mounted() {
+      var userResults = useUserResultsStore()
+      userResults.questionTimes = []
+      userResults.questionTime = ""
       this.videoAndQuestionDataSetup()
       const videoElement = document.getElementById(this.videoId)
       if (videoElement) {
@@ -141,16 +144,21 @@
         }
         this.permissionModalVisible = false
       },
-      webgazerSetup() {
+      async webgazerSetup() {
         let cookiesCalibration = this.$cookies.get("user_session").currentEyeTrackingCalibration
         if (cookiesCalibration == "false" || !webgazer.isReady()) {
           this.calibrationReady = true
           this.replaceCookie()
+          await webgazer.setRegression('ridge') 
+          webgazer.setGazeListener(function() {})
+          webgazer.showVideoPreview(false)
           webgazer.showVideo(false)
           webgazer.showFaceOverlay(false)
           webgazer.showFaceFeedbackBox(false)
-          webgazer.showPredictionPoints(true)
+          webgazer.showPredictionPoints(true) 
           webgazer.begin()
+          webgazer.applyKalmanFilter(true);
+
         }
         else {
           webgazer.showPredictionPoints(true)
@@ -258,6 +266,14 @@
             this.questionIndex++
             this.isEyeTrackingConfirmed = false
           }, 100)
+        } else {
+          var userResults = useUserResultsStore()
+          var questionName = 'Question ' + (this.questionCounter)
+          if (userResults.questionTime.length > 0) {
+            userResults.questionTimes.push({'questionName': questionName, 'questionTime': userResults.questionTime})
+          }
+          userResults.questionTime = ""
+          console.log(userResults.questionTimes)
         }
       },
       togglePlayButton() {
@@ -272,7 +288,8 @@
       },
       async closeResultsPage(percentageCorrect) {
         var userResults = useUserResultsStore()
-        await userResults.postUserResults(this.$cookies.get("user_session").currentUserName,percentageCorrect,this.videoId,this.videoName)
+        await userResults.postUserResults(this.$cookies.get("user_session").currentUserName,percentageCorrect,this.videoId,this.videoName, userResults.questionTimes)
+        userResults.questionTimes = []
         this.$router.push({
           name: "LessonSelection"
         })
@@ -448,7 +465,6 @@
     }
   }
 
- /* The switch - the box around the slider */
 .switch {
   position: relative;
   display: inline-block;
@@ -456,15 +472,13 @@
   height: 25px;
 }
 
-/* Hide default HTML checkbox */
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-/* The slider */
-.slider {
+.toggleSlider {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -476,7 +490,7 @@
   transition: .4s;
 }
 
-.slider:before {
+.toggleSlider:before {
   position: absolute;
   content: "";
   height: 18px;
@@ -488,26 +502,25 @@
   transition: .4s;
 }
 
-input:checked + .slider {
+input:checked + .toggleSlider {
   background-color: #2196F3;
 }
 
-input:focus + .slider {
+input:focus + .toggleSlider {
   box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked + .slider:before {
+input:checked + .toggleSlider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
 
-/* Rounded sliders */
-.slider.round {
+.toggleSlider.shape {
   border-radius: 34px;
 }
 
-.slider.round:before {
+.toggleSlider.shape:before {
   border-radius: 50%;
 }
 
