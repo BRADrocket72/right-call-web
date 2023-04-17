@@ -107,7 +107,7 @@
       flex: 1 0 0;
       height: 300px;
       width: 300px;
-      margin: auto 20px 10px auto;
+      margin: auto 20px 26px auto;
       border: 4px solid #0e333c;
       color: #0e333c;
       background: #e9e9e9;

@@ -1215,7 +1215,7 @@ ul.timestamp-ul {
 }
 
 .toggle-tooltip-leave-active {
-  transition: all .25s ease-in-out;
+  transition: all .1s ease-in-out;
 }
 
 .toggle-tooltip-enter-active {
