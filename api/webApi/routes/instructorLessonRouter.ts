@@ -1,7 +1,9 @@
-const express = require('express');
-
+import express  from 'express';
+import InstructorLessonController from '../controllers/instructorLessonController';
+import InstructorLesson from '../../data/mongo/InstructorLesson';
 const router = express.Router()
-const instructorLessonController = require('../controllers/instructorLessonController')
+
+const instructorLessonController = new InstructorLessonController(new InstructorLesson())
 
 //Post Method
 router.post('/instructorLessons/post', instructorLessonController.instructor_lessons_create_lesson)
