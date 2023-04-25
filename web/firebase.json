@@ -6,11 +6,12 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "rewrites": [ {
-      "source": "/api",
-      "function": "api",
-      "region": "us-central1"
-    } ]
-
+    "rewrites": [
+      {
+        "source": "/api",
+        "function": "api",
+        "region": "us-central1"
+      }
+    ]
   }
 }
